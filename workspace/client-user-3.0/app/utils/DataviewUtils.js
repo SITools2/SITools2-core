@@ -71,7 +71,7 @@ Ext.define('sitools.user.utils.DataviewUtils', {
             renderer = function (value, metadata, record, rowIndex, colIndex, store) {
                 if (!Ext.isEmpty(value)) {
                     if (!Ext.isEmpty(item.columnRenderer.toolTip)) {
-                        metadata.attr = 'ext:qtip="' + item.columnRenderer.toolTip + '"';
+                        metadata.attr = 'data-qtip="' + item.columnRenderer.toolTip + '"';
                     }
                     
                     var imageStyle = "max-width:" + (item.width - 10) + "px;";
@@ -140,7 +140,7 @@ Ext.define('sitools.user.utils.DataviewUtils', {
                         tplString += "</tpl>";
                     } else if (!Ext.isEmpty(columnRenderer.image)) {
                         tplString += Ext.String.format("<tpl if=\"this.isNotEmpty({0})\">", col.columnAlias);
-                        tplString += Ext.String.format('<li  class="img-link" ext:qtip="{0}">', col.header);
+                        tplString += Ext.String.format('<li  class="img-link" data-qtip="{0}">', col.header);
                         tplString += Ext.String.format(html, "{" + col.columnAlias + "}");
                         tplString += '</li></tpl>';
                     }
@@ -148,7 +148,7 @@ Ext.define('sitools.user.utils.DataviewUtils', {
                     
                 case ColumnRendererEnum.IMAGE_THUMB_FROM_IMAGE :
                     tplString += Ext.String.format("<tpl if=\"this.isNotEmpty({0})\">", col.columnAlias);
-                    tplString += Ext.String.format('<li  class="img-link" ext:qtip="{0}">', col.header);
+                    tplString += Ext.String.format('<li  class="img-link" data-qtip="{0}">', col.header);
                     tplString += Ext.String.format(html, "{" + col.columnAlias + "}");
                     tplString += '</li></tpl>';
                     break;
@@ -161,7 +161,7 @@ Ext.define('sitools.user.utils.DataviewUtils', {
                         imageUrl = "{" + columnRenderer.columnAlias + "}";            
                     }
                     tplString += Ext.String.format("<tpl if=\"this.isNotEmpty({0})\">", col.columnAlias);
-                    tplString += Ext.String.format('<li  class="img-link" ext:qtip="{0}">', col.header, imageUrl);
+                    tplString += Ext.String.format('<li  class="img-link" data-qtip="{0}">', col.header, imageUrl);
                     tplString += Ext.String.format(html, "{" + col.columnAlias + "}", imageUrl);
                     tplString += '</li></tpl>';
                     break;

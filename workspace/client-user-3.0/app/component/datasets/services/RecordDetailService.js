@@ -44,7 +44,7 @@ Ext.define('sitools.user.component.datasets.services.RecordDetailService', {
 	init : function (config) {
 		
 		var grid = config.dataview;
-		var fromWhere = config.origin;
+		var fromWhere = config.fromWhere;
 		var urlRecords = grid.urlRecords;
 		var datasetId = grid.dataset.id;
 		var datasetUrl = grid.dataset.sitoolsAttachementForUsers;

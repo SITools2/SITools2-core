@@ -72,27 +72,39 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
 		        }, this);
 
 				this.primaryKeyValue = this.recSelected.get(this.primaryKeyName);
-
 		        this.primaryKeyValue = encodeURIComponent(this.primaryKeyValue);
-
 		        this.url = this.baseUrl + this.primaryKeyValue;
 				break;
         }
 
+		// data with feature type link url and dataset link
         this.linkStore = Ext.create('Ext.data.Store', {
-	        fields : [ 'name', 'value', 'image', 'behavior', 'columnRenderer', 'html']
+			proxy : {
+				type : 'memory'
+			},
+	        fields : [ 'name', 'value', 'image', 'toolTip', 'behavior', 'columnRenderer', 'html', 'column']
 	    });
 
+		// data with feature type image from sql, column, no thumb
+		this.imageStore = Ext.create('Ext.data.Store', {
+			proxy : {
+				type : 'memory'
+			},
+			fields : [ 'name', 'value', 'image', 'toolTip', 'behavior', 'columnRenderer', 'html', 'column']
+		});
+
+		// data without feature type or dataset link (text only)
         this.dataStore = Ext.create('Ext.data.Store', {
         	proxy : {
         		type : 'memory'
         	},
-	        fields : [ 'name', 'value', 'image', 'behavior', 'columnRenderer', 'html']
+	        fields : [ 'name', 'value', 'image', 'behavior', 'columnRenderer', 'html', 'column']
 	    });
 
         this.gridDataview = Ext.create('Ext.grid.Panel', {
         	store : this.dataStore,
         	padding : 20,
+			flex : 1,
         	border : false,
         	header : false,
         	hideHeaders : true,
@@ -115,31 +127,54 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
 			viewConfig  : {
 				stripeRows : false,
 				trackOver : false
+			},
+			listeners : {
+				scope : this,
+				itemclick : function (grid, record, item, index) {
+					var column = record.get('column');
+					if (Ext.isEmpty(column) || Ext.isEmpty(column.columnRenderer))
+						return;
+
+					sitools.user.utils.DataviewUtils.executeFeatureType(column, this.recSelected);
+				}
 			}
         });
 
         this.metaDataPanel = Ext.create('Ext.panel.Panel', {
         	title : i18n.get('label.metadataInfo'),
-        	layout : 'fit',
+			padding : 10,
+			layout : {
+				type : 'vbox',
+				align : 'stretch',
+				defaultMargins : {
+					top : 5,
+					bottom : 5
+				}
+			},
+			border : false,
         	items : [{
         		xtype : 'label',
         		cls : 'recordDetailLabel',
-        		text : ''
+        		text : '',
+				height : 30
         	}, this.gridDataview]
         });
 
         var linkDataview = Ext.create('Ext.view.View', {
 	        store : this.linkStore,
-	        tpl : new Ext.XTemplate('<ul>', '<tpl for=".">',
-                '<li id="{name}" class="img-link"',
-                '<tpl if="this.hasToolTip(toolTip)">',
-                    'ext:qtip="{toolTip}">',
-                '</tpl>',
-                '<tpl if="this.hasToolTip(toolTip) == false">',
-                    'ext:qtip="{name}">',
-                '</tpl>',
-                '{html}',
-                '</li>', '</tpl>', '</ul>',
+	        tpl : new Ext.XTemplate(
+				'<ul>',
+					'<tpl for=".">',
+						'<li id="{name}" class="img-link">',
+							'{html}',
+							'<tpl if="this.hasToolTip(toolTip)">',
+								'<p data-qtip="{toolTip}">{toolTip}</p>',
+							'<tpl else>',
+								'<p data-qtip="{name}">{name}</p>',
+							'</tpl>',
+						'</li>',
+					'</tpl>',
+				'</ul>',
                 {
                 compiled : true,
                 disableFormats : true,
@@ -147,97 +182,132 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
                     return !Ext.isEmpty(toolTip);
                 }
             }),
+			mode : 'SINGLE',
 	        cls : 'linkImageDataView',
 	        itemSelector : 'li.img-link',
 	        overItemCls : 'nodes-hover',
             selectedClass : '',
-	        mode : 'SINGLE',
 	        multiSelect : false,
 	        autoScroll : true,
 	        listeners : {
 	            scope : this,
-	            click : this.handleClickOnLink
+	            itemclick : this.handleClickOnFeature
 	        }
 	    });
 
-        // set the search form
-        this.formPanelImg = Ext.create('Ext.form.Panel', {
-            autoScroll : true,
-            region : "north",
-            split : (this.fromWhere !== 'dataView'),
-            collapsible : (this.fromWhere !== 'dataView'),
-//            collapsed : (this.fromWhere !== 'dataView'),
-            collapsed : false,
-            flex : 1,
-            title : ((this.fromWhere === 'dataView') ? i18n.get("label.formImagePanelTitle") : null),
-            listeners : {
-                scope : this,
-                expand : function (panel) {
+		var imageDataview = Ext.create('Ext.view.View', {
+			store : this.imageStore,
+			tpl : new Ext.XTemplate(
+				'<ul>',
+					'<tpl for=".">',
+						'<li id="{name}" class="img-link">',
+							'{html}',
+							'<tpl if="this.hasToolTip(toolTip)">',
+								'<p data-qtip="{toolTip}">{toolTip}</p>',
+							'<tpl else>',
+								'<p data-qtip="{name}">{name}</p>',
+							'</tpl>',
+						'</li>',
+					'</tpl>',
+				'</ul>',
+				{
+					compiled : true,
+					disableFormats : true,
+					hasToolTip : function (toolTip) {
+						return !Ext.isEmpty(toolTip);
+					}
+				}),
+			mode : 'SINGLE',
+			cls : 'linkImageDataView',
+			itemSelector : 'li.img-link',
+			overItemCls : 'nodes-hover',
+			selectedClass : '',
+			multiSelect : false,
+			autoScroll : true,
+			listeners : {
+				scope : this,
+				itemclick : this.handleClickOnFeature
 
-                }
-            }
+			}
+		});
+
+        // set the search form
+        this.imagePanel = Ext.create('Ext.panel.Panel', {
+			//title : ((this.fromWhere === 'dataView') ? i18n.get("label.formImagePanelTitle") : null),
+			layout : 'fit',
+			title : ((this.fromWhere === '') ? i18n.get("label.formImagePanelTitle") : i18n.get("label.imagesFromColumns")),
+			//flex : 1,
+			height : 190,
+			autoScroll : true,
+			items : [imageDataview]
+			//split : (this.fromWhere !== 'dataView'),
+			//collapsible : (this.fromWhere !== 'dataView'),
+//            collapsed : (this.fromWhere !== 'dataView'),
         });
 
         // set the text form
         this.linkPanel = Ext.create('Ext.panel.Panel', {
-            title : i18n.get("label.complementaryInformation"),
+            title : i18n.get("label.linkedMetaData"),
+			layout : 'fit',
             items : [linkDataview],
-            region : 'south'
+			autoScroll : true,
+			height : 190
         });
 
         // set the text form
-        this.extraMetaPanel = Ext.create('Ext.form.Panel', {
-            title : i18n.get('label.extraMetaPanel'),
-            layout : 'border',
-            padding : 10,
-            items : [ this.formPanelImg, this.linkPanel ]
+        this.extraMetaPanel = Ext.create('Ext.panel.Panel', {
+            title : i18n.get('label.complementaryInformation'),
+			border : false,
+			padding : 10,
+			layout : {
+				type : 'vbox',
+				align : 'stretch',
+				defaultMargins : {
+					top : 5,
+					bottom : 5
+				}
+			},
+            items : [{
+				xtype : 'label',
+				cls : 'recordDetailLabel',
+				text : '',
+				height : 30
+			}, this.linkPanel, this.imagePanel ]
         });
 
-        var centerPanelItems;
-        if (this.fromWhere === 'dataView') {
-//            centerPanelItems = [this.extraMetaPanel, this.formPanelImg, this.linkPanel];
-            centerPanelItems = [this.gridDataview];
-        }
-        else {
-//            centerPanelItems = [this.extraMetaPanel, this.linkPanel];
-            centerPanelItems = [this.gridDataview];
-        }
+//        var centerPanelItems;
+//        if (this.fromWhere === 'dataView') {
+////            centerPanelItems = [this.extraMetaPanel, this.imagePanel, this.linkPanel];
+//            centerPanelItems = [this.gridDataview];
+//        }
+//        else {
+////            centerPanelItems = [this.extraMetaPanel, this.linkPanel];
+//            centerPanelItems = [this.gridDataview];
+//        }
         
-        //set the center Panel
         this.tabPanel = Ext.create('Ext.tab.Panel', {
-            autoScroll : true,
-            region : "center",
             border : false,
-            items : [ this.metaDataPanel, this.formPanelImg ]
+            items : [ this.metaDataPanel, this.extraMetaPanel ]
         });
 
-        this.getCmDefAndbuildForm();
-        
-        this.componentType = 'dataDetail';
+		// ???
+        //this.componentType = 'dataDetail';
+
         if (this.fromWhere == 'dataView') {
 			this.items = [this.tabPanel];
         }
         else {
-//			this.items = [ this.tabPanel, this.formPanelImg ];
+//			this.items = [ this.tabPanel, this.imagePanel ];
 			this.items = [ this.tabPanel ];
         }
 
-        this.listeners = {
-			scope : this, 
-			afterrender : function (panel) {
-		        this.getCmDefAndbuildForm();
-				panel.getEl().on("contextmenu", function (e, t, o) {
-					e.stopPropagation();
-				}, this);
-			}
-        };
-        
         this.bbar = {
     		xtype : 'toolbar',
     		border : false,
     		items :  [{
 	            iconCls : 'arrow-back',
 	            scale : 'medium',
+				tooltip : i18n.get('label.previousRecord'),
 	            scope : this,
 	            handler : function () {
 	                this.goPrevious();
@@ -245,6 +315,7 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
 	        }, {
 	            iconCls : 'arrow-next',
 	            scale : 'medium',
+				tooltip : i18n.get('label.nextRecord'),
 	            scope : this,
 	            handler : function () {
 	                this.goNext();
@@ -256,9 +327,8 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
         this.callParent(arguments);
     }, 
     
-    afterRender : function () {
-        this._loadMaskAnchor = Ext.get(this.body.dom);
-	    
+    afterRender : function (panel) {
+		this.getCmDefAndbuildForm();
         this.callParent(arguments);
     },
     
@@ -272,7 +342,8 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
             preferencesPath : this.preferencesPath, 
             preferencesFileName : this.preferencesFileName
         };
-    }, 
+    },
+
     /**
      * Go to the Next record of the grid passed into parameters
      */
@@ -315,7 +386,8 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
 		}
 
         this.getCmDefAndbuildForm();	
-    }, 
+    },
+
     /**
      * Go to the Previous record of the grid passed into parameters
      */
@@ -358,12 +430,12 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
 		}
 
         this.getCmDefAndbuildForm();	    
-       
-    }, 
+    },
     /**
      * Build the form according with the values loaded via the Url
      */
     getCmDefAndbuildForm : function () {
+		this.getEl().mask(i18n.get('label.loadingRecord'), "x-mask-loading");
         if (Ext.isEmpty(this.datasetColumnModel)) {
 		    Ext.Ajax.request({
 	            url : this.datasetUrl,
@@ -381,198 +453,184 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
 					catch (err) {
 						Ext.Msg.alert(i18n.get('label.error'), err);
 					}
-					
-	            }, 
+	            },
 	            failure : alertFailure
 	        });        
 	    }
 	    else {
 			this.buildForm();
 	    }
-    }, 
+    },
+
     buildForm : function () {
         
-	    if (!Ext.isEmpty(this._loadMaskAnchor)) {
-//            this._loadMaskAnchor.mask(i18n.get('label.waitMessage'), "x-mask-loading");
-        }
-
         if (!Ext.isEmpty(this.url)) {
+
             this.linkStore.removeAll();
             this.dataStore.removeAll();
+			this.imageStore.removeAll();
 
-            
 	        Ext.Ajax.request({
 	            url : this.url,
 	            method : 'GET',
 	            scope : this,
-	            success : function (ret) {
-	                var data = Ext.decode(ret.responseText);
-	                var itemsForm = [];
-	                var itemsFormImg = [];
-	                if (!data.success) {
-	                    Ext.Msg.alert(i18n.get('label.information'), "Server error");
-	                    return false;
-	                }
-	                var record = data.record;
-	                var id = record.id;
-	                var attributes = record.attributeValues;
-	                if (attributes !== undefined) {
-	                    var i;
-	                    for (i = 0; i < attributes.length; i++) {
-	                        var name = attributes[i].name;
-	                        
-	                        var column = this.findColumn(name);
-	                        var value = attributes[i].value;
-	                        var valueFormat = value;
-	                        
-	                        if (sql2ext.get(column.sqlColumnType) == 'dateAsString') {
-				                valueFormat = sitools.user.utils.DataviewUtils.formatDate(value, column);
-				            }
-				            if (sql2ext.get(column.sqlColumnType) == 'boolean') {
-				                valueFormat = value ? i18n.get('label.true') : i18n.get('label.false');
-				            }
-	                        
-//	                        var item = Ext.create('Ext.Component', {
-//                                fieldLabel : column.header,
-//                                labelSeparator : "", 
-//                                html : (Ext.isEmpty(valueFormat) || !Ext.isFunction(valueFormat.toString))
-//												? valueFormat
-//												: valueFormat.toString()
-//                            });
-				            
-				            var item = {
-			            		name : name,
-			            		value : value
-				            };
-	                        
-				            if (!Ext.isEmpty(column)) {
-				            	if (column.primaryKey) {
-				            		this.metaDataPanel.down('label').setText(Ext.String.format(i18n.get('label.metaFromRecord'), value));
-				            	}
-				            }
-				            
-	                        if (Ext.isEmpty(column) || Ext.isEmpty(column.columnRenderer)) {
-		                        this.dataStore.add(item);
-//		                        itemsForm.push(item);
-		                    }
-                            
-		                    else {
-                                var columnRenderer = column.columnRenderer;
-                                var behavior = "";
-                                if (!Ext.isEmpty(column.columnRenderer)) {
-                                    behavior = column.columnRenderer.behavior;
-                                    var html = sitools.user.utils.DataviewUtils.getRendererHTML(column, {});
-									switch (behavior) {
-									case ColumnRendererEnum.URL_LOCAL :
-					                case ColumnRendererEnum.URL_EXT_NEW_TAB :
-					                case ColumnRendererEnum.URL_EXT_DESKTOP :
-					                case ColumnRendererEnum.DATASET_ICON_LINK :
-										if (! Ext.isEmpty(value)) {
-	                                        if (!Ext.isEmpty(columnRenderer.linkText)) {
-	                                            item = Ext.create('Ext.Component', {
-		                                            fieldLabel : column.header,
-					                                labelSeparator : "", 
-		                                            html : Ext.String.format(html, value)
-		                                        });	                                         
-	                                            itemsForm.push(item);
-							                } else if (!Ext.isEmpty(columnRenderer.image)) {
-							                    var rec = {
-	                                                name : name,
-	                                                value : value,
-	                                                image : columnRenderer.image.url,
-	                                                behavior : behavior,
-                                                    columnRenderer : columnRenderer,
-                                                    toolTip : columnRenderer.toolTip,
-                                                    html : html
-                                                    
-	                                            };
-	                                            rec = new Ext.data.Record(rec);
-	                                            this.linkStore.add(rec);                                            
-							                }																	
-										}                                    
-										break;
-	                                case ColumnRendererEnum.IMAGE_FROM_SQL : 
-                                    case ColumnRendererEnum.IMAGE_THUMB_FROM_IMAGE :
-	                                    if (! Ext.isEmpty(value)) {
-	                                        var tooltip = "";
-	                                        var imageUrl = "";
-	                                        
-
-	                                        if (!Ext.isEmpty(columnRenderer.toolTip)) {
-	                                            tooltip = columnRenderer.toolTip;
-	                                        }
-	                                        else {
-	                                            tooltip = column.header;
-	                                        }
-	                                        
-						                    if (!Ext.isEmpty(columnRenderer.url)) {
-						                        imageUrl = columnRenderer.url;
-						                    } else if (!Ext.isEmpty(columnRenderer.columnAlias)) {
-						                        imageUrl = this.findRecordValue(record, columnRenderer.columnAlias);            
-						                    }
-                                            
-	                                        item = Ext.create('Ext.Component', {
-                                                width : 100,
-	                                            html : Ext.String.format(html, value, imageUrl),
-                                                tooltip : tooltip,
-	                                            cls : "x-form-item"
-	                                        });                                       
-	                                    }
-	                                    itemsFormImg.push(item);
-	                                    break;
-                                    case ColumnRendererEnum.NO_CLIENT_ACCESS :
-                                        break;
-									default : 
-                                        item = Ext.create('Ext.Component', {
-	                                        fieldLabel : column.header,
-			                                labelSeparator : "", 
-	                                        html : Ext.String.format(html, value)
-	                                    });                                          
-	                                    itemsForm.push(item);
-	                                    break;
-                                    }
-		                        }
-		                    }
-                        }
-                        
-//	                    this.extraMetaPanel.removeAll();
-//	                    this.formPanelImg.removeAll();
-//	                    
-//                        this.extraMetaPanel.add(itemsForm);
-//	                    this.extraMetaPanel.doLayout();
-                        
-                        if (this.linkStore.getCount() === 0) {
-                            this.linkPanel.setVisible(false);
-                        } else {
-                            this.linkPanel.setVisible(true);
-                        }
-                        
-                        if (itemsFormImg.length === 0) {
-                            this.formPanelImg.setVisible(false);
-                        } else {
-                            this.formPanelImg.add(itemsFormImg);
-                            this.formPanelImg.setVisible(true);
-                        }
-                        
-	                    if (this._loadMaskAnchor && this._loadMaskAnchor.isMasked()) {
-//							this._loadMaskAnchor.unmask();
-						}
-	                    
-	                    //Register events on column values with featureTypes  
-//	                    this.registerClickEvent(attributes);
-	                    
-                    }
-	            },
-	            failure : function () {
-//	                alertFailure();
-                    if (this._loadMaskAnchor && this._loadMaskAnchor.isMasked()) {
-//						this._loadMaskAnchor.unmask();
-					}
-	            }
+	            success : this.buildFormSuccess,
+				callback : function () {
+					this.getEl().unmask();
+				}
 	        });
 	    }
     },
-    
+
+	buildFormSuccess : function (ret) {
+		var data = Ext.decode(ret.responseText);
+		if (!data.success) {
+			Ext.Msg.alert(i18n.get('label.information'), "Server error");
+			return false;
+		}
+		var record = data.record;
+		var id = record.id;
+		var attributes = record.attributeValues;
+
+		if (attributes !== undefined) {
+			var i;
+			for (i = 0; i < attributes.length; i++) {
+				var name = attributes[i].name;
+
+				var column = this.findColumn(name);
+				var value = attributes[i].value;
+				var valueFormat = value;
+
+				// setting name of the record with its primary key value
+				if (!Ext.isEmpty(column)) {
+					if (column.primaryKey) {
+						this.metaDataPanel.down('label').setText(Ext.String.format(i18n.get('label.metaFromRecord'), value));
+						this.extraMetaPanel.down('label').setText(Ext.String.format(i18n.get('label.metaFromRecord'), value));
+					}
+				}
+
+				if (sql2ext.get(column.sqlColumnType) == 'dateAsString') {
+					valueFormat = sitools.user.utils.DataviewUtils.formatDate(value, column);
+				}
+				if (sql2ext.get(column.sqlColumnType) == 'boolean') {
+					valueFormat = value ? i18n.get('label.true') : i18n.get('label.false');
+				}
+
+				var item = {
+					name : name,
+					value : value
+				};
+
+				if (Ext.isEmpty(column) || Ext.isEmpty(column.columnRenderer)) {
+					this.dataStore.add(item);
+				}
+				else {
+					if (Ext.isEmpty(column.columnRenderer)) {
+						return;
+					}
+					this.populateStoreFromColumnRenderer(column, value);
+				}
+			}
+			if (this.linkStore.getCount() === 0) {
+				this.linkPanel.setVisible(false);
+			} else {
+				this.linkPanel.setVisible(true);
+			}
+
+			if (this.imageStore.getCount() === 0) {
+				this.imagePanel.setVisible(false)
+			} else {
+				this.imagePanel.setVisible(true);
+			}
+		}
+	},
+
+	populateStoreFromColumnRenderer : function (column, value) {
+		var columnRenderer = column.columnRenderer;
+		var behavior = "";
+
+		behavior = column.columnRenderer.behavior;
+		var html = sitools.user.utils.DataviewUtils.getRendererHTML(column, "");
+
+		if (Ext.isEmpty(value)) {
+			return;
+		}
+
+		switch (behavior) {
+			case ColumnRendererEnum.URL_LOCAL :
+			case ColumnRendererEnum.URL_EXT_NEW_TAB :
+			case ColumnRendererEnum.URL_EXT_DESKTOP :
+			case ColumnRendererEnum.DATASET_ICON_LINK :
+				if (!Ext.isEmpty(columnRenderer.linkText)) {
+					var item = {
+						name : column.header,
+						value : Ext.String.format(html, value)
+					};
+					//itemsForm.push(item);
+					this.dataStore.add(item);
+
+				} else if (!Ext.isEmpty(columnRenderer.image)) {
+					var rec = {
+						name : column.header,
+						value : value,
+						image : columnRenderer.image.url,
+						behavior : behavior,
+						columnRenderer : columnRenderer,
+						toolTip : columnRenderer.toolTip,
+						html : html,
+						column : column
+
+					};
+					this.linkStore.add(rec);
+				}
+				break;
+			case ColumnRendererEnum.DATASET_LINK :
+				var item = {
+					name : column.header,
+					value : Ext.String.format(html, value),
+					column : column
+				};
+				this.dataStore.add(item);
+				break;
+			case ColumnRendererEnum.IMAGE_NO_THUMB :
+				var rec = {
+					name : column.header,
+					value : value,
+					behavior : behavior,
+					columnRenderer : columnRenderer,
+					toolTip : column.header,
+					html : html,
+					column : column
+				};
+				this.imageStore.add(rec);
+				break;
+			case ColumnRendererEnum.IMAGE_FROM_SQL :
+			case ColumnRendererEnum.IMAGE_THUMB_FROM_IMAGE :
+				var htmlImage = sitools.user.utils.DataviewUtils.getRendererHTML(column, "width:100px; border:none;");
+
+				var rec = {
+					name : column.header,
+					value : Ext.String.format(htmlImage, value),
+					behavior : behavior,
+					columnRenderer : columnRenderer,
+					toolTip : column.header,
+					html : Ext.String.format(htmlImage, value),
+					column : column
+
+				};
+
+				this.imageStore.add(rec);
+				break;
+			default :
+				//item = {
+				//	name : column.header,
+				//	value : Ext.String.format(html, value)
+				//};
+				//itemToAdd = item;
+				break;
+		}
+	},
+
     findColumn : function (columnAlias) {
 		var result = null;
 		Ext.each(this.datasetColumnModel, function (column) {
@@ -595,27 +653,20 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
         return result;
     },
     
-    handleClickOnLink : function (dataView, index, node, e) {
-        var data = dataView.getRecord(node).data;
-        var behavior = data.behavior;
-        switch (behavior) {
-        case ColumnRendererEnum.URL_LOCAL:
-            sitools.user.utils.DataviewUtils.downloadData(data.value);
-            break;
-        case ColumnRendererEnum.URL_EXT_NEW_TAB  :
-            window.open(data.value);
-            break;
-        case ColumnRendererEnum.URL_EXT_DESKTOP  :
-            sitools.user.utils.DataviewUtils.showDisplayableUrl(data.value, data.columnRenderer.displayable);
-            break;
-        case ColumnRendererEnum.DATASET_ICON_LINK  :
-            sitools.user.utils.DataviewUtils.showDetailsData(data.value, data.columnRenderer.columnAlias, data.columnRenderer.datasetLinkUrl);
-            break;    
-        default : 
-            break;
-            
-        }
-    }, 
+    handleClickOnFeature : function (dataView, record, item, index, node, e) {
+        var behavior = record.get('behavior');
+
+		var column = record.get('column');
+		var serviceToolbarView = Ext.ComponentQuery.query('serviceToolbarView')[0];
+
+		if (!Ext.isEmpty(serviceToolbarView)) { // try to execute featureType from service
+			var serviceController = Desktop.getApplication().getController('sitools.user.controller.component.datasets.services.ServicesController');
+			sitools.user.utils.DataviewUtils.featureTypeAction(column, this.recSelected, serviceController, serviceToolbarView);
+		}
+		else {
+			sitools.user.utils.DataviewUtils.executeFeatureType(column, this.recSelected);
+		}
+    },
     
     encodeUrlPrimaryKey : function (url) {
       //get the end of the uri and encode it
@@ -629,53 +680,5 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
             }
         }
         return urlReturn;
-    },
-    
-    callbackClickFeatureType : function (e, t, o) {
-        e.stopEvent();
-        var record = o.record;
-        var controller = o.controller;            
-        var column = o.column;
-        sitools.user.utils.DataviewUtils.featureTypeAction(column, record, controller);
-    },
-    
-    
-    registerClickEvent : function (attributes) {
-        
-        var nodeFormPanel = this.extraMetaPanel.getEl().dom;
-        var featureTypeNodes = Ext.DomQuery.jsSelect(".featureType", nodeFormPanel);
-        
-        var formPanelImgPanel = this.formPanelImg.getEl().dom;
-        featureTypeNodes = featureTypeNodes.concat(Ext.DomQuery.jsSelect(".featureType", formPanelImgPanel));
-
-        var linkImagePanel = this.linkPanel.getEl().dom;
-        featureTypeNodes = featureTypeNodes.concat(Ext.DomQuery.jsSelect(".featureType", linkImagePanel));
-        
-        var controller = this.grid.down('toolbar').guiServiceController;
-        
-        //Create a Record from the attribute Values 
-        var jsonObj = {};
-        Ext.each(attributes, function (attribute) {
-            jsonObj[attribute.name] = attribute.value;
-        });
-        
-        
-        Ext.each(featureTypeNodes, function (featureTypeNode) {
-            var featureTypeNodeElement = Ext.get(featureTypeNode);
-            
-            var columnAlias = featureTypeNodeElement.getAttribute("column", "sitools");
-            var column = this.findColumn(columnAlias);
-            
-            featureTypeNodeElement.addListener("click", this.callbackClickFeatureType, this, {
-                record : new Ext.data.Record(jsonObj),
-                controller : controller,
-                column : column
-            });
-        }, this);
-            
-
-        if (this.formPanelImg.collapsible && this.formPanelImg.isVisible()) {    
-            this.formPanelImg.collapse();
-        }
     }
 });

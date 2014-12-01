@@ -37,6 +37,8 @@ html, body {
 
 .sitoolsLoadingWhite .x-mask-msg-text {
 	background-image: url(/sitools/common/res/images/icons/sitoolsLoading_white.gif);
+	text-shadow: rgb(229, 229, 229) 1px 0px 3px;
+	color: white;
 }
 
 .x-mask-msg-text {
@@ -861,22 +863,27 @@ td.ux-taskButtons-edge {
 	float: left;
 	padding-top: 10px;
 	margin-top : 10px;
-	/*    margin: 10px 0 0 25px;*/
+	margin-left: 15px;
 	text-align: center;
 	line-height: 1.25em;
 	color: #333;
 	font-family: "Helvetica Neue", sans-serif;
-	height: 90px;
+	height: 110px;
 	width: 120px;
 	overflow: hidden;
 	cursor: pointer;
+	box-shadow: 1px 1px 1px 1px #D3D3D3;
 }
 
 .linkImageDataView .nodes-hover {
-    background: -webkit-linear-gradient(top, #D8D8D8 , #F8F8F8);
-    background: -moz-linear-gradient(top, #D8D8D8 , #F8F8F8);
-    -moz-border-radius: 8px;
-    -webkit-border-radius: 8px;
+	box-shadow: 1px 1px 1px 1px #B1B1B1;
+}
+.linkImageDataView p {
+	font-weight: bold;
+	padding : 0px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
 }
 
 .dataview_columnValue {
@@ -1458,8 +1465,8 @@ td.ux-taskButtons-edge {
 
 .recordDetailLabel {
 	font-size: 15px;
-	padding: 24px;
-	line-height: 25px;
+	/*padding: 24px;*/
+	/*line-height: 25px;*/
 	font-weight: bold;
 }
 
