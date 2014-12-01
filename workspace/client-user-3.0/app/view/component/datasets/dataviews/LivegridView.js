@@ -48,12 +48,15 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
         pluginId : 'renderer',
         ptype : 'bufferedrenderer',
         trailingBufferZone: 20,  // Keep 20 rows rendered in the table behind scroll
-        leadingBufferZone: 50,   // Keep 50 rows rendered in the table ahead of scroll,
-        rowHeight : 25
+        leadingBufferZone: 50  // Keep 50 rows rendered in the table ahead of scroll,
     },
     viewConfig : {
         getRowClass : function (record, index) {
-            return 'rowHeight'; 
+            if(Ext.isEmpty(this.gridId)){
+                var grid = this.up('livegridView');
+                this.gridId=grid.id;
+            }
+            return 'rowHeight_' + this.gridId;
         }
     },
     
@@ -64,6 +67,13 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
     },
     
     initComponent : function () {
+
+        //add a custom css class if the lineHeight is configured (will be removed upon component destroy)
+        if (!Ext.isEmpty(this.dataviewConfig) && !Ext.isEmpty(this.dataviewConfig.lineHeight)) {
+            var css = Ext.String.format(".rowHeight_{0} {height : {1}px;}", this.id, this.dataviewConfig.lineHeight);
+            Ext.util.CSS.createStyleSheet(css, this.id);
+        }
+
         this.selModel = new Ext.create("sitools.user.view.component.datasets.dataviews.selectionModel.SitoolsCheckboxModel", {
             checkOnly : true,
             pruneRemoved : false,

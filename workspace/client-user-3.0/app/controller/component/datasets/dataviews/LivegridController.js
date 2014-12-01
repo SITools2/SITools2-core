@@ -107,7 +107,7 @@ Ext.define('sitools.user.controller.component.datasets.dataviews.LivegridControl
                         view.down("pagingtoolbar").updateInfo();
                     }, view);
                 },
-                
+
                 cellclick : function (table, td, cellIndex, record, tr, rowIndex, e) {
                     var livegrid = table.up('livegridView');
                     
@@ -122,6 +122,11 @@ Ext.define('sitools.user.controller.component.datasets.dataviews.LivegridControl
                 },
                 
                 viewready : function (view) {
+                    view.down("pagingtoolbar").updateInfo();
+                },
+
+                destroy : function (panel) {
+                    Ext.util.CSS.removeStyleSheet(panel.id);
                 }
                 
             }

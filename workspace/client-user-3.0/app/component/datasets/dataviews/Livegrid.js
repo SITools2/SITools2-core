@@ -127,7 +127,8 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
             isModifySelection : componentConfig.isModifySelection,
             preferencesPath : componentConfig.preferencesPath, 
             preferencesFileName : componentConfig.preferencesFileName,
-            origin : 'sitools.user.view.component.datasets.dataviews.LivegridView'
+            origin : 'sitools.user.view.component.datasets.dataviews.LivegridView',
+            dataviewConfig : dataviewConfig
             // searchAction : this.searchAction,
         });
         
