@@ -51,7 +51,7 @@ Ext.define('sitools.user.component.datasets.services.WindowImageZoomerService', 
                     width : 200,
                     typeAhead : true,
                     queryMode : 'local',
-                    forceSelection : true,
+                    editable : false,
                     triggerAction : 'all',
                     valueField : 'display',
                     displayField : 'display',
@@ -77,7 +77,7 @@ Ext.define('sitools.user.component.datasets.services.WindowImageZoomerService', 
                     width : 200,
                     typeAhead : true,
                     queryMode : 'local',
-                    forceSelection : true,
+                    editable : false,
                     triggerAction : 'all',
                     store : Ext.create('Ext.data.JsonStore', {
                         fields : [ 'columnAlias' ],
@@ -102,7 +102,7 @@ Ext.define('sitools.user.component.datasets.services.WindowImageZoomerService', 
                     valueField : 'columnAlias',
                     displayField : 'columnAlias',
                     listeners : {
-                        render : function (c) {
+                        afterrender : function (c) {
                             Ext.QuickTips.register({
                                 target : c,
                                 text : i18n.get('label.columnImageTooltip')
@@ -120,7 +120,7 @@ Ext.define('sitools.user.component.datasets.services.WindowImageZoomerService', 
                     width : 200,
                     typeAhead : true,
                     queryMode : 'local',
-                    forceSelection : true,
+                    editable : false,
                     triggerAction : 'all',
                     store : Ext.create('Ext.data.JsonStore', {
                         fields : [ 'columnAlias' ],

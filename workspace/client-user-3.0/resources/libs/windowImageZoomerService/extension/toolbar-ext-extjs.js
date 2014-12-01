@@ -103,7 +103,7 @@ viewer.toolbarextjs = function (viewer) {
             {
                 xtype: 'image', // same as 'tbsplitbutton'
                 src : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_USER_URL') + "/resources/libs/windowImageZoomerService/images/toolbar/zoom-in.png",
-                tooltip : i18n.get('label.zoomIn'),
+                title : i18n.get('label.zoomIn'),
                 width : 32,
                 cls : 'previewBarBtn-icon',
 //                handler : function () {
@@ -122,7 +122,7 @@ viewer.toolbarextjs = function (viewer) {
             {
                 xtype: 'image', // same as 'tbsplitbutton'
                 src : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_USER_URL')+"/resources/libs/windowImageZoomerService/images/toolbar/zoom-out.png",
-                tooltip : i18n.get('label.zoomOut'),
+                title : i18n.get('label.zoomOut'),
                 cls : 'previewBarBtn-icon',
                 width : 32,
                 listeners : {
@@ -137,7 +137,7 @@ viewer.toolbarextjs = function (viewer) {
             {
                 xtype: 'image', // same as 'tbsplitbutton'
                 src : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_USER_URL') + '/resources/libs/windowImageZoomerService/images/toolbar/download-image.png',
-                tooltip : i18n.get('label.downloadImage'),
+                title : i18n.get('label.downloadImage'),
                 cls : 'previewBarBtn-icon',
                 width : 32,
                 //text : 'download',
@@ -145,7 +145,7 @@ viewer.toolbarextjs = function (viewer) {
                     el : {
                         click : function () {
                             var img = viewer.frameElement.firstChild;
-                            sitools.user.component.dataviews.dataviewUtils.downloadFile(img.src);
+                            sitools.user.utils.DataviewUtils.downloadFile(img.src);
                         }
                     }
                 }
@@ -164,7 +164,7 @@ viewer.toolbarextjs = function (viewer) {
             {
                 xtype: 'image', // same as 'tbsplitbutton'
                 src : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_USER_URL') + "/resources/libs/windowImageZoomerService/images/toolbar" + '/stretch-optimally.png',
-                tooltip : i18n.get('label.resetZoom'),
+                title : i18n.get('label.resetZoom'),
                 cls : 'previewBarBtn-icon',
                 width : 32,
                 listeners : {
