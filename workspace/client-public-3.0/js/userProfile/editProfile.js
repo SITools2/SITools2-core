@@ -22,22 +22,13 @@ Ext.namespace('sitools.public.userProfile');
  */
 Ext.define('sitools.public.userProfile.editProfile', {
     extend : 'Ext.panel.Panel',
-	padding : 5,
+	padding : 10,
 	layout : 'fit',
 	border : false,
     bodyBorder : false,
 
     initComponent : function () {
         
-//        this.bbar = {
-//            items : ['->', {
-//                text : i18n.get('label.saveEdit'),
-//                x : 30,
-//                handler : this.saveEdit,
-//                scope : this
-//            }]
-//        };
-
         var storeProperties = Ext.create('Ext.data.JsonStore', {
             fields : [{
                 name : 'name',
@@ -50,6 +41,7 @@ Ext.define('sitools.public.userProfile.editProfile', {
                 type : 'string'
             }]
         });
+
         var smProperties = Ext.create('Ext.selection.RowModel', {
             mode : 'SINGLE'
         });
@@ -79,7 +71,6 @@ Ext.define('sitools.public.userProfile.editProfile', {
         this.gridProperties = Ext.create('Ext.grid.Panel', {
             title : i18n.get('title.properties'),
             height : 150,
-            padding : 3,
             autoScroll : true,
             clicksToEdit : 1,
             store : storeProperties,
@@ -87,12 +78,12 @@ Ext.define('sitools.public.userProfile.editProfile', {
             selModel : smProperties,
             forceFit : true,
             viewConfig : {
-//                getRowClass : function (row, col) { 
+//                getRowClass : function (row, col) {
 //                    var data = row.data;
 //                    if (data.scope == 'ReadOnly') {
-//                        return "row-grid-readOnly"; 
+//                        return "row-grid-readOnly";
 //                    }
-//                } 
+//                }
             },
             listeners : {
                 beforeedit : function (e) {
@@ -104,14 +95,17 @@ Ext.define('sitools.public.userProfile.editProfile', {
                 }
             }
         });
-        
+
         this.items = [{
             xtype : 'form',
             flex : 1,
             border : false,
             bodyBorder : false,
             buttonAlign : 'center',
-            labelWidth : 140,
+            padding : 10,
+            fieldDefaults : {
+                labelWidth : 140
+            },
             items : [{
                 xtype : 'textfield',
                 name : 'identifier',
@@ -168,7 +162,7 @@ Ext.define('sitools.public.userProfile.editProfile', {
                 anchor : '90%'
             }, this.gridProperties]
         }];
-        
+
         this.buttons = {
             xtype : 'toolbar',
             style : 'background-color:white;',

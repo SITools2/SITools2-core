@@ -36,6 +36,7 @@ Ext.define('sitools.user.view.component.personal.DiskSpaceView', {
 		pack : 'start',
 		align : 'stretch'
 	},
+    padding: 10,
 
     initComponent : function () {
         this.AppUserStorage = loadUrl.get('APP_URL') + loadUrl.get('APP_USERSTORAGE_USER_URL').replace('{identifier}', userLogin) + "/files";

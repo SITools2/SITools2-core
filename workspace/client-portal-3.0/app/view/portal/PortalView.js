@@ -154,14 +154,14 @@ Ext.define('sitools.clientportal.view.portal.PortalView', {
                     left : 10
                 },
                 html : i18n.get('label.welcome') + ' <b>' + user + '</b>'
-            }, versionButton, '-', {
+            }, versionButton, {
                 text : i18n.get('label.langues'),
                 cls : 'x-custom-button-color',
                 menu : menuLangues,
-                iconCls : 'languageMenuIcon',
-            }, '-', editProfileButton, (editProfileButton.hidden) ? null : '-', menuLoginLogout ]
+                iconCls : 'languageMenuIcon'
+            }, editProfileButton, menuLoginLogout ]
         };
-        
+
         /***************************************************************************
          * Creation du portlet Liste des projets
          */

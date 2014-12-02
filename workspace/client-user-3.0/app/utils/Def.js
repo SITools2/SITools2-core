@@ -709,7 +709,12 @@ function showResponse(ret) {
     try {
         var Json = Ext.decode(ret.responseText);
         if (!Json.success) {
-            Ext.Msg.alert(i18n.get('label.warning'), i18n.get(Json.message));
+            Ext.Msg.show({
+                title : i18n.get('label.warning'),
+                msg : i18n.get(Json.message),
+                icon : Ext.Msg.ERROR,
+                buttons : Ext.Msg.OK
+            });
             return false;
         }
         popupMessage(i18n.get('label.info'), i18n.get(Json.message), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');

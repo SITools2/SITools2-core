@@ -21,7 +21,7 @@
 Ext.namespace('sitools.user.view.component.personal');
 
 Ext.define('sitools.user.view.component.personal.OrderView', {
-	extend : 'Ext.grid.Panel',
+	extend : 'Ext.panel.Panel',
 	
 	requires : ['sitools.user.model.OrderModel'],
 	
@@ -29,20 +29,13 @@ Ext.define('sitools.user.view.component.personal.OrderView', {
     selModel : Ext.create('Ext.selection.RowModel'),
 
     pageSize : 10,
-    autoScroll : true,
-    forceFit : true,
-    layout : 'fit',
+    layout : {
+        type : 'vbox',
+        align : 'stretch'
+    },
+    padding : 10,
 
     initComponent : function () {
-    	
-    	this.viewConfig = {
-            listeners : {
-                scope : this,
-                refresh : function (view) {
-                    this.getEl().unmask();
-                }
-            }
-        };
     	
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_ORDERS_USER_URL');
         
@@ -60,7 +53,7 @@ Ext.define('sitools.user.view.component.personal.OrderView', {
             remoteSort : true
         });
 
-        this.columns = {
+        var columns = {
             defaults : {
                 sortable : true
             },
@@ -79,32 +72,68 @@ Ext.define('sitools.user.view.component.personal.OrderView', {
             } ]
         };
 
-        this.bbar = {
+        var bbar = {
             xtype : 'pagingtoolbar',
             pageSize : this.pageSize,
             store : this.store,
             displayInfo : true,
             displayMsg : i18n.get('paging.display'),
-            emptyMsg : i18n.get('paging.empty')
+            emptyMsg : i18n.get('paging.empty'),
+            listeners : {
+                scope : this,
+                change : function (pagingToolbar, pageData) {
+                    this.detailPanel.removeAll();
+                    this.detailPanel.setVisible(false);
+                }
+            }
         };
 
-        this.tbar = {
+        var tbar = {
             xtype : 'toolbar',
             cls : 'services-toolbar',
             defaults : {
                 scope : this,
                 cls : 'services-toolbar-btn'
             },
-            items : [ {
-                text : i18n.get('label.details'),
-                icon : '/sitools/common/res/images/icons/toolbar_details.png',
-                handler : this._onDetail
-            }, {
+            items : [{
                 text : i18n.get('label.delete'),
                 icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png',
                 handler : this._onDelete
-            } ]
+            }]
         };
+
+        this.gridPanel = Ext.create('Ext.grid.Panel', {
+            flex : 1,
+            tbar : tbar,
+            bbar : bbar,
+            columns : columns,
+            store : this.store,
+            border : false,
+            forceFit : true,
+            autoScroll : true,
+            listeners : {
+                scope : this,
+                itemclick : this._onDetail
+            },
+            viewConfig : {
+                listeners : {
+                    scope : this,
+                    refresh : function (view) {
+                        this.getEl().unmask();
+                    }
+                }
+            }
+        });
+
+        this.detailPanel = Ext.create('Ext.panel.Panel', {
+            height : 300,
+            hidden : true,
+            split : true,
+            autoScroll : true,
+            border : false
+        });
+
+        this.items = [this.gridPanel, this.detailPanel];
 
         this.callParent(arguments);
     },
@@ -120,56 +149,38 @@ Ext.define('sitools.user.view.component.personal.OrderView', {
     },
 
     _onDetail : function () {
-        var rec = this.getSelectionModel().getSelection()[0];
+        var rec = this.gridPanel.getSelectionModel().getSelection()[0];
         if (!rec) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');
         }
-        
-        var jsObj = sitools.user.component.entete.userProfile.orderProp;
-        var componentCfg = {
-            // url:this.url,
-            action : 'detail',
-            // store: this.getStore(),
-            orderRec : rec
-        };
-        var title = i18n.get('label.details') + " : ";
-        title += rec.data.userId;
-        title += " " + i18n.get('label.the');
-        title += " " + rec.data.dateOrder;
 
-        var windowConfig = {
-            id : "showDataDetailId", 
-            title : title,
-            iconCls : "orders",
-//            size : {
-//                width : 700,
-//                height : 480
-//            },
-            specificType : "dataDetail"
-        };
-        SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, jsObj);
+        var orderDetailView = Ext.create('sitools.user.view.component.personal.OrderDetailView', {
+            action : 'detail',
+            orderRec : rec
+        });
+
+        this.detailPanel.removeAll();
+        this.detailPanel.add(orderDetailView);
+        this.detailPanel.setVisible(true);
     },
 
     _onDelete : function () {
-        var rec = this.getSelectionModel().getSelection()[0];
+        var rec = this.gridPanel.getSelectionModel().getSelection()[0];
         if (!rec) {
             return false;
         }
         
         var tot = Ext.Msg.show({
             title : i18n.get('label.delete'),
-            buttons : {
-                yes : i18n.get('label.yes'),
-                no : i18n.get('label.no')
-            },
-            msg : i18n.get('orderCrud.delete'),
+            buttons : Ext.Msg.YESNO,
+            icon : Ext.Msg.QUESTION,
+            msg : Ext.String.format(i18n.get('orderCrud.delete'), rec.get('id')),
             scope : this,
             fn : function (btn, text) {
                 if (btn == 'yes') {
                     this.doDelete(rec);
                 }
             }
-
         });
 
     },
@@ -186,5 +197,4 @@ Ext.define('sitools.user.view.component.personal.OrderView', {
             failure : alertFailure
         });
     }
-
 });

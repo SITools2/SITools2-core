@@ -93,7 +93,7 @@ Ext.define('sitools.user.controller.header.HeaderController', {
                 boxready : function (usrProfileWindow) {
                 	var taskbarHeight = this.getController('DesktopController').desktopView.taskbar.getHeight();
                 	
-                	var x = Desktop.getDesktopEl().getWidth() - usrProfileWindow.getWidth();
+                	var x = (Desktop.getDesktopEl().getWidth() + Desktop.getDesktopEl().getX()) - usrProfileWindow.getWidth();
             		var y = this.getEnteteEl().getHeight() + taskbarHeight;
                     usrProfileWindow.setPosition(x, y);
                 }
