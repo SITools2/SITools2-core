@@ -36,26 +36,27 @@ Ext.namespace('sitools.user.controller.modules.formModule');
  * @requires sitools.user.component.forms.mainContainer
  */
 Ext.define('sitools.user.controller.modules.formModule.FormAsMenuModuleController', {
-	extend : 'Ext.app.Controller',
+	extend : 'sitools.user.controller.modules.formModule.FormModuleController',
     
     views : ['modules.formModule.FormAsMenuModuleView'],
     
     init : function () {
-        this.control();
-    },
-    
-    /**
-     * method called when trying to save preference
-     * 
-     * @returns
-     */
-    _getSettings : function () {
-        return {
-            preferencesPath : "/modules", 
-            preferencesFileName : this.id
-        };
+        this.control({
 
-    }
-    
+            "formsAsMenuModuleView menuitem[sitoolsType=datasetForm]" : {
+                click : function(item) {
+                    this.showDetail(item.rec);
+                }
+            },
+
+            "formsAsMenuModuleView menuitem[sitoolsType=projectForm]" : {
+                click : function(item) {
+                    this.showDetailMultiDs(item.rec);
+                }
+            }
+        });
+    },
+
+    _getSettings : Ext.emptyFn
     
 });

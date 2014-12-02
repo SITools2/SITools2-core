@@ -29,13 +29,33 @@ Ext.define('sitools.user.modules.FormAsMenuModule', {
     extend : 'sitools.user.core.Module',
     
     controllers : ['sitools.user.controller.modules.formModule.FormAsMenuModuleController'],
-    
+
+    statics : {
+        getStaticParameters : function () {
+            return {
+                showAsMenu : true
+            }
+        }
+    },
+
+    config : {
+        autoShow : true
+    },
+
     init : function (componentConfig) {
         var event = componentConfig.event;
+        var triggerComponent = componentConfig.triggerComponent;
         var view = Ext.create('sitools.user.view.modules.formModule.FormAsMenuModuleView');
-        
-        this.show(view, event.getX(), event.getY());
 
+        if(this.getAutoShow()) {
+
+            if (!Ext.isEmpty(triggerComponent)) {
+                this.show(view, triggerComponent.getX(), triggerComponent.getY());
+            } else {
+                this.show(view, event.getX(), event.getY());
+            }
+        }
+        this.setComponentView(view);
         this.callParent(arguments);
     },
 

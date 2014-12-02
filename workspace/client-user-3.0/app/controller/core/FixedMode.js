@@ -68,7 +68,7 @@ Ext.define('sitools.user.controller.core.FixedMode', {
             }
         });
     	
-    	if (!Ext.isEmpty(activePanel.specificType) && (activePanel.specificType === 'componentWindow' || activePanel.specificType === 'moduleWindow')) {
+    	if (!Ext.isEmpty(activePanel) && !Ext.isEmpty(activePanel.specificType) && (activePanel.specificType === 'componentWindow' || activePanel.specificType === 'moduleWindow')) {
             if (Ext.isFunction(activePanel.saveSettings)) {
             	 var component = activePanel.items.items[0];
 

@@ -43,19 +43,21 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
                     
                     if (moduleRecord) {
                         this.openModule(moduleRecord, {
-                            event : event
+                            event : event,
+                            triggerComponent : btn
                         });
                     }
                 }
             },
             
-            'moduleToolbar > toolbar button menu menuitem' : {
+            'moduleToolbar > toolbar > button > menu > menuitem' : {
                 click : function (btn, event) {
                     var moduleRecord = btn.module;
                     
                     if (moduleRecord) {
                         this.openModule(moduleRecord, {
-                            event : event
+                            event : event,
+                            triggerComponent : btn
                         });
                     }
                 }

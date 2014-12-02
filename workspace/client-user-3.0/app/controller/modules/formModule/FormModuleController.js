@@ -96,10 +96,7 @@ Ext.define('sitools.user.controller.modules.formModule.FormModuleController', {
             method : 'GET',
             scope : this,
             success : function (response) {
-                
-                
-                
-//                try {
+                try {
                     var json = Ext.decode(response.responseText);
                     if (! json.success) {
                         Ext.Msg.alert(i18n.get('label.error'), json.message);
@@ -110,11 +107,11 @@ Ext.define('sitools.user.controller.modules.formModule.FormModuleController', {
                     sitools.user.utils.DatasetUtils.showForm(rec.getData(true), dataset);
                     
                     return;
-//                }
-//                catch (err) {
-//                    Ext.Msg.alert(i18n.get('label.error'), err);
-//                    return;
-//                }
+                }
+                catch (err) {
+                    Ext.Msg.alert(i18n.get('label.error'), err);
+                    return;
+                }
                 
             }, 
             failure : function () {

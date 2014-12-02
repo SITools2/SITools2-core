@@ -57,7 +57,7 @@ Ext.define('sitools.user.view.modules.formModule.FormAsMenuModuleView', {
         this.formStore.setCustomUrl(project.get('sitoolsAttachementForUsers') + '/forms');
    	
         this.formMultiDsStore = Ext.create('sitools.user.store.FormStore', {
-        	autoLoad : true, 
+        	autoLoad : true,
             listeners : {
     			scope : this, 
     			load : this.onLoadMultiDSForms
@@ -84,11 +84,8 @@ Ext.define('sitools.user.view.modules.formModule.FormAsMenuModuleView', {
 				text : rec.get("name"),
 				cls : 'menuItemCls',
 				iconCls : 'form',
-				rec : rec, 
-				scope : this, 
-				handler : function (b) {
-					this.showDetail(b.rec);                    
-				}
+				sitoolsType : 'datasetForm',
+				rec : rec
 			}), {
             	xtype : 'menuseparator',
             	separatorCls : 'customMenuSeparator'
@@ -108,7 +105,6 @@ Ext.define('sitools.user.view.modules.formModule.FormAsMenuModuleView', {
 		}
 		
 		this.add(menuItems);
-//		this.formMultiDsStore.load();
 	},
 	
 	onLoadMultiDSForms : function (store, records, successful) {
@@ -126,11 +122,8 @@ Ext.define('sitools.user.view.modules.formModule.FormAsMenuModuleView', {
 				text : rec.get("name"), 
 				cls : 'menuItemCls',
 				iconCls : 'form',
-				rec : rec, 
-				scope : this, 
-				handler : function (b) {
-					this.showDetailMultiDs(b.rec);                    
-				}
+				rec : rec,
+				sitoolsType : 'projectForm'
 			}), {
             	xtype : 'menuseparator',
             	separatorCls : 'customMenuSeparator'
@@ -153,68 +146,12 @@ Ext.define('sitools.user.view.modules.formModule.FormAsMenuModuleView', {
 		this.formsLoaded = true;
 		this.menuMultiDsFormLoaded = true;	
 		
-//		this.doLayout();
-	}, 
+	},
 	
-    showDetail : function (rec) {
-    	 if (rec.get('authorized') === "false") {
-             return;
-         }
-         
-         Ext.Ajax.request({
-             url : rec.get('parentUrl'),
-             method : 'GET',
-             scope : this,
-             success : function (response) {
-                 try {
-                     var json = Ext.decode(response.responseText);
-                     if (! json.success) {
-                         Ext.Msg.alert(i18n.get('label.error'), json.message);
-                         return;
-                     }
-
-                     var dataset = json.dataset;
-                     
-                     var formComponent = Ext.create('sitools.user.component.form.FormComponent');
-                     formComponent.create(Desktop.getApplication());
-                     formComponent.init(rec.getData(true), dataset);
-                     
-                     return;
-                 }
-                 catch (err) {
-                     Ext.Msg.alert(i18n.get('label.error'), err);
-                     return;
-                 }
-                 
-             }, 
-             failure : function () {
-                 Ext.Msg.alert(i18n.get('label.error'), i18n.get('label.noActiveDatasetFound'));
-                 return;
-             }
-         });
-    },
-    
-    showDetailMultiDs : function (rec) {
-    	 if (Ext.isEmpty(rec)) {
-             return;
-         }
-
-         var formComponent = Ext.create('sitools.user.component.form.FormComponent');
-         formComponent.create(Desktop.getApplication());
-         formComponent.openProjectForm(rec.getData(true));
-    },
-    
     /**
      * method called when trying to save preference
      * 
      * @returns
      */
-    _getSettings : function () {
-        return {
-            preferencesPath : "/modules",
-            preferencesFileName : this.id,
-            xtype : this.$className
-        };
-
-    }
+    _getSettings : Ext.emptyFn
 });

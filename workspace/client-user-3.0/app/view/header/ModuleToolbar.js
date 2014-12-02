@@ -108,18 +108,18 @@ Ext.define('sitools.user.view.header.ModuleToolbar', {
 			                separatorCls : 'customMenuSeparator'
 			            });
 
-//                            //Test spécifique pour savoir si on doit inclure un sous menu : 
+//                            //Test spécifique pour savoir si on doit inclure un sous menu :
 //                            var xtype = moduleInCategory.get('xtype');
 //                            if (Ext.isEmpty(xtype)) {
 //                                return;
 //                            }
 //                            var Func = eval(xtype + ".getStaticParameters");
 //                            if (Ext.isFunction(Func)) {
-//                                var staticParameters = Func();  
+//                                var staticParameters = Func();
 //                                if (staticParameters && staticParameters.showAsMenu) {
 //                                    Ext.apply(item, {
 //                                        menu : {
-//                                            xtype : moduleInCategory.get('xtype'), 
+//                                            xtype : moduleInCategory.get('xtype'),
 //                                            cls : "sitools-navbar-menu"
 //                                        }
 //                                    });
