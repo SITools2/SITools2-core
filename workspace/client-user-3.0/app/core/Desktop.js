@@ -149,33 +149,27 @@ Ext.define('sitools.user.core.Desktop', {
                     sitools.user.utils.DatasetUtils.openDataset(datasetUrl, pref.componentSettings, pref.windowSettings);
                 }
                 if (type === "formProject") {
-                    jsObj = sitools.user.component.forms.projectForm;
-                    componentCfg = {
-                        formId : pref.componentSettings.formId,
-                        formName : pref.componentSettings.formName,
-                        formParameters : pref.componentSettings.formParameters,
-                        formWidth : pref.componentSettings.formWidth,
-                        formHeight : pref.componentSettings.formHeight,
-                        formCss : pref.componentSettings.formCss,
-                        properties : pref.componentSettings.properties,
-                        urlServicePropertiesSearch : pref.componentSettings.urlServicePropertiesSearch,
-                        urlServiceDatasetSearch : pref.componentSettings.urlServiceDatasetSearch,
-                        preferencesPath : pref.componentSettings.preferencesPath,
-                        preferencesFileName : pref.componentSettings.preferencesFileName,
-                        formZones : pref.componentSettings.formZones
-                    };
-                    windowSettings = {
-                        type : "formProject",
-                        title : i18n.get('label.forms') + " : " + pref.componentSettings.formName,
-                        id : "formProject" + pref.componentSettings.formId,
-                        saveToolbar : true,
-                        datasetName : pref.componentSettings.formName,
-                        winWidth : 600,
-                        winHeight : 600,
-                        iconCls : "form"
-                    };
-                    SitoolsDesk.addDesktopWindow(windowSettings, componentCfg, jsObj);
+					var form = pref.componentSettings.form;
+					var project = Ext.getStore('ProjectStore').getProject();
+					var url = project.get('sitoolsAttachementForUsers') + '/formsProject/' + form.id;
 
+
+					Ext.Ajax.request({
+						url: url,
+						method: 'GET',
+						scope: this,
+						success: function (response) {
+							var Json = Ext.decode(response.responseText);
+							if(Json.success) {
+								var componentConfig = {
+									form: Json.formProject
+								};
+
+								var sitoolsController = Desktop.getApplication().getController('core.SitoolsController');
+								sitoolsController.openComponent('sitools.user.component.form.FormProjectComponent', componentConfig, {});
+							}
+						}
+					});
                 }
                 
                 if (type === "form") {

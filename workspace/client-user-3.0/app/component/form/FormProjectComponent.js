@@ -48,7 +48,8 @@ Ext.define('sitools.user.component.form.FormProjectComponent', {
             datasetName : form.name,
             winWidth : 600,
             winHeight : 600,
-            iconCls : "form"
+            iconCls : "form",
+            typeWindow : 'formProject'
         };
 
         var view = Ext.create('sitools.user.view.component.form.ProjectFormView', {
@@ -65,7 +66,9 @@ Ext.define('sitools.user.component.form.FormProjectComponent', {
             nbDatasetsMax : form.nbDatasetsMax,
             preferencesPath : "/formProjects",
             preferencesFileName : form.name,
-            formZones : form.zones
+            formZones : form.zones,
+            component : this,
+            form : form
         });
 
         this.setComponentView(view);
@@ -73,24 +76,11 @@ Ext.define('sitools.user.component.form.FormProjectComponent', {
     },
 
     _getSettings : function () {
-        //TODO
         var view = this.getComponentView();
         return {
-            objectName : "forms", 
-            dataUrl : view.dataUrl,
-            dataset : view.dataset,
-            formId : view.formId,
-            id : view.id,
-            formName : view.formName,
-            formParameters : view.formParameters,
-            formZones : view.formZones,
-            formWidth : view.formWidth,
-            formHeight : view.formHeight, 
-            formCss : view.formCss, 
-            datasetView : view.datasetView,
-            dictionaryMappings : view.dictionaryMappings, 
-            preferencesPath : view.preferencesPath, 
-            preferencesFileName : view.preferencesFileName
+            form : view.form,
+            preferencesPath : view.preferencesPath,
+            preferencesFileName : view.preferencesFileName,
         };
     }
 });

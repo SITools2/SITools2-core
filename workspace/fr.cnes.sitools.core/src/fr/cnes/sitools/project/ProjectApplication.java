@@ -116,6 +116,7 @@ public final class ProjectApplication extends AbstractProjectApplication {
     router.attach("/services", ListPluginExpositionResource.class);
 
     router.attach("/formsProject", ProjectListFormsProjectResource.class);
+    router.attach("/formsProject/{formId}", ProjectFormResource.class);
 
     // List of modules
     String target = RIAPUtils.getRiapBase() + getSettings().getString(Consts.APP_PROJECTS_MODULES_URL)

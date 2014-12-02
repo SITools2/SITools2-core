@@ -56,7 +56,7 @@ Ext.define('sitools.user.view.modules.formModule.FormAsMenuModuleView', {
         });
         this.formStore.setCustomUrl(project.get('sitoolsAttachementForUsers') + '/forms');
    	
-        this.formMultiDsStore = Ext.create('sitools.user.store.FormStore', {
+        this.formMultiDsStore = Ext.create('sitools.user.store.FormProjectStore', {
         	autoLoad : true,
             listeners : {
     			scope : this, 

@@ -385,6 +385,10 @@ Ext.define('sitools.user.view.component.form.ProjectFormView', {
                 break;
         }
         return field;
+    },
+
+    _getSettings : function () {
+        return this.component._getSettings();
     }
 
 });
