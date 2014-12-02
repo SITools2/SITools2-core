@@ -62,7 +62,9 @@ Ext.define('sitools.user.Application', {
         'header.HeaderController',
         'footer.FooterController',
         'core.NavigationModeFactory',
-        'component.personal.UserPersonalController'
+        'component.personal.UserPersonalController',
+        'component.personal.TaskController',
+        'sitools.user.controller.component.personal.OrderController'
     ],
     isReady: false,
     modules: null,

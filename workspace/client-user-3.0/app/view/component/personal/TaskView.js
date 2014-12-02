@@ -42,6 +42,7 @@ Ext.define('sitools.user.view.component.personal.TaskView', {
 
         this.store = Ext.create('Ext.data.JsonStore', {
             model: 'sitools.user.model.TaskModel',
+            pageSize : this.pageSize,
             proxy: {
                 type: 'ajax',
                 url: this.url,
@@ -91,18 +92,10 @@ Ext.define('sitools.user.view.component.personal.TaskView', {
 
         var bbar = {
             xtype: 'pagingtoolbar',
-            pageSize: this.pageSize,
             store: this.store,
             displayInfo: true,
             displayMsg: i18n.get('paging.display'),
-            emptyMsg: i18n.get('paging.empty'),
-            listeners : {
-                scope : this,
-                change : function (pagingToolbar, pageData) {
-                    this.detailPanel.removeAll();
-                    this.detailPanel.setVisible(false);
-                }
-            }
+            emptyMsg: i18n.get('paging.empty')
         };
 
         var tbar = {
@@ -112,26 +105,22 @@ Ext.define('sitools.user.view.component.personal.TaskView', {
             items: [{
                 text: i18n.get('label.clean'),
                 icon: loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_clean.png',
-                scope: this,
-                handler: this._onClean
+                itemId : 'clean'
             }, {
                 text: i18n.get('label.delete'),
                 icon: loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png',
-                scope: this,
                 disabled: true,
-                handler: this._onDelete
+                itemId : 'delete'
             }, {
                 text: i18n.get('label.viewResult'),
                 icon: loadUrl.get('APP_URL') + '/common/res/images/icons/view_result.png',
-                scope: this,
                 disabled: true,
-                handler: this._onViewResult
+                itemId : 'viewresult'
             }, {
                 text: i18n.get('label.setFinish'),
                 icon: loadUrl.get('APP_URL') + '/common/res/images/icons/set_finish.png',
-                scope: this,
                 disabled: true,
-                handler: this._onFinish
+                itemId : 'finish'
             }]
         };
 
@@ -144,10 +133,7 @@ Ext.define('sitools.user.view.component.personal.TaskView', {
             border : false,
             selModel: selModel,
             columns: columns,
-            listeners : {
-                scope : this,
-                itemclick : this._onViewStatusDetails
-            }
+            itemId : 'taskList'
         });
 
         this.detailPanel = Ext.create('Ext.panel.Panel', {
@@ -160,182 +146,7 @@ Ext.define('sitools.user.view.component.personal.TaskView', {
         this.items = [this.gridPanel, this.detailPanel];
 
         this.callParent(arguments);
-    },
-
-    afterRender: function () {
-        this.callParent(arguments);
-        this.store.load({
-            params: {
-                start: 0,
-                limit: 10
-            }
-        });
-    },
-
-    _onDelete: function () {
-        var rec = this.gridPanel.getSelectionModel().getSelection()[0];
-        if (!rec) {
-            return false;
-        }
-
-        var tot = Ext.Msg.show({
-            title: i18n.get('label.delete'),
-            buttons: Ext.MessageBox.YESNO,
-            msg: i18n.get('tasks.delete'),
-            scope: this,
-            fn: function (btn, text) {
-                if (btn == 'yes') {
-                    this.doDelete(rec);
-                }
-            }
-        });
-    },
-
-    doDelete: function (rec) {
-        Ext.Ajax.request({
-            url: this.url + "/" + rec.data.id,
-            method: 'DELETE',
-            scope: this,
-            success: function (ret) {
-                var Json = Ext.decode(ret.responseText);
-                if (Json.success) {
-                    this.store.reload();
-                }
-                popupMessage(i18n.get('label.information'), Json.message, loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');
-            },
-            failure: alertFailure
-        });
-    },
-
-    _onViewResult: function () {
-        var rec = this.gridPanel.getSelectionModel().getSelection()[0];
-        if (!rec) {
-            return false;
-        }
-
-        var urlResult = rec.get('urlResult');
-
-        if (Ext.isEmpty(urlResult)) {
-            return popupMessage(i18n.get('label.information'), i18n.get('label.urlResultEmpty'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');
-        }
-
-        var orderUrl = loadUrl.get('APP_URL') + loadUrl.get('APP_ORDERS_USER_URL');
-
-        if (urlResult.indexOf(orderUrl) != -1) {
-            this._showOrderDetails(urlResult);
-        } else {
-            var pathUrl = window.location.protocol + "//" + window.location.host;
-            if (urlResult.indexOf("http://") != -1) {
-                window.open(urlResult);
-            } else {
-                window.open(pathUrl + urlResult);
-            }
-        }
-    },
-
-    _onFinish: function () {
-        var rec = this.gridPanel.getSelectionModel().getSelection()[0];
-        if (!rec) {
-            return false;
-        }
-
-        Ext.Ajax.request({
-            url: this.url + "/" + rec.get('id') + "?action=finish",
-            method: 'PUT',
-            scope: this,
-            success: function (ret) {
-                var data = Ext.decode(ret.responseText);
-                if (ret.status == 200) {
-                    this.store.reload();
-                }
-                var msg = Ext.String.format(i18n.get('label.onTaskFinished'), data.TaskModel.status);
-                popupMessage(i18n.get('label.information'), msg, loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');
-            },
-            failure: alertFailure
-        });
-    },
-
-    _onClean: function () {
-        var tot = Ext.Msg.show({
-            title: i18n.get('label.delete'),
-            buttons: Ext.Msg.YESNO,
-            icon: Ext.Msg.QUESTION,
-            msg: i18n.get('tasks.delete.all'),
-            scope: this,
-            fn: function (btn, text) {
-                if (btn == 'yes') {
-                    this._doClean();
-                }
-            }
-        });
-    },
-
-    _doClean: function () {
-        Ext.Ajax.request({
-            url: this.url,
-            method: 'DELETE',
-            scope: this,
-            success: function (ret) {
-                Ext.decode(ret.responseText);
-                if (Json.success) {
-                    this.store.reload();
-                }
-                popupMessage(i18n.get('label.information'), ret.responseText, loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');
-            },
-            failure: alertFailure
-        });
-    },
-
-    _onViewStatusDetails: function () {
-
-        var rec = this.gridPanel.getSelectionModel().getSelection()[0];
-        if (!rec) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');
-        }
-
-        var taskDetailView = Ext.create('sitools.user.view.component.personal.TaskDetailView', {
-            task: rec.data
-        });
-
-        this.detailPanel.removeAll();
-
-        this.detailPanel.add(taskDetailView);
-        this.detailPanel.setVisible(true);
-
-    },
-
-    _showOrderDetails: function (url) {
-        Ext.Ajax.request({
-            url: url,
-            method: 'GET',
-            scope: this,
-            success: function (ret) {
-                var data = Ext.decode(ret.responseText);
-                if (!data.success) {
-                    Ext.Msg.alert(i18n.get('label.warning'), data.message);
-                    return false;
-                }
-                var rec = new Ext.data.Record(data.order);
-                var jsObj = sitools.user.component.entete.userProfile.orderProp;
-                var componentCfg = {
-                    action: 'detail',
-                    orderRec: rec
-                };
-                var title = i18n.get('label.details') + " : ";
-                title += rec.data.userId;
-                title += " " + i18n.get('label.the');
-                title += " " + rec.data.dateOrder;
-
-                var windowConfig = {
-                    id: "showDataDetailId",
-                    title: title,
-                    specificType: "dataDetail",
-                    iconCls: "dataDetail"
-                };
-                SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, jsObj);
-            },
-            failure: alertFailure
-        });
     }
+
 
 });

@@ -38,6 +38,10 @@ Ext.define('sitools.user.view.component.personal.UserPersonalView', {
         pack : 'start',
         align : 'stretch'
     },
+
+    config : {
+        action : null
+    },
     
     initComponent : function () {
         

@@ -36,7 +36,7 @@ Ext.define('sitools.user.view.component.personal.GoToTaskView', {
     initComponent : function () {
     	
         this.mainPanel = this.createNewFormComponent(this.task);
- 
+
         this.bbar = ["->",  {
             text : i18n.get('label.goToTask'),
             scope : this,
@@ -55,7 +55,6 @@ Ext.define('sitools.user.view.component.personal.GoToTaskView', {
     },
     
     refreshTask : function () {
-//        var form = this.mainPanel;
         var url = this.task.statusUrl;
         Ext.Ajax.request({
             url : url,
@@ -128,106 +127,39 @@ Ext.define('sitools.user.view.component.personal.GoToTaskView', {
         this.up().close();
         
         var sitoolsController = Desktop.getApplication().getController('core.SitoolsController');
-        var userPersonalComponent = sitoolsController.openComponent('sitools.user.component.personal.UserPersonalComponent', {}, {});
-        
-//        var userPersonalComponent = Ext.create('sitools.user.component.personal.UserPersonalComponent');
-//    	userPersonalComponent.create(Desktop.getApplication());
-//    	userPersonalComponent.init();
-    	
-    	var personalView = userPersonalComponent.getComponentView();
-    	var orderRecBtn = personalView.storeAction.getById('tasks');
-        
-    	personalView.gridAction.getSelectionModel().select(orderRecBtn);
-    	
+        var userPersonalComponent = sitoolsController.openComponent('sitools.user.component.personal.UserPersonalComponent', {
+            action : 'tasks'
+        }, {});
     },
-    
-    /**
-     * Open a sitools.user.component.entete.userProfile.orderProp window. 
-     * @param {String} url the Url to request the task. 
-     */
-    _showOrderDetails : function (url) {
-        Ext.Ajax.request({
-            url : url,
-            method : 'GET',
-            scope : this,
-            success : function (ret) {
-                var data = Ext.decode(ret.responseText);
-                if (!data.success) {
-                    Ext.Msg.alert(i18n.get('label.warning'), data.message);
-                    return false;
-                }
-                var rec = new Ext.data.Record(data.order);
-                var jsObj = sitools.user.component.entete.userProfile.orderProp;
-                var componentCfg = {
-                    action : 'detail',
-                    orderRec : rec
-                };
-                var title = i18n.get('label.details') + " : ";
-                title += rec.data.userId;
-                title += " " + i18n.get('label.the');
-                title += " " + rec.data.dateOrder;
 
-                var windowConfig = {
-                    id : "showDataDetailId", 
-                    title : title,  
-                    specificType : "dataDetail", 
-                    iconCls : "dataDetail"
-                };
-                SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, jsObj);
-            },
-            failure : alertFailure
-        });
-    },
-    
-    /**
-     * Only in NoSql, open a dataset view 
-     * @param {} url
-     */
-    _showDatasetDetails : function (url) {
-        var urlDataset = url.substring(0, url.indexOf("/records"));
+    _showOrderDetails: function (url, view) {
+
+        if(this.down("orderDetailView")){
+            return;
+        }
+
         Ext.Ajax.request({
-            url : urlDataset,
-            method : 'GET',
-            scope : this,
-            success : function (ret) {
+            url: url,
+            method: 'GET',
+            scope: this,
+            success: function (ret) {
                 var data = Ext.decode(ret.responseText);
                 if (!data.success) {
                     Ext.Msg.alert(i18n.get('label.warning'), data.message);
                     return false;
                 }
-                var dataset = new Ext.data.Record(data.dataset).data;
-                
-                var windowConfig = {
-                        title : i18n.get('label.dataTitle') + " : " + dataset.name,
-                        datasetName : dataset.name, 
-                        datasetDescription : dataset.description,
-                        type : "data", 
-                        saveToolbar : true, 
-                        toolbarItems : [], 
-                        iconCls : "dataDetail"
-                    };
-                
-                //open the dataView according to the dataset Configuration.
-                var javascriptObject = eval(dataset.datasetView.jsObject);
-                //add the toolbarItems configuration
-                Ext.apply(windowConfig, {
-                    id : "data" + dataset.datasetId
+
+                var order = Ext.create("sitools.user.model.OrderModel", data.order);
+
+                var orderDetailView = Ext.create('sitools.user.view.component.personal.OrderDetailView', {
+                    action : 'detail',
+                    orderRec : order
                 });
-                var componentCfg = {
-                    dataUrl : dataset.sitoolsAttachementForUsers,
-                    datasetId : dataset.id,
-                    datasetCm : dataset.columnModel, 
-                    datasetName : dataset.name,
-                    dictionaryMappings : dataset.dictionaryMappings, 
-	                datasetViewConfig : dataset.datasetViewConfig, 
-                    preferencesPath : "/" + dataset.name, 
-                    preferencesFileName : "datasetView"
-                };
-                
-                SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, javascriptObject);
-                
+
+                this.addBottomPanel(orderDetailView);
+
             },
-            failure : alertFailure
+            failure: alertFailure
         });
     },
     
@@ -244,10 +176,30 @@ Ext.define('sitools.user.view.component.personal.GoToTaskView', {
     	var taskDetailView = Ext.create('sitools.user.view.component.personal.TaskDetailView', {
     		task : task
     	});
-    	
-    	this.add(taskDetailView);
+
+        this.addBottomPanel(taskDetailView);
     	
 	},
+
+    addBottomPanel : function (view) {
+        var infoPanel;
+        if (this.down("panel#infoPanel")) {
+            infoPanel = this.down("panel#infoPanel");
+        } else {
+            infoPanel = Ext.create("Ext.panel.Panel", {
+                itemId: 'infoPanel',
+                flex: 1,
+                layout: 'fit',
+                border: false,
+                bodyBorder: false
+            });
+            this.add(infoPanel);
+        }
+
+        infoPanel.removeAll();
+        infoPanel.add(view);
+
+    },
 	
 	/**
 	 * parse the task.urlResult to see if this is an Specialized resource (noSQl or Order). 

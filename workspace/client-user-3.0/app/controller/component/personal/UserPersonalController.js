@@ -34,13 +34,17 @@ Ext.define('sitools.user.controller.component.personal.UserPersonalController', 
     init : function () {
         
     	//TODO pb call two times each event so instanciate two times each component 
-//        this.control({
-//        	
-//            'userPersonalWindow > grid > gridview' : {
-//	            itemclick : this.actionItemClick
-//            }
-//            
-//        });
+        this.control({
+        	'userPersonal' : {
+                afterrender : function (view) {
+                    if (!Ext.isEmpty(view.getAction())) {
+                        var orderRecBtn = view.storeAction.getById(view.getAction());
+                        view.gridAction.getSelectionModel().select(orderRecBtn);
+                    }
+                }
+            }
+
+        });
         this.callParent(arguments);
     },
     

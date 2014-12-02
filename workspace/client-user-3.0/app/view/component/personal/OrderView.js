@@ -22,6 +22,7 @@ Ext.namespace('sitools.user.view.component.personal');
 
 Ext.define('sitools.user.view.component.personal.OrderView', {
 	extend : 'Ext.panel.Panel',
+    alias : 'widget.orderview',
 	
 	requires : ['sitools.user.model.OrderModel'],
 	
@@ -41,6 +42,7 @@ Ext.define('sitools.user.view.component.personal.OrderView', {
         
         this.store = Ext.create('Ext.data.JsonStore', {
         	model : 'sitools.user.model.OrderModel',
+            pageSize : this.pageSize,
         	proxy : {
         		type : 'ajax',
         		url : this.url,
@@ -74,18 +76,10 @@ Ext.define('sitools.user.view.component.personal.OrderView', {
 
         var bbar = {
             xtype : 'pagingtoolbar',
-            pageSize : this.pageSize,
             store : this.store,
             displayInfo : true,
             displayMsg : i18n.get('paging.display'),
-            emptyMsg : i18n.get('paging.empty'),
-            listeners : {
-                scope : this,
-                change : function (pagingToolbar, pageData) {
-                    this.detailPanel.removeAll();
-                    this.detailPanel.setVisible(false);
-                }
-            }
+            emptyMsg : i18n.get('paging.empty')
         };
 
         var tbar = {
@@ -111,10 +105,7 @@ Ext.define('sitools.user.view.component.personal.OrderView', {
             border : false,
             forceFit : true,
             autoScroll : true,
-            listeners : {
-                scope : this,
-                itemclick : this._onDetail
-            },
+            itemId : 'listorder',
             viewConfig : {
                 listeners : {
                     scope : this,
@@ -136,65 +127,9 @@ Ext.define('sitools.user.view.component.personal.OrderView', {
         this.items = [this.gridPanel, this.detailPanel];
 
         this.callParent(arguments);
-    },
-
-    onRender : function () {
-    	this.callParent(arguments);
-        this.store.load({
-            params : {
-                start : 0,
-                limit : this.pageSize
-            }
-        });
-    },
-
-    _onDetail : function () {
-        var rec = this.gridPanel.getSelectionModel().getSelection()[0];
-        if (!rec) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');
-        }
-
-        var orderDetailView = Ext.create('sitools.user.view.component.personal.OrderDetailView', {
-            action : 'detail',
-            orderRec : rec
-        });
-
-        this.detailPanel.removeAll();
-        this.detailPanel.add(orderDetailView);
-        this.detailPanel.setVisible(true);
-    },
-
-    _onDelete : function () {
-        var rec = this.gridPanel.getSelectionModel().getSelection()[0];
-        if (!rec) {
-            return false;
-        }
-        
-        var tot = Ext.Msg.show({
-            title : i18n.get('label.delete'),
-            buttons : Ext.Msg.YESNO,
-            icon : Ext.Msg.QUESTION,
-            msg : Ext.String.format(i18n.get('orderCrud.delete'), rec.get('id')),
-            scope : this,
-            fn : function (btn, text) {
-                if (btn == 'yes') {
-                    this.doDelete(rec);
-                }
-            }
-        });
-
-    },
-    doDelete : function (rec) {
-        Ext.Ajax.request({
-            url : this.url + "/" + rec.id,
-            method : 'DELETE',
-            scope : this,
-            success : function (ret) {
-                if (showResponse(ret)) {
-                    this.store.reload();
-                }
-            },
-            failure : alertFailure
-        });
     }
+
+
+
+
 });

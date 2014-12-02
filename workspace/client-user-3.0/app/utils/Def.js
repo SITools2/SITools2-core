@@ -26,6 +26,9 @@
 /*global Ext, i18n, date, Digest, sql2ext, SitoolsDesk, loadUrl, sitools, showResponse, ColumnRendererEnum, document, localStorage, SITOOLS_DATE_FORMAT, window*/
 
 Ext.define("sitools.user.utils.Def",{
+
+    requires : ['sitools.public.widget.item.TextPanelView'],
+
     singleton : true
 });
 
@@ -678,13 +681,18 @@ function viewFileContent(url, title) {
                                 title : title, 
                                 iconCls : "version"
                             };
-                            var jsObj = sitools.user.component.entete.userProfile.viewTextPanel;
-                            var componentCfg = {
+
+                            var view = Ext.create("sitools.public.widget.item.TextPanelView",{
                                 url : url,
                                 text : ret.responseText,
                                 formatJson : (ret.getResponseHeader("Content-Type").indexOf("application/json") >= 0)
-						    };
-                            SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, jsObj);
+						    });
+
+                            //On récupère le sitoolsController
+                            var sitoolsController = Desktop.getApplication().getController	('core.SitoolsController');
+                            //On ouvre le composant
+                            sitoolsController.openSimpleWindow(view,windowConfig);
+
                         }
                     });
                 }
