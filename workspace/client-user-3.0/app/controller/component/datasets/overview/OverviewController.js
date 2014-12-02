@@ -83,24 +83,26 @@ Ext.define('sitools.user.controller.component.datasets.overview.OverviewControll
 
     displayDatasetWithForm : function (overviewView, forms) {
         this.displayForms(overviewView, forms);
-        this.displayDescription(overviewView);
+        this.displayDescription(overviewView, overviewView.down("container#mainPanel"));
 
-        overviewView.down("container#mainPanel").setVisible(false);
+        overviewView.down("container#eastPanel").setVisible(false);
+        overviewView.down("container#mainPanel").setVisible(true);
         overviewView.down("container#westPanel").setVisible(true);
 
-        overviewView.down("splitter#eastSplitter").setVisible(true);
-        overviewView.down("splitter#westSplitter").setVisible(false);
+        overviewView.down("splitter#eastSplitter").setVisible(false);
+        overviewView.down("splitter#westSplitter").setVisible(true);
     },
 
     displayDatasetWithoutForm: function (overviewView) {
         this.displaySemantic(overviewView);
-        this.displayDescription(overviewView);
+        this.displayDescription(overviewView, overviewView.down("container#eastPanel"));
         this.displayDataset(overviewView);
 
         overviewView.down("container#westPanel").setVisible(false);
 
         overviewView.down("splitter#eastSplitter").setVisible(true);
         overviewView.down("splitter#westSplitter").setVisible(false);
+
     },
 
     displayForms : function (overviewView, forms) {
@@ -153,6 +155,8 @@ Ext.define('sitools.user.controller.component.datasets.overview.OverviewControll
                     msg: i18n.get('label.cannotFindFormIdDisplayFirstOne')
                 });
             }
+        } else {
+
         }
 
         tabPanel.setActiveTab(activeFormIndex);
@@ -160,6 +164,7 @@ Ext.define('sitools.user.controller.component.datasets.overview.OverviewControll
         var westPanel = overviewView.down("container#westPanel");
         westPanel.removeAll();
         westPanel.add(tabPanel);
+
     },
 
 
@@ -186,15 +191,21 @@ Ext.define('sitools.user.controller.component.datasets.overview.OverviewControll
         semanticPanel.setVisible(true);
     },
 
-    displayDescription: function (overviewView) {
+    displayDescription: function (overviewView, parentPanel) {
         var dataset = overviewView.getDataset();
 
-        var descriptionPanel = overviewView.down("container#description");
-
         if (!Ext.isEmpty(dataset.descriptionHTML)) {
-            descriptionPanel.update(dataset.descriptionHTML);
+
+            var descriptionPanel = Ext.create("Ext.panel.Panel", {
+                title: i18n.get('label.description'),
+                autoScroll: true,
+                layout: "fit",
+                itemId : 'description',
+                flex : 1,
+                html : dataset.descriptionHTML
+            });
+            parentPanel.insert(0, descriptionPanel);
         } else {
-            descriptionPanel.setVisible(false);
             overviewView.down("container#semantic").flex = 1;
             overviewView.down("container#semantic").setHeight(null);
         }

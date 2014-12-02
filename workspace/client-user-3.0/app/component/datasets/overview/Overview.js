@@ -51,9 +51,14 @@ Ext.define('sitools.user.component.datasets.overview.Overview', {
 
         var dataset = componentConfig.dataset;
 
-        var formId;
-        if (!Ext.isEmpty(componentConfig.userPreference) && !Ext.isEmpty(componentConfig.userPreference.formId)) {
-            formId = componentConfig.userPreference.formId;
+        var formId, formsPanelWidth;
+        if (!Ext.isEmpty(componentConfig.userPreference)) {
+            if(!Ext.isEmpty(componentConfig.userPreference.formId)) {
+                formId = componentConfig.userPreference.formId;
+            }
+            if(!Ext.isEmpty(componentConfig.userPreference.formWidth)) {
+                formsPanelWidth = componentConfig.userPreference.formsPanelWidth;
+            }
         }
 
         if(!Ext.isEmpty(componentConfig.form)) {
@@ -83,6 +88,7 @@ Ext.define('sitools.user.component.datasets.overview.Overview', {
             //isModifySelection : componentConfig.isModifySelection,
             preferencesPath: componentConfig.preferencesPath,
             preferencesFileName: componentConfig.preferencesFileName,
+            formsPanelWidth : formsPanelWidth,
             //origin : 'sitools.user.view.component.datasets.dataviews.LivegridView',
             //dataviewConfig : dataviewConfig
             // searchAction : this.searchAction,

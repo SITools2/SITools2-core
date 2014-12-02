@@ -47,7 +47,8 @@ Ext.define('sitools.user.view.component.datasets.overview.OverviewView', {
         dataset : null,
         forceShowDataset : false,
         outsideConfig : null,
-        formId : null
+        formId : null,
+        formsPanelWidth : null
     },
 
     /**
@@ -57,15 +58,7 @@ Ext.define('sitools.user.view.component.datasets.overview.OverviewView', {
         this.setDataset(this.dataset);
         this.setForceShowDataset(this.isModifySelection);
 
-        this.descriptionPanel = Ext.create("Ext.panel.Panel", {
-            title: i18n.get('label.description'),
-            autoScroll: true,
-            layout: "fit",
-            itemId : 'description',
-            flex : 1
-        });
-
-        this.semanticPanel = Ext.create("Ext.panel.Panel", {
+        var semanticPanel = Ext.create("Ext.panel.Panel", {
             title: i18n.get('label.semantic'),
             layout: "fit",
             collapsible: true,
@@ -76,7 +69,7 @@ Ext.define('sitools.user.view.component.datasets.overview.OverviewView', {
             itemId : 'semantic'
         });
 
-        this.eastPanel = Ext.create("Ext.panel.Panel", {
+        var eastPanel = Ext.create("Ext.panel.Panel", {
             layout : {
                 type : 'vbox',
                 align : 'stretch'
@@ -84,7 +77,7 @@ Ext.define('sitools.user.view.component.datasets.overview.OverviewView', {
             width: this.DEFAULT_WIDTH_EAST_PANEL,
             collapsible: true,
             collapseDirection : "right",
-            items : [this.descriptionPanel, this.semanticPanel],
+            items : [semanticPanel],
             itemId : 'eastPanel'
         });
 
@@ -99,24 +92,33 @@ Ext.define('sitools.user.view.component.datasets.overview.OverviewView', {
             hidden : true
         });
 
-        this.mainPanel = Ext.create("Ext.panel.Panel", {
+        var mainPanel = Ext.create("Ext.panel.Panel", {
             flex : 1,
             layout: "fit",
             itemId : 'mainPanel',
             border : false
         });
 
-        this.westPanel = Ext.create("Ext.panel.Panel", {
-            flex : 1,
+        var westPanelConf = {
             layout: "fit",
             itemId : 'westPanel',
             border : false,
             hidden : true,
             collapseDirection : "left",
             collapsible : true
-        });
+        };
 
-        this.items = [this.westPanel, westSplitter, this.mainPanel, eastSplitter, this.eastPanel];
+        if(this.getFormsPanelWidth() && !this.getForceShowDataset()){
+            westPanelConf.width = this.getFormsPanelWidth();
+            eastPanel.flex = 1;
+        }
+        else {
+            westPanelConf.flex = 1;
+        }
+
+        var westPanel = Ext.create("Ext.panel.Panel", westPanelConf);
+
+        this.items = [westPanel, westSplitter, mainPanel, eastSplitter, eastPanel];
 
 
         this.callParent(arguments);
