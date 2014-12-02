@@ -21,7 +21,6 @@ Ext.define('Ext.ux.modules.Settings', {
     ],
 
     layout: 'anchor',
-    title: 'Change Settings',
     modal: true,
     width: 640,
     height: 480,
@@ -29,6 +28,7 @@ Ext.define('Ext.ux.modules.Settings', {
 
     initComponent: function () {
         var me = this;
+        me.title = i18n.get('label.changeSettings');
 
         me.selected = me.desktop.getWallpaper();
         me.stretch = me.desktop.wallpaper.stretch;
@@ -38,8 +38,8 @@ Ext.define('Ext.ux.modules.Settings', {
         me.tree = me.createTree();
 
         me.buttons = [
-            { text: 'OK', handler: me.onOK, scope: me },
-            { text: 'Cancel', handler: me.close, scope: me }
+            { text: i18n.get('label.ok'), handler: me.onOK, scope: me },
+            { text: i18n.get('label.cancel'), handler: me.close, scope: me }
         ];
 
         me.items = [
@@ -51,7 +51,7 @@ Ext.define('Ext.ux.modules.Settings', {
                     me.tree,
                     {
                         xtype: 'panel',
-                        title: 'Preview',
+                        title: i18n.get('label.preview'),
                         region: 'center',
                         layout: 'fit',
                         items: [ me.preview ]
@@ -60,7 +60,7 @@ Ext.define('Ext.ux.modules.Settings', {
             },
             {
                 xtype: 'checkbox',
-                boxLabel: 'Stretch to fit',
+                boxLabel: i18n.get('label.stretchToFit'),
                 checked: me.stretch,
                 listeners: {
                     change: function (comp) {
@@ -81,7 +81,7 @@ Ext.define('Ext.ux.modules.Settings', {
         }
 
         var tree = new Ext.tree.Panel({
-            title: 'Desktop Background',
+            title: i18n.get('label.desktopBackground'),
             rootVisible: false,
             lines: false,
             autoScroll: true,
@@ -100,7 +100,7 @@ Ext.define('Ext.ux.modules.Settings', {
                     text:'Wallpaper',
                     expanded: true,
                     children:[
-                        { text: "None", iconCls: '', leaf: true },
+                        { text: i18n.get('label.none'), iconCls: '', leaf: true },
                         child('resources/wallpapers/Blue-Sencha.jpg'),
                         child('resources/wallpapers/Dark-Sencha.jpg'),
                         child('resources/wallpapers/Wood-Sencha.jpg'),

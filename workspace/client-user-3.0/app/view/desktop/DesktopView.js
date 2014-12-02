@@ -125,9 +125,7 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
 
         me.windows = Ext.create("Ext.util.MixedCollection");
 
-        if (Project.getNavigationMode() == 'desktop') {
-        	me.contextMenu = Ext.create("Ext.menu.Menu", me.createDesktopMenu());
-        }
+        me.contextMenu = Ext.create("Ext.menu.Menu", me.createDesktopMenu());
 
         me.items = [
             { xtype: 'wallpaper', id: 'wallpaperId', taskbar : this.taskbar }
@@ -146,13 +144,7 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
         var me = this;
         me.callParent();
         
-        if (Project.getNavigationMode() == 'desktop') {
-        	me.el.on('contextmenu', me.onDesktopMenu, me);
-        } else {
-            me.el.on('contextmenu', function (e) {
-                e.stopEvent();
-            }, me);
-        }
+        me.el.on('contextmenu', me.onDesktopMenu, me);
         this.fitDesktop();
     },
     
@@ -187,13 +179,15 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
             items: me.contextMenuItems || []
         };
 
-        if (ret.items.length) {
-            ret.items.push('-');
-        }
+        if (Project.getNavigationMode() == 'desktop') {
+            if (ret.items.length) {
+                ret.items.push('-');
+            }
 
-        ret.items.push(
+            ret.items.push(
                 { text: i18n.get('label.tile'), handler: me.tileWindows, scope: me, minWindows: 1 },
                 { text: i18n.get('label.cascade'), handler: me.cascadeWindows, scope: me, minWindows: 1 })
+        }
 
         return ret;
     },
