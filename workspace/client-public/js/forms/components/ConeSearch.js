@@ -51,9 +51,10 @@ Ext.define('sitools.common.forms.components.AbstractConeSearch', {
                 scope : this, 
                 text : i18n.get('label.degree'), 
                 width : 100,
+                sitoolsType : 'unitbutton',
                 handler : function (b, e) {
                     //inherited method 
-                    this.loadUnits(e);
+                    this.loadUnits(b, e);
                 }
             });
         }
@@ -121,13 +122,18 @@ Ext.define('sitools.common.forms.components.AbstractConeSearch', {
 		this.targetName = Ext.create("Ext.form.TextField", {
 			flex : 1, 
 			fieldLabel : i18n.get("label.targetName"),
+			enableKeyEvents : true,
 			listeners : {
 			    scope : this,
 			    change : function (field, newValue, oldValue) {
 			        this.nameResolverButton.setDisabled(Ext.isEmpty(newValue));
 			    }
-			}
+			},
+			keyup : function () {
+            	this.nameResolverButton.setDisabled(Ext.isEmpty(this.targetName.getValue()));
+            }
 		});
+
 		
 		this.nameResolverButton = Ext.create("Ext.Button", {
             scope : this,

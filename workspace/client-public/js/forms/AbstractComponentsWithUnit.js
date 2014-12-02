@@ -54,7 +54,7 @@ Ext.define('sitools.common.forms.AbstractWithUnit', {
     * On Callback : show a {Ext.Window} with the result in a gridPanel
     * @param {} event The click event (to get coordinates) 
     */
-   loadUnits : function (event) {
+   loadUnits : function (button, event) {
         if (!this.unitsLoaded) {
             this.storeUnits.removeAll();
             Ext.Ajax.request({
@@ -76,12 +76,12 @@ Ext.define('sitools.common.forms.AbstractWithUnit', {
                 failure : alertFailure,
                 callback : function () {
                     this.unitsLoaded = true;
-                    this.showWinUnits(event);
+                    this.showWinUnits(button, event);
                 }
             });
         }
         else {
-            this.showWinUnits(event);
+            this.showWinUnits(button, event);
         }
     }, 
     
@@ -90,7 +90,7 @@ Ext.define('sitools.common.forms.AbstractWithUnit', {
      * build the gridUnits. 
      * @param {} event The click event to get coordinates for the window
      */
-    showWinUnits : function (event) {
+    showWinUnits : function (button, event) {
 
         var cmUnits = new Ext.grid.ColumnModel({
             columns : [ {
@@ -117,7 +117,7 @@ Ext.define('sitools.common.forms.AbstractWithUnit', {
             listeners : {
                 scope : this, 
                 rowClick : function (grid, rowIndex) {
-                    this.onValidateUnits();
+                    this.onValidateUnits(button);
                 }
             }
         });
@@ -130,7 +130,9 @@ Ext.define('sitools.common.forms.AbstractWithUnit', {
             items : [this.gridUnits], 
             buttons : [{
                 text : i18n.get('label.ok'), 
-                handler : this.onValidateUnits, 
+                handler : function () {
+                    this.onValidateUnits(button) 
+                },
                 scope : this
             }, {
                 text : i18n.get('label.cancel'), 
@@ -148,7 +150,7 @@ Ext.define('sitools.common.forms.AbstractWithUnit', {
      * update property this.userDimension and this.userUnit, depending on the selected record in this.gridUnits
      * update the label of the button withe the new unit
      */
-    onValidateUnits : function () {
+    onValidateUnits : function (btn) {
         var rec = this.gridUnits.getSelectionModel().getSelected();
         if (Ext.isEmpty(rec)) {
             Ext.Msg.alert(i18n.get('label.error'), i18n.get('label.noSelection'));
@@ -156,9 +158,8 @@ Ext.define('sitools.common.forms.AbstractWithUnit', {
         }
         this.userUnit = rec.data;
         this.userDimension = this.dimensionName;
-        var btn = this.getEl().query("button")[0];
         if (! Ext.isEmpty(btn)) {
-        	this.getEl().query("button")[0].update(rec.get('label'));
+            btn.setText(rec.get('label'));
         }
         this.gridUnits.ownerCt.close();
     }, 
@@ -195,8 +196,9 @@ Ext.define('sitools.common.forms.AbstractWithUnit', {
                 scope : this, 
                 text : Ext.isEmpty(columnUnit) ? "    " : columnUnit.label, 
                 width : 90,
+                sitoolsType : 'unitbutton',
                 handler : function (b, e) {
-                    this.loadUnits(e);
+                    this.loadUnits(b, e);
                     //this.userDimension = this.dimensionId;
                 }
             });
