@@ -135,8 +135,14 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
 
         var wallpaper = me.wallpaper;
         me.wallpaper = me.items.getAt(0);
+
         if (wallpaper) {
-            me.setWallpaper(wallpaper, me.wallpaperStretch);
+            if (!Ext.isEmpty(Project.preferences) && !Ext.isEmpty(Project.preferences.projectSettings.wallpaper)) {
+                var wallpaper = Project.preferences.projectSettings.wallpaper;
+                me.setWallpaper(wallpaper.src, wallpaper.stretch);
+            } else {
+                me.setWallpaper(wallpaper, me.wallpaperStretch);
+            }
         }
     },
 

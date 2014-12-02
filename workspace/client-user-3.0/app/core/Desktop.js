@@ -249,6 +249,12 @@ Ext.define('sitools.user.core.Desktop', {
 		projectSettings.desktopMaximizedMode = this.getDesktopMaximized();
 		projectSettings.navigationMode = Project.getNavigationMode();
 
+		var wallpaper = this.getApplication().getController('DesktopController').desktopView.wallpaper;
+		projectSettings.wallpaper = {
+			src : wallpaper.wallpaper,
+			stretch : wallpaper.stretch
+		}
+
 		userPreferences.projectSettings = projectSettings;
 		
 		if (forPublicUser) {

@@ -273,5 +273,13 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsViewerMainView', {
         } else {
             this.pbar.updateProgress(prog.loaded / prog.totalSize, current + "/" + total);
         }
+    },
+
+    _getSettings : function () {
+        return {
+            preferencesPath : "/modules",
+            preferencesFileName : this.id
+        };
+
     }
 });
