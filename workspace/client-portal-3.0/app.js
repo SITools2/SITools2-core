@@ -13,7 +13,8 @@ Ext.application({
     extend: 'sitools.clientportal.Application',
     
     paths : {
-        "sitools.public" : "../client-public/js"
+        "sitools.public" : "../client-public/js",
+        "sitools.user" : "../client-user/app"
     }
     
 });
