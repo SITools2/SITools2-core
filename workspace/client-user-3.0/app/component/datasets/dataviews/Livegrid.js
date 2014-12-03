@@ -37,7 +37,7 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
                    'sitools.user.controller.component.datasets.services.ServicesController'],
     
     requires : ['sitools.user.view.component.datasets.dataviews.LivegridView',
-                'sitools.user.store.DataviewsStore'],
+                'sitools.user.store.dataviews.LivegridStore'],
     
 	config : {
 	    primaryKey : null,
@@ -91,7 +91,7 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
         var columns = this.getColumns(colModel, dataset.dictionaryMappings, dataviewConfig);
         this.primaryKey = this.calcPrimaryKey(dataset);
         
-        var datasetStore = Ext.create("sitools.user.store.DataviewsStore", {
+        var datasetStore = Ext.create("sitools.user.store.dataviews.LivegridStore", {
             fields : fields,
             urlAttach : dataset.sitoolsAttachementForUsers,
             primaryKey : this.primaryKey,

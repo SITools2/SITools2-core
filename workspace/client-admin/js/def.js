@@ -104,16 +104,19 @@ var onBeforeRequest = function (conn, options) {
 		        Ext.apply(Ext.Ajax.defaultHeaders, {
 					Authorization : Ext.util.Cookies.get('hashCode')
 		        });
+                var expireDate = Ext.Date.add(date, Ext.Date.MINUTE, COOKIE_DURATION);
+                Ext.util.Cookies.set('scheme', Ext.util.Cookies.get('scheme'), expireDate);
 		    } else {
                 Ext.destroyMembers(Ext.Ajax.defaultHeaders, "Authorization");
             }
 		}
+
     }
     
     if (!Ext.isEmpty(Ext.util.Cookies.get('userLogin'))) {
         var expireDate = Ext.Date.add(date, Ext.Date.MINUTE, COOKIE_DURATION);
         Ext.util.Cookies.set('userLogin', Ext.util.Cookies.get('userLogin'), expireDate);
-        
+
         taskCheckSessionExpired.cancel();
         taskCheckSessionExpired.delay(COOKIE_DURATION * 1000 * 60);
         

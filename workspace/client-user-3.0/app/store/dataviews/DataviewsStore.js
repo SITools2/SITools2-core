@@ -45,17 +45,15 @@ Ext.define('sitools.user.store.DataviewsJsonReader', {
 });
 
 /**
- * @class sitools.user.store.DataviewsStore
+ * @class sitools.user.store.dataviews.DataviewsStore
  * @config fields the list of fields for the store
  * @config urlAttach the url attachment
  * @config primaryKey the primaryKey
  */
-Ext.define('sitools.user.store.DataviewsStore', {
+Ext.define('sitools.user.store.dataviews.DataviewsStore', {
     extend : 'Ext.data.Store',
     autoLoad : true,
     pageSize : 300,
-    buffered : true,
-    
 
     config : {
         // Object definition of the filters
@@ -69,18 +67,17 @@ Ext.define('sitools.user.store.DataviewsStore', {
         // Object definition of the concept filters (used by formProject (multidataset forms))
         formConceptFilters : null,
         // Object of string parameters corresponding to the concept filters definition
-        formConceptParams : null
+        formConceptParams : null,
+        // Object definition of the ranges to query (prior to a selection, used for plot for instance)
+        ranges : null
     },
     
     paramPrefix : "filter",
 
     constructor : function (config) {
         config = Ext.apply({}, config);
-        
-        this.setFormFilters(config.formFilters);
-        this.setGridFilters(config.gridFilters);
-        this.setGridFiltersCfg(config.gridFiltersCfg);
-        this.setFormConceptFilters(config.formConceptFilters);
+        Ext.apply(this, config);
+        var me = this;
 
         if (!Ext.isEmpty(this.getFormFilters())) {
             this.setFormParams(this.buildFormParamsUrl(this.getFormFilters()));
@@ -113,43 +110,57 @@ Ext.define('sitools.user.store.DataviewsStore', {
                     }
                     return this.applyEncoding(min);
                 }
-            },
-            listeners : {
-                beforeprefetch : function (store, operation) {
-                    // set the nocount param to false.
-                    // before load is called only when a new action (sort,
-                    // filter) is
-                    // applied
-                    var params = operation.params || {};
-                    if (!store.isInSort || store.isNewFilter) {
-                        params.nocount = false;
-                    } else {
-                        params.nocount = true;
-                    }
-
-                    operation.params = params;
-                    store.isInSort = true;
-                    store.isNewFilter = false;
-
-                    // adding optional form parameters 
-                    if (!Ext.isEmpty(store.getFormParams())) {
-                    	Ext.apply(operation.params, store.getFormParams());
-                    }
-
-                    // adding optional form parameters
-                    if (!Ext.isEmpty(store.getFormConceptParams())) {
-                    	Ext.apply(operation.params, store.getFormConceptParams());
-                    }
-
-                    if (!Ext.isEmpty(store.gridFilters)) {
-                        var params = this.buildQuery(store.gridFilters);
-                        Ext.apply(operation.params, params);
-                    }
-                }
             }
         });
+
         this.callParent([ config ]);
+
+        me.on("beforeload", this.onBeforeLoad, this);
     },
+
+    onBeforeLoad : function (store, operation) {
+        // set the nocount param to false.
+        // before load is called only when a new action (sort,
+        // filter) is
+        // applied
+        var params = operation.params || {};
+        if (!store.isInSort || store.isNewFilter) {
+            params.nocount = false;
+        } else {
+            params.nocount = true;
+        }
+
+        operation.params = params;
+        store.isInSort = true;
+        store.isNewFilter = false;
+
+        this.appendOperationParam(operation,store);
+    },
+
+    appendOperationParam : function (operation, store) {
+        // adding optional form parameters
+        if (!Ext.isEmpty(store.getFormParams())) {
+            Ext.apply(operation.params, store.getFormParams());
+        }
+
+        // adding optional form parameters
+        if (!Ext.isEmpty(store.getFormConceptParams())) {
+            Ext.apply(operation.params, store.getFormConceptParams());
+        }
+
+        if (!Ext.isEmpty(store.gridFilters)) {
+            var params = this.buildQuery(store.gridFilters);
+            Ext.apply(operation.params, params);
+        }
+
+        if (!Ext.isEmpty(store.getRanges())) {
+            var ranges = Ext.JSON.encode(this.getRanges());
+            Ext.apply(operation.params, {
+                ranges : ranges
+            });
+        }
+    },
+
     
     setCustomUrl : function (url) {
         this.getProxy().url = url;

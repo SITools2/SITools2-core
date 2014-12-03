@@ -66,7 +66,7 @@
 
 	
 	<script src="${appUrl}/client-public/cots/extjs4/ext-4.2.1.883/ext-all-debug.js"></script>
-	<script src="${appUrl}/client-public/js/utils/prototyp.js"></script>
+	
 
 	<!-- Need in debug mode, to remove in production version. -->
 

@@ -5,33 +5,14 @@
   <label>label.plot</label>
   <author>AKKA Technologies</author>
   <version>1.0</version>
-  <icon>/sitools/common/res/images/icons/plot.png</icon>
-  <xtype>sitools.user.component.dataviews.services.plotService</xtype>
+  <icon>/sitools/client-public/res/images/icons/plot.png</icon>
+  <xtype>sitools.user.component.datasets.services.PlotService</xtype>
   <dependencies>
-    <js>
-      <url>
-        <url>/sitools/common/js/plot/flotr2/lib/base64.js</url>
-      </url>
-      <url>
-        <url>/sitools/common/js/plot/flotr2/lib/canvas2image.js</url>
-      </url>
-      <url>
-        <url>/sitools/common/js/plot/flotr2/lib/canvastext.js</url>
-      </url>
-      <url>
-        <url>/sitools/common/js/plot/flotr2/flotr2.min.js</url>
-      </url>
-      <url>
-        <url>/sitools/client-user/js/components/plot/dataPlotter.js</url>
-      </url>
-      <url>
-        <url>/sitools/client-user/js/components/datasetServices/plotService.js</url>
-      </url>
-    </js>
+    <js/>
     <css/>
   </dependencies>
   <priority>1</priority>
-  <dataSetSelection>MULTIPLE</dataSetSelection>
+  <dataSetSelection>NONE</dataSetSelection>
   <defaultGuiService>true</defaultGuiService>
   <defaultVisibility>true</defaultVisibility>
 </guiService>

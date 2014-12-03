@@ -74,13 +74,13 @@ Ext.define('sitools.user.controller.DesktopController', {
                             text: i18n.get("label.myself"),
                             cls : 'menuItemCls',
                             iconCls : 'saveUserIcon',
-                            itemId : 'saveUser',
+                            itemId : 'saveUser'
                         },
                         {
                             text: i18n.get("label.publicUser"),
                             cls : 'menuItemCls',
                             iconCls : 'savePublicIcon',
-                            itemId : 'savePublic',
+                            itemId : 'savePublic'
                         }]
                     });
                     

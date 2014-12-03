@@ -116,6 +116,10 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
     
     //generic method
     isAllSelected : function () {
+        //if the store is loading we cannot know how much records are selected
+        if (this.getStore().isLoading()) {
+            return false;
+        }
         var nbRowsSelected = this.getNbRowsSelected();
         return nbRowsSelected === this.getStore().getTotalCount() || this.getSelectionModel().markAll;
     },
@@ -224,7 +228,7 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
     },
 
     /**
-     * Return all request parameters without the column model and selection
+     * Return all grid filter
      * @return {String} 
      */
     getRequestGridFilterParams : function () {

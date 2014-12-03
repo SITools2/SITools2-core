@@ -24,16 +24,19 @@
  * @class sitools.widget.colorField
  * @extends Ext.form.TriggerField
  */
-Ext.define('sitools.public.widget.item.colorField', {
-    alterclassNames : ['sitools.widget.colorField'],
+Ext.define('sitools.public.widget.item.ColorField', {
+    alterclassNames : ['sitools.widget.ColorField'],
     extend : 'Ext.form.TriggerField',
+    alias : 'widget.colorfield',
     onTriggerClick : function (e) {
-        var cp = new Ext.menu.ColorMenu({
-            scope : this, 
+        var cp = Ext.create("Ext.picker.Color", {
+            scope : this,
+            floating : true,
             handler: function (cm, color) {
                 this.setValue("#" + color);
                 this.setFontColor("#" + color);
                 this.fireEvent("select", this, color);
+                cm.destroy();
             }
         });
         cp.showAt(e.getXY());
@@ -49,7 +52,7 @@ Ext.define('sitools.public.widget.item.colorField', {
             h2d(color.slice(5))
         ];
         var avg = (value[0] + value[1] + value[2]) / 3;
-        this.el.setStyle({
+        this.inputEl.setStyle({
             'color' : (avg > 128) ? '#000' : '#FFF', 
             'background-color' : color, 
             'background-image' : "none"
@@ -58,6 +61,9 @@ Ext.define('sitools.public.widget.item.colorField', {
     }, 
     listeners : {
         afterrender : function (tf) {
+            tf.setFontColor(tf.getValue());
+        },
+        change : function (tf) {
             tf.setFontColor(tf.getValue());
         }
     }

@@ -135,19 +135,8 @@ Ext.define('sitools.admin.datasets.services.DatasetServicesProp', {
                 }, {
                     name : 'dataSetSelection'
                 }, {
-                    name : 'dependencies'
-                }, {
                     name : 'defaultVisibility'
-                } ],
-                listeners :  {
-                    load : function (store, records) {
-                        this.gridDatasetServices.getSelectionModel().setLocked(true);
-                        this.loadDependencies(records, function () {
-                            this.gridDatasetServices.getSelectionModel().setLocked(false);
-                        }, this);
-                    },
-                    scope : this
-                }
+                } ]
             }),
             columns : {
                 defaults : {
