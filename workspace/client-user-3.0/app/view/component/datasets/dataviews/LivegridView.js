@@ -90,17 +90,8 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
             displayInfo : true,
             displayMsg : i18n.get('paging.display'),
             emptyMsg : i18n.get('paging.empty'),
-            getPagingItems : function () {
-                var me = this;
-                return [{
-                    itemId: 'refresh',
-                    tooltip: me.refreshText,
-                    overflowText: me.refreshText,
-                    iconCls: Ext.baseCSSPrefix + 'tbar-loading',
-                    handler: me.doRefresh,
-                    scope: me
-                }];
-            }
+            selectedMessage : i18n.get("paging.selectedMsg"),
+            grid : this
         });
         
         this.tbar = Ext.create("sitools.user.view.component.datasets.services.ServiceToolbarView", {
