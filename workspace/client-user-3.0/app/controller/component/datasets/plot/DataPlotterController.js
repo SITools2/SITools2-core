@@ -30,7 +30,14 @@ Ext.define('sitools.user.controller.component.datasets.plot.DataPlotterControlle
 
     requires: [],
 
+    listeners : {
+        drawplot : function (controller, view) {
+            view.down("button#savePlot").setDisabled(false);
+        }
+    },
+
     init: function () {
+
         this.control({
             'dataPlotterView textfield#titleX, dataPlotterView textfield#titleY, dataPlotterView textfield#titlePlot, dataPlotterView textfield#xFormat, dataPlotterView textfield#yFormat': {
                 keyup: this.handlePlotLayout
@@ -191,6 +198,12 @@ Ext.define('sitools.user.controller.component.datasets.plot.DataPlotterControlle
                         preferences = view.userPreference.leftPanelValues;
                     view.leftPanel.getForm().setValues(preferences);
                 }
+            },
+            'dataPlotterView button#savePlot': {
+                click : function (btn) {
+                    var view = btn.up("dataPlotterView");
+                    view.plot.download.saveImage("png");
+                }
             }
         });
     },
@@ -255,7 +268,7 @@ Ext.define('sitools.user.controller.component.datasets.plot.DataPlotterControlle
             view.plot = Flotr.draw($(this.id), [plotConfig.data], options);
         });
         view.hasPlotted = true;
-
+        this.fireEvent("drawplot", this, view);
 
     },
 

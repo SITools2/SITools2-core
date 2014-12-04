@@ -216,6 +216,13 @@ Ext.define('sitools.user.view.component.datasets.plot.DataPlotterView', {
             itemId : 'drawplot'
         });
 
+        /** button to draw the plot */
+        this.savePlotButton = Ext.create("Ext.button.Button", {
+            text: i18n.get('label.plot.savePng'),
+            disabled: true,
+            itemId : 'savePlot'
+        });
+
         var bbar;
         if (this.isSelection) {
             bbar = Ext.create("Ext.toolbar.Toolbar", {
@@ -257,7 +264,7 @@ Ext.define('sitools.user.view.component.datasets.plot.DataPlotterView', {
             collapsible: true,
             collapseDirection: "left",
             items: [this.titlePlot, numberRecords, this.checkLine, this.comboTag, this.fieldSetX, this.fieldSetY],
-            buttons: [this.drawPlotButton],
+            buttons: [this.savePlotButton, this.drawPlotButton],
             itemId : 'leftPanel'
         });
 
