@@ -56,17 +56,6 @@ Ext.define('sitools.user.controller.core.FixedMode', {
 
         var activePanel = Ext.WindowManager.getActive();
 
-        Ext.WindowManager.each(function (window) {
-            var componentSettings;
-            if (!Ext.isEmpty(window.specificType) && (window.specificType === 'componentWindow' || window.specificType === 'moduleWindow')) {
-                if (Ext.isFunction(window.saveSettings) && window != Ext.WindowManager.getActive()) {
-                    var component = window.items.items[0];
-                    componentSettings = component._getSettings();
-                    desktopSettings.push(window.saveSettings(componentSettings, forPublicUser));
-                }
-            }
-        });
-
         if (!Ext.isEmpty(activePanel) && !Ext.isEmpty(activePanel.specificType) && (activePanel.specificType === 'componentWindow' || activePanel.specificType === 'moduleWindow')) {
             if (Ext.isFunction(activePanel.saveSettings)) {
                 var component = activePanel.items.items[0];

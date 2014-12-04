@@ -111,12 +111,12 @@ Ext.define('sitools.user.core.Desktop', {
             		
             		Desktop.getApplication().getController('core.SitoolsController').openModule(module);
             	}
-            	else if (!Ext.isEmpty(pref.windowSettings.componentId)) {
-            		
-            		var cmpSettings = pref.componentSettings;
-            		Desktop.getApplication().getController('core.SitoolsController').openComponent(cmpSettings.componentClazz, cmpSettings, pref.windowSettings);
-
-            	}
+            	//else if (!Ext.isEmpty(pref.windowSettings.componentId)) {
+            	//
+            	//	var cmpSettings = pref.componentSettings;
+            	//	Desktop.getApplication().getController('core.SitoolsController').openComponent(cmpSettings.componentClazz, cmpSettings, pref.windowSettings);
+                //
+            	//}
 //                var moduleId = pref.windowSettings.moduleId;
 
 //                var module = SitoolsDesk.app.getModule(moduleId);
