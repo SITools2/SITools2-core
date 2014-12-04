@@ -35,7 +35,6 @@ var DEFAULT_HELP_HEIGHT = 400;
 var ADMIN_PANEL_HEIGHT = 300;
 var ADMIN_PANEL_NB_ELEMENTS = 10;
 var SHOW_HELP = true;
-var COOKIE_DURATION = 20;
 var SITOOLS_DATE_FORMAT = 'Y-m-d\\TH:i:s.u';
 var SITOOLS_DEFAULT_IHM_DATE_FORMAT = 'Y-m-d H:i:s.u';
 var EXT_JS_VERSION=Ext.versions.extjs.version;
@@ -62,130 +61,6 @@ Ext.Ajax.defaultHeaders = {
     "Accept" : "application/json",
     "X-User-Agent" : "Sitools"
 };
-
-
-var onBeforeRequest = function (conn, options) {
-    var date = new Date();
-    if (!Ext.isEmpty(Ext.util.Cookies.get('scheme'))) {
-		if (Ext.util.Cookies.get('scheme') == "HTTP_Digest") {
-			var tmp = null;
-			var method = "GET";
-			if (!Ext.isEmpty(options.method)) {
-                method = options.method;
-            }
-			var url = options.url;
-			if (Ext.isEmpty(options.url) && !Ext.isEmpty(options.scope)) {
-                if (!Ext.isEmpty(options.scope.url)) {
-                    url = options.scope.url;
-                }
-            }
-		
-			
-			var A1 = Ext.util.Cookies.get("A1");
-			var auth = new Digest({
-				usr : Ext.util.Cookies.get("userLogin"),
-				algorithm : Ext.util.Cookies.get("algorithm"),
-				realm : Ext.util.Cookies.get("realm"),
-				url : url,
-				nonce : Ext.util.Cookies.get('nonce'), 
-				method : method, 
-				mode : "digest", 
-				A1 : A1
-			});
-			Ext.apply(Ext.Ajax.defaultHeaders, {
-				Authorization : auth.getDigestAuth()
-		    });
-
-		}
-		else {
-		    if (!Ext.isEmpty(Ext.util.Cookies.get('hashCode'))) {
-		        var expireDate = Ext.Date.add(date, Ext.Date.MINUTE, COOKIE_DURATION);
-		        Ext.util.Cookies.set('hashCode', Ext.util.Cookies.get('hashCode'), expireDate);
-		        Ext.apply(Ext.Ajax.defaultHeaders, {
-					Authorization : Ext.util.Cookies.get('hashCode')
-		        });
-                var expireDate = Ext.Date.add(date, Ext.Date.MINUTE, COOKIE_DURATION);
-                Ext.util.Cookies.set('scheme', Ext.util.Cookies.get('scheme'), expireDate);
-		    } else {
-                Ext.destroyMembers(Ext.Ajax.defaultHeaders, "Authorization");
-            }
-		}
-
-    }
-    
-    if (!Ext.isEmpty(Ext.util.Cookies.get('userLogin'))) {
-        var expireDate = Ext.Date.add(date, Ext.Date.MINUTE, COOKIE_DURATION);
-        Ext.util.Cookies.set('userLogin', Ext.util.Cookies.get('userLogin'), expireDate);
-
-        taskCheckSessionExpired.cancel();
-        taskCheckSessionExpired.delay(COOKIE_DURATION * 1000 * 60);
-        
-        //use localstorage to store sessionsTime out
-        localStorage.setItem("userSessionTimeOut", Ext.util.Format.date(expireDate, SITOOLS_DATE_FORMAT));
-        Ext.EventManager.un(window, "storage");
-        Ext.EventManager.on(window, "storage", function() {
-            if (Ext.isEmpty(localStorage.getItem("userSessionTimeOut"))) {
-                checkSessionExpired();                
-            }
-        });
-    }
-};
-
-Ext.Ajax.on('beforerequest', onBeforeRequest, this);
-
-/**
- * HANDLE SESSION TIMEOUT
- */
-
-var checkSessionExpired = function () {
-    
-    taskCheckSessionExpired.cancel();
-    
-    if (Ext.isEmpty(Ext.util.Cookies.get('userLogin'))) {
-     // Notify user its session timed out.
-        Ext.Msg.alert(
-                i18n.get('title.session.expired'),
-                i18n.get("label.session.expired"),
-                function (btn, text) {
-                    window.location.reload();
-                }
-        );
-    } else {
-        //extend the timer for the remaining session time
-        var expire = localStorage.getItem("userSessionTimeOut");
-        var date = new Date();
-        var expireDate = Ext.Date.parse(expire, SITOOLS_DATE_FORMAT);
-        
-        var sessionTimeLeftMs = (expireDate.getTime() - date.getTime()) + 1000;
-        taskCheckSessionExpired.delay(sessionTimeLeftMs);
-    }
-};
-
-var taskCheckSessionExpired = new Ext.util.DelayedTask(checkSessionExpired);
-
-/**
- * Method called if any Ajax Request has an error status.
- * The attribute doNotHandleRequestexception of the options parameter can be used to true in order to do nothing in this method
- * @param {Connection} conn the connection object
- * @param {Object] response The XHR object containing the response data. See The XMLHttpRequest Object for details.
- * @param {Object} options The options config object passed to the request method.
- */
-var onRequestException = function (conn, response, options) {
-    // if the parameter doNotHandleRequestexception was set in the options, do nothing
-    if (!options.doNotHandleRequestexception) {	    
-	    // si on a un cookie de session et une erreur 403
-		if ((response.status == 403) && !Ext.isEmpty(Ext.util.Cookies.get('hashCode'))) {
-			Ext.MessageBox.minWidth = 360;
-			Ext.MessageBox.alert(i18n.get('label.session.expired'), response.responseText);
-		} else {
-			Ext.MessageBox.minWidth = 360;
-			Ext.MessageBox.alert(i18n.get('label.error'), response.responseText);
-		}
-    }
-
-};
-
-Ext.Ajax.on('requestexception', onRequestException, this);
 
 var helpUrl;
 Ext.BLANK_IMAGE_URL = '/sitools/client-public/cots/'+EXT_JS_FOLDER+'/resources/themes/images/default/tree/s.gif';

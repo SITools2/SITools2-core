@@ -33,7 +33,8 @@ Ext.define('sitools.admin.Application', {
         'sitools.public.utils.Logout',
         'sitools.public.crypto.Base64',
         'sitools.public.utils.PopupMessage',
-        
+
+        'sitools.public.utils.LoginDef',
         'sitools.admin.def',
         'sitools.admin.id',
         'sitools.admin.gui',
@@ -137,6 +138,13 @@ Ext.define('sitools.admin.Application', {
                 Ext.MessageBox.buttonText.yes = i18n.get('label.yes');
                 Ext.MessageBox.buttonText.no = i18n.get('label.no');
                 Ext.QuickTips.init();
+                if(!checkCookieDuration()){
+                    Ext.Msg.show({
+                        title: i18n.get('label.warning'),
+                        msg : i18n.get("label.wrongcookieduration.configuration")
+                    });
+                    return;
+                }
                 if (Ext.isEmpty(Ext.util.Cookies.get('scheme')) || Ext.isEmpty(Ext.util.Cookies.get('userLogin'))) {
                     sitools.public.utils.LoginUtils.connect({
                         url : loadUrl.get('APP_URL') + '/authentication/login',

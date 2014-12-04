@@ -10,6 +10,7 @@ Ext.define('sitools.clientportal.Application', {
     requires: [
 
         /* UTILS */
+        'sitools.public.utils.LoginDef',
         'sitools.public.utils.def',
         'sitools.public.widget.vtype',
         'sitools.public.utils.loadUrl',

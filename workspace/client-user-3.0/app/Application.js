@@ -22,6 +22,7 @@ Ext.define('sitools.user.Application', {
     requires: ['Ext.container.Viewport',
 
         /* CORE */
+        'sitools.public.utils.LoginDef',
         'sitools.user.utils.Def',
         'sitools.user.core.Project',
         'sitools.user.core.Desktop',
@@ -120,6 +121,14 @@ Ext.define('sitools.user.Application', {
         i18n.load(
             loadUrl.get("APP_URL") + loadUrl.get("APP_CLIENT_PUBLIC_URL") + '/res/i18n/' + locale.getLocale() + '/gui.properties',
             function () {
+                if(!checkCookieDuration()){
+                    Ext.Msg.show({
+                        title: i18n.get('label.warning'),
+                        msg : i18n.get("label.wrongcookieduration.configuration")
+                    });
+                    this.removeMask();
+                    return;
+                }
                 //def.js
                 initLocalisedVariables();
                 this.initSql2ext();

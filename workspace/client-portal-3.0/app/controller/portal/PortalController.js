@@ -114,6 +114,13 @@ Ext.define('sitools.clientportal.controller.portal.PortalController', {
             var callback;
             if (this.autoChainAjaxRequest) {
                 callback = function () {
+                    if(!checkCookieDuration()){
+                        Ext.Msg.show({
+                            title: i18n.get('label.warning'),
+                            msg : i18n.get("label.wrongcookieduration.configuration")
+                        });
+                        return;
+                    }
                     // loadUrl.load('/sitools/client-user/siteMap', function (){
 //                    portal = new sitools.Portal(projects, languages, preferences);
                     portal = Ext.create('sitools.clientportal.view.portal.PortalView', {
@@ -148,6 +155,14 @@ Ext.define('sitools.clientportal.controller.portal.PortalController', {
             var languages = this.languages;
             var preferences = this.preferences;
             i18n.load(loadUrl.get('APP_URL') + '/client-public/res/i18n/' + locale.getLocale() + '/gui.properties', function () {
+                if(!checkCookieDuration()){
+                    Ext.Msg.show({
+                        title: i18n.get('label.warning'),
+                        msg : i18n.get("label.wrongcookieduration.configuration")
+                    });
+                    return;
+                }
+
                 // loadUrl.load('/sitools/client-user/siteMap', function (){
 //                portal = new sitools.Portal(projects, languages, preferences);
                 portal = Ext.create('sitools.clientportal.view.portal.PortalView', {

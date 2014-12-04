@@ -202,7 +202,7 @@ var clientAdmin = {
 	        icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/logout.png',
 	        cls : 'x-custom-button-color',
 	        handler : function () {
-	            sitools.userProfile.LoginUtils.logout();
+				sitools.public.utils.LoginUtils.logout();
 	        }
 	    };
 	    // var menuList = { xtype: 'tbbutton', text: 'Menu 2', itemId:'menu_list',
