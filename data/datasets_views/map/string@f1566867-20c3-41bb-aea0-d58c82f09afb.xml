@@ -1,17 +1,13 @@
 <datasetView>
   <id>f1566867-20c3-41bb-aea0-d58c82f09afb</id>
-  <jsObject>sitools.user.component.dataviews.cartoView.cartoView</jsObject>
+  <jsObject>sitools.user.component.datasets.dataviews.CartoView</jsObject>
   <fileUrl></fileUrl>
   <imageUrl></imageUrl>
   <priority>2</priority>
   <name>SItools Cartographic View</name>
   <description>A view to display geo datasets</description>
   <dependencies>
-    <js>
-      <url>
-        <url>/sitools/client-user/js/components/dataviews/cartoView/cartoView.js</url>
-      </url>
-    </js>
+    <js/>      
     <css/>
   </dependencies>
 </datasetView>

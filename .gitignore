@@ -24,6 +24,8 @@ node_modules/
 
 
 workspace/client-*/dist/
+cots/extjs4/ext-4.2.1.883/src/
+cots/geoext2-2.0.2/src
 
 # OS generated files #
 ######################
