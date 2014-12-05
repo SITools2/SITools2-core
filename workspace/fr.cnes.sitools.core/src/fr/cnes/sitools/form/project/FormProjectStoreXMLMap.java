@@ -175,7 +175,9 @@ public class FormProjectStoreXMLMap extends XmlMapStore<FormProject> implements 
 
     // Filtre
     if ((filter.getQuery() != null) && !filter.getQuery().equals("")) {
-      for (FormProject resource : result) {
+      List<FormProject> resultTmp = new ArrayList<FormProject>(result);
+      result = new ArrayList<FormProject>();
+      for (FormProject resource : resultTmp) {
         if (null == resource.getName()) {
           continue;
         }
