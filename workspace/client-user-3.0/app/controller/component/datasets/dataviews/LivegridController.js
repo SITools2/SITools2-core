@@ -33,8 +33,7 @@ Ext.define('sitools.user.controller.component.datasets.dataviews.LivegridControl
     views : [ 'component.datasets.dataviews.LivegridView',
               'component.datasets.services.ServiceToolbarView'],
     
-    requires : ['sitools.public.widget.datasets.columnRenderer.BehaviorEnum',
-                'sitools.public.utils.Utils'],
+    requires : ['sitools.public.widget.datasets.columnRenderer.BehaviorEnum'],
                 
 
     init : function () {

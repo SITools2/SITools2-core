@@ -18,24 +18,27 @@
 /*global Ext, sitools, window */
 
 /**
- * @class sitools.user.store.dataviews.LivegridStore
+ * @class sitools.user.store.dataviews.DataviewStore
  * @config fields the list of fields for the store
  * @config urlAttach the url attachment
  * @config primaryKey the primaryKey
  */
-Ext.define('sitools.user.store.dataviews.LivegridStore', {
-    extend : 'sitools.user.store.dataviews.DataviewStore',
-    buffered : true,
+Ext.define('sitools.user.store.dataviews.DataviewStore', {
+    extend : 'Ext.data.Store',
+
+    mixins : {
+        "dataviewStore" : "sitools.user.store.dataviews.AbstractDataviewStore"
+    },
 
     constructor : function (config) {
         config = Ext.apply({}, config);
+        Ext.apply(this, config);
         var me = this;
 
+        this.mixins.dataviewStore.enrichDataviewStoreConfig.call(this, config);
         this.callParent([config]);
 
         //remove the event on beforeLoad because it is not called with buffered store
-        me.un("beforeLoad", this.onBeforeLoad);
-        //add the same handler to beforeprefetch, called every times the store load some records
-        me.on("beforeprefetch", this.onBeforeLoad, this);
+        me.on("beforeLoad", this.onBeforeLoad, this);
     }
 });

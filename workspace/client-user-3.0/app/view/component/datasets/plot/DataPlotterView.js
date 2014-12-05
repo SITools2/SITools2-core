@@ -195,7 +195,7 @@ Ext.define('sitools.user.view.component.datasets.plot.DataPlotterView', {
 
         var fields = this.getFields(this.columnModel);
 
-        this.storeData = Ext.create("sitools.user.store.dataviews.DataviewsStore", {
+        this.storeData = Ext.create("sitools.user.store.dataviews.DataviewStore", {
             fields: fields,
             urlAttach: this.dataUrl,
             primaryKey: this.primaryKey,

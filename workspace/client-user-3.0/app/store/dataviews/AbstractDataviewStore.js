@@ -45,13 +45,15 @@ Ext.define('sitools.user.store.DataviewsJsonReader', {
 });
 
 /**
- * @class sitools.user.store.dataviews.DataviewsStore
+ *
+ * Abstract DataviewStore
+ *
+ * @class sitools.user.store.dataviews.AbstractDataviewsStore
  * @config fields the list of fields for the store
  * @config urlAttach the url attachment
  * @config primaryKey the primaryKey
  */
-Ext.define('sitools.user.store.dataviews.DataviewsStore', {
-    extend : 'Ext.data.Store',
+Ext.define('sitools.user.store.dataviews.AbstractDataviewStore', {
     autoLoad : true,
     pageSize : 300,
 
@@ -74,11 +76,7 @@ Ext.define('sitools.user.store.dataviews.DataviewsStore', {
     
     paramPrefix : "filter",
 
-    constructor : function (config) {
-        config = Ext.apply({}, config);
-        Ext.apply(this, config);
-        var me = this;
-
+    enrichDataviewStoreConfig : function (config) {
         if (!Ext.isEmpty(this.getFormFilters())) {
             this.setFormParams(this.buildFormParamsUrl(this.getFormFilters()));
         }
@@ -112,10 +110,6 @@ Ext.define('sitools.user.store.dataviews.DataviewsStore', {
                 }
             }
         });
-
-        this.callParent([ config ]);
-
-        me.on("beforeload", this.onBeforeLoad, this);
     },
 
     onBeforeLoad : function (store, operation) {

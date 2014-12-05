@@ -58,7 +58,6 @@ var EXT_JS_FOLDER="extjs4/ext-"+EXT_JS_VERSION;
 var DEFAULT_NEAR_LIMIT_SIZE = 100;
 
 userLogin = Ext.util.Cookies.get('userLogin');
-Ext.Ajax.un('requestexception', onRequestException, this);
 
 Ext.BLANK_IMAGE_URL = '/sitools/client-public/cots/'+EXT_JS_FOLDER+'/resources/themes/images/default/tree/s.gif';
 Ext.USE_NATIVE_JSON  = DEFAULT_NATIVEJSON;

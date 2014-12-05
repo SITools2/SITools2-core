@@ -150,8 +150,6 @@ var onRequestException = function (conn, response, options) {
 
 };
 
-Ext.Ajax.on('requestexception', onRequestException, this);
-
 var checkCookieDuration = function () {
     return ((COOKIE_DURATION * 60 * 1000) < ((Math.pow(2,31))-1));
 }

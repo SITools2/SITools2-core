@@ -62,6 +62,8 @@ Ext.Ajax.defaultHeaders = {
     "X-User-Agent" : "Sitools"
 };
 
+Ext.Ajax.on('requestexception', onRequestException, this);
+
 var helpUrl;
 Ext.BLANK_IMAGE_URL = '/sitools/client-public/cots/'+EXT_JS_FOLDER+'/resources/themes/images/default/tree/s.gif';
 Ext.USE_NATIVE_JSON = DEFAULT_NATIVEJSON;

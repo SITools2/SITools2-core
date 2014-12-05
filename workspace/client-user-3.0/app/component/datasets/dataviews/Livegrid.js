@@ -37,7 +37,8 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
                    'sitools.user.controller.component.datasets.services.ServicesController'],
     
     requires : ['sitools.user.view.component.datasets.dataviews.LivegridView',
-                'sitools.user.store.dataviews.LivegridStore'],
+                'sitools.user.store.dataviews.LivegridStore',
+                'sitools.public.utils.Utils'],
     
 	config : {
 	    primaryKey : null,

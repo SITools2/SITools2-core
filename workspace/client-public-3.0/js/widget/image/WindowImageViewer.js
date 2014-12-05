@@ -97,8 +97,8 @@ Ext.define('sitools.public.widget.image.WindowImageViewer', {
             this.panel.setSize(wi, hi);
         }
 
-		var ww = document.body.getWidth();
-        var hw = document.body.getHeight();
+		var ww = Ext.getBody().getWidth();
+        var hw = Ext.getBody().getHeight();
 
         var reduce = false;
 
