@@ -268,7 +268,7 @@ Ext.define('sitools.admin.usergroups.UserProp', {
                         } 
                     }
                 }]
-            }, this.gridProperties],
+            }, this.gridProperties]
         }];
         
         this.buttons = [{
@@ -283,7 +283,7 @@ Ext.define('sitools.admin.usergroups.UserProp', {
             }
         }];
         
-        sitools.admin.usergroups.UserProp.superclass.initComponent.call(this);
+        this.callParent(arguments);
     },
     
     getUserAsJson : function() {
@@ -368,7 +368,11 @@ Ext.define('sitools.admin.usergroups.UserProp', {
                 }
                 this.close();
                 //wait for the server to refresh authorizations
-                Ext.defer(this.store.load, 1000, this);
+                Ext.defer(
+                    function() {
+                        this.store.load()
+                    }, 1000, this
+                );
                 // Ext.Msg.alert(i18n.get('label.information'),
                 // i18n.get('msg.uservalidate'));
             },
@@ -380,7 +384,7 @@ Ext.define('sitools.admin.usergroups.UserProp', {
      * done a specific render to load informations from the user. 
      */
     onRender : function () {
-        sitools.admin.usergroups.UserProp.superclass.onRender.apply(this, arguments);
+        this.callParent(arguments);
         if (this.url) {
             // var gs = this.groupStore, qs = this.quotaStore;
             Ext.Ajax.request({

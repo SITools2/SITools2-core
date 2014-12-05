@@ -161,21 +161,8 @@ Ext.define('sitools.admin.usergroups.UserCrud', {
         });
         
         this.callParent(arguments);
-//        sitools.admin.usergroups.UserCrud.superclass.initComponent.call(this);
     },
 
-    /**
-     * done a specific render to load users from the store. 
-     */
-    onRender : function () {
-        sitools.admin.usergroups.UserCrud.superclass.onRender.apply(this, arguments);
-//        this.store.load({
-//            params : {
-//                start : 0,
-//                limit : this.pageSize
-//            }
-//        });
-    },
 
     /**
      * Open a {sitools.admin.usergroups.UserProp} userPropertyPanel to create a new user
@@ -187,8 +174,6 @@ Ext.define('sitools.admin.usergroups.UserCrud', {
             store : this.getStore()
         });
         up.show(ID.BOX.USER);
-        // return Ext.Msg.alert(i18n.get('label.information'),
-        // i18n.get('msg.notavailable'));
     },
 
     
