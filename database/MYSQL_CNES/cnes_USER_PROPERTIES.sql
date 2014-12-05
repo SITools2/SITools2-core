@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `USER_PROPERTIES` (
   `value` varchar(256) COLLATE utf8_unicode_ci DEFAULT NULL,
   `identifier` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
   `scope` varchar(8) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`key`)
+  PRIMARY KEY (`key`, `identifier`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
