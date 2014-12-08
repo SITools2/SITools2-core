@@ -55,6 +55,20 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
 				break;
 
 		    case "plot" :
+				this.selections = this.grid.storeData.data.items;
+				this.recSelected = this.selections[0];
+
+				var primaryKeyValue = "", primaryKeyName = "";
+				Ext.each(this.recSelected.fields.items, function (field) {
+					if (field.primaryKey) {
+						this.primaryKeyName = field.name;
+					}
+				}, this);
+
+				this.primaryKeyValue = this.recSelected.get(this.primaryKeyName);
+				this.primaryKeyValue = encodeURIComponent(this.primaryKeyValue);
+				this.url = this.baseUrl + "/" + this.primaryKeyValue;
+
 		        break;
 
 			default :
@@ -302,55 +316,57 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
 			this.items = [ this.tabPanel ];
         }
 
-        this.bbar = {
-    		xtype : 'toolbar',
-    		border : false,
-    		items :  [{
-	            iconCls : 'arrow-back',
-	            scale : 'medium',
-	            scope : this,
-				listeners : {
-					afterrender : function (btn) {
-						var label = i18n.get('label.previousRecord');
-						var tooltipCfg = {
-							html : label,
-							target : btn.getEl(),
-							anchor : 'bottom',
-							showDelay : 20,
-							hideDelay : 50,
-							dismissDelay : 0
-						};
-						Ext.create('Ext.tip.ToolTip', tooltipCfg);
+		if (this.fromWhere != "plot") {
+			this.bbar = {
+				xtype : 'toolbar',
+				border : false,
+				items :  [{
+					iconCls : 'arrow-back',
+					scale : 'medium',
+					scope : this,
+					listeners : {
+						afterrender : function (btn) {
+							var label = i18n.get('label.previousRecord');
+							var tooltipCfg = {
+								html : label,
+								target : btn.getEl(),
+								anchor : 'bottom',
+								showDelay : 20,
+								hideDelay : 50,
+								dismissDelay : 0
+							};
+							Ext.create('Ext.tip.ToolTip', tooltipCfg);
+						}
+					},
+					handler : function () {
+						this.goPrevious();
 					}
-				},
-	            handler : function () {
-	                this.goPrevious();
-	            }
-	        }, {
-	            iconCls : 'arrow-next',
-	            scale : 'medium',
-	            scope : this,
-				listeners : {
-					afterrender : function (btn) {
-						var label = i18n.get('label.nextRecord');
-						var tooltipCfg = {
-							html : label,
-							target : btn.getEl(),
-							anchor : 'bottom',
-							showDelay : 20,
-							hideDelay : 50,
-							dismissDelay : 0
-						};
-						Ext.create('Ext.tip.ToolTip', tooltipCfg);
+				}, {
+					iconCls : 'arrow-next',
+					scale : 'medium',
+					scope : this,
+					listeners : {
+						afterrender : function (btn) {
+							var label = i18n.get('label.nextRecord');
+							var tooltipCfg = {
+								html : label,
+								target : btn.getEl(),
+								anchor : 'bottom',
+								showDelay : 20,
+								hideDelay : 50,
+								dismissDelay : 0
+							};
+							Ext.create('Ext.tip.ToolTip', tooltipCfg);
+						}
+					},
+					handler : function () {
+						this.goNext();
 					}
-				},
-	            handler : function () {
-	                this.goNext();
-	            }
-	        }]
-        		
-        };
-        
+				}]
+
+			};
+		}
+
         this.callParent(arguments);
     }, 
     

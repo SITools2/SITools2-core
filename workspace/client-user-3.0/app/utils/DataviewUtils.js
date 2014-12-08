@@ -495,7 +495,9 @@ Ext.define('sitools.user.utils.DataviewUtils', {
     showDetailsData : function (value, columnAlias, datasetUrl) {
         var desktop = getDesktop();
     
-        var config = {};
+        var config = {
+            forceShowDataset : true
+        };
         config.formFilters = [ "RADIO|" + columnAlias + "|" + value ];
         
         config.formFilters = {

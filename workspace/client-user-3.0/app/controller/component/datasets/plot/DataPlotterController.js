@@ -1,4 +1,4 @@
-/*******************************************************************************
+ /*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -137,6 +137,7 @@ Ext.define('sitools.user.controller.component.datasets.plot.DataPlotterControlle
                         pageSize = view.selectionSize;
                     }
 
+                    view.getEl().mask(i18n.get('label.drawingPlot'), "x-mask-loading");
                     if (pageSize > view.maxWarningRecords) {
                         Ext.Msg.show({
                             title: i18n.get("label.warning"),
@@ -147,6 +148,8 @@ Ext.define('sitools.user.controller.component.datasets.plot.DataPlotterControlle
                             fn: function (buttonId) {
                                 if (buttonId === 'yes') {
                                     this.loadPlot(pageSize, view);
+                                } else {
+                                    view.getEl().unmask();
                                 }
                             }
                         });
@@ -232,11 +235,14 @@ Ext.define('sitools.user.controller.component.datasets.plot.DataPlotterControlle
         }
 
         view.storeData.load({
+            scope : this,
             params: {
                 start: 0,
                 limit: pageSize
+            },
+            callback : function () {
+                view.getEl().unmask();
             }
-
         });
     },
 
@@ -256,7 +262,7 @@ Ext.define('sitools.user.controller.component.datasets.plot.DataPlotterControlle
         var plotConfig = this.getPlotConfig(view.columnModel, records, view);
         view.plot = Flotr.draw($(view.rightPanel.body.id), [plotConfig.data], plotConfig.config);
         $(view.rightPanel.body.id).stopObserving('flotr:click');
-        $(view.rightPanel.body.id).observe('flotr:click', this.handleClick.bind(this, plotConfig));
+        $(view.rightPanel.body.id).observe('flotr:click', this.handleClick.bind(this, [plotConfig, view]));
         $(view.rightPanel.body.id).stopObserving('flotr:select');
         $(view.rightPanel.body.id).observe('flotr:select', function (evt) {
             var area = evt.memo[0];
@@ -269,7 +275,6 @@ Ext.define('sitools.user.controller.component.datasets.plot.DataPlotterControlle
         });
         view.hasPlotted = true;
         this.fireEvent("drawplot", this, view);
-
     },
 
     /**
@@ -410,7 +415,6 @@ Ext.define('sitools.user.controller.component.datasets.plot.DataPlotterControlle
             // => size of the 'fake' shadow
         };
 
-
         if (colXType === "dateAsString") {
             var xFormat = view.down("textfield#xFormat").getValue();
             var xFormatter = Ext.bind(this.dateFormatter, this, [xFormat], true);
@@ -517,9 +521,12 @@ Ext.define('sitools.user.controller.component.datasets.plot.DataPlotterControlle
         return object.series.data[index][3];
     },
 
-    handleClick: function (plotConfig, evt) {
+    handleClick: function (params, evt, view) {
+        var plotConfig = params[0];
+        var view = params[1];
         var memo = evt.memo[1];
         var object = memo.prevHit;
+
         if (Ext.isEmpty(object)) {
             var id = memo.el.id;
             var options = plotConfig.config;
@@ -530,8 +537,28 @@ Ext.define('sitools.user.controller.component.datasets.plot.DataPlotterControlle
             this.plot = Flotr.draw($(id), [plotConfig.data], options);
         } else {
             var primaryKey = this.getIdFromObject(object);
+
+            var sitoolsController = Desktop.getApplication().getController('core.SitoolsController');
+
+            //var openSearchView = grid.up('opensearchView');
+
+            var config = {
+                grid : view,
+                selections : [view.storeData.getAt(object.index)],
+                fromWhere : "plot",
+                datasetId : view.datasetId,
+                baseUrl : view.dataUrl + "/records",
+                datasetUrl : view.dataUrl,
+                datasetName : view.datasetName,
+                preferencesPath : "/" + view.datasetName,
+                preferencesFileName : "dataDetails"
+            };
+
+            var serviceObj = sitoolsController.openComponent("sitools.user.component.datasets.recordDetail.RecordDetailComponent", config);
+
+
             //this.showDataDetail(primaryKey);
-            alert("TODO");
+            //alert("TODO");
         }
     }
 });

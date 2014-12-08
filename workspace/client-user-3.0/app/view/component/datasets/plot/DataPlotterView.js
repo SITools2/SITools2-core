@@ -186,10 +186,16 @@ Ext.define('sitools.user.view.component.datasets.plot.DataPlotterView', {
             items: [this.comboX, this.titleX, this.comboXColor],
             collapsible: true
         });
+
         this.fieldSetY = Ext.create("Ext.form.FieldSet", {
             title: i18n.get('title.plot.yAxis'),
             items: [this.comboY, this.titleY, this.comboYColor],
             collapsible: true
+        });
+
+        this.infoRecordDetailLabel = Ext.create('Ext.form.Label', {
+            text : i18n.get('label.infoRecordDetailPlot'),
+            style : 'font-style: italic;'
         });
 
 
@@ -248,6 +254,7 @@ Ext.define('sitools.user.view.component.datasets.plot.DataPlotterView', {
             //id : 'plot-right-panel',
             title: i18n.get('title.plot.panel'),
             //region : 'center',
+            border : false,
             scope: this,
             itemId : 'rightpanel',
             flex: 1,
@@ -262,8 +269,9 @@ Ext.define('sitools.user.view.component.datasets.plot.DataPlotterView', {
             bodyPadding: 5,
             autoScroll: true,
             collapsible: true,
+            border : false,
             collapseDirection: "left",
-            items: [this.titlePlot, numberRecords, this.checkLine, this.comboTag, this.fieldSetX, this.fieldSetY],
+            items: [this.titlePlot, numberRecords, this.checkLine, this.comboTag, this.fieldSetX, this.fieldSetY, this.infoRecordDetailLabel],
             buttons: [this.savePlotButton, this.drawPlotButton],
             itemId : 'leftPanel'
         });
@@ -357,8 +365,4 @@ Ext.define('sitools.user.view.component.datasets.plot.DataPlotterView', {
         }
         return fields;
     }
-
-
-
-
 });

@@ -63,6 +63,7 @@ Ext.define('sitools.user.view.component.datasets.overview.OverviewView', {
             layout: "fit",
             collapsible: true,
             split: true,
+            border : false,
             collapseDirection : "bottom",
             hidden: true,
             height: this.DEFAULT_HEIGHT_SEMANTIC_PANEL,
@@ -75,6 +76,7 @@ Ext.define('sitools.user.view.component.datasets.overview.OverviewView', {
                 align : 'stretch'
             },
             width: this.DEFAULT_WIDTH_EAST_PANEL,
+            border : false,
             collapsible: true,
             collapseDirection : "right",
             items : [semanticPanel],
