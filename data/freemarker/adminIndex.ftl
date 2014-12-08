@@ -54,10 +54,10 @@
 <!-- --------------------------------------------------------------------------------------------------------------------------
 					IMPORT DES LIBRAIRIES JS
 -------------------------------------------------------------------------------------------------------------------------- -->
-	<script type="text/javascript" src="${appUrl}/client-public/cots/extjs4/ext-4.2.1.883/ext-all-debug.js"></script>
+	<script type="text/javascript" src="${appUrl}/client-public/cots/OpenLayers-2.13.1/OpenLayers.debug.js"></script>
 	
-	<!--<script type="text/javascript" src="${appUrl}/client-public/cots/OpenLayers-2.11/OpenLayers.js"></script>-->
-	<!-- <script type="text/javascript" src="${appUrl}/client-public/cots/GeoExt/script/GeoExt.js"></script> -->
+	<script type="text/javascript" src="${appUrl}/client-public/cots/extjs4/ext-4.2.1.883/ext-all-debug.js"></script>
+	<script type="text/javascript" src="${appUrl}/client-public/cots/geoext2-2.0.2/geoext2.js"></script>
 	
 <!-- --------------------------------------------------------------------------------------------------
 						LISTE DES FICHIERS A INCLURE POUR LA VERSION DE DEV
