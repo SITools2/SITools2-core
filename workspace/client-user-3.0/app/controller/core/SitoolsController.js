@@ -188,6 +188,7 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
                     this.doOpenComponent(componentClazz, componentConfig, windowConfig);
                 } catch (err) {
                     this.doOpenComponent(componentClazz, componentConfig, windowConfig);
+                    throw err;
                 }
             };
 

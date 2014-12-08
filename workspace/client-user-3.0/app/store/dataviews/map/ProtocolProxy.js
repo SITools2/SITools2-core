@@ -21,7 +21,7 @@
  *
  * Cartoview store used for cartoView
  *
- * @class sitools.user.store.dataviews.CartoViewStore
+ * @class sitools.user.store.dataviews.map.ProtocolProxy
  */
 Ext.define('sitools.user.store.dataviews.map.ProtocolProxy', {
     extend: 'GeoExt.data.proxy.Protocol',
@@ -41,13 +41,26 @@ Ext.define('sitools.user.store.dataviews.map.ProtocolProxy', {
             protocol: new sitools.user.store.dataviews.map.ProtocolHttp({
                 url: config.url,
                 format : new sitools.user.store.dataviews.map.FormatGeoJson({
-                    totalProperty: 'totalResults'
+                    totalProperty: config.totalProperty
                 })
             }),
             reader: {
                 type: 'feature',
                 idProperty: 'identifier',
-                totalProperty : "totalResults"
+                totalProperty: config.totalProperty
+            },
+            encodeSorters: function (sorters) {
+                var min = [],
+                    length = sorters.length,
+                    i = 0;
+
+                for (; i < length; i++) {
+                    min[i] = {
+                        field : sorters[i].property,
+                        direction: sorters[i].direction
+                    };
+                }
+                return this.applyEncoding(min);
             }
         });
 

@@ -27,6 +27,10 @@ Ext.define('sitools.user.store.dataviews.CartoViewStore', {
     extend : 'GeoExt.data.FeatureStore',
     storeId : 'cartoView',
 
+    mixins : {
+        "dataviewStore" : "sitools.user.store.dataviews.AbstractDataviewStore"
+    },
+
     requires : ['sitools.user.store.dataviews.map.ProtocolProxy'],
 
     autoLoad : true,
@@ -36,6 +40,9 @@ Ext.define('sitools.user.store.dataviews.CartoViewStore', {
         Ext.apply(this, config);
         var me = this;
 
+        this.mixins.dataviewStore.enrichDataviewStoreConfig.call(this, config);
+        Ext.destroyMembers(config, "proxy");
+
         config = Ext.apply(config, {
             proxy: Ext.create("sitools.user.store.dataviews.map.ProtocolProxy", {
                 totalProperty : "totalResults",
@@ -43,9 +50,10 @@ Ext.define('sitools.user.store.dataviews.CartoViewStore', {
             })
         });
 
+
         this.callParent([config]);
 
         //remove the event on beforeLoad because it is not called with buffered store
-        //me.on("beforeLoad", this.onBeforeLoad, this);
+        me.on("beforeLoad", this.onBeforeLoad, this);
     }
 });

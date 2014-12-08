@@ -39,152 +39,7 @@ Ext.define('sitools.user.component.datasets.dataviews.CartoView', {
         autoShow: true
     },
 
-    statics: {
-        getParameters: function () {
-            var baseLayer = {
-                xtype: 'checkcolumn',
-                header: i18n.get('headers.baseLayer'),
-                dataIndex: 'baseLayer',
-                width: 80
-            };
 
-            // create the Data Store
-            var store = Ext.create('Ext.data.JsonStore', {
-                proxy: {
-                    type: 'memory'
-                },
-                fields: [{
-                    name: "layerName",
-                    type: "string"
-                }, {
-                    name: "url",
-                    type: "string"
-                }, {
-                    name: "baseLayer",
-                    type: "boolean"
-                }]
-            });
-
-            var cellEditing = Ext.create('Ext.grid.plugin.RowEditing', {
-                pluginId: 'layerEditorId',
-                clicksToEdit: 1
-            });
-
-            return [{
-                jsObj: "Ext.form.field.Text",
-                config: {
-                    anchor: "100%",
-                    parameterName: "jeoResourceUrl",
-                    fieldLabel: i18n.get("label.jeoResourceUrl"),
-                    name: 'jeoResourceUrl',
-                    value: "/jeo/opensearch/search",
-                    labelWidth: 150
-                }
-            }, {
-                jsObj: "Ext.form.field.Spinner",
-                config: {
-                    anchor: "100%",
-                    parameterName: "mapWidth",
-                    name: "mapWidth",
-                    fieldLabel: i18n.get("label.mapWidth"),
-                    minValue: 0,
-                    maxValue: 100,
-                    value: 70,
-                    labelWidth: 150
-                }
-            }, {
-                jsObj: "Ext.grid.Panel",
-                config: {
-                    title: i18n.get('label.Layers'),
-                    store: store,
-                    forceFit: true,
-                    columns: [{
-                        header: 'Layer Name',
-                        dataIndex: 'layerName',
-                        width: 220,
-                        editor: {
-                            xtype: 'textfield',
-                            allowBlank: false
-                        }
-                    }, {
-                        header: 'Wms Url',
-                        dataIndex: 'url',
-                        width: 270,
-                        // use shorthand alias defined above
-                        editor: {
-                            xtype: 'textfield',
-                            allowBlank: false
-                        }
-                    }, baseLayer],
-                    selModel: Ext.create('Ext.selection.RowModel', {}),
-                    anchor: "100%",
-                    height: 200,
-                    autoScroll: true,
-                    plugins: [cellEditing],
-                    listeners: {
-                        scope: this,
-                        afterrender: function (grid) {
-                            if (grid.getStore().getCount() === 0) {
-                                grid.getStore().add({
-                                    layerName: "openstreetmap",
-                                    url: "http://maps.opengeo.org/geowebcache/service/wms",
-                                    baseLayer: true
-                                });
-                                grid.getView().refresh();
-                            }
-                        }
-                    },
-                    getValue: function () {
-                        var res = [];
-                        var store = this.getStore();
-                        store.each(function (rec) {
-                            res.push(rec.data);
-                        });
-                        return Ext.encode(res);
-                    },
-                    setValue: function (value) {
-                        var values = Ext.decode(value);
-
-                        var grid = this;
-                        Ext.each(values, function (value) {
-                            grid.getStore().add(value);
-                        });
-                    },
-                    tbar: [{
-                        text: i18n.get('label.addLayer'),
-                        handler: function () {
-                            var grid = this.up('gridpanel');
-
-                            var editorPlugin = grid.getPlugin("layerEditorId");
-
-                            editorPlugin.completeEdit();
-
-                            grid.getStore().insert(0, {
-                                layerName: '',
-                                url: ''
-                            });
-
-                            editorPlugin.startEdit(0, 0);
-                        }
-                    }, {
-                        text: i18n.get('label.deleteLayer'),
-                        handler: function () {
-                            var grid = this.up('gridpanel');
-
-                            var rec = grid.getSelectionModel().getSelection()[0];
-                            if (Ext.isEmpty(rec)) {
-                                Ext.Msg.alert(i18n.get('label.warning'), i18n.get('label.noRecordSelected'));
-                                return;
-                            }
-                            grid.getStore().remove(rec);
-                        }
-                    }],
-                    name : 'layers',
-                    parameterName: "layers"
-                }
-            }];
-        }
-    },
 
     /**
      * @param {Object} componentConfig config object
@@ -406,5 +261,152 @@ Ext.define('sitools.user.component.datasets.dataviews.CartoView', {
             origin: view.$className
         };
 
+    },
+
+    statics: {
+        getParameters: function () {
+            var baseLayer = {
+                xtype: 'checkcolumn',
+                header: i18n.get('headers.baseLayer'),
+                dataIndex: 'baseLayer',
+                width: 80
+            };
+
+            // create the Data Store
+            var store = Ext.create('Ext.data.JsonStore', {
+                proxy: {
+                    type: 'memory'
+                },
+                fields: [{
+                    name: "layerName",
+                    type: "string"
+                }, {
+                    name: "url",
+                    type: "string"
+                }, {
+                    name: "baseLayer",
+                    type: "boolean"
+                }]
+            });
+
+            var cellEditing = Ext.create('Ext.grid.plugin.RowEditing', {
+                pluginId: 'layerEditorId',
+                clicksToEdit: 1
+            });
+
+            return [{
+                jsObj: "Ext.form.field.Text",
+                config: {
+                    anchor: "100%",
+                    parameterName: "jeoResourceUrl",
+                    fieldLabel: i18n.get("label.jeoResourceUrl"),
+                    name: 'jeoResourceUrl',
+                    value: "/jeo/opensearch/search",
+                    labelWidth: 150
+                }
+            }, {
+                jsObj: "Ext.form.field.Spinner",
+                config: {
+                    anchor: "100%",
+                    parameterName: "mapWidth",
+                    name: "mapWidth",
+                    fieldLabel: i18n.get("label.mapWidth"),
+                    minValue: 0,
+                    maxValue: 100,
+                    value: 70,
+                    labelWidth: 150
+                }
+            }, {
+                jsObj: "Ext.grid.Panel",
+                config: {
+                    title: i18n.get('label.Layers'),
+                    store: store,
+                    forceFit: true,
+                    columns: [{
+                        header: 'Layer Name',
+                        dataIndex: 'layerName',
+                        width: 220,
+                        editor: {
+                            xtype: 'textfield',
+                            allowBlank: false
+                        }
+                    }, {
+                        header: 'Wms Url',
+                        dataIndex: 'url',
+                        width: 270,
+                        // use shorthand alias defined above
+                        editor: {
+                            xtype: 'textfield',
+                            allowBlank: false
+                        }
+                    }, baseLayer],
+                    selModel: Ext.create('Ext.selection.RowModel', {}),
+                    anchor: "100%",
+                    height: 200,
+                    autoScroll: true,
+                    plugins: [cellEditing],
+                    listeners: {
+                        scope: this,
+                        afterrender: function (grid) {
+                            if (grid.getStore().getCount() === 0) {
+                                grid.getStore().add({
+                                    layerName: "openstreetmap",
+                                    url: "http://maps.opengeo.org/geowebcache/service/wms",
+                                    baseLayer: true
+                                });
+                                grid.getView().refresh();
+                            }
+                        }
+                    },
+                    getValue: function () {
+                        var res = [];
+                        var store = this.getStore();
+                        store.each(function (rec) {
+                            res.push(rec.data);
+                        });
+                        return Ext.encode(res);
+                    },
+                    setValue: function (value) {
+                        var values = Ext.decode(value);
+
+                        var grid = this;
+                        Ext.each(values, function (value) {
+                            grid.getStore().add(value);
+                        });
+                    },
+                    tbar: [{
+                        text: i18n.get('label.addLayer'),
+                        handler: function () {
+                            var grid = this.up('gridpanel');
+
+                            var editorPlugin = grid.getPlugin("layerEditorId");
+
+                            editorPlugin.completeEdit();
+
+                            grid.getStore().insert(0, {
+                                layerName: '',
+                                url: ''
+                            });
+
+                            editorPlugin.startEdit(0, 0);
+                        }
+                    }, {
+                        text: i18n.get('label.deleteLayer'),
+                        handler: function () {
+                            var grid = this.up('gridpanel');
+
+                            var rec = grid.getSelectionModel().getSelection()[0];
+                            if (Ext.isEmpty(rec)) {
+                                Ext.Msg.alert(i18n.get('label.warning'), i18n.get('label.noRecordSelected'));
+                                return;
+                            }
+                            grid.getStore().remove(rec);
+                        }
+                    }],
+                    name : 'layers',
+                    parameterName: "layers"
+                }
+            }];
+        }
     }
 });

@@ -80,11 +80,17 @@ Ext.define('sitools.user.view.component.datasets.dataviews.CartoViewView', {
         var mapPanel = Ext.create('GeoExt.panel.Map', {
             title: "Map",
             region: "center",
-            height: 400,
+            flex : 1,
             map: this.map,
             center: new OpenLayers.LonLat(5, 45),
             itemId : 'map',
             zoom: 6
+        });
+
+        var tbar = Ext.create("sitools.user.view.component.datasets.services.ServiceToolbarView", {
+            enableOverflow: true,
+            datasetUrl : this.dataset.sitoolsAttachementForUsers,
+            columnModel : this.dataset.columnModel
         });
 
         var gridPanel = Ext.create("Ext.grid.GridPanel",{
@@ -98,7 +104,8 @@ Ext.define('sitools.user.view.component.datasets.dataviews.CartoViewView', {
                 displayInfo : true,
                 displayMsg : i18n.get('paging.display'),
                 emptyMsg : i18n.get('paging.empty')
-            }
+            },
+            tbar : tbar
         });
         this.map.addLayer(this.vecLayer);
         this.items = [mapPanel, gridPanel];
