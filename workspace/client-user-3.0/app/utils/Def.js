@@ -67,30 +67,30 @@ var DEFAULT_LOCALE = "en";
 var SITOOLS_DATE_FORMAT = 'Y-m-d\\TH:i:s.u';
 var SITOOLS_DEFAULT_IHM_DATE_FORMAT = 'Y-m-d H:i:s.u';
 
-var locale = {
-    locale : DEFAULT_LOCALE,
-    isInit : false,
-    getLocale : function () {
-        if (!this.isInit) {
-            if (Ext.isEmpty(Ext.util.Cookies.get('language'))) {
-                var navigator = window.navigator;
-                this.locale = navigator.language || navigator.browserLanguage || navigator.userLanguage;
-            }
-            else {
-                this.locale = Ext.util.Cookies.get('language');
-            }
-            this.isInit = true;
-        }
-        return this.locale;                
-        
-    },
-    setLocale : function (locale) {
-        this.locale = locale;
-    },
-    restoreDefault : function () {
-        this.setLocale(DEFAULT_LOCALE);
-    }
-};
+//var locale = {
+//    locale : DEFAULT_LOCALE,
+//    isInit : false,
+//    getLocale : function () {
+//        if (!this.isInit) {
+//            if (Ext.isEmpty(Ext.util.Cookies.get('language'))) {
+//                var navigator = window.navigator;
+//                this.locale = navigator.language || navigator.browserLanguage || navigator.userLanguage;
+//            }
+//            else {
+//                this.locale = Ext.util.Cookies.get('language');
+//            }
+//            this.isInit = true;
+//        }
+//        return this.locale;
+//
+//    },
+//    setLocale : function (locale) {
+//        this.locale = locale;
+//    },
+//    restoreDefault : function () {
+//        this.setLocale(DEFAULT_LOCALE);
+//    }
+//};
 
 // GLOBAL VARIABLES
 var desktop;
