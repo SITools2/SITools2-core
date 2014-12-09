@@ -51,6 +51,10 @@ Ext.define('sitools.user.controller.component.personal.OrderController', {
                         limit : me.pageSize
                     });
                 }
+            },
+
+            "orderview toolbar#servicetoolbar button#delete" : {
+                click : this._onDelete
             }
 
         });

@@ -85,14 +85,14 @@ Ext.define('sitools.user.view.component.personal.OrderView', {
         var tbar = {
             xtype : 'toolbar',
             cls : 'services-toolbar',
+            itemId : 'servicetoolbar',
             defaults : {
-                scope : this,
                 cls : 'services-toolbar-btn'
             },
             items : [{
                 text : i18n.get('label.delete'),
                 icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png',
-                handler : this._onDelete
+                itemId : 'delete'
             }]
         };
 
