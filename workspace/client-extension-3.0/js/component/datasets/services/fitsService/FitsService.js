@@ -31,13 +31,15 @@ Ext.define('sitools.extension.component.datasets.services.fitsService.FitsServic
 
     pluginName : 'fitsService',
 
-    js : [ '/sitools/client-extension/resources/libs/fitsViewer/fits.js',
+    js : [
+        '/sitools/client-public/js/utils/prototyp.js',
+        '/sitools/client-extension/resources/libs/fitsViewer/fits.js',
         '/sitools/client-extension/resources/libs/fitsViewer/binaryajax.js',
         '/sitools/client-extension/resources/libs/fitsViewer/excanvasCompiled.js',
         '/sitools/client-extension/resources/libs/fitsViewer/FitsLoader.js',
         '/sitools/client-extension/resources/libs/fitsViewer/astroFits.js',
         '/sitools/client-extension/resources/libs/fitsViewer/vec3.js',
-        '/sitools/client-extension/resources/libs/fitsViewer/wcs.js',
+        '/sitools/client-extension/resources/libs/fitsViewer/wcs.js'
     ],
 
     css: ['/sitools/client-extension/resources/css/fitsViewer/fits.css'],

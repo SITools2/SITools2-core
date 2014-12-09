@@ -30,7 +30,9 @@ Ext.define('sitools.extension.modules.FitsViewer', {
     
     pluginName : 'fitsViewer',
     
-    js : [ '/sitools/client-extension/resources/libs/fitsViewer/fits.js',
+    js : [
+           '/sitools/client-public/js/utils/prototyp.js',
+           '/sitools/client-extension/resources/libs/fitsViewer/fits.js',
            '/sitools/client-extension/resources/libs/fitsViewer/binaryajax.js',
            '/sitools/client-extension/resources/libs/fitsViewer/excanvasCompiled.js',
            '/sitools/client-extension/resources/libs/fitsViewer/FitsLoader.js',

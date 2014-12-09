@@ -23,7 +23,7 @@ Ext.define('sitools.user.store.GuiServicesStore', {
     model : 'sitools.user.model.GuiServiceModel',
     storeId : 'GuiServicesStore',
     
-    requires : ['sitools.public.widget.datasets.columnRenderer.behaviorEnum'],
+    requires : ['sitools.public.widget.datasets.columnRenderer.BehaviorEnum'],
 
     config : {
         guiServiceMap : new Ext.util.MixedCollection()

@@ -52,7 +52,7 @@ Ext.define('sitools.user.component.datasets.services.AddToCartService', {
     extend : 'sitools.user.core.Component',
 //    controllers : ['sitools.user.controller.component.datasets.services.AddToCartServiceController'],
     alias : 'sitools.user.component.dataviews.services.addToCartService',
-    requires : ['sitools.public.widget.datasets.columnRenderer.behaviorEnum'],
+    requires : ['sitools.public.widget.datasets.columnRenderer.BehaviorEnum'],
     
     statics : {
         getParameters : function () {

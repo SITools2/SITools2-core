@@ -34,7 +34,9 @@ Ext.define('sitools.user.component.datasets.services.WindowImageZoomerService', 
     controllers : [],
     alias : 'widget.windowImageZoomerSerice',
     
-    js : ['/sitools/client-user/resources/libs/windowImageZoomerService/core/Simple_Viewer_beta_1.1.js',
+    js : [
+        '/sitools/client-public/js/utils/prototyp.js',
+        '/sitools/client-user/resources/libs/windowImageZoomerService/core/Simple_Viewer_beta_1.1.js',
       '/sitools/client-user/resources/libs/windowImageZoomerService/extension/toolbar-ext.js',
       '/sitools/client-user/resources/libs/windowImageZoomerService/extension/preview-ext.js',
       '/sitools/client-user/resources/libs/windowImageZoomerService/extension/toolbar-ext-extjs.js'],
