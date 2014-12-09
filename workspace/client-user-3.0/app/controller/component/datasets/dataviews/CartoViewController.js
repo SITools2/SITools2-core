@@ -71,7 +71,7 @@ Ext.define('sitools.user.controller.component.datasets.dataviews.CartoViewContro
                         return;
                     }
 
-                    var serviceToolbarView = view.down('serviceToolbarView');
+                    var serviceToolbarView = view.up("cartoview").down('serviceToolbarView');
                     var serviceController = this.getApplication().getController('sitools.user.controller.component.datasets.services.ServicesController');
                     sitools.user.utils.DataviewUtils.featureTypeAction(column, record, serviceController, serviceToolbarView);
                 }

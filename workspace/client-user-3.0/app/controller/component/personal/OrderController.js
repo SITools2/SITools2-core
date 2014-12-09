@@ -97,7 +97,7 @@ Ext.define('sitools.user.controller.component.personal.OrderController', {
     },
     doDelete : function (rec, view) {
         Ext.Ajax.request({
-            url : view.url + "/" + rec.id,
+            url : view.url + "/" + rec.getId(),
             method : 'DELETE',
             scope : this,
             success : function (ret) {
