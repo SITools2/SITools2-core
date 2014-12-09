@@ -459,81 +459,87 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
  * licensing@extjs.com
  * http://www.extjs.com/license
  */
-#datasetDataView {
+.datasetExplorerDataview {
 	background-color: #fff;
 	text-shadow: #fff 0 1px 0;
 }
 
-#datasetDataView ul {
+.datasetExplorerDataview ul {
 	position: relative;
 	display: block;
 	height: auto;
 	font-size: 85%;
 }
 
-#datasetDataView ul li img {
+.datasetExplorerDataview ul li img {
 	margin-bottom: 1px;
 }
 
-#datasetDataView ul li {
+.datasetExplorerDataview ul li {
 	float: left;
 	padding: 8px 10px;
 	margin: 5px;
-	/*    margin: 10px 0 0 25px;*/
 	text-align: center;
 	line-height: 1.25em;
 	color: #333;
 	font-family: "Helvetica Neue", sans-serif;
-	height: 230px;
+	height: 210px;
 	width: 200px;
 	overflow: hidden;
-	border: 1px solid black !important;
-	-moz-border-radius: 8px;
-	-webkit-border-radius: 8px;
-	background-color: rgba(100, 100, 100, .15);	
+	box-shadow: 1px 1px 1px 1px #D3D3D3;
 }
 
-/*#projectDataView ul li.phone-hover {
-    background-color: #eee;
-}*/
-#datasetDataView ul li.x-view-selected {	
+.datasetExplorerDataview ul li:HOVER {
+	box-shadow: 1px 1px 1px 1px #B1B1B1;
 }
 
-#datasetDataView li strong {
+.datasetExplorerDataview li strong {
 	color: #000;
 	display: block;
 }
 
-#datasetDataView li span {
+.datasetExplorerDataview li span {
 	color: #999;
 }
 
-#datasetDataView li a img {
+.datasetExplorerDataview li a img {
 	margin-left : 10px;
 	margin-right : 10px;
 	height : 24px;
 	width : 24px;
 }
 
-.align-right {
-	float:right;
+.datasetExplorerDataview #dsImage {
+	box-shadow: rgb(215, 215, 215) 0px 0px 3px 1px;
 }
 
-.dataset_services {
-	margin-top : 5px;
+.align-right {
+	float:right;
+	padding-top: 10px;
+}
+
+.datasetExplorerDataview .dataset_services {
+	margin-top : 8px;
 	height : 24px;
 }
 
-.dataset_description {
-	margin-top : 5px;
-	height : 60px;
-	text-align: left;
+.datasetExplorerDataview .dataset_description {
+	margin-top : 12px;
+	text-align: center;
 }
 
 .datasetUnauthorized {
 	background-image: url("/sitools/common/res/images/icons/cadenas.png");
 	background-position: 10px 10px;
 	background-repeat: no-repeat;
+}
+
+.overDatasetService:hover {
+	opacity : .75
+}
+
+.overMoreDescription:hover {
+	font-style: italic;
 }
 
 .toolbar {

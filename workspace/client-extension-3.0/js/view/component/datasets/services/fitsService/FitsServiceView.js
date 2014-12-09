@@ -214,7 +214,7 @@ Ext.define('sitools.extension.view.component.datasets.services.fitsService.FitsS
         var moduleStore = Ext.StoreManager.lookup('ModulesStore');
         var moduleIndex = moduleStore.find('xtype', 'sitools.extension.modules.FitsViewer');
 
-        if (!Ext.isEmpty(moduleIndex)) {
+        if (moduleIndex != -1) {
             advancedModeAvailable = true;
             this.fitsModule = moduleStore.getAt(moduleIndex);
         }

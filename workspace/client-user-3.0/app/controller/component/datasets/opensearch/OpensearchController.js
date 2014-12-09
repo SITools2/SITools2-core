@@ -86,8 +86,6 @@ Ext.define('sitools.user.controller.component.datasets.opensearch.OpensearchCont
             "opensearchResultFeedView": {
                 itemdblclick: this.clickOnRow
             }
-
-
         });
     },
 
@@ -129,7 +127,6 @@ Ext.define('sitools.user.controller.component.datasets.opensearch.OpensearchCont
         } else {
 
             var sitoolsController = Desktop.getApplication().getController('core.SitoolsController');
-
             var openSearchView = grid.up('opensearchView');
 
             var config = {
@@ -143,61 +140,6 @@ Ext.define('sitools.user.controller.component.datasets.opensearch.OpensearchCont
             };
 
             var serviceObj = sitoolsController.openComponent("sitools.user.component.datasets.recordDetail.RecordDetailComponent", config);
-
-//            var componentCfg = {
-//                grid : this,
-//                fromWhere : "openSearch",
-//                datasetId : config.datasetId,
-//                datasetUrl : config.dataUrl,
-//                datasetName : config.datasetName,
-//                preferencesPath : "/" + config.datasetName,
-//                preferencesFileName : "dataDetails"
-//            };
-//            var jsObj = sitools.user.component.viewDataDetail;
-//
-//            var windowConfig = {
-//                id : "dataDetail" + config.datasetId,
-//                title : i18n.get('label.viewDataDetail') + " : "
-//                        + config.datasetName,
-//                datasetName : config.datasetName,
-//                iconCls : "openSearch",
-//                saveToolbar : true,
-//                type : "dataDetail",
-//                toolbarItems : [{
-//                            iconCls : 'arrow-back',
-//                            handler : function() {
-//                                this.ownerCt.ownerCt.items.items[0]
-//                                        .goPrevious();
-//                            }
-//                        }, {
-//                            iconCls : 'arrow-next',
-//                            handler : function() {
-//                                this.ownerCt.ownerCt.items.items[0].goNext();
-//                            }
-//                        }]
-//            };
-//            SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, jsObj,
-//                    true);
-
-
         }
-
-    },
-
-    /** CONTROL VIEW METHODS * */
-
-    /**
-     * method called when trying to save preference
-     *
-     * @returns
-     */
-    _getSettings: function () {
-        return {
-            preferencesPath: "/modules",
-            preferencesFileName: this.id
-        };
-
     }
-
-
 });

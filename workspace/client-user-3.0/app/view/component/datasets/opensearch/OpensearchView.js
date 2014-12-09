@@ -46,8 +46,7 @@ Ext.define('sitools.user.view.component.datasets.opensearch.OpensearchView', {
      * datasetId the id of the dataset
      */
     initComponent : function () {
-        
-        
+
         this.setUri(this.dataUrl + "/opensearch/search");
         this.setUriSuggest(this.dataUrl + "/opensearch/suggest");
 
@@ -152,10 +151,8 @@ Ext.define('sitools.user.view.component.datasets.opensearch.OpensearchView', {
                 return true;
             }
         });
-        
 
         this.items = [ formPanel , result];
-    
     	this.callParent(arguments);
     }
     

@@ -80,7 +80,11 @@ Ext.define('sitools.user.Application', {
         var me = this, desktopCfg;
         this.addMask();
         if (me.useQuickTips) {
-            Ext.QuickTips.init();
+            Ext.tip.QuickTipManager.init(true, {
+                anchor : 'bottom',
+                showDelay : 20,
+                hideDelay : 50
+            });
         }
 
         if (!Ext.isEmpty(Ext.util.Cookies.get('userLogin'))) {

@@ -149,13 +149,13 @@ Ext.define('sitools.clientportal.view.portal.FeedsReaderPortal', {
     changeSortDirection : function (button, changeDirection) {
         var sortData = button.sortData,
             iconCls  = button.iconCls;
-        
+
         if (sortData != undefined) {
             if (changeDirection == true) {
                 var direction = (sortData.direction == "ASC") ? "DESC" : "ASC";
                 var cls = (iconCls == "sort-asc") ? "sort-desc" : "sort-asc";
 
-                button.toggle("ASC", "DESC");
+                //button.toggle("ASC", "DESC");
                 button.sortData.direction = direction;
                 button.setIconCls(cls);
             }

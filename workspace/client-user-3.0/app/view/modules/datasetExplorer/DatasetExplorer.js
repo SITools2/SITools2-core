@@ -54,8 +54,7 @@ Ext.define('sitools.user.view.modules.datasetExplorer.DatasetExplorer', {
                 }, this);
             }
         });
-        
-        
+
         this.callParent(arguments);
     },
     
