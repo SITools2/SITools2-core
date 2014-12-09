@@ -187,7 +187,7 @@ Ext.define('sitools.public.forms.components.DateBetween', {
 	   	return {
 	    	type : this.type, 
 	    	code : this.code, 
-	    	value : value.from.format(format) + "|" + value.to.format(format)
+	    	value : Ext.Date.format(value.from, format) + "|" + Ext.Date.format(value.to, format)
 	    };
 
 //        return this.type + "|" + this.code + "|" + value.from.format(format) + "|" + value.to.format(format) ;

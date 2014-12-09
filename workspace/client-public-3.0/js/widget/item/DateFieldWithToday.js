@@ -31,18 +31,7 @@ Ext.define('sitools.public.widget.item.DateFieldWithToday', {
         if (this.regToday.test(value)) {
             return value;
         }
-        var v = this.safeParse(value, this.format),
-            af = this.altFormats,
-            afa = this.altFormatsArray;
-
-        if (!v && af) {
-            afa = afa || af.split("|");
-
-            for (var i = 0, len = afa.length; i < len && !v; i++) {
-                v = this.safeParse(value, afa[i]);
-            }
-        }
-        return v;
+        return this.callParent(arguments);
     },
     getErrors : function (value) {
         var errors = Ext.form.DateField.superclass.getErrors.apply(this, arguments);
