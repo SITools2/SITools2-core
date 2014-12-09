@@ -25,14 +25,17 @@
  * @requires sitools.user.component.datasets.mainContainer
  */
 Ext.define('sitools.user.component.datasets.dataviews.CartoView', {
-    extend: 'sitools.user.core.Component',
+    extend: 'sitools.user.core.PluginComponent',
 
-    //controllers : ['sitools.user.controller.component.datasets.dataviews.CartoViewController'],
+    controllers : ['sitools.user.controller.component.datasets.services.ServicesController',
+    'sitools.user.controller.component.datasets.dataviews.CartoViewController'],
 
     requires: ['sitools.user.view.component.datasets.dataviews.CartoViewView',
         'sitools.user.store.dataviews.CartoViewStore',
         'sitools.public.utils.Utils'
     ],
+
+    css: ['/sitools/client-public/res/css/overrides/openlayersStyle.css'],
 
     config: {
         primaryKey: null,
@@ -48,7 +51,7 @@ Ext.define('sitools.user.component.datasets.dataviews.CartoView', {
      * @optionnal {Array} dataset.formFilters formFilters
      */
     init: function (componentConfig, windowConfig) {
-
+        OpenLayers.ImgPath = "/sitools/client-public/res/images/overrides/openlayers/"
         var windowSettings = {}, componentSettings = {};
 
         var dataset = componentConfig.dataset;
@@ -69,7 +72,7 @@ Ext.define('sitools.user.component.datasets.dataviews.CartoView', {
         var columns = this.getColumns(colModel, dataset.dictionaryMappings, dataviewConfig);
         this.primaryKey = this.calcPrimaryKey(dataset);
 
-        var vecLayer = new OpenLayers.Layer.Vector(componentConfig.datasetName);
+        var vecLayer = new OpenLayers.Layer.Vector(dataset.name);
 
 
         var datasetStore = Ext.create("sitools.user.store.dataviews.CartoViewStore", {
@@ -112,7 +115,8 @@ Ext.define('sitools.user.component.datasets.dataviews.CartoView', {
             origin: 'sitools.user.view.component.datasets.dataviews.CartoViewView',
             dataviewConfig: dataviewConfig,
             sitoolsType: 'datasetView',
-            vecLayer: vecLayer
+            vecLayer: vecLayer,
+            startIndex : componentConfig.startIndex
             // searchAction : this.searchAction,
         });
 
@@ -169,6 +173,10 @@ Ext.define('sitools.user.component.datasets.dataviews.CartoView', {
                                 var concept = mapping.concept || {};
                                 if (!Ext.isEmpty(concept.description)) {
                                     tooltip += concept.description.replace('"', "''") + "<br>";
+                                }
+                                //SPECIFIC for cartoView
+                                if(concept.name==="commonGeoWKTField") {
+                                    item.visible = false;
                                 }
                             }
                         });
@@ -253,7 +261,7 @@ Ext.define('sitools.user.component.datasets.dataviews.CartoView', {
             preferencesPath: view.preferencesPath,
             preferencesFileName: view.preferencesFileName,
             datasetName: view.dataset.name,
-            colModel: extColModelToJsonColModel(view.columns),
+            colModel: extColModelToJsonColModel(view.getColumns()),
             datasetView: this.$className,
             dictionaryMappings: view.dataset.dictionaryMappings,
             componentClazz: view.componentClazz,
@@ -405,6 +413,19 @@ Ext.define('sitools.user.component.datasets.dataviews.CartoView', {
                     }],
                     name : 'layers',
                     parameterName: "layers"
+                }
+            }, {
+                jsObj : "Ext.slider.Single",
+                config : {
+                    minValue : 20,
+                    maxValue : 100,
+                    increment : 5,
+                    value : 25,
+                    height : 50,
+                    anchor : '95%',
+                    fieldLabel : i18n.get("label.lineHeight"),
+                    name : "lineHeight",
+                    plugins : [Ext.create("Ext.ux.slider.SliderRange")]
                 }
             }];
         }

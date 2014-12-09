@@ -26,6 +26,8 @@
 Ext.define('sitools.user.store.dataviews.CartoViewStore', {
     extend : 'GeoExt.data.FeatureStore',
     storeId : 'cartoView',
+    remoteSort : true,
+    autoLoad : false,
 
     mixins : {
         "dataviewStore" : "sitools.user.store.dataviews.AbstractDataviewStore"
@@ -50,10 +52,18 @@ Ext.define('sitools.user.store.dataviews.CartoViewStore', {
             })
         });
 
-
         this.callParent([config]);
 
         //remove the event on beforeLoad because it is not called with buffered store
         me.on("beforeLoad", this.onBeforeLoad, this);
+
+    },
+
+    onBeforeLoad : function (store, operation) {
+        var params = operation.params || {};
+        operation.params = params;
+        this.appendOperationParam(operation,store);
     }
+
+
 });

@@ -1,0 +1,45 @@
+/***************************************
+* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+*
+* This file is part of SITools2.
+*
+* SITools2 is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SITools2 is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
+***************************************/
+.olControlLayerSwitcher .layersDiv {
+    background-color: rgba(0, 60, 136, 0.498039) !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.olControlLayerSwitcher {
+    color: white !important;
+}
+
+.olControlLayerSwitcher div, label {
+    color: white !important;
+}
+
+.olControlOverviewMapMinimizeButton {
+    right: 0;
+    bottom: 80px;
+    cursor: pointer;
+}
+
+.olControlOverviewMapMaximizeButton {
+    right: 0;
+    bottom: 80px;
+    cursor: pointer;
+}
+
+

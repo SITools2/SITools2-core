@@ -63,7 +63,7 @@ Ext.define('sitools.user.controller.component.datasets.dataviews.LivegridControl
                 checkchange : function (item, checked) {
                     if (checked) {
                         var view = item.up('livegridView');
-                        var colModel = extColModelToSrv(view.columns);
+                        var colModel = extColModelToSrv(view.getColumns());
                         view.getStore().load({
                             params : {
                                 colModel : Ext.JSON.encode(colModel)

@@ -37,9 +37,9 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
     requires : ['sitools.user.view.component.datasets.dataviews.selectionModel.CheckboxModel',
                 'sitools.user.view.component.datasets.dataviews.paging.LivegridPagingToolbar'],
 
-    //mixins : {
-    //    datasetview : 'sitools.user.view.component.datasets.dataviews.AbstractDataview'
-    //},
+    mixins : {
+        datasetView : 'sitools.user.view.component.datasets.dataviews.AbstractDataview'
+    },
 
     alias : 'widget.livegridView',
     layout : 'fit',
@@ -101,6 +101,23 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
         });
         
         this.callParent(arguments);
+    },
+
+    //Already implemented into GridPanel Extjs class
+    //getSelectionModel: function () {
+    //    return this.getGrid().getSelectionModel();
+    //},
+    //
+    //getStore: function () {
+    //    return this.getGrid().getStore();
+    //},
+
+    getGrid: function () {
+        return this;
+    },
+
+    getColumns : function () {
+        return this.getGrid().columns;
     },
     
     //generic method

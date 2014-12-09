@@ -36,20 +36,20 @@ Ext.define('sitools.user.controller.component.datasets.services.ServicesControll
     
     init : function () {
         this.control({
-            'livegridView' : {
+            'component[componentType=datasetView]' : {
                 selectionchange : function (selectionModel, selected, opts) {
                     selectionModel.gridView.down('toolbar').updateContextToolbar();
                 },
-                afterrender : function (livegrid) {
+                afterrender : function (datasetView) {
                     var serverServiceUtil = Ext.create('sitools.user.utils.ServerServiceUtils', {
-                        datasetUrl : livegrid.dataset.sitoolsAttachementForUsers,
-                        grid : livegrid,
-                        origin : 'sitools.user.view.component.datasets.dataviews.LivegridView'
+                        datasetUrl : datasetView.dataset.sitoolsAttachementForUsers,
+                        grid : datasetView,
+                        origin : this.$className
                     });
-                    livegrid.serviceServerUtil = serverServiceUtil;
+                    datasetView.serviceServerUtil = serverServiceUtil;
                 }
             },
-            'livegridView > serviceToolbarView > #servicesDsToolbar button, livegridView > serviceToolbarView > #servicesDsToolbar menuitem' : {
+            'component[componentType=datasetView] serviceToolbarView > #servicesDsToolbar button, component[componentType=datasetView] serviceToolbarView > #servicesDsToolbar menuitem' : {
                 click : function (button, e, opts) {
                     this.callService(button);
                 }
@@ -59,7 +59,7 @@ Ext.define('sitools.user.controller.component.datasets.services.ServicesControll
     
     callService : function (button) {
         if (button.typeService === 'SERVER') {
-            var dataview = button.up("livegridView");
+            var dataview = button.up("component[componentType=datasetView]");
             dataview.serviceServerUtil.callServerService(button.idService);
         } else if (button.typeService === 'GUI') {
             
@@ -100,7 +100,7 @@ Ext.define('sitools.user.controller.component.datasets.services.ServicesControll
         var guiServicePlugin = {};
         Ext.apply(guiServicePlugin, service.data);
         
-        var dataview = serviceView.up("livegridView");
+        var dataview = serviceView.up("component[componentType=datasetView]");
         
         var sitoolsController = Desktop.getApplication().getController('core.SitoolsController'); 
         

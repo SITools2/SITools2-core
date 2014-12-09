@@ -56,6 +56,7 @@ Ext.define('sitools.user.store.DataviewsJsonReader', {
 Ext.define('sitools.user.store.dataviews.AbstractDataviewStore', {
     autoLoad : true,
     pageSize : 300,
+    remoteSort : true,
 
     config : {
         // Object definition of the filters
@@ -71,7 +72,9 @@ Ext.define('sitools.user.store.dataviews.AbstractDataviewStore', {
         // Object of string parameters corresponding to the concept filters definition
         formConceptParams : null,
         // Object definition of the ranges to query (prior to a selection, used for plot for instance)
-        ranges : null
+        ranges : null,
+        // Object definition of the sort
+        sortInfo : null
     },
     
     paramPrefix : "filter",
@@ -83,6 +86,10 @@ Ext.define('sitools.user.store.dataviews.AbstractDataviewStore', {
 
         if (!Ext.isEmpty(this.getFormConceptFilters())) {
             this.setFormConceptParams(this.buildFormParamsUrl(this.getFormConceptFilters(), "c"));
+        }
+
+        if(!Ext.isEmpty(this.getSortInfo())) {
+            this.sorters = this.convertSorters(this.getSortInfo());
         }
 
         Ext.apply(config, {
@@ -110,6 +117,20 @@ Ext.define('sitools.user.store.dataviews.AbstractDataviewStore', {
                 }
             }
         });
+    },
+
+    convertSorters : function (sorters) {
+        var min = [],
+            length = sorters.length,
+            i = 0;
+
+        for (; i < length; i++) {
+            min[i] = {
+                property : sorters[i].field,
+                direction: sorters[i].direction
+            };
+        }
+        return min;
     },
 
     onBeforeLoad : function (store, operation) {
@@ -155,7 +176,7 @@ Ext.define('sitools.user.store.dataviews.AbstractDataviewStore', {
         }
     },
 
-    
+
     setCustomUrl : function (url) {
         this.getProxy().url = url;
     },

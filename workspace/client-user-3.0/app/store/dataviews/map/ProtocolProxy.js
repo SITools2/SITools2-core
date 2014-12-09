@@ -28,7 +28,8 @@ Ext.define('sitools.user.store.dataviews.map.ProtocolProxy', {
 
     requires : [
         'sitools.user.store.dataviews.map.FormatGeoJson',
-        'sitools.user.store.dataviews.map.ProtocolHttp'],
+        'sitools.user.store.dataviews.map.ProtocolHttp',
+        'sitools.user.store.dataviews.map.SitoolsFeatureReader'],
 
     constructor : function (config) {
         Ext.apply(this, {
@@ -45,9 +46,10 @@ Ext.define('sitools.user.store.dataviews.map.ProtocolProxy', {
                 })
             }),
             reader: {
-                type: 'feature',
+                type: 'sitoolsfeaturereader',
                 idProperty: 'identifier',
-                totalProperty: config.totalProperty
+                totalProperty: config.totalProperty,
+                root : 'features'
             },
             encodeSorters: function (sorters) {
                 var min = [],
@@ -65,5 +67,36 @@ Ext.define('sitools.user.store.dataviews.map.ProtocolProxy', {
         });
 
         this.callParent([config]);
+    },
+
+    /**
+     * Handle response from the protocol.
+     *
+     * @param {Object} o
+     * @param {OpenLayers.Protocol.Response} response
+     * @private
+     */
+    loadResponse: function(o, response) {
+        var me = this;
+        var operation = o.operation;
+        var scope = o.request.scope;
+        var callback = o.request.callback;
+        if (response.success()) {
+            var result = o.reader.read(response);
+            Ext.apply(operation, {
+                response: response,
+                resultSet: result
+            });
+
+            operation.commitRecords(result.records);
+            operation.setCompleted();
+            operation.setSuccessful();
+        } else {
+            me.setException(operation, response);
+            me.fireEvent('exception', this, response, operation);
+        }
+        if (typeof callback == 'function') {
+            callback.call(scope || me, operation);
+        }
     }
 });

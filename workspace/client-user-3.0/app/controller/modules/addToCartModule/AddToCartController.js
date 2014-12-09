@@ -158,7 +158,7 @@ Ext.define('sitools.user.controller.modules.addToCartModule.AddToCartController'
             nbRecordsSelection : selected.get('nbRecords'),
             gridFilters : selected.get('gridFilters'),
             gridFiltersCfg : selected.get('gridFiltersCfg'),
-            sortInfo : selected.get('sortInfo'),
+            sortInfo : Ext.JSON.decode(selected.get('sortInfo')),
             formFilters : selected.get('formFilters'),
             isModifySelection : true,
             formConceptFilters : selected.get("formConceptFilters")

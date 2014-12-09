@@ -57,7 +57,7 @@ Ext.define('sitools.user.view.component.datasets.services.SorterServiceView', {
             padding : 5,
             forceFit : true,
             border : false,
-            bodyBorder : false,
+            bodyBorder : false
         });
         // var sorters = this.store.getSortState(), len;
         var sorters = this.store.sorters, len;

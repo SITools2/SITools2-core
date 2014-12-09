@@ -271,7 +271,7 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
             preferencesPath : view.preferencesPath, 
             preferencesFileName : view.preferencesFileName,
             datasetName : view.dataset.name, 
-            colModel : extColModelToJsonColModel(view.columns), 
+            colModel : extColModelToJsonColModel(view.getColumns()),
             datasetView : this.$className,
             dictionaryMappings : view.dataset.dictionaryMappings,
             componentClazz : view.componentClazz,

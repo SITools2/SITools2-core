@@ -57,15 +57,30 @@ Ext.define('sitools.admin.common.FormParametersConfigUtil', {
         this.items = [ this.parametersFieldset ],
         this.isRenderer = true;
 
-        sitools.admin.common.FormParametersConfigUtil.superclass.initComponent.call(this);
+        this.callParent(arguments);
     },
 
+    addDefaultParameter: function (param) {
+// on charge les parametres par défaut définis dans le
+        // projectModule
+        // var parameterValue =
+        // this.findDefaultParameterValue(param);
+        var config = Ext.applyIf(param.config, {
+            anchor: "100%"
+        });
+
+        var p = Ext.create(param.jsObj, config);
+        // if (!Ext.isEmpty(parameterValue)) {
+        // p.setValue(parameterValue);
+        // }
+        this.parametersFieldset.add(p);
+    },
     buildViewConfig : function (recSelected) {
         this.parametersFieldset.removeAll();
-            
-        //try {
+
+        try {
             Ext.syncRequire(recSelected.xtype, function(classz) {
-                    if(Ext.isEmpty(classz)){
+                if(Ext.isEmpty(classz)){
                         this.parametersFieldset.add({
                             xtype : 'label',
                             html : '<h2 style="text-align:center;">'+ i18n.get('label.cannotLoadClass')+ '</h2>'
@@ -94,11 +109,12 @@ Ext.define('sitools.admin.common.FormParametersConfigUtil', {
                         this.parametersFieldset.setVisible(true);
                     }
                     Ext.each(parameters, function (param) {
-                        
                         if (!Ext.isEmpty(this.parametersList)) {
+                            var userConfig = false;
                             // on recharge les parametres définis par l'utilisateur
                             Ext.iterate(this.parametersList, function (cmp) {
                                 if (cmp.name == param.config.name) {
+                                    userConfig = true;
                                     var customValue = cmp.value;
                                     var config = Ext.applyIf(param.config, {
                                         anchor : "100%"
@@ -111,34 +127,26 @@ Ext.define('sitools.admin.common.FormParametersConfigUtil', {
                                     this.parametersFieldset.add(p);
                                 }
                             }, this);
+
+                            if (!userConfig) {
+                                this.addDefaultParameter(param);
+                            }
                         } else {
-                            // on charge les parametres par défaut définis dans le
-                            // projectModule
-                            // var parameterValue =
-                            // this.findDefaultParameterValue(param);
-                            var config = Ext.applyIf(param.config, {
-                                anchor : "100%"
-                            });
-                            
-                            var p = Ext.create(param.jsObj, config);
-                            // if (!Ext.isEmpty(parameterValue)) {
-                            // p.setValue(parameterValue);
-                            // }
-                            this.parametersFieldset.add(p);
+                            this.addDefaultParameter(param);
                         }
                         
                     }, this);
             }, this);
-//        } catch (err) {
-//            this.parametersFieldset.add({
-//                xtype : 'label',
-//                html : '<h2 style="text-align:center;">'+ i18n.get('label.error.creating.form.parameter')+ '</h2>'
-//            });
-//            throw err;
-//            // Ext.Msg.alert(i18n.get('label.error'),
-//            // i18n.get('label.notImplementedMethod'));
-//            // return;
-//        }
+        } catch (err) {
+            this.parametersFieldset.add({
+                xtype : 'label',
+                html : '<h2 style="text-align:center;">'+ i18n.get('label.error.creating.form.parameter')+ '</h2>'
+            });
+            throw err;
+            // Ext.Msg.alert(i18n.get('label.error'),
+            // i18n.get('label.notImplementedMethod'));
+            // return;
+        }
             
     },
 

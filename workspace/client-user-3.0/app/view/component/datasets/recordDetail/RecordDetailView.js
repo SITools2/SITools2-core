@@ -77,8 +77,14 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
 					Ext.Msg.alert(i18n.get('label.error'), i18n.get('label.noSelection'));
 					return;
 		        }
-		        
-		        this.recSelected = this.grid.getStore().getAt(selectedLines[0]);
+
+				var record = selectedLines[0];
+				if(Ext.isNumber(record)) {
+					this.recSelected = this.grid.getStore().getAt(record);
+				} else {
+					this.recSelected = record;
+				}
+
 		        var primaryKeyValue = "", primaryKeyName = "";
 		        Ext.each(this.recSelected.fields.items, function (field) {
 		            if (field.primaryKey) {

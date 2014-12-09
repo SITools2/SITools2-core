@@ -223,7 +223,7 @@ Ext.define('sitools.user.utils.DatasetUtils', {
                     sitoolsController.openSimpleWindow(view, windowConfig);
 					break;
 				case "data" : 
-                    sitools.user.utils.DatasetUtils.showDataset(dataset);    
+                    sitools.user.utils.DatasetUtils.showDataset(dataset, extraCmpConfig);
 					break;
 				case "forms" : 
 		            
@@ -255,7 +255,7 @@ Ext.define('sitools.user.utils.DatasetUtils', {
 										menuForms.add({
 											text : form.name, 
 											handler : function () {
-											    sitools.user.utils.DatasetUtils.showForm(form, dataset);
+											    sitools.user.utils.DatasetUtils.showForm(form, dataset, extraCmpConfig);
 											}, 
 											icon : loadUrl.get('APP_URL') + "/common/res/images/icons/tree_forms.png"
 										});

@@ -78,7 +78,7 @@ Ext.define('sitools.user.component.datasets.services.DisplaySelectionCartService
 			nbRecordsSelection : selection.nbRecords,
 			gridFilters : selection.gridFilters,
 			gridFiltersCfg : selection.gridFiltersCfg,
-			sortInfo : selection.sortInfo,
+			sortInfo : Ext.JSON.decode(selection.sortInfo),
 			formParams : selection.formParams,
 			isModifySelection : true
 		};

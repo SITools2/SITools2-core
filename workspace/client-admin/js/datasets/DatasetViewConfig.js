@@ -30,7 +30,8 @@ Ext.namespace('sitools.admin.datasets');
  */
 Ext.define('sitools.admin.datasets.DatasetViewConfig', { 
     extend : 'Ext.form.Panel',
-    padding : 10, 
+    padding : 10,
+    autoScroll : true,
     initComponent : function () {
         this.title = i18n.get('label.viewConfig');
 
@@ -131,7 +132,7 @@ Ext.define('sitools.admin.datasets.DatasetViewConfig', {
             }
         });
         
-        sitools.admin.datasets.DatasetViewConfig.superclass.initComponent.call(this);
+        this.callParent(arguments);
 
 
     }, 

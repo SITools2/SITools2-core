@@ -304,7 +304,10 @@ Ext.define('sitools.user.component.datasets.services.AddToCartService', {
 	 */
 	_addSelection : function(selections, grid, datasetId) {
 		var primaryKey = grid.component.getPrimaryKey();
-		var rec = grid.store.getAt(selections[0]);
+        var rec = selections[0];
+        if(Ext.isNumber(rec)){
+            rec = grid.store.getAt(selections[0]);
+        }
 		if (Ext.isEmpty(primaryKey) || Ext.isEmpty(rec.get(primaryKey))) {
 			Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noPrimaryKey'));
 			return;
@@ -348,7 +351,6 @@ Ext.define('sitools.user.component.datasets.services.AddToCartService', {
 				selections : this.dataview.getRequestUrlWithoutColumnModel(),
 				ranges : Ext.JSON.encode(this.dataview.getSelectionsRange()),
 				dataToExport : dataToExport,
-				startIndex : this.dataview.getStore().lastRequestStart,
 				nbRecords : this.dataview.getNbRowsSelected(),
 				orderDate : orderDateStr,
 				colModel : colModel

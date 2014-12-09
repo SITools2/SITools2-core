@@ -32,6 +32,7 @@
  * @requires sitools.user.component.datasets.mainContainer
  */
 Ext.define('sitools.user.view.component.datasets.dataviews.AbstractDataview', {
+    componentType : 'datasetView',
 
     //generic method
     getNbRowsSelected : Ext.EmptyFn,

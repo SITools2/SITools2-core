@@ -79,10 +79,10 @@ Ext.define('sitools.user.controller.component.datasets.services.SorterServiceCon
                             direction = null;
                         }
                     });
-                    
+
                     view.store.sorters.clear();
                     if (sorters.length < 1) {
-                        view.store.reload();
+                        view.store.load();
                     } else if (sorters.length === 1) {
                         view.store.sort(sorters[0].property, sorters[0].direction);
                     } else {

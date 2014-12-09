@@ -38,6 +38,8 @@ Ext.define('sitools.user.controller.component.datasets.services.FilterServiceCon
                 'sitools.public.widget.sitoolsFilter.FiltersCollection',
                 'sitools.public.widget.sitoolsFilter.DateFilter',
                 'sitools.public.widget.sitoolsFilter.NumericFilter'],
+
+    paramPrefix : "filter",
     
     init : function () {
         this.control({
