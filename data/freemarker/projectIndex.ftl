@@ -38,6 +38,7 @@
 	<link rel="stylesheet" type="text/css" href="${appUrl}/client-public/res/css/main.css"></link>
 	<link rel="stylesheet" type="text/css" href="${appUrl}/client-public/res/css/feed.css"></link>
 	<link rel="stylesheet" type="text/css" href="${appUrl}/client-public/res/css/statusbar.css">
+	<link rel="stylesheet" type="text/css" href="${appUrl}/client-public/res/css/formComponents.css"></link>
 
 	<!--
     <link rel="stylesheet" type="text/css" href="${appUrl}/client-public/js/widgets/notification/css/Notification.css">

@@ -6,7 +6,7 @@
   <jsAdminObject>sitools.admin.forms.componentsAdminDef.oneParam.NoValuesWithProperties</jsAdminObject>
   <jsUserObject>sitools.public.forms.components.MapPanel</jsUserObject>
   <fileUrlAdmin>/sitools/client-admin/js/forms/componentsAdminDef/OneParam/NoValuesWithProperties.js</fileUrlAdmin>
-  <fileUrlUser>/sitools/client-public/js/forms/components/mapPanel.js</fileUrlUser>
+  <fileUrlUser>/sitools/client-public/js/forms/components/MapPanel.js</fileUrlUser>
   <imageUrl>/sitools/client-public/res/images/formComponents/mapPanel.png</imageUrl>
   <priority>2</priority>
 </formComponent>

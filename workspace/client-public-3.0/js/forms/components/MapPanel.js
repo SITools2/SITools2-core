@@ -28,10 +28,11 @@ Ext.ns('sitools.public.forms.components');
  * @class sitools.public.forms.components.mapPanel
  * @extends Ext.Container
  */
-Ext.define('sitools.public.forms.components.mapPanel', {
+Ext.define('sitools.public.forms.components.MapPanel', {
     extend : 'Ext.Container',
     requires : ['sitools.public.forms.ComponentFactory'],
     alternateClassName : ['sitools.common.forms.components.mapPanel'],
+
 	defaultLayers : ["basic"], 
 	defaultWmsUrl : "http://vmap0.tiles.osgeo.org/wms/vmap0",
 	
@@ -74,12 +75,12 @@ Ext.define('sitools.public.forms.components.mapPanel', {
 		
 		map.addLayer(vectorLayer);
 		
-		map.addControl(new OpenLayers.Control.MouseToolbar());
+		map.addControl(new OpenLayers.Control.NavToolbar());
 		map.addControl(new OpenLayers.Control.MousePosition());
 		
 		var action, actions = {}, toolbarItems = [];
 		
-	    action = new GeoExt.Action({
+	    action = Ext.create("GeoExt.Action", {
 	        text: i18n.get('label.navigate'),
 	        iconCls: 'btn-navigate', 
 	        control: new OpenLayers.Control.Navigation(),
@@ -95,7 +96,7 @@ Ext.define('sitools.public.forms.components.mapPanel', {
 	        group: "draw"
 	    });
 	    actions["nav"] = action;
-	    toolbarItems.push(action);
+	    toolbarItems.push(Ext.create('Ext.button.Button', action));
 	    
         
         var ctrl_draw = new OpenLayers.Control.DrawFeature(
@@ -104,20 +105,21 @@ Ext.define('sitools.public.forms.components.mapPanel', {
 	            	"create" : function () {
 	            		this.layer.removeAllFeatures();
 	            	}
-	            }, 
+	            },
 	            handlerOptions : {
-	            	sides : 4, 
+	            	sides : 4,
 	            	irregular : true
 	            }
     		}
         );
         map.addControl(ctrl_draw);
-        
-	    action = new GeoExt.Action({
+
+	    action = Ext.create("GeoExt.Action", {
 	        text: i18n.get('label.drawPoly'),
-	        iconCls: 'btn-drawPoly', 
+	        iconCls: 'btn-drawPoly',
 	        control: ctrl_draw,
 	        map: map,
+			width : 150,
 	        // button options
 	        toggleGroup: "draw",
 	        enableToggle : true,
@@ -127,12 +129,13 @@ Ext.define('sitools.public.forms.components.mapPanel', {
 	        group: "draw"
 	    });
 	    actions["draw_poly"] = action;
-	    toolbarItems.push(action);
-	    
-	    action = new GeoExt.Action({
+		toolbarItems.push(Ext.create('Ext.button.Button', action));
+
+	    action = Ext.create("GeoExt.Action", {
 	        text: i18n.get('label.clearPoly'),
 	        tooltip: i18n.get('label.clearPoly'),
-	        iconCls: 'btn-clearPoly', 
+	        iconCls: 'btn-clearPoly',
+			width : 150,
 	        map: map,
 	        scope : this,
 	        handler : function (btn , e){
@@ -140,22 +143,19 @@ Ext.define('sitools.public.forms.components.mapPanel', {
 	        }
 	    });
 	    actions["clear_poly"] = action;
-	    toolbarItems.push(action);
+		toolbarItems.push(Ext.create('Ext.button.Button', action));
 
 	    var ctrl_drag = new OpenLayers.Control.DragFeature(vectorLayer);
-	    
+
 	    map.addControl(ctrl_drag);
 	    ctrl_drag.activate();
-	    this.mapPanel = new GeoExt.MapPanel({
+	    this.mapPanel = Ext.create("GeoExt.panel.Map", {
 	        height: 300,
 	        width: 300,
 	        map: map,
 	        center: new OpenLayers.LonLat(5, 45),
 	        zoom: 4, 
-	        tbar : new Ext.Toolbar({
-	        	defaults : {
-	        		width : 100
-	        	}, 
+	        tbar : Ext.create("Ext.toolbar.Toolbar", {
 	        	items : toolbarItems
 	        })
 	    });
@@ -175,7 +175,16 @@ Ext.define('sitools.public.forms.components.mapPanel', {
 	        	}
 	        }
         });
-        sitools.public.forms.components.mapPanel.superclass.initComponent.apply(this, arguments);
+
+		if (this.action === "create") {
+			for (var i = 0; i < map.controls.length; i++) {
+				if (map.controls[i].displayClass == "olControlNavigation") {
+					map.controls[i].deactivate();
+				}
+			}
+		}
+
+        this.callParent(arguments);
     },
 
     getSelectedValue : function () {
@@ -198,7 +207,6 @@ Ext.define('sitools.public.forms.components.mapPanel', {
 	    	code : this.code, 
 	    	value : value.left + "," + value.bottom + "," + value.right + "," + value.top
 	    };
-//      	return this.type + "|" + this.code + "|" + value.left + "," + value.bottom + "," + value.right + "," + value.top;
 
     }
 });

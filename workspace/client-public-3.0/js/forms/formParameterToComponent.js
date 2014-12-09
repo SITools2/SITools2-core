@@ -59,6 +59,7 @@ Ext.define('sitools.public.forms.formParameterToComponent', {
             datasetCm : datasetCm, 
             context : context,
             form : form,
+            action : "create"
     //        padding : 5
     	});
 	

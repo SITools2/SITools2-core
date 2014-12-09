@@ -47,6 +47,7 @@
     -->
    	<link rel="stylesheet" type="text/css" href="${appUrl}/client-public/res/css/combo.css"></link>
     <link rel="stylesheet" type="text/css" href="${appUrl}/client-public/res/css/main.css"></link>
+	<link rel="stylesheet" type="text/css" href="${appUrl}/client-public/res/css/formComponents.css"></link>
 	
 	<link rel="stylesheet" type="text/css" href="res/css/quickStart.css"></link>
 	<link rel="stylesheet" type="text/css" href="${appUrl}/client-public/js/ux/slider/css/SliderRange.css"></link>

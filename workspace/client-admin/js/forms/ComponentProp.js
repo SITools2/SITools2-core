@@ -119,13 +119,13 @@ Ext.define('sitools.admin.forms.ComponentProp', {
         }
 
         this.items = [ this.componentProp ];
-        
-        sitools.admin.forms.ComponentProp.superclass.initComponent.call(this);
+
+        this.callParent(arguments);
     },
     afterRender : function () {
         this.height = this.specificHeight;
         this.width = this.specificWidth;
-        sitools.admin.forms.ComponentProp.superclass.afterRender.call(this);
+        this.callParent(arguments);
     },
 
     onValidate : function () {

@@ -138,14 +138,14 @@ Ext.define('sitools.user.controller.component.form.FormController', {
         },this);
         
         if (!valid) {
-            me.down('toolbar').setStatus({
+            me.down('toolbar#formStatusBar').setStatus({
                 text : i18n.get('label.checkformvalue'),
                 iconCls : 'x-status-error'
             });
-            me.down('toolbar').setVisible(true);    
+            me.down('toolbar#formStatusBar').setVisible(true);
             return;
         } else {
-            me.down('toolbar').setVisible(false);
+            me.down('toolbar#formStatusBar').setVisible(false);
         }
         //Execute a request to get the dataset config 
         Ext.Ajax.request({

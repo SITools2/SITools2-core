@@ -151,10 +151,10 @@ Ext.define('sitools.admin.forms.componentsAdminDef.multiParam.Abstract', {
 
         this.padding = 10;
 
-        sitools.admin.forms.componentsAdminDef.multiParam.Abstract.superclass.initComponent.call(this);
+        this.callParent(arguments);
     },
     afterRender : function () {
-        sitools.admin.forms.componentsAdminDef.multiParam.Abstract.superclass.afterRender.apply(this, arguments);
+        this.callParent(arguments);
         if (this.action == 'modify') {
             this.labelParam1.setValue(this.selectedRecord.data.label);
             this.css.setValue(this.selectedRecord.data.css);

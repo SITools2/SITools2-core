@@ -100,7 +100,7 @@ Ext.define('sitools.admin.forms.AdvancedFormPanel', {
     },
 
     afterRender : function () {
-        sitools.admin.forms.AdvancedFormPanel.superclass.afterRender.apply(this, arguments);
+        this.callParent(arguments);
 
         var ddGroup = this.ddGroup;
         var datasetColumnModel = this.datasetColumnModel;

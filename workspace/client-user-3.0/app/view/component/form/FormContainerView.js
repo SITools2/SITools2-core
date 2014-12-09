@@ -54,7 +54,13 @@ Ext.define('sitools.user.view.component.form.FormContainerView', {
             autoScroll : true,
 
             /** The parameters retrieved from server. * */
-            parameters : []
+            parameters : [],
+            bbar : Ext.create("sitools.public.widget.StatusBar", {
+                text : i18n.get('label.ready'),
+                iconCls : 'x-status-valid',
+                hidden : true,
+                itemId : 'formStatusBar'
+            })
         });
         
         this.addEvents(

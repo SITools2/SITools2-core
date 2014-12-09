@@ -73,7 +73,7 @@ Ext.define('sitools.admin.forms.AbsoluteLayoutProp', {
             handler : this._onCancel
         }];
         
-        sitools.admin.forms.AbsoluteLayoutProp.superclass.initComponent.call(this);
+        this.callParent(arguments);
 
     },
     _onValidate : function () {
