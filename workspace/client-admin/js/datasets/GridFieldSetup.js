@@ -327,6 +327,18 @@ Ext.define('sitools.admin.datasets.GridFieldSetup', {
                 text : i18n.get('label.deleteUnit'),
                 icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/refresh_clue.png',
                 handler : this.onDeleteUnit
+            }, {
+                xtype: 'menuseparator'
+            }, {
+                text : i18n.get('label.setAllVisible'),
+                iconCls : "x-form-checkbox",
+                cls : 'x-form-cb-checked',
+                handler : this.onSetAllVisible
+            }, {
+                text : i18n.get('label.setAllInvisible'),
+                iconCls : "x-form-checkbox",
+                cls : 'x-form-cb-unchecked',
+                handler : this.onSetAllInvisible
             }]
         });
         
@@ -470,7 +482,21 @@ Ext.define('sitools.admin.datasets.GridFieldSetup', {
         // clear the notion
         rec.set("unit", null);
         rec.set("dimensionId", null);
-    }, 
+    },
+
+    onSetAllVisible : function () {
+        this.toggleAllVisible(true);
+    },
+    onSetAllInvisible : function () {
+        this.toggleAllVisible(false);
+    },
+
+    toggleAllVisible : function (visible) {
+        var store = this.getStore();
+        store.each(function(record) {
+            record.set("visible", visible);
+        });
+    },
     /**
      * Remove all records and adds records to the store with a columnModel.
      * @param Ext.grid.ColumnModel columnModel

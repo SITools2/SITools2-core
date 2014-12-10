@@ -89,8 +89,8 @@ Ext.define('sitools.user.core.Project', {
 //                    topEl.update(Ext.util.Format.htmlDecode(data.project.htmlHeader));
             },
             failure : function (response, opts) {
+                Ext.getBody().unmask();
                 if (response.status === 403) {
-                    Ext.getBody().unmask();
                     Ext.MessageBox.buttonText.ok = i18n.get('label.login');
                     Ext.Msg.show({
                         title : i18n.get('label.information'),
@@ -110,13 +110,28 @@ Ext.define('sitools.user.core.Project', {
                         }
                     });
                 }
+                if (response.status === 503) {
+                    Ext.MessageBox.buttonText.ok = i18n.get('label.login');
+                    Ext.Msg.show({
+                        title : i18n.get('label.information'),
+                        msg : i18n.get('label.projectinactive'),
+                        width : 350,
+                        icon : Ext.MessageBox.WARNING,
+                        closable : false
+                    });
+                }
                 else {
                     Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noProjectError'));
                 }
             },
             callback : function (opts, success, response) {
             	if (success) {
-            		this.initPreferences(callback, scope);
+                    var project = Ext.decode(response.responseText).project;
+                    if(project.maintenance) {
+                        this.showMaintenance(project);
+                    } else {
+                        this.initPreferences(callback, scope);
+                    }
             	}
             }
         });
@@ -197,6 +212,32 @@ Ext.define('sitools.user.core.Project', {
                 callback : cb
             });   
         }
+    },
+
+    showMaintenance : function (project) {
+        Ext.getBody().unmask();
+        var maintenanceText = project.maintenanceText;
+        if(Ext.isEmpty(maintenanceText)) {
+            maintenanceText = i18n.get("label.defaultMaintenance.text");
+        }
+        var alertWindow = Ext.create("Ext.window.Window", {
+            title : i18n.get('label.maintenance'),
+            width : 600,
+            height : 400,
+            autoScroll : true,
+            closable : false,
+            items : [{
+                border : false,
+                xtype : 'panel',
+                layout : 'fit',
+                autoScroll : true,
+                html : maintenanceText,
+                padding : "5"
+            }],
+            modal : true
+        });
+        alertWindow.show();
+        return;
     }
     
 });

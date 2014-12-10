@@ -97,7 +97,7 @@ public final class PortalProjectResource extends SitoolsResource {
       getResponse().setStatus(Status.CLIENT_ERROR_FORBIDDEN);
     }
     else if (!"ACTIVE".equals(project.getStatus())) {
-      getResponse().setStatus(Status.CLIENT_ERROR_FORBIDDEN);
+      getResponse().setStatus(Status.SERVER_ERROR_SERVICE_UNAVAILABLE);
     }
     else {
       project.setAuthorized(true);

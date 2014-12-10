@@ -133,6 +133,7 @@ Ext.define('sitools.admin.Application', {
     
 
     launch : function () {
+        sitools.admin.def.init();
         loadUrl.load('/sitools/client-admin/siteMap', function () {
             i18n.load(loadUrl.get("APP_URL") + loadUrl.get("APP_CLIENT_PUBLIC_URL") + '/res/i18n/' + LOCALE + '/gui.properties', function () {
                 Ext.MessageBox.buttonText.yes = i18n.get('label.yes');

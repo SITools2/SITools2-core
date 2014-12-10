@@ -192,6 +192,6 @@ Ext.define('sitools.clientportal.view.portal.PortalDropZone', {
     // unregister the dropzone from ScrollManager
     unreg: function() {
         Ext.dd.ScrollManager.unregister(this.portal.body);
-        Ext.app.PortalDropZone.superclass.unreg.call(this);
+        this.callParent(arguments);
     }
 });

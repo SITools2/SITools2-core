@@ -19,7 +19,12 @@
 /*global Ext, sitools, ID, i18n, document, Digest, window*/
 
 Ext.define("sitools.admin.def",{
-    singleton : true
+    singleton : true,
+    require : ["sitools.public.utils.LoginDef"],
+
+    init : function () {
+        Ext.Ajax.on('requestexception', onRequestException, this);
+    }
 });
 
 
@@ -61,8 +66,6 @@ Ext.Ajax.defaultHeaders = {
     "Accept" : "application/json",
     "X-User-Agent" : "Sitools"
 };
-
-Ext.Ajax.on('requestexception', onRequestException, this);
 
 var helpUrl;
 Ext.BLANK_IMAGE_URL = '/sitools/client-public/cots/'+EXT_JS_FOLDER+'/resources/themes/images/default/tree/s.gif';

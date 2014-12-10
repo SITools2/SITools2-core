@@ -1,17 +1,17 @@
 /*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
- * 
+ *
  * This file is part of SITools2.
- * 
+ *
  * SITools2 is free software: you can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * SITools2 is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
  * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * SITools2. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
@@ -28,38 +28,38 @@ Ext.namespace('sitools.public.userProfile');
  */
 
 Ext.define('sitools.public.userProfile.Login', {
-    extend : 'Ext.window.Window',
-    alias : 'widget.s-login',
-    id : 'winLogin',
-    width : 392,
-    height : 200,
-    draggable : false,
-    resizable : false,
-    closable : false,
-    modal : true,
-    layout : 'fit',
-    
-    initComponent : function () {
+    extend: 'Ext.window.Window',
+    alias: 'widget.s-login',
+    id: 'winLogin',
+    width: 420,
+    height: 200,
+    draggable: false,
+    resizable: false,
+    closable: false,
+    modal: true,
+    layout: 'fit',
+
+    initComponent: function () {
         this.title = i18n.get('label.login');
         this.iconCls = 'userPersonalIcon';
-        
+
         this.combo = Ext.create('Ext.form.field.ComboBox', {
-            typeAhead : true,
-            triggerAction : 'all',
-            forceSelection : true,
-            allowBlank : false,
-            queryMode : 'local',
-            store : Ext.create('Ext.data.ArrayStore', {
-                id : 0,
-                fields : [ 'myId', 'displayText' ],
-                data : [ [ 1, i18n.get('label.userPortal') ], [ 2, i18n.get('label.administration') ] ]
+            typeAhead: true,
+            triggerAction: 'all',
+            forceSelection: true,
+            allowBlank: false,
+            queryMode: 'local',
+            store: Ext.create('Ext.data.ArrayStore', {
+                id: 0,
+                fields: ['myId', 'displayText'],
+                data: [[1, i18n.get('label.userPortal')], [2, i18n.get('label.administration')]]
             }),
-            valueField : 'myId',
-            displayField : 'displayText',
-            anchor : '80%',
-            value : 1,
-            fieldLabel : i18n.get('label.target'),
-            hideLabel : true
+            valueField: 'myId',
+            displayField: 'displayText',
+            anchor: '80%',
+            value: 1,
+            fieldLabel: i18n.get('label.target'),
+            hideLabel: true
         });
         if (this.chooseLocation) {
             this.combo.setVisible(true);
@@ -67,108 +67,108 @@ Ext.define('sitools.public.userProfile.Login', {
         } else {
             this.combo.setVisible(false);
         }
-        
+
         this.items = [{
-            xtype : 'form',
-            border : false,
-            buttonAlign : 'center',
-            id : 'frmLogin',
-            labelWidth : 100,
-            padding : "10px 10px 0px 50px",
-            items : [{
-                xtype : 'textfield',
-                fieldLabel : i18n.get('label.login'),
-                name : 'login',
-                id : 'logId',
-                allowBlank : false,
-                anchor : '80%',
-                listeners : {
-                    scope : this,
-                    afterrender : function (textfield) {
+            xtype: 'form',
+            border: false,
+            buttonAlign: 'center',
+            id: 'frmLogin',
+            labelWidth: 100,
+            padding: "10px 10px 0px 50px",
+            items: [{
+                xtype: 'textfield',
+                fieldLabel: i18n.get('label.login'),
+                name: 'login',
+                id: 'logId',
+                allowBlank: false,
+                anchor: '80%',
+                listeners: {
+                    scope: this,
+                    afterrender: function (textfield) {
                         Ext.defer(textfield.focus, 500, textfield);
                     }
                 }
             }, {
-                xtype : 'textfield',
-                fieldLabel : i18n.get('label.password'),
-                name : 'password',
-                id : 'pwdId',
-                allowBlank : false,
-                inputType : 'password',
-                anchor : '80%',
-                listeners : {
-                    scope : this,
-                    specialkey : function (field, e) {
+                xtype: 'textfield',
+                fieldLabel: i18n.get('label.password'),
+                name: 'password',
+                id: 'pwdId',
+                allowBlank: false,
+                inputType: 'password',
+                anchor: '80%',
+                listeners: {
+                    scope: this,
+                    specialkey: function (field, e) {
                         if (e.getKey() == e.ENTER) {
                             this.getAuth();
                         }
                     }
                 }
-            }, this.combo ],
-            buttons : {
-                xtype : 'toolbar',
-                style : 'background-color:white;',
-                items : [{
-                    text : i18n.get('label.login'),
-                    iconCls : 'loginIcon',
-                    handler : this.getAuth,
-                    scope : this,
-                    border : false,
-                    bodyBorder : false,
-                    plain : true,
-                    cls : 'x-custom-button-color'
+            }, this.combo],
+            buttons: {
+                xtype: 'toolbar',
+                style: 'background-color:white;',
+                items: [{
+                    text: i18n.get('label.login'),
+                    iconCls: 'loginIcon',
+                    handler: this.getAuth,
+                    scope: this,
+                    border: false,
+                    bodyBorder: false,
+                    plain: true,
+                    cls: 'x-custom-button-color'
                 }, {
-                    text : i18n.get('label.register'),
-                    hidden : !this.register,
-                    iconCls : 'registerIcon',
-                    scope : this,
-                    border : false,
-                    bodyBorder : false,
-                    cls : 'x-custom-button-color',
-                    handler : function () {
+                    text: i18n.get('label.register'),
+                    hidden: !this.register,
+                    iconCls: 'registerIcon',
+                    scope: this,
+                    border: false,
+                    bodyBorder: false,
+                    cls: 'x-custom-button-color',
+                    handler: function () {
                         this.close();
                         var register = Ext.create('sitools.public.userProfile.Register', {
-                            closable : this.closable,
-                            url : this.register,
-                            login : this.url,
-                            handler : this.handler,
-                            back : this
+                            closable: this.closable,
+                            url: this.register,
+                            login: this.url,
+                            handler: this.handler,
+                            back: this
                         });
                         register.show();
                     }
                 }]
             }
         }];
-        
+
         this.bbar = Ext.create('sitools.public.widget.StatusBar', {
-            text : i18n.get('label.ready'),
-            id : 'sbWinLogin',
-            iconCls : 'x-status-valid',
+            text: i18n.get('label.ready'),
+            id: 'sbWinLogin',
+            iconCls: 'x-status-valid',
 //            height : 40,
-            items : [ {
-                icon : loadUrl.get('APP_URL') + '/client-public/common/res/images/icons/wadl.png',
-                iconAlign : 'right',
-                text : i18n.get("label.needHelp"),
-                hidden : (!this.reset || !this.unblacklist),
-                scope : this,
-                handler : function () {
+            items: [{
+                icon: loadUrl.get('APP_URL') + '/client-public/common/res/images/icons/wadl.png',
+                iconAlign: 'right',
+                text: i18n.get("label.needHelp"),
+                hidden: (!this.reset || !this.unblacklist),
+                scope: this,
+                handler: function () {
                     this.close();
                     var reset = Ext.create('sitools.public.userProfile.lostPassword', {
-                        closable : this.closable,
-                        urlResetPassword : this.reset,
-                        urlUnblacklist : this.unblacklist,
-                        handler : this.handler,
-                        back : this
+                        closable: this.closable,
+                        urlResetPassword: this.reset,
+                        urlUnblacklist: this.unblacklist,
+                        handler: this.handler,
+                        back: this
                     });
                     reset.show();
-                }                
-            } ]
+                }
+            }]
         });
 
         this.callParent(arguments);
     },
 
-    getAuth : function () {
+    getAuth: function () {
         /*
          * var usr = Ext.getCmp('logId').getValue(); var pwd =
          * Ext.getCmp('pwdId').getValue(); var tok = usr + ':' + pwd; var hash =
@@ -186,22 +186,22 @@ Ext.define('sitools.public.userProfile.Login', {
         Ext.util.Cookies.set('nonce', "");
         Ext.util.Cookies.set('hashCode', "");
         Ext.apply(Ext.Ajax.defaultHeaders, {
-            "Authorization" : ""
+            "Authorization": ""
         });
 
         Ext.Ajax.request({
-            url : this.url,
-            method : 'GET',
-            scope : this,
-            success : function (response, opts) {
+            url: this.url,
+            method: 'GET',
+            scope: this,
+            success: function (response, opts) {
                 var Json = Ext.decode(response.responseText);
                 var date = new Date();
                 if (!Ext.isEmpty(Json.data)) {
                     if (Json.data.scheme == 'HTTP_Digest') {
                         var auth = new Digest({
-                            usr : Ext.getCmp('logId').getValue(),
-                            pwd : Ext.getCmp('pwdId').getValue(),
-                            realm : Json.data.realm
+                            usr: Ext.getCmp('logId').getValue(),
+                            pwd: Ext.getCmp('pwdId').getValue(),
+                            realm: Json.data.realm
                         });
                         var A1 = auth.getA1();
 
@@ -231,15 +231,15 @@ Ext.define('sitools.public.userProfile.Login', {
 
                 this.login();
             },
-            failure : alertFailure
+            failure: alertFailure
         });
 
     },
-    login : function () {
+    login: function () {
         if (!Ext.getCmp('frmLogin').getForm().isValid()) {
             Ext.getCmp('sbWinLogin').setStatus({
-                text : i18n.get('warning.checkForm'),
-                iconCls : 'x-status-error'
+                text: i18n.get('warning.checkForm'),
+                iconCls: 'x-status-error'
             });
             return;
         }
@@ -247,16 +247,16 @@ Ext.define('sitools.public.userProfile.Login', {
         Ext.getCmp('winLogin').body.mask();
         Ext.getCmp('sbWinLogin').showBusy();
         Ext.Ajax.request({
-            url : this.url,
-            method : 'GET',
-            scope : this,
-            doNotHandleRequestexception : true,
-            success : function (response, opts) {
+            url: this.url,
+            method: 'GET',
+            scope: this,
+            doNotHandleRequestexception: true,
+            success: function (response, opts) {
                 try {
                     var Json = Ext.decode(response.responseText);
                     if (Json.success) {
                         Ext.apply(Ext.Ajax.defaultHeaders, {
-                            "Authorization" : Ext.util.Cookies.get('hashCode')
+                            "Authorization": Ext.util.Cookies.get('hashCode')
                         });
 
                         Ext.getCmp('winLogin').close();
@@ -269,9 +269,9 @@ Ext.define('sitools.public.userProfile.Login', {
                                 // + hash;
                             } else {
                                 Ext.Ajax.request({
-                                    url : loadUrl.get('APP_URL') + '/login-redirect?kwd=/client-admin',
-                                    method : "GET",
-                                    success : function (response) {
+                                    url: loadUrl.get('APP_URL') + '/login-redirect?kwd=/client-admin',
+                                    method: "GET",
+                                    success: function (response) {
                                         Ext.Msg.alert('error login.js redirect with authorization');
                                     }
                                 });
@@ -282,18 +282,24 @@ Ext.define('sitools.public.userProfile.Login', {
 
                     } else {
                         sitools.public.utils.Logout.logout(false);
-                        
+
                         var txt = i18n.get('warning.serverError') + ': ' + Json.message;
                         Ext.getCmp('winLogin').body.unmask();
-                        Ext.getCmp('sbWinLogin').setStatus({ text : txt, iconCls : 'x-status-error' });
+                        Ext.getCmp('sbWinLogin').setStatus({text: txt, iconCls: 'x-status-error'});
 
                     }
                 } catch (err) {
                     Ext.Msg.alert(i18n.get('label.error'), err);
                 }
             },
-            callback : this.callback,
-            failure : function (response, opts) {
+            callback: function (options, success, response) {
+                if(success) {
+                    var ret = Ext.decode(response.responseText);
+                    var scope = (this.scope)?this.scope:this;
+                    Ext.callback(this.callback, scope, [ret.success]);
+                }
+            },
+            failure: function (response, opts) {
                 sitools.public.utils.Logout.logout(false);
 
                 var txt;
@@ -308,8 +314,8 @@ Ext.define('sitools.public.userProfile.Login', {
                 }
                 Ext.getCmp('winLogin').body.unmask();
                 Ext.getCmp('sbWinLogin').setStatus({
-                    text : txt,
-                    iconCls : 'x-status-error'
+                    text: txt,
+                    iconCls: 'x-status-error'
                 });
             }
         });

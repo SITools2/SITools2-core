@@ -274,3 +274,7 @@ pre {
 	-webkit-box-shadow: 1px 0px 4px 2px #5A5A5A;
 }
 
+.x-form-cb-unchecked .x-form-checkbox {
+	background-position: 0 0px;
+}
+

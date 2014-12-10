@@ -223,12 +223,16 @@ Ext.define('sitools.clientportal.controller.portal.PortalController', {
                 window.open(urlProject);
             }
             else {
+                if(Ext.isEmpty(maintenanceText)) {
+                    maintenanceText = i18n.get("label.defaultMaintenance.text");
+                }
                 var alertWindow = Ext.create('Ext.window.Window', {
                     title : i18n.get('label.maintenance'),
                     width : 600, 
                     height : 400, 
-                    autoScroll : true, 
+                    autoScroll : true,
                     items : [{
+                        border : false,
                         xtype : 'panel', 
                         layout : 'fit', 
                         autoScroll : true, 
@@ -247,8 +251,8 @@ Ext.define('sitools.clientportal.controller.portal.PortalController', {
                 reset : loadUrl.get('APP_URL') + '/lostPassword',
                 unblacklist : loadUrl.get('APP_URL') + '/unblacklist',
                 urlProject : urlProject,
-                callback : function () {
-                    if (!maintenance) {
+                callback : function (success) {
+                    if (success && !maintenance) {
                         window.open(urlProject);
                     }
                 }
