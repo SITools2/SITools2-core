@@ -49,8 +49,8 @@ Ext.define('sitools.user.modules.ContentEditor', {
             preferencesFileName : this.itemId
         };
 
-    },
-    
+    }
+
 });
 
 sitools.user.modules.ContentEditor.getParameters = function () {

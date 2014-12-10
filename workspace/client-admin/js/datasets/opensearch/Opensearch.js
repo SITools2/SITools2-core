@@ -259,7 +259,7 @@ Ext.define('sitools.admin.datasets.opensearch.Opensearch', {
                     data : this.solrTypeData
                 }),
                 valueField : 'textSolrType',
-                displayField : 'textSolrType',
+                displayField : 'textSolrType'
             },
             listeners : {
                 scope : this, 
@@ -304,7 +304,7 @@ Ext.define('sitools.admin.datasets.opensearch.Opensearch', {
             region : 'center',
             forceFit : true,
             viewConfig : {
-				autoFill : true,
+				autoFill : true
 //				getRowClass : function (row, index) {
 //					var cls = '';
 //					var data = row.data;

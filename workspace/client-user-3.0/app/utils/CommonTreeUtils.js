@@ -35,7 +35,7 @@ Ext.define('sitools.user.utils.CommonTreeUtils', {
             properties : {
                 dataset : dataset
             },
-            icon : loadUrl.get('APP_URL') + "/common/res/images/icons/tree_datasets.png", 
+            icon : loadUrl.get('APP_URL') + "/common/res/images/icons/tree_datasets.png"
         });
         
     },
@@ -246,7 +246,7 @@ Ext.define('sitools.user.utils.CommonTreeUtils', {
                             dataset : dataset,
                             form : form
                         },
-                        icon : loadUrl.get('APP_URL') + "/common/res/images/icons/tree_forms.png", 
+                        icon : loadUrl.get('APP_URL') + "/common/res/images/icons/tree_forms.png"
                     });
                 });
 

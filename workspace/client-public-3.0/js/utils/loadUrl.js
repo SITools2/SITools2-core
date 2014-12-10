@@ -69,7 +69,7 @@ Ext.define('sitools.public.utils.loadUrl', {
                     type: 'xml',
                     record : 'url',
                     idProperty : 'name'
-                },
+                }
             }
         });
 

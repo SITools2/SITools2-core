@@ -162,7 +162,7 @@ Ext.define('sitools.admin.datasource.mongoDb.RecordsPanel', {
                     win.show();
                     win.toFront();
                 }
-            }],
+            }]
 //            processEvent : function (name, evt, grid, rowIndex, colIndex) {
 //            processEvent : function (type, view, cell, recordIndex, cellIndex, evt, record, row) {
 //                if (Ext.getCmp("jsonDetailWin")) {

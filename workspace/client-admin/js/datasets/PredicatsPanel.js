@@ -163,7 +163,7 @@ Ext.define('sitools.admin.datasets.PredicatsPanel', {
             width : 50,
             sortable : false,
             dataIndex : 'opLogique',
-            editor : comboOl,
+            editor : comboOl
 //            renderer : Ext.util.Format.comboRenderer(comboOl)
 
         }, {
@@ -185,7 +185,7 @@ Ext.define('sitools.admin.datasets.PredicatsPanel', {
             width : 70,
             sortable : false,
             dataIndex : 'operateur',
-            editor : comboOp,
+            editor : comboOp
 //            renderer : Ext.util.Format.comboRenderer(comboOp)
 
         }, rightAttribute, {

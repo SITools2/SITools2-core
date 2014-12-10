@@ -50,7 +50,7 @@ Ext.define('sitools.admin.datasets.services.DatasetServicesCrud', {
     
     viewConfig : {
         autoFill : true,
-        allLoaded : false,
+        allLoaded : false
 //        getRowClass : function (row, index, rowParams, store) {
 //            var cls = '';
 //            if (this.allLoaded) {

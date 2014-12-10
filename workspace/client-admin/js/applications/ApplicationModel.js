@@ -62,5 +62,5 @@ Ext.define('sitools.admin.applications.ApplicationModel', {
     }, {
         name : 'wadl',
         type : 'string'
-    }],
+    }]
 });

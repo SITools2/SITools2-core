@@ -130,7 +130,7 @@ Ext.define('sitools.admin.filters.FiltersProp', {
             plugins : [expander],
             selModel : Ext.create('Ext.selection.RowModel',{
                 mode: 'SINGLE'
-            }),
+            })
 
         });
 

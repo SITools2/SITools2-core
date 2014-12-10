@@ -120,7 +120,7 @@ Ext.define('sitools.admin.menu.TreeMenu', {
                     xtype : 's-' + nodeName,
                     sitoolsType : "mainAdminPanel",
                     cls : "adminPanel"
-                }],
+                }]
 //	                idItem : nodeId
             } ], 
             listeners : {

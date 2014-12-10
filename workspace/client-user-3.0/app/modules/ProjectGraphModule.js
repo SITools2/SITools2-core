@@ -40,8 +40,8 @@ Ext.define('sitools.user.modules.ProjectGraphModule', {
                 jsObj : "Ext.form.Label",
                 config : {
                     text : i18n.get("label.projectGraphModuleConfiguration.help"),
-                    name : 'info',
-                    
+                    name : 'info'
+
                 },
                 getValue : function () {
                    return this.text;
@@ -65,35 +65,35 @@ Ext.define('sitools.user.modules.ProjectGraphModule', {
                         data : [{
                             label : i18n.get("label.records"),
                             columnName : 'records',
-                            selected : true,
+                            selected : true
                         }, {
                             label : i18n.get("label.image"),
                             columnName : 'image',
-                            selected : true,
+                            selected : true
                         }, {
                             label : i18n.get("label.records"),
                             columnName : 'description',
-                            selected : true,
+                            selected : true
                         }, {
                             label : i18n.get("label.descriptionMini"),
                             columnName : 'description',
-                            selected : true,
+                            selected : true
                         }, {
                             label : i18n.get("label.data"),
                             columnName : 'data',
-                            selected : true,
+                            selected : true
                         }, {
                             label : i18n.get("label.definitionMini"),
                             columnName : 'definition',
-                            selected : true,
+                            selected : true
                         }, {
                             label : i18n.get("label.feeds"),
                             columnName : 'feeds',
-                            selected : true,
+                            selected : true
                         },{
                             label : i18n.get("label.opensearchMini"),
                             columnName : 'opensearch',
-                            selected : true,
+                            selected : true
                         }],
                         listeners : {
                             add : function (store, records) {

@@ -52,7 +52,7 @@ Ext.define('sitools.admin.datasets.JoinCrudTreePanel', {
                     type : 'json'
                 }
             }, fields : [{
-                name : 'table',
+                name : 'table'
             }, {
                 name : 'typeJointure',
                 type : 'string'

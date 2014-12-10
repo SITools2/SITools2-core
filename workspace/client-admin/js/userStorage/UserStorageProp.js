@@ -90,7 +90,7 @@ Ext.define('sitools.admin.userStorage.UserStorageProp', {
                 xtype : 'textfield',
                 fieldLabel : i18n.get('label.quota') + " ("+ i18n.get('label.quota.unit') +")",
                 anchor : '100%',
-                name : 'quota',
+                name : 'quota'
             }, {
                 xtype : 'textfield',
                 name : 'userStoragePath',

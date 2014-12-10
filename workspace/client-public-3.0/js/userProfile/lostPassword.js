@@ -61,7 +61,7 @@ Ext.define('sitools.public.userProfile.lostPassword', {
                 }, {
                     boxLabel : i18n.get('label.unlockAccount'),
                     name : 'action',
-                    inputValue : 'blacklist',
+                    inputValue : 'blacklist'
                 }]
             }, {
                 xtype : 'textfield',

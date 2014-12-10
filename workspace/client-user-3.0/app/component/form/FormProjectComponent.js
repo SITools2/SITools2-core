@@ -80,7 +80,7 @@ Ext.define('sitools.user.component.form.FormProjectComponent', {
         return {
             form : view.form,
             preferencesPath : view.preferencesPath,
-            preferencesFileName : view.preferencesFileName,
+            preferencesFileName : view.preferencesFileName
         };
     }
 });

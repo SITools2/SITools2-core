@@ -68,7 +68,7 @@ Ext.define('sitools.admin.forms.FormProp', {
                 reader : {
                     type : 'json',
                     root : 'data',
-                    idProperty : 'id',
+                    idProperty : 'id'
                 }                
             },
             fields : [{
@@ -321,7 +321,7 @@ Ext.define('sitools.admin.forms.FormProp', {
         
         this.tabPanel = Ext.create("Ext.TabPanel", {
             activeTab : 0,
-            items : [ firstPanel, dispPanel],
+            items : [ firstPanel, dispPanel]
 //            listeners : {
 //				scope : this, 
 //				afterrender : function (panel) {

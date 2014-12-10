@@ -289,7 +289,7 @@ Ext.define('sitools.admin.converters.ConvertersProp', {
                     }
                 }
             },
-            plugins : [expanderGridFieldMapping, cellEditing],
+            plugins : [expanderGridFieldMapping, cellEditing]
         });
 
         // set the search form

@@ -134,4 +134,4 @@ Ext.define('sitools.public.widget.datasets.columnRenderer.BehaviorEnum', {
     }
 });
 
-ColumnRendererEnum = sitools.public.widget.datasets.columnRenderer.BehaviorEnum;
+var ColumnRendererEnum = sitools.public.widget.datasets.columnRenderer.BehaviorEnum;

@@ -432,7 +432,7 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginProp', {
 				    reader: {
 				        type : "json",
 				        root : 'ApplicationPlugin.model.parameters',
-				        idProperty : 'name',
+				        idProperty : 'name'
 				    }
 				});
 				this.classChosen = className;

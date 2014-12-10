@@ -247,7 +247,7 @@ Ext.define('sitools.admin.quickstart.Qs', {
                     items : [ {
                         xtype : 's-' + node.raw.nodeName,
                         sitoolsType : "mainAdminPanel"
-                    } ],
+                    } ]
 //                    idItem : node.raw.id
                 } ], 
                 listeners : {

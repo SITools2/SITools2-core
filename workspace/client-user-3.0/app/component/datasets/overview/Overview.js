@@ -88,7 +88,7 @@ Ext.define('sitools.user.component.datasets.overview.Overview', {
             //isModifySelection : componentConfig.isModifySelection,
             preferencesPath: componentConfig.preferencesPath,
             preferencesFileName: componentConfig.preferencesFileName,
-            formsPanelWidth : formsPanelWidth,
+            formsPanelWidth : formsPanelWidth
             //origin : 'sitools.user.view.component.datasets.dataviews.LivegridView',
             //dataviewConfig : dataviewConfig
             // searchAction : this.searchAction,

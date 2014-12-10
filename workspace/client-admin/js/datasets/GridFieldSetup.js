@@ -54,7 +54,6 @@ Ext.define('sitools.admin.datasets.GridFieldSetup', {
                 type : 'memory',
                 reader : {
                     type : 'json',
-                    idProperty : 'columnAlias',
                     root : 'ColumnModel'
                 }
             },

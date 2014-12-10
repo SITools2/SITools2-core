@@ -47,8 +47,8 @@ Ext.define('sitools.user.modules.ContentViewerModule', {
             preferencesFileName : this.id
         };
 
-    },
-    
+    }
+
 });
 
 sitools.user.modules.ContentViewerModule.getParameters = function () {

@@ -53,7 +53,7 @@ Ext.define('sitools.admin.collections.CollectionsCrud', {
                 simpleSortMode : true,
                 reader : {
                     type : 'json',
-                    root : 'data',
+                    root : 'data'
                 }
             },
             remoteSort : true,

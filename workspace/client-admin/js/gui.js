@@ -467,7 +467,7 @@ var clientAdmin = {
 	    mainPanel = Ext.create('Ext.panel.Panel', {
 	        bodyCls : 'admin-bg',
 	        header : {
-                cls : 'x-toolbar-shadow',
+                cls : 'x-toolbar-shadow'
 	        },
 	        layout : {
 	            type : 'vbox',

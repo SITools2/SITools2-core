@@ -269,7 +269,7 @@ Ext.define('sitools.admin.multiDs.MultiDsProp', {
             }, {
                 xtype : 'textfield',
                 name : 'description',
-                fieldLabel : i18n.get('label.description'),
+                fieldLabel : i18n.get('label.description')
             }, {
                 xtype : 'textfield',
                 vtype : "attachment",
@@ -568,7 +568,7 @@ Ext.define('sitools.admin.multiDs.MultiDsProp', {
                 name : 'type',
                 type : 'string'
             }, {
-                name : 'code',
+                name : 'code'
             }, {
                 name : 'values'
             }, {

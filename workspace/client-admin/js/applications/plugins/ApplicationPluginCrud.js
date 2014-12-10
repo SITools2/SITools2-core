@@ -45,7 +45,7 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginCrud', {
 	conflictWarned : false,
 	forceFit : true,
     viewConfig : {
-        autoFill : true,
+        autoFill : true
 //		getRowClass : function (row, index) { 
 //			var cls = ''; 
 //			var data = row.data;

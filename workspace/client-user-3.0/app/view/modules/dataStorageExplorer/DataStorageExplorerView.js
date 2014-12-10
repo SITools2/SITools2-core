@@ -260,7 +260,7 @@ Ext.define('sitools.user.view.modules.dataStorageExplorer.DataStorageExplorerVie
             bodyBorder : false,
             collapsible : true,
             collapsed : true,
-            height : 350,
+            height : 350
 //            cls : 'detail-panel-datastorage',
         });
 

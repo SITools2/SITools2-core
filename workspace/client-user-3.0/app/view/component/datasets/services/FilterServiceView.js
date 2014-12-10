@@ -127,7 +127,7 @@ Ext.define('sitools.user.view.component.datasets.services.FilterServiceView', {
         
         var compositeField = Ext.create("Ext.Container", {
             layout : {
-                type : "hbox",
+                type : "hbox"
             },
             items : [ combo, filter ], 
             padding: 5

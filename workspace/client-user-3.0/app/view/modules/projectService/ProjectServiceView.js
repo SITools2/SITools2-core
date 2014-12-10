@@ -52,7 +52,7 @@ Ext.define('sitools.user.view.modules.projectService.ProjectServiceView', {
 				reader : {
 					idProperty : 'id',
 					type : 'json',
-					root : 'data',
+					root : 'data'
 				}
 			},
 			fields : [ {

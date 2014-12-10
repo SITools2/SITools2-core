@@ -65,7 +65,7 @@ Ext.define('sitools.admin.datasource.mongoDb.CollectionExplorer', {
                 }
             },
             listeners : {
-                scope : this,
+                scope : this
 //                load : function ( store, node, records, successful, eOpts ) {
 //                    Ext.each(records, function (record) {
 //                        this.createNode(record);                
@@ -79,7 +79,7 @@ Ext.define('sitools.admin.datasource.mongoDb.CollectionExplorer', {
             afterrender : function () {
                 this.loadStore();
 //                this.store.load();
-            },
+            }
 //            beforeappend : function (rootNode, node) {
 //                node.set('leaf', Ext.isEmpty(node.get('children')));  
 //            },

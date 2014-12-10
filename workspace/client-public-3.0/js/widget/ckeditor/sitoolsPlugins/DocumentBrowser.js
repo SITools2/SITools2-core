@@ -144,13 +144,13 @@ Ext.define('sitools.public.widget.ckeditor.sitoolsPlugins.DocumentBrowser', {
             },
             items : [{
             	xtype : 'label',
-            	html : i18n.get('label.infoDocumentBrowser1'),
+            	html : i18n.get('label.infoDocumentBrowser1')
             }, {
             	xtype : 'label',
-            	html : i18n.get('label.infoDocumentBrowser2'),
+            	html : i18n.get('label.infoDocumentBrowser2')
             }, {
             	xtype : 'label',
-            	html : i18n.get('label.infoDocumentBrowser3'),
+            	html : i18n.get('label.infoDocumentBrowser3')
             }, {
                 xtype : 'fileuploadfield',
                 name : 'form-file',

@@ -101,7 +101,7 @@ Ext.define('sitools.admin.units.UnitsProp', {
             proxy : {
                 type : 'memory',
                 reader : {
-                    root : "data.converters",
+                    root : "data.converters"
                 }
             },
             fields : [ {

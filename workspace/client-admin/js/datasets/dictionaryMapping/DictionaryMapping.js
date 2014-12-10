@@ -381,7 +381,7 @@ Ext.define('sitools.admin.datasets.dictionaryMapping.DictionaryMapping', {
         
         var groupingFeature = Ext.create('Ext.grid.feature.Grouping', {
             startCollapsed : false,
-            groupHeaderTpl: 'Column alias: {name} ({rows.length} Item{[values.rows.length > 1 ? "s" : ""]})',
+            groupHeaderTpl: 'Column alias: {name} ({rows.length} Item{[values.rows.length > 1 ? "s" : ""]})'
         });
         
         this.gridMapping = Ext.create('Ext.grid.Panel', {

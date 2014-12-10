@@ -234,7 +234,7 @@ Ext.define('sitools.user.controller.header.HeaderController', {
                     text: i18n.get("label.myself"),
                     cls : 'menuItemCls',
                     iconCls : 'saveUserIcon',
-                    itemId : 'saveUser',
+                    itemId : 'saveUser'
                 }, {
                 	xtype : 'menuseparator',
                 	separatorCls : 'customMenuSeparator'
@@ -250,7 +250,7 @@ Ext.define('sitools.user.controller.header.HeaderController', {
                     text: i18n.get("label.publicUser"),
                     cls : 'menuItemCls',
                     iconCls : 'savePublicIcon',
-                    itemId : 'savePublic',
+                    itemId : 'savePublic'
                 }, {
                 	xtype : 'menuseparator',
                 	separatorCls : 'customMenuSeparator'

@@ -45,7 +45,7 @@ Ext.define('sitools.user.component.feeds.FeedComponent', {
     	    title : i18n.get('label.feeds') + " : (" + config.parentName + ") " + feed.title,
 	        id : feed.feedType + config.parentId + feed.id, 
             iconCls : "feedsModule",
-            type : "feeds",
+            type : "feeds"
 //            title : i18n.get('label.forms') + " : " + dataset.name + "." + form.name,
         };
     	

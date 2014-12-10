@@ -80,13 +80,13 @@ Ext.define('sitools.public.userProfile.Register', {
 				fieldLabel: i18n.get('label.firstName'),
 				name: 'firstName',
 				itemId: 'regFirstName',
-				allowBlank: false,
+				allowBlank: false
 			}, {
 				xtype: 'textfield',
 				fieldLabel: i18n.get('label.lastName'),
 				name: 'lastName',
 				itemId: 'regLastName',
-				allowBlank: false,
+				allowBlank: false
 			}, {
 				xtype: 'textfield',
 				fieldLabel: i18n.get('label.password'),
@@ -94,7 +94,7 @@ Ext.define('sitools.public.userProfile.Register', {
 				allowBlank: false,
 				inputType: 'password',
 	            vtype: 'passwordComplexity',
-	            itemId: 'pass1',
+	            itemId: 'pass1'
 			}, {
 				xtype: 'textfield',
 				fieldLabel: i18n.get('label.confirmPassword'),
@@ -104,7 +104,7 @@ Ext.define('sitools.public.userProfile.Register', {
 				inputType: 'password',
 	            itemId: 'pass2',
 	            initialPassField: 'pass1',
-	            vtype: 'password',
+	            vtype: 'password'
 			}, {
 				xtype: 'textfield',
 				fieldLabel: i18n.get('label.email'),
@@ -112,18 +112,18 @@ Ext.define('sitools.public.userProfile.Register', {
 				name: 'email',
 				vtype: 'uniqueemail',
 				allowBlank: false,
-	            validationEvent: '',
+	            validationEvent: ''
 			}, {
                 xtype : 'textfield',
                 name : 'organisation',
-                fieldLabel : i18n.get('label.organisation'),
-            }, {
+                fieldLabel : i18n.get('label.organisation')
+			}, {
 				xtype: 'textarea',
 				fieldLabel: i18n.get('label.comment'),
 	            itemId: 'regComment',
 				name: 'comment',
 	            validationEvent: '',
-	            height: 40,
+	            height: 40
 			}, {
 			    fieldLabel : i18n.get('label.captcha'),
 	            xtype : 'fieldcontainer',
@@ -153,8 +153,8 @@ Ext.define('sitools.public.userProfile.Register', {
                 fieldLabel: i18n.get('label.fieldCaptcha'),
                 name: 'captcha',
                 itemId: 'captcha',
-                allowBlank: false,
-            },
+                allowBlank: false
+			},
             {
 				xtype: 'checkbox',
 				fieldLabel: Ext.String.format(i18n.get('label.acceptCGU'), URL_CGU),

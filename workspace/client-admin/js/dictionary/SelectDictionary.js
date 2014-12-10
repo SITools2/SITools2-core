@@ -72,7 +72,7 @@ Ext.define('sitools.admin.dictionary.SelectDictionary', {
                     reader : {
                         type : 'json',
                         idProperty : 'id',
-                        root : 'data',
+                        root : 'data'
                     }
                 },
                 remoteSort : true,

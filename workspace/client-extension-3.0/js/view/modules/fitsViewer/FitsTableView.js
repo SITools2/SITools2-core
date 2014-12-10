@@ -136,7 +136,7 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsTableView', {
         	fitsTable : this,
         	dataColumns : dataColumns,
         	i18nFitsViewer : this.i18nFitsViewer,
-        	title : this.i18nFitsViewer.get('label.plotTable'),
+        	title : this.i18nFitsViewer.get('label.plotTable')
         });
         
         fitsViewerPlot.show();

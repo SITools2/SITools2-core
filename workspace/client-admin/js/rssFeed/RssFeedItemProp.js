@@ -84,19 +84,19 @@ Ext.define('sitools.admin.rssFeed.RssFeedItemProp', {
                 fieldLabel : i18n.get("label.day"),
                 name : 'date',
                 xtype : "datefield",
-                flex : 2,
+                flex : 2
             }, {
                 name : 'hours',
                 xtype : 'numberfield',
                 maxValue : 23,
                 minValue : 0,
-                fieldLabel : i18n.get("label.hours"),
+                fieldLabel : i18n.get("label.hours")
             }, {
                 name : 'minutes',
                 xtype : 'numberfield',
                 maxValue : 59,
                 minValue : 0,
-                fieldLabel : i18n.get("label.minutes"),
+                fieldLabel : i18n.get("label.minutes")
             }, {
                 xtype : 'button',
                 name : 'nowUpdated',
@@ -119,19 +119,19 @@ Ext.define('sitools.admin.rssFeed.RssFeedItemProp', {
                 fieldLabel : i18n.get("label.day"),
                 name : 'datePub',
                 xtype : "datefield",
-                flex : 2,
+                flex : 2
             }, {
                 name : 'hoursPub',
                 xtype : 'numberfield',
                 maxValue : 23,
                 minValue : 0,
-                fieldLabel : i18n.get("label.hours"),
+                fieldLabel : i18n.get("label.hours")
             }, {
                 name : 'minutesPub',
                 xtype : 'numberfield',
                 maxValue : 59,
                 minValue : 0,
-                fieldLabel : i18n.get("label.minutes"),
+                fieldLabel : i18n.get("label.minutes")
             }, {
                 xtype : 'button',
                 name : 'nowPublished',

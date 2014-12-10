@@ -42,10 +42,10 @@ Ext.define('sitools.user.controller.component.services.ServiceParamController', 
     					Ext.callback(self.callback, self, false);
     				}
     			}
-    		},
-    		
-    		
-    	});
+    		}
+
+
+		});
     },
 	onCall : function (btn) {
 		var self = btn.up("serviceParamView");
@@ -83,5 +83,5 @@ Ext.define('sitools.user.controller.component.services.ServiceParamController', 
 	    
 	    self.serverServiceUtil.onResourceCallClick(self.resource, self.url, method, runTypeUserInput, limit, userParameters, self.postParameter, self.callback);
 	    self.up("component[specificType=componentWindow]").close();
-	},
+	}
 });

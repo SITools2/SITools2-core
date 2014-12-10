@@ -127,7 +127,7 @@ Ext.define('sitools.user.controller.modules.addToCartModule.AddToCartController'
                 
                 afterrender : function (grid) {
                     grid.getEl().mask(i18n.get('label.loadingArticles'));
-                },
+                }
             },
 
             'addToCartModule menu#orderMenu menuitem' : {
@@ -499,5 +499,5 @@ Ext.define('sitools.user.controller.modules.addToCartModule.AddToCartController'
                 }
             }
         });
-    },
+    }
 });

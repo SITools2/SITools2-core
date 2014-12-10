@@ -68,7 +68,7 @@ Ext.define('sitools.user.view.header.HeaderView', {
             border : false,
             layout : 'fit',
             listeners : {
-                scope : this,
+                scope : this
 //                afterRender : function (me) {
 //                    // var enteteEl = SitoolsDesk.getEnteteEl();
 //                    var enteteEl = Ext.get('x-headers');

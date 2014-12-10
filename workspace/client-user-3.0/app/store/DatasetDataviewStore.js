@@ -59,7 +59,7 @@ Ext.define('sitools.user.store.DatasetDataviewStore', {
 
     setCustomUrl : function (url) {
         this.getProxy().url = url;
-    },
+    }
 
     //doSort: function (sorters, direction) {
     //    this.sort(sorters, direction);

@@ -34,7 +34,7 @@ Ext.define('sitools.admin.guiservices.GuiServicesStore', {
                 reader : {
                     type : 'json',
                     root : 'data',
-                    idProperty : 'id',
+                    idProperty : 'id'
                 }
             },
             remoteSort : true,

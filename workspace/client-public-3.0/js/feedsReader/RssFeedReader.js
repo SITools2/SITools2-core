@@ -71,7 +71,7 @@ Ext.define('sitools.public.feedsReader.RssFeedReader', {
             dataIndex : 'title',
             sortable : true,
             width : 460,
-            scope : this,
+            scope : this
 //            renderer : this.formatTitle
         }, {
             header : "Author",
@@ -99,7 +99,7 @@ Ext.define('sitools.public.feedsReader.RssFeedReader', {
         });
         
         this.listeners = {
-            itemdblclick : this.clickOnRow,
+            itemdblclick : this.clickOnRow
         };
         
         this.callParent(arguments);

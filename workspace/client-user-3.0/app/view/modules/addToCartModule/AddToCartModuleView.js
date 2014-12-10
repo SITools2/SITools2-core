@@ -193,7 +193,7 @@ Ext.define('sitools.user.view.modules.addToCartModule.AddToCartModuleView', {
             layout : 'border',
             items : cartModuleItems,
             border : false,
-            bodyStyle : "background-color : white;",
+            bodyStyle : "background-color : white;"
         });
         
         this.items = [ this.hboxPanel ];

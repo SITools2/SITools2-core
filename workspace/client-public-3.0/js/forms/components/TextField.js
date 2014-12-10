@@ -58,7 +58,7 @@ Ext.define('sitools.public.forms.components.TextField', {
             }, {
                 name : 'value',
                 mapping : this.code[0]
-            } ],
+            } ]
 
         });
 

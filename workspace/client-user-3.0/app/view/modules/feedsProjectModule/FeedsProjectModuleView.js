@@ -41,7 +41,7 @@ Ext.define('sitools.user.view.modules.feedsProjectModule.FeedsProjectModuleView'
     requires : ['sitools.user.model.FeedModel'],
     
     config : {
-        feedsReader : null,
+        feedsReader : null
     },
     
     initComponent : function () {

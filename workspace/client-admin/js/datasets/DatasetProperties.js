@@ -45,7 +45,7 @@ Ext.define('sitools.admin.datasets.DatasetProperties', {
             }, {
                 name : 'value',
                 type : 'string'
-            }],
+            }]
         });
 		
         var smProperties = Ext.create('Ext.selection.RowModel', {

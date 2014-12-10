@@ -94,8 +94,7 @@ Ext.define('sitools.user.core.Module', {
     /**
      * use to delegate opening to the module itself
      */
-    openMe : null,
-    
+    openMe : null
 
-    
+
 });

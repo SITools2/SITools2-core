@@ -39,7 +39,7 @@ Ext.define('sitools.admin.filters.FiltersCrud', {
     
     requires : ['sitools.admin.filters.FiltersProp'],
     viewConfig : {
-        autoFill : true, 
+        autoFill : true
 //		getRowClass : function (row, index) { 
 //			var cls = ''; 
 //			var data = row.data;
@@ -101,7 +101,7 @@ Ext.define('sitools.admin.filters.FiltersCrud', {
                         reader : {
                             type : 'json',
                             idProperty : 'id',
-                            root : "filterChainedModel.filters",
+                            root : "filterChainedModel.filters"
                         }
                     });
                     

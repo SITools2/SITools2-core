@@ -154,7 +154,7 @@ Ext.define('sitools.user.view.component.datasets.services.WindowImageZoomerView'
             frame : [ this.sizeLimitWidth + "px", this.sizeLimitHeight + "px" ],
             zoomFactor : this.zoomFactor,
             maxZoom : this.maxZoom,
-            previewSrc : this.previewSrc,
+            previewSrc : this.previewSrc
         });
         this.updateWindowSize(this.sizeLimitHeight, this.sizeLimitWidth)
     },

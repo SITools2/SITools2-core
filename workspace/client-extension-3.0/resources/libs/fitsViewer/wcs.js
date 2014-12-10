@@ -1969,7 +1969,7 @@ function copyTempDouble(ptr) {
                 setattr: MEMFS.node_ops.setattr
               },
               stream: FS.chrdev_stream_ops
-            },
+            }
           };
         }
         var node = FS.createNode(parent, name, mode, dev);
@@ -2715,11 +2715,11 @@ function copyTempDouble(ptr) {
               set: function(val) { val ? this.mode |= writeMode : this.mode &= ~writeMode; }
             },
             isFolder: {
-              get: function() { return FS.isDir(this.mode); },
+              get: function() { return FS.isDir(this.mode); }
             },
             isDevice: {
-              get: function() { return FS.isChrdev(this.mode); },
-            },
+              get: function() { return FS.isChrdev(this.mode); }
+            }
           });
         }
         return new FS.FSNode(parent, name, mode, rdev);

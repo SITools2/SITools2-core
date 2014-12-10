@@ -55,9 +55,9 @@ Ext.define('sitools.user.modules.AddToCartModule', {
             preferencesFileName : this.id
         };
 
-    },
-    
-    
+    }
+
+
 });
 
 sitools.user.modules.AddToCartModule.getParameters = function () {

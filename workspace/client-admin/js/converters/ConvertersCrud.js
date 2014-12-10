@@ -48,7 +48,7 @@ Ext.define('sitools.admin.converters.ConvertersCrud', {
     requires : ['sitools.admin.converters.ConvertersProp'], 
     
     viewConfig : {
-        autoFill : true,
+        autoFill : true
         // TODO doesn't works with Neptune Theme...
 //		getRowClass : function (record, rowIndex, rowParams, store) { 
 //			var cls = ''; 

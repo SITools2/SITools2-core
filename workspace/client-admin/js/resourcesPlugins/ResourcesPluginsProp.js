@@ -267,7 +267,7 @@ Ext.define('sitools.admin.resourcesPlugins.ResourcesPluginsProp', {
                     reader : {
                         idProperty : 'name',
                         type : 'json',
-                        root : 'resourcePlugin.parameters',
+                        root : 'resourcePlugin.parameters'
                     }
                 },
                 fields : [ {
