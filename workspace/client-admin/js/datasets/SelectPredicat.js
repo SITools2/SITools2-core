@@ -67,7 +67,6 @@ Ext.define('sitools.admin.datasets.SelectPredicat', {
         });
 
         this.gridSelectPredicat = Ext.create('Ext.grid.Panel', {
-//            title : i18n.get('title.gridSelectPredicat'),
             height : 380,
             autoScroll : true,
             store : this.storePredicat,
@@ -97,8 +96,7 @@ Ext.define('sitools.admin.datasets.SelectPredicat', {
         sitools.admin.datasets.SelectPredicat.superclass.initComponent.call(this);
     },
     onValidate : function () {
-        
-        var rec = this.getLastSelectedRecord(this.gridSelectPredicat);
+        var rec = this.gridSelectPredicat.getSelectionModel().getLastSelected();
         var nomAffiche = rec.data.tableAlias ? rec.data.tableAlias : rec.data.tableName;
         nomAffiche = nomAffiche + "." + rec.data.dataIndex;
         this.recordPredicat.data.nomAffiche = nomAffiche;
