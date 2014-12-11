@@ -37,7 +37,7 @@ Ext.define('sitools.admin.projects.modules.ProjectModulesProp', {
     modal : true,
     id : ID.PROP.PROJECTMODULE,
     layout : 'fit',
-    
+
     initComponent : function () {
         if (this.action === 'create') {
             this.title = i18n.get('label.createProjectModule');
@@ -45,60 +45,13 @@ Ext.define('sitools.admin.projects.modules.ProjectModulesProp', {
             this.title = i18n.get('label.modifyProjectModule');
         }
         
-        var storeDependencies = Ext.create("Ext.data.JsonStore", {
-            fields : [ {
-                name : 'url',
-                type : 'string'
-            }],
-            autoLoad : false
-        });
-        
-        var tbar = {
-			xtype : 'sitools.public.widget.grid.GridSorterToolbar',
-            defaults : {
-                scope : this
-            },
-            items : [ {
-                text : i18n.get('label.create'),
-                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_create.png',
-                handler : this.onCreateDependencies
-            }, {
-                text : i18n.get('label.delete'),
-                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_delete.png',
-                handler : this.onDeleteDependencies
-            }]
-        };
-        
-        this.gridDependencies = Ext.create('Ext.grid.Panel', {
-            title : i18n.get('title.dependencies'),
-            height : 180,
-            store : storeDependencies,
-            tbar : tbar,
-            forceFit : true,
-            columns : [{
-                header : i18n.get('label.url'),
-                dataIndex : 'url',
-                editor : {
-                    xtype : 'textfield',
-                    allowBlank : false
-                }
-            }],
-            selModel : Ext.create('Ext.selection.RowModel', {
-                mode : 'SIMPLE'
-            }),
-            plugins : [Ext.create('Ext.grid.plugin.CellEditing', {
-                clicksToEdit: 1,
-                pluginId : 'cellEditing'
-            })]
-        });
-        
-        
         this.formPanel = Ext.create("Ext.form.FormPanel", {
-            title : i18n.get('label.projectModuleInfo'),
+            padding : 10,
             border : false,
             bodyBorder : false,
-            labelWidth : 150,
-            padding : 10,
+            defaults : {
+                labelWidth : 150
+            },
             items : [ {
                     xtype : 'textfield',
                     name : 'id',
@@ -198,36 +151,29 @@ Ext.define('sitools.admin.projects.modules.ProjectModulesProp', {
                 }
             ]
         });
-            
-        
-        
-        this.tabPanel = Ext.create("Ext.TabPanel", {
-            activeTab : 0,
-            items : [ this.formPanel, this.gridDependencies ],
-            buttons : [ {
-                text : i18n.get('label.ok'),
-                scope : this,
-                handler : this._onValidate
-            }, {
-                text : i18n.get('label.cancel'),
-                scope : this,
-                handler : function () {
-                    this.close();
-                }
-            } ]
-        });
-        
-        this.items = [this.tabPanel];
-        
-        
-        sitools.admin.projects.modules.ProjectModulesProp.superclass.initComponent.call(this);
+
+        this.items = [this.formPanel];
+
+        this.buttons = [ {
+            text : i18n.get('label.ok'),
+            scope : this,
+            handler : this._onValidate
+        }, {
+            text : i18n.get('label.cancel'),
+            scope : this,
+            handler : function () {
+                this.close();
+            }
+        }];
+
+        this.callParent(arguments);
     },
     
     /**
      * done a specific render to load project modules properties. 
      */
     onRender : function () {
-        sitools.admin.projects.modules.ProjectModulesProp.superclass.onRender.apply(this, arguments);
+        this.callParent(arguments);
         if (this.action == 'modify') {
             var f = this.down('form').getForm();
             Ext.Ajax.request({
@@ -237,20 +183,6 @@ Ext.define('sitools.admin.projects.modules.ProjectModulesProp', {
                 success : function (ret) {
                     var data = Ext.decode(ret.responseText);
                     f.setValues(data.projectModule);
-                    
-                    var dependencies = data.projectModule.dependencies;
-                    var storeDependencies = this.gridDependencies.getStore();
-                    if (!Ext.isEmpty(dependencies.js)) {
-                        Ext.each(dependencies.js, function (item) {
-                            storeDependencies.add(item);
-                        }, this);
-                    }
-                    if (!Ext.isEmpty(dependencies.css)) {
-                        Ext.each(dependencies.css, function (item) {
-                            storeDependencies.add(item);
-                        }, this);
-                    }
-                    
                 },
                 failure : alertFailure
             });
@@ -269,26 +201,6 @@ Ext.define('sitools.admin.projects.modules.ProjectModulesProp', {
         var met = this.action === 'modify' ? 'PUT' : 'POST';
         var jsonObject = frm.getFieldValues();
             
-        jsonObject.dependencies = {};
-        jsonObject.dependencies.js = [];
-        jsonObject.dependencies.css = [];
-        this.gridDependencies.getStore().each(function (item) {
-            var url = item.get("url");
-            if (!Ext.isEmpty(url)) {
-                if (this.isCss(url)) {
-                    jsonObject.dependencies.css.push({
-                        url : url
-                    });
-                }
-                if (this.isJs(url)) {
-                    jsonObject.dependencies.js.push({
-                        url : url
-                    });
-                }
-            }
-        }, this);
-        
-        
         Ext.Ajax.request({
             url : this.url,
             method : met,
@@ -301,39 +213,11 @@ Ext.define('sitools.admin.projects.modules.ProjectModulesProp', {
                     return false;
                 }
                 //load the scripts defined in this component. 
-//				includeJs(frm.items.get('url').getValue());
                 this.store.reload();
                 this.close();
             },
             failure : alertFailure
         });
-    },
-    
-    /**
-     * Add a new Record to the dependencies property of a project module
-     */
-    onCreateDependencies : function () {
-        var index = this.gridDependencies.getStore().getCount();
-        this.gridDependencies.getStore().insert(index, {});
-        this.gridDependencies.getPlugin("cellEditing").startEdit(index, 0);
-    },
-    
-    /**
-     * Delete the selected dependency of a project module
-     */
-    onDeleteDependencies : function () {
-        var selections = this.gridDependencies.getSelectionModel().getSelection();
-        Ext.each(selections, function (selection) {
-            this.gridDependencies.getStore().remove(selection);
-        }, this);
-    },
-    
-    isJs : function (url) {
-        return (url.indexOf(".js") !== -1);
-    },
-    
-    isCss : function (url) {
-        return (url.indexOf(".css") !== -1);
     }
 });
 

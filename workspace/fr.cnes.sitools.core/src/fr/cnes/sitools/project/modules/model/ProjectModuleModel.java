@@ -82,7 +82,8 @@ public final class ProjectModuleModel implements IResource {
 
   /** xtype */
   private String xtype;
-
+  
+  @Deprecated
   /** dependencies */
   private Dependencies dependencies;
 
@@ -331,6 +332,7 @@ public final class ProjectModuleModel implements IResource {
    * @param dependencies
    *          the dependencies to set
    */
+  @Deprecated
   public void setDependencies(Dependencies dependencies) {
     this.dependencies = dependencies;
   }
@@ -340,6 +342,7 @@ public final class ProjectModuleModel implements IResource {
    * 
    * @return the dependencies
    */
+  @Deprecated
   public Dependencies getDependencies() {
     return dependencies;
   }

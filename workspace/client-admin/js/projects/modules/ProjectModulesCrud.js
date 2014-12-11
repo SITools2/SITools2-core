@@ -98,9 +98,6 @@ Ext.define('sitools.admin.projects.modules.ProjectModulesCrud', {
                 name : 'specificType',
                 type : 'string'
             }, {
-                name : 'dependencies',
-                type : 'string'
-            }, {
 				name : "priority", 
 				type : "integer"
             }]
