@@ -33,7 +33,6 @@ Ext.define('sitools.admin.datasets.DatasetViewConfig', {
     autoScroll : true,
     border : false,
     bodyBorder : false,
-    padding : 5,
     initComponent : function () {
         this.title = i18n.get('label.viewConfig');
 
@@ -87,16 +86,14 @@ Ext.define('sitools.admin.datasets.DatasetViewConfig', {
             emptyText : i18n.get('label.datasetViewsSelect'),
             displayField : 'name',
             valueField : 'id',
-            typeAhead : true,
-//            queryMode : 'local',
             name : 'comboDatasetViews',
             forceSelection : true,
             editable : false,
-            selectOnFocus : true,
-            anchor : '100%',    
+            anchor : '100%',
             allowBlank : false,
             maxHeight : 200,
             labelWidth : 150,
+            padding : 7,
             validator : function (value) {
                 if (Ext.isEmpty(value)) {
                     return false;
@@ -125,7 +122,7 @@ Ext.define('sitools.admin.datasets.DatasetViewConfig', {
         });
 
         Ext.apply(this, {
-            items : [this.comboDatasetViews], 
+            items : [this.comboDatasetViews],
             listeners : {
                 "activate" : function () {
                     if (this.action == 'view') {

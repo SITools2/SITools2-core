@@ -308,9 +308,7 @@ Ext.define('sitools.admin.datasets.AbstractDatasetWin', {
                 }
             });
         } else {
-//            this.formulairePrincipal.getDataSourceCombo().getStore().load();
             this.formulairePrincipal.loadDatasources();
-//            this.viewConfigPanel.getDatasetViewsCombo().getStore().load();
             this.applyCkeditor();
         }
 

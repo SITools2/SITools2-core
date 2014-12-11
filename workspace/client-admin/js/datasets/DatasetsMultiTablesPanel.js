@@ -162,41 +162,6 @@ Ext.define('sitools.admin.datasets.DatasetsMultiTablesPanel', {
 			action : this.action
 		});
 		
-        Ext.Ajax.request({
-            url : this.urlDatasetViews,
-            method : "GET",
-            scope : this,
-            success : function (ret) {
-                var json = Ext.decode(ret.responseText);
-                if (!json.success) {
-                    Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noProjectName'));
-                    return false;
-                } else {
-                    var data = json.data;
-                    
-                    var listDependencies = [];
-                    Ext.each(data, function (datasetViewComponent) {
-                        
-                        // Chargement des dependances pour permettre le parametrage du module dans le projet 
-                        // pour eviter de recharger la page
-                        if (!Ext.isEmpty(datasetViewComponent.dependencies && !Ext.isEmpty(datasetViewComponent.dependencies.js))) {
-                            listDependencies = listDependencies.concat(datasetViewComponent.dependencies.js);
-                        }
-                           
-                    }, this);
-                    
-                    if (!Ext.isEmpty(listDependencies)) {
-                        includeJsForceOrder(listDependencies, 0, function () {
-                            //load the dataset only when all dataviews dependencies are loaded
-                            if (this.url) {
-                                this.loadDataset();
-                            } 
-                        }, this);
-                    }	
-                }
-            }
-        }); 
-        
         this.viewConfigPanel = Ext.create('sitools.admin.datasets.DatasetViewConfig', {
 			urlDatasetViews : this.urlDatasetViews, 
 			action : this.action
@@ -311,7 +276,12 @@ Ext.define('sitools.admin.datasets.DatasetsMultiTablesPanel', {
         };
         this.items = [ this.tabPanel ];
         this.callParent(arguments);
-    }, 
+    },
+
+    afterRender : function () {
+        this.callParent(arguments);
+        this.loadDataset();
+    },
     /**
      * called when user click on Ok button. 
      * it will 
