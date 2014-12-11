@@ -161,10 +161,8 @@ Ext.define('sitools.user.controller.component.datasets.plot.DataPlotterControlle
             'dataPlotterView panel#rightpanel': {
                 resize: function (panel, width, height) {
                     var view = panel.up("dataPlotterView");
-                    if (view.isVisible() && view.hasPlotted) {
-                        if (Ext.isEmpty(view.storeData.getCount() > 0)) {
-                            this.displayPlot(view.storeData.getRanges());
-                        }
+                    if (view.isVisible() && view.hasPlotted && view.storeData.getCount() > 0) {
+                        this.displayPlot(view.storeData.getRange(), view);
                     }
                 },
                 afterrender: function (panel) {
