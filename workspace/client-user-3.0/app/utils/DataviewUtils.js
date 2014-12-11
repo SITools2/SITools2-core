@@ -95,6 +95,7 @@ Ext.define('sitools.user.utils.DataviewUtils', {
             };
         } else {
             renderer = function (value) {
+                var htmlFormat = "<span data-qtip='{0}'>{0}</span>";
                 var valueFormat = value;
                 if (sql2ext.get(item.sqlColumnType) == 'dateAsString') {
                     valueFormat = sitools.user.utils.DataviewUtils.formatDate(value, item);
@@ -102,7 +103,7 @@ Ext.define('sitools.user.utils.DataviewUtils', {
                 if (sql2ext.get(item.sqlColumnType) == 'boolean') {
                     valueFormat = value ? i18n.get('label.true') : i18n.get('label.false');
                 }
-                return valueFormat;
+                return Ext.String.format(htmlFormat, valueFormat);;
             };
         }
         return renderer;
@@ -212,40 +213,40 @@ Ext.define('sitools.user.utils.DataviewUtils', {
             case ColumnRendererEnum.URL_EXT_NEW_TAB :
             case ColumnRendererEnum.URL_EXT_DESKTOP :
                 if (!Ext.isEmpty(columnRenderer.linkText)) {
-                    html = "<span class='link featureType' sitools:column='"+item.columnAlias+"'>" + columnRenderer.linkText + "</span>";
+                    html = "<span data-qtip='"+columnRenderer.linkText+"' class='link featureType' sitools:column='"+item.columnAlias+"'>" + columnRenderer.linkText + "</span>";
                 } else if (!Ext.isEmpty(columnRenderer.image)) {
                     html = "<div class='image-link featureType' sitools:column='"+item.columnAlias+"'><img src=\"" + columnRenderer.image.url + "\" class='sitools-display-image' style ='" + imageStyle + "' ></img></div>";
                 }
                 break;
                 
             case ColumnRendererEnum.IMAGE_NO_THUMB :
-                html = "<span class='link featureType' sitools:column='"+item.columnAlias+"'>" + columnRenderer.linkText + "</span>"; 
+                html = "<span data-qtip='"+columnRenderer.linkText+"' class='link featureType' sitools:column='"+item.columnAlias+"'>" + columnRenderer.linkText + "</span>";
                 break;
                 
             case ColumnRendererEnum.IMAGE_THUMB_FROM_IMAGE :
-                html = "<div class='image-link featureType' sitools:column='"+item.columnAlias+"'><img class='sitools-display-image' src='{0}' style ='" + imageStyle + "'></img></div>";  
+                html = "<div class='image-link featureType' sitools:column='"+item.columnAlias+"'><img class='sitools-display-image' src='{0}' style ='" + imageStyle + "'></img></div>";
                 break;
                 
             case ColumnRendererEnum.IMAGE_FROM_SQL :
-                html = "<div class='image-link featureType' sitools:column='"+item.columnAlias+"'><img class='sitools-display-image image-link' src='{0}' style ='" + imageStyle + "'></div>";
+                html = "<div class='image-link featureType' sitools:column='"+item.columnAlias+"'><img class='sitools-display-image image-link' src='{0}' style ='" + imageStyle + "'></img></div>";
                 break;
                 
             case ColumnRendererEnum.DATASET_LINK :
-                html = "<span class='link featureType' sitools:column='"+item.columnAlias+"'>{0}</span>"; 
+                html = "<span data-qtip='{0}' class='link featureType' sitools:column='"+item.columnAlias+"'>{0}</span>";
                 break;
                 
             case ColumnRendererEnum.DATASET_ICON_LINK :
                 if (!Ext.isEmpty(columnRenderer.image)) {
                     imageUrl = columnRenderer.image.url;                    
                 }
-                html = "<div class='image-link featureType' sitools:column='"+item.columnAlias+"'><img style ='" + imageStyle + "' class='sitools-display-image' src='" + imageUrl + "'></div>";
+                html = "<div class='image-link featureType' sitools:column='"+item.columnAlias+"'><img style ='" + imageStyle + "' class='sitools-display-image' src='" + imageUrl + "'></img></div>";
                 break;
                 
             default : 
-                html = "{0}"; 
+                html = "<span data-qtip='{0}'>{0}</span>";
                 break;
             }
-        } 
+        }
 
         return html;
     },
