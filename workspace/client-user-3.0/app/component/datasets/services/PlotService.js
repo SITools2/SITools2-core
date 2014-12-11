@@ -98,7 +98,7 @@ Ext.define('sitools.user.component.datasets.services.PlotService', {
         //Sorters
         var storeSort = grid.getSortParams();
         if (!Ext.isEmpty(storeSort)) {
-            config.sortInfo = storeSort.sort;
+            config.sortInfo = Ext.JSON.decode(storeSort.sort);
         }
 
         // Form filters

@@ -58,22 +58,22 @@ Ext.define('sitools.user.controller.component.datasets.services.SorterServiceCon
                 click : function (button) {
                     var view = button.up("sorterServiceView");
                     var sorters = [];
-                    var property;
+                    var field;
                     var direction;
                     
                     Ext.iterate(view.f.getValues(), function (key, value) {
                         var index = key.substring(key.indexOf('_') + 1);
                         if (!Ext.isEmpty(value)) {
                             if (key.indexOf('field') != -1) {
-                                property = value;
+                                field = value;
                             } else {
                                 direction = value;
                             }
                         }
                         
-                        if(!Ext.isEmpty(property) && !Ext.isEmpty(direction)) {
+                        if(!Ext.isEmpty(field) && !Ext.isEmpty(direction)) {
                             sorters[index] = {};
-                            sorters[index].property = property;
+                            sorters[index].field = field;
                             sorters[index].direction = direction;
                             field = null;
                             direction = null;
@@ -84,7 +84,7 @@ Ext.define('sitools.user.controller.component.datasets.services.SorterServiceCon
                     if (sorters.length < 1) {
                         view.store.load();
                     } else if (sorters.length === 1) {
-                        view.store.sort(sorters[0].property, sorters[0].direction);
+                        view.store.sort(sorters[0].field, sorters[0].direction);
                     } else {
                         view.store.sort(sorters);
                     }

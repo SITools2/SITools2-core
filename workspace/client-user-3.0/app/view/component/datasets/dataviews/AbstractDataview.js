@@ -34,11 +34,30 @@
 Ext.define('sitools.user.view.component.datasets.dataviews.AbstractDataview', {
     componentType : 'datasetView',
 
-    //generic method
-    getNbRowsSelected : Ext.EmptyFn,
+    getColumns: function () {
+        return this.getGrid().columns;
+    },
 
     //generic method
-    isAllSelected : Ext.EmptyFn,
+    getNbRowsSelected : function () {
+        var sm = this.getSelectionModel();
+        if (sm.markAll) {
+            return this.store.getTotalCount();
+        }
+        else {
+            return sm.getSelection().length;
+        }
+    },
+
+    //generic method
+    isAllSelected : function () {
+        //if the store is loading we cannot know how much records are selected
+        if (this.getStore().isLoading()) {
+            return false;
+        }
+        var nbRowsSelected = this.getNbRowsSelected();
+        return nbRowsSelected === this.getStore().getTotalCount() || this.getSelectionModel().markAll;
+    },
 
     //generic method
     /**
@@ -49,45 +68,110 @@ Ext.define('sitools.user.view.component.datasets.dataviews.AbstractDataview', {
 
 
     // generic method
-    getSelections : Ext.EmptyFn,
+    getSelections: function () {
+        return this.getSelectionModel().getSelection();
+    },
 
 
-    getRequestColumnModel : Ext.EmptyFn,
+    getRequestColumnModel: function () {
+        var params = {};
+
+        var colModel = extColModelToSrv(this.columns);
+        if (!Ext.isEmpty(colModel)) {
+            params["colModel"] = Ext.JSON.encode(colModel);
+        }
+        return params;
+    },
 
 
-    getRequestParam : Ext.EmptyFn,
+    getRequestParam: function () {
+        var params = {};
+
+        Ext.apply(params, this.getRequestColumnModel());
+        Ext.apply(params, this.getSelectionParam());
+        // If a simple selection is done, don't add the form params as the
+        // selection is done on the ids
+        if (Ext.isEmpty(params["p[0]"]) && Ext.isEmpty(params["c[0]"])) {
+            Ext.apply(params, this.getRequestFormFilterParams());
+            Ext.apply(params, this.getRequestFormConceptFilterParams());
+            Ext.apply(params, this.getRequestGridFilterParams());
+            Ext.apply(params, this.getSortParams());
+        }
+
+        return params;
+    },
 
     /**
      * Return all request parameters without the column model and selection
      * @return {String}
      */
-    getRequestFormFilters : Ext.EmptyFn,
+    getRequestFormFilters: function () {
+        //add the form params
+        return this.store.getFormFilters();
+    },
 
     /**
      * Return all form concept request parameters without the column model and selection
      * @return {String}
      */
-    getRequestFormConceptFilters : Ext.EmptyFn,
+    getRequestFormConceptFilters: function () {
+        //add the form params
+        return this.store.getFormConceptFilters();
+    },
 
     /**
      * Return all request parameters without the column model and selection
      * @return {String}
      */
-    getRequestFormFilterParams : Ext.EmptyFn,
+    getRequestFormFilterParams: function () {
+        //add the form params
+        return this.store.getFormParams();
+    },
 
     /**
      * Return all form concept request parameters without the column model and selection
      * @return {String}
      */
-    getRequestFormConceptFilterParams : Ext.EmptyFn,
+    getRequestFormConceptFilterParams: function () {
+        //add the form params
+        return this.store.getFormConceptParams();
+    },
 
     /**
-     * Return all request parameters without the column model and selection
+     * Return all grid filter
      * @return {String}
      */
-    getRequestGridFilterParams : Ext.EmptyFn,
+    getRequestGridFilterParams: function () {
+        var params = {};
+        // Add the filters params
+        if (!Ext.isEmpty(this.getStore().getGridFilters())) {
+            var gridFiltersParam = this.getStore().getGridFilters();
+            if (!Ext.isEmpty(gridFiltersParam)) {
+                params.filter = [];
+                Ext.each(gridFiltersParam, function (filter, index) {
+                    params.filter[index] = filter;
+                });
+            }
+        }
+        return params;
+    },
 
-    getSortParams : Ext.EmptyFn,
+    getSortParams: function () {
+        // add the sorters
+        var sortersCfg = this.store.sorters;
+
+        var sorters = [];
+        this.store.sorters.each(function (sorter) {
+            sorters.push({
+                field: sorter.property,
+                direction: sorter.direction
+            });
+        }, this);
+
+        return {
+            sort: Ext.JSON.encode(sorters)
+        };
+    },
 
     /**
      * @method
@@ -102,33 +186,66 @@ Ext.define('sitools.user.view.component.datasets.dataviews.AbstractDataview', {
      * (ranges=[range1, range2, ..., rangen] where rangeN = [startIndex, endIndex])
      *
      */
-    getSelectionParam : Ext.EmptyFn,
+    getSelectionParam: function () {
+        var sm = this.getSelectionModel(), param = {};
+        param.ranges = Ext.JSON.encode(sm.getSelectedRanges());
+        return param;
+    },
 
-     /**
+    /**
      * Return all request parameters
      * @return {String}
      */
-    getRequestUrl : Ext.EmptyFn,
+    getRequestUrl: function () {
+        var params = this.getRequestParam();
+        return Ext.Object.toQueryString(params, true);
+    },
 
     /**
      * Return all request parameters without the column model
      * @return {String}
      */
-    getRequestUrlWithoutColumnModel : Ext.EmptyFn,
+    getRequestUrlWithoutColumnModel: function () {
+        var params = {};
+
+        Ext.apply(params, this.getSelectionParam());
+        // If a simple selection is done, don't add the form params as the
+        // selection is done on the ids
+        if (Ext.isEmpty(params["p[0]"]) && Ext.isEmpty(params["c[0]"])) {
+            Ext.apply(params, this.getRequestFormFilterParams());
+            Ext.apply(params, this.getRequestFormConceptFilterParams());
+            Ext.apply(params, this.getRequestGridFilterParams());
+            Ext.apply(params, this.getSortParams());
+        }
+        return Ext.Object.toQueryString(params, true);
+    },
 
     /**
      * Return all request parameters without the column model and selection
      * @return {String}
      */
-    getRequestUrlWithoutSelection : Ext.EmptyFn,
+    getRequestUrlWithoutSelection: function () {
+        var params = {};
 
-    getSelectionsRange : Ext.EmptyFn,
+        Ext.apply(params, this.getRequestGridFilterParams());
+        Ext.apply(params, this.getRequestFormFilterParams());
+        Ext.apply(params, this.getRequestFormConceptFilterParams());
+        Ext.apply(params, this.getSortParams());
 
+        return Ext.Object.toQueryString(params, true);
+    },
+
+    getSelectionsRange: function () {
+        var sm = this.getSelectionModel();
+        return sm.getSelectedRanges();
+    },
 
     /**
      * method called when trying to save preference
      *
      * @returns
      */
-    _getSettings : Ext.EmptyFn
+    _getSettings: function () {
+        return this.component._getSettings();
+    }
 });
