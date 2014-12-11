@@ -1,63 +1,65 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
-* 
-* This file is part of SITools2.
-* 
-* SITools2 is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-* 
-* SITools2 is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-* 
-* You should have received a copy of the GNU General Public License
-* along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
-***************************************/
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ *
+ * This file is part of SITools2.
+ *
+ * SITools2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * SITools2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
+ ***************************************/
 
 /**
- * Populate the div x-headers of the sitools Desktop. 
- * @cfg {String} htmlContent html content of the headers, 
+ * Populate the div x-headers of the sitools Desktop.
+ * @cfg {String} htmlContent html content of the headers,
  * @cfg {Array} modules the modules list
  * @class sitools.user.component.entete.Entete
  * @extends Ext.Panel
  */
 Ext.define('sitools.user.controller.component.personal.TaskController', {
-    extend : 'Ext.app.Controller',
-    
-    views : ['component.personal.TaskView'],
-    
-    init : function () {
-        
+    extend: 'Ext.app.Controller',
+
+    views: ['component.personal.TaskView'],
+
+    init: function () {
+
         this.control({
 
-            'taskView button#clean' : {
-	            click : this._onClean
+            'taskView button#clean': {
+                click: this._onClean
             },
-            'taskView button#delete' : {
-	            click : this._onDelete
+
+            'taskView button#delete': {
+                click: this._onDelete
             },
-            'taskView button#viewresult' : {
-	            click : this._onViewResult
+
+            'taskView button#finish': {
+                click: this._onFinish
             },
-            'taskView button#finish' : {
-	            click : this._onFinish
-            },
-            'taskView' : {
-                afterrender : function (me) {
+
+            'taskView': {
+                afterrender: function (me) {
                     me.store.load({
-                        start : 0,
-                        limit : me.pageSize
+                        start: 0,
+                        limit: me.pageSize
                     });
                 }
             },
-            'taskView gridpanel#taskList' : {
-                itemclick : this._onViewStatusDetails
+
+            'taskView gridpanel#taskList': {
+                itemclick: this._onViewResult
             },
-            'taskView gridpanel#taskList pagingtoolbar' : {
-                change : function (pagingToolbar, pageData) {
+
+            'taskView gridpanel#taskList pagingtoolbar': {
+                change: function (pagingToolbar, pageData) {
                     var me = pagingToolbar.up("taskView");
                     me.detailPanel.removeAll();
                     me.detailPanel.setVisible(false);
@@ -144,21 +146,22 @@ Ext.define('sitools.user.controller.component.personal.TaskController', {
         var urlResult = rec.get('urlResult');
 
         if (Ext.isEmpty(urlResult)) {
-            return popupMessage(i18n.get('label.information'), i18n.get('label.urlResultEmpty'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');
+            return popupMessage(i18n.get('label.information'), i18n.get('label.urlResultEmpty'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL') + '/res/images/msgBox/16/icon-info.png');
         }
 
         var orderUrl = loadUrl.get('APP_URL') + loadUrl.get('APP_ORDERS_USER_URL');
 
         if (urlResult.indexOf(orderUrl) != -1) {
             this._showOrderDetails(urlResult, me);
-        } else {
-            var pathUrl = window.location.protocol + "//" + window.location.host;
-            if (urlResult.indexOf("http://") != -1) {
-                window.open(urlResult);
-            } else {
-                window.open(pathUrl + urlResult);
-            }
         }
+        /*else {
+         var pathUrl = window.location.protocol + "//" + window.location.host;
+         if (urlResult.indexOf("http://") != -1) {
+         window.open(urlResult);
+         } else {
+         window.open(pathUrl + urlResult);
+         }
+         }*/
     },
 
     _showOrderDetails: function (url, view) {
@@ -176,8 +179,8 @@ Ext.define('sitools.user.controller.component.personal.TaskController', {
                 var order = Ext.create("sitools.user.model.OrderModel", data.order);
 
                 var orderDetailView = Ext.create('sitools.user.view.component.personal.OrderDetailView', {
-                    action : 'detail',
-                    orderRec : order
+                    action: 'detail',
+                    orderRec: order
                 });
 
                 view.detailPanel.removeAll();
@@ -222,7 +225,4 @@ Ext.define('sitools.user.controller.component.personal.TaskController', {
         me.detailPanel.add(taskDetailView);
         me.detailPanel.setVisible(true);
     }
-
-
-
 });

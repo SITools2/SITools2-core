@@ -124,7 +124,11 @@ Ext.define('sitools.user.view.component.personal.OrderView', {
             border : false
         });
 
-        this.items = [this.gridPanel, this.detailPanel];
+        var splitter  = Ext.create("Ext.resizer.Splitter", {
+            style : 'background-color:#EBEBEB;'
+        });
+
+        this.items = [this.gridPanel, splitter, this.detailPanel];
 
         this.callParent(arguments);
     }

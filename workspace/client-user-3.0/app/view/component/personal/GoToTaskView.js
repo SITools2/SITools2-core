@@ -45,7 +45,7 @@ Ext.define('sitools.user.view.component.personal.GoToTaskView', {
             text : i18n.get('label.close'),
             scope : this,
             handler : function () {
-                this.ownerCt.close();
+                this.up().close();
             }
         } ];
         
@@ -70,7 +70,6 @@ Ext.define('sitools.user.view.component.personal.GoToTaskView', {
                 this.mainPanel = this.createNewFormComponent(this.task);
                 this.removeAll();
                 this.add(this.mainPanel);
-                this.doLayout();
             },
             failure : alertFailure
         });
@@ -79,17 +78,17 @@ Ext.define('sitools.user.view.component.personal.GoToTaskView', {
     createNewFormComponent : function (task) {
       
         var html = Ext.String.format(i18n.get("label.taskLaunched"), task.status);
-        html += Ext.String.format("<a href='#'>{0}</a><br>", i18n.get("label.detail"));
-        
-        if (!Ext.isEmpty(task.urlResult)) {
-			html += "<br>" + Ext.String.format(i18n.get("label.taskResult"), task.urlResult);	
-			html += Ext.String.format("<a href='#'>{0}</a><br>", i18n.get("label.result"));
-        }
-        else {
-			html += "<br>" + i18n.get("label.refreshTaskWindow");	
+
+        if (Ext.isEmpty(task.urlResult)) {
+			html += "<br>" + i18n.get("label.refreshTaskWindow");
 			html += Ext.String.format("<a href='#'>{0}</a><br>", i18n.get("label.refresh"));
+
+			//html += "<br>" + Ext.String.format(i18n.get("label.taskResult"), task.urlResult);
+			//html += Ext.String.format("<a href='#'>{0}</a><br>", i18n.get("label.result"));
+        } else {
+            html += Ext.String.format("<a href='#'>{0}</a><br>", i18n.get("label.detail"));
         }
-        
+
         var panel = Ext.create('Ext.panel.Panel', {
 			padding: 15,
 			height : 100,
@@ -99,10 +98,11 @@ Ext.define('sitools.user.view.component.personal.GoToTaskView', {
 				scope : this, 
 				boxready : function (panel) {
 					panel.getEl().down('a').on("click", function () {
-						this.showTaskDetail(task);
+						//this.showTaskDetail(task);
+						this.showTaskResults(task);
 					}, this);
 					
-					var resultOrRefreshLink = panel.getEl().down('a').next('a');
+					var resultOrRefreshLink = panel.getEl().down('a');
 					if (!Ext.isEmpty(task.urlResult)) {
 						resultOrRefreshLink.on("click", function () {
 							this.showTaskResults(task);
@@ -208,11 +208,16 @@ Ext.define('sitools.user.view.component.personal.GoToTaskView', {
 	 */
 	showTaskResults : function (task) {
 		var orderUrl = loadUrl.get('APP_URL') + loadUrl.get('APP_ORDERS_USER_URL');
+
+        if (Ext.isEmpty(task.urlResult)) {
+            return;
+        }
+
         if (task.urlResult.indexOf(orderUrl) != -1) {
             this._showOrderDetails(task.urlResult);
-        } else if (task.urlResult.indexOf("/records") != -1) {
+        } /*else if (task.urlResult.indexOf("/records") != -1) {
             this._showDatasetDetails(task.urlResult);
-        } 
+        }*/
         else {
             window.open(task.urlResult);
         }

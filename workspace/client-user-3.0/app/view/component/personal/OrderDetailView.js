@@ -104,7 +104,7 @@ Ext.define('sitools.user.view.component.personal.OrderDetailView', {
         this.resourceCollectionGrid = Ext.create('Ext.grid.Panel', {
             flex: 1,
             padding: 15,
-            title: i18n.get('label.resourceCollection'),
+            title: i18n.get('label.files'),
             store: resourceCollectionStore,
             hidden: (resourceCollectionStore.getCount() == 0) ? true : false,
             columns: resourceCollectionCm,
@@ -215,13 +215,13 @@ Ext.define('sitools.user.view.component.personal.OrderDetailView', {
         });
     },
 
-    orderRecord: function (orderRecord, nomFichier) {
-        var winOrderDetail = new sitools.user.component.entete.userProfile.viewRecordSelectionDetail({
-            orderRecord: orderRecord,
-            nomFichier: nomFichier
-        });
-        winOrderDetail.show();
-    },
+    //orderRecord: function (orderRecord, nomFichier) {
+    //    var winOrderDetail = new sitools.user.component.entete.userProfile.viewRecordSelectionDetail({
+    //        orderRecord: orderRecord,
+    //        nomFichier: nomFichier
+    //    });
+    //    winOrderDetail.show();
+    //},
 
     openResource: function (grid, record, item, rowIndex) {
 
@@ -233,7 +233,7 @@ Ext.define('sitools.user.view.component.personal.OrderDetailView', {
         if (extension != "json") {
             var url = record.data.resourceCollection;
             viewFileContent(url, nomFichier);
-        } else {
+        } /*else {
             Ext.Ajax.request({
                 url: record.data.resourceCollection,
                 method: 'GET',
@@ -272,6 +272,6 @@ Ext.define('sitools.user.view.component.personal.OrderDetailView', {
                     Ext.Msg.alert(i18n.get('label.error'), ret.responseText);
                 }
             });
-        }
+        }*/
     }
 });

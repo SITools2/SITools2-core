@@ -42,7 +42,7 @@ Ext.define('sitools.user.view.component.personal.TaskView', {
 
         this.store = Ext.create('Ext.data.JsonStore', {
             model: 'sitools.user.model.TaskModel',
-            pageSize : this.pageSize,
+            pageSize: this.pageSize,
             proxy: {
                 type: 'ajax',
                 url: this.url,
@@ -105,45 +105,49 @@ Ext.define('sitools.user.view.component.personal.TaskView', {
             items: [{
                 text: i18n.get('label.clean'),
                 icon: loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_clean.png',
-                itemId : 'clean'
+                itemId: 'clean'
             }, {
                 text: i18n.get('label.delete'),
                 icon: loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png',
                 disabled: true,
-                itemId : 'delete'
-            }, {
-                text: i18n.get('label.viewResult'),
-                icon: loadUrl.get('APP_URL') + '/common/res/images/icons/view_result.png',
-                disabled: true,
-                itemId : 'viewresult'
+                itemId: 'delete'
             }, {
                 text: i18n.get('label.setFinish'),
                 icon: loadUrl.get('APP_URL') + '/common/res/images/icons/set_finish.png',
                 disabled: true,
-                itemId : 'finish'
-            }]
+                itemId: 'finish'
+            } /*{
+             text: i18n.get('label.viewResult'),
+             icon: loadUrl.get('APP_URL') + '/common/res/images/icons/view_result.png',
+             disabled: true,
+             itemId : 'viewresult'
+             },*/]
         };
 
         this.gridPanel = Ext.create('Ext.grid.Panel', {
             flex: 1,
-            forceFit : true,
+            forceFit: true,
             tbar: tbar,
             bbar: bbar,
             store: this.store,
-            border : false,
+            border: false,
             selModel: selModel,
             columns: columns,
-            itemId : 'taskList'
+            itemId: 'taskList'
         });
 
         this.detailPanel = Ext.create('Ext.panel.Panel', {
             height: 200,
             hidden: true,
-            border : false,
-            autoScroll : true
+            border: false,
+            autoScroll: true
         });
 
-        this.items = [this.gridPanel, this.detailPanel];
+        var splitter = Ext.create("Ext.resizer.Splitter", {
+            style: 'background-color:#EBEBEB;'
+        });
+
+        this.items = [this.gridPanel, splitter, this.detailPanel];
 
         this.callParent(arguments);
     }
