@@ -126,15 +126,15 @@ Ext.define('sitools.admin.guiservices.GuiServicesCrud', {
         this.selModel = Ext.create('Ext.selection.RowModel', {
             mode : "SINGLE"
         });
-        
-        sitools.admin.guiservices.GuiServicesCrud.superclass.initComponent.call(this);
+
+        this.callParent(arguments);
     },
 
     /**
      * done a specific render to load project modules informations from the store. 
      */
     onRender : function () {
-        sitools.admin.guiservices.GuiServicesCrud.superclass.onRender.apply(this, arguments);
+        this.callParent(arguments);
         this.store.load({
             start : 0,
             limit : this.pageSize

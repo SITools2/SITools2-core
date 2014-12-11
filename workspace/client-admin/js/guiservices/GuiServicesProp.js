@@ -36,9 +36,7 @@ Ext.define('sitools.admin.guiservices.GuiServicesProp', {
     modal : true,
     id : ID.PROP.GUISERVICES,
     layout : 'fit',
-    
-    requires : ['sitools.admin.utils.DependenciesPanel'],
-    
+
     initComponent : function () {
         
         if (this.action === 'create') {
@@ -46,8 +44,6 @@ Ext.define('sitools.admin.guiservices.GuiServicesProp', {
         } else if (this.action === 'modify') {
             this.title = i18n.get('label.modifyGuiService');
         }
-        
-        this.gridDependencies = Ext.create("sitools.admin.utils.DependenciesPanel");
         
         var comboSelectionType = Ext.create("Ext.form.ComboBox", {
             typeAhead : false,
@@ -57,6 +53,7 @@ Ext.define('sitools.admin.guiservices.GuiServicesProp', {
             editable : false,
             queryMode : 'local',
             anchor : "100%",
+            labelWidth : 150,
             emptyText: i18n.get("label.selectionTypeEmpty"),
             store : Ext.create("Ext.data.ArrayStore", {
                 id : 0,
@@ -72,9 +69,11 @@ Ext.define('sitools.admin.guiservices.GuiServicesProp', {
         });
         
         this.formPanel = Ext.create("Ext.form.FormPanel", {
-            title : i18n.get('label.projectModuleInfo'),
             border : false,
-            labelWidth : 150,
+            bodyBorder : false,
+            defaults : {
+                labelWidth : 150
+            },
             padding : 10,
             items : [ {
                     xtype : 'textfield',
@@ -151,34 +150,28 @@ Ext.define('sitools.admin.guiservices.GuiServicesProp', {
         });
             
         
-        
-        this.tabPanel = Ext.create("Ext.TabPanel", {
-            activeTab : 0,
-            items : [ this.formPanel, this.gridDependencies ],
-            buttons : [ {
-                text : i18n.get('label.ok'),
-                scope : this,
-                handler : this._onValidate
-            }, {
-                text : i18n.get('label.cancel'),
-                scope : this,
-                handler : function () {
-                    this.close();
-                }
-            } ]
-        });
-        
-        this.items = [this.tabPanel];
-        
-        
-        sitools.admin.guiservices.GuiServicesProp.superclass.initComponent.call(this);
+        this.items = [this.formPanel];
+
+        this.buttons = [ {
+            text : i18n.get('label.ok'),
+            scope : this,
+            handler : this._onValidate
+        }, {
+            text : i18n.get('label.cancel'),
+            scope : this,
+            handler : function () {
+                this.close();
+            }
+        }];
+
+        this.callParent(arguments);
     },
     
     /**
      * done a specific render to load project modules properties. 
      */
     afterRender : function () {
-        sitools.admin.guiservices.GuiServicesProp.superclass.afterRender.apply(this, arguments);
+        this.callParent(arguments);
         if (this.action === 'modify') {
             var f = this.formPanel.getForm();
             
@@ -186,19 +179,6 @@ Ext.define('sitools.admin.guiservices.GuiServicesProp', {
             var data = record.data;
             
             f.setValues(data);
-            
-            var dependencies = data.dependencies;
-            var storeDependencies = this.gridDependencies.getStore();
-            if (!Ext.isEmpty(dependencies.js)) {
-                Ext.each(dependencies.js, function (item) {
-                    storeDependencies.add(item);
-                }, this);
-            }
-            if (!Ext.isEmpty(dependencies.css)) {
-                Ext.each(dependencies.css, function (item) {
-                    storeDependencies.add(item);
-                }, this);
-            }   
         }
     },
 
@@ -213,24 +193,6 @@ Ext.define('sitools.admin.guiservices.GuiServicesProp', {
         }
         var jsonObject = frm.getFieldValues();
             
-        jsonObject.dependencies = {};
-        jsonObject.dependencies.js = [];
-        jsonObject.dependencies.css = [];
-        this.gridDependencies.getStore().each(function (item) {
-            if (!Ext.isEmpty(item.data.url)) {
-                if (item.data.url.indexOf(".css") !== -1) {
-                    jsonObject.dependencies.css.push({
-                        url : item.data.url
-                    });
-                }
-                if (item.data.url.indexOf(".js") !== -1) {
-                    jsonObject.dependencies.js.push({
-                        url : item.data.url
-                    });
-                }
-            }
-        });
-        
         if (this.action === "modify") {
 			this.store.updateRecord(jsonObject);
 		} else {

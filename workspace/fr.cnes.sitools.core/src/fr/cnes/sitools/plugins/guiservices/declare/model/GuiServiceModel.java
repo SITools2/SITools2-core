@@ -50,6 +50,7 @@ public class GuiServiceModel implements IResource, Serializable {
   /** xtype */
   private String xtype;
   /** dependencies */
+  @Deprecated
   private Dependencies dependencies;
   /** priority */
   private Integer priority; // global ordering of all gui service...
@@ -221,6 +222,7 @@ public class GuiServiceModel implements IResource, Serializable {
    * 
    * @return the dependencies
    */
+  @Deprecated
   public Dependencies getDependencies() {
     return dependencies;
   }
@@ -231,6 +233,7 @@ public class GuiServiceModel implements IResource, Serializable {
    * @param dependencies
    *          the dependencies to set
    */
+  @Deprecated
   public void setDependencies(Dependencies dependencies) {
     this.dependencies = dependencies;
   }

@@ -66,8 +66,6 @@ Ext.define('sitools.admin.guiservices.GuiServicesStore', {
                 name : 'priority',
                 type : 'string'
             }, {
-                name : 'dependencies'
-            }, {
                 name : 'dataSetSelection'
             }, {
                 name : 'defaultGuiService',
