@@ -411,7 +411,7 @@ Ext.define('sitools.user.controller.core.FixedMode', {
 
                     var dataset = Json.dataset;
 
-                    var javascriptObject = Desktop.getNavMode().getDatasetOpenMode(dataset);
+                    var javascriptObject = dataset.datasetView.jsObject;
 
                     var componentConfig = {
                         dataset: dataset,

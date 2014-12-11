@@ -70,6 +70,15 @@ Ext.define('sitools.user.controller.component.form.ProjectFormController', {
                     var rec = grid.getStore().getAt(rowIndex);
                     Desktop.getNavMode().multiDataset.showDataset(grid, rec, grid.formConceptFilters);
                 }
+            },
+            'overviewResultProjectForm tabpanel#result > component' : {
+                close : function (cmp) {
+                    //check that no dataset are displayed, if the last dataset is closed, the number of items must be 1 (close is called before removing the dataset from the tabPanel)
+                    var tabPanel = cmp.up("tabpanel#result");
+                    if (tabPanel.items.getCount() === 1) {
+                        tabPanel.collapse();
+                    }
+                }
             }
         });
 

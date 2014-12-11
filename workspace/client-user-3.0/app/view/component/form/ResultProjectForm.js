@@ -40,7 +40,6 @@ Ext.define('sitools.user.view.component.form.ResultProjectForm', {
     forceFit : true,
     layout : 'fit',
 	bodyBorder : false,
-	border : false,
 
     initComponent : function () {
         var params = {};

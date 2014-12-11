@@ -37,7 +37,6 @@ Ext.namespace('sitools.user.view.component.form');
 Ext.define('sitools.user.view.component.form.OverviewResultProjectForm', {
 	extend : 'Ext.panel.Panel',
 	alias : 'widget.overviewResultProjectForm',
-
 	bodyBorder : false,
 	border : false,
 	layout : 'fit',
@@ -45,40 +44,38 @@ Ext.define('sitools.user.view.component.form.OverviewResultProjectForm', {
 	
     initComponent : function () {
 
-		//var params = Ext.apply(this, {
-		//	flex : 2
-		//});
-
 		var results = Ext.create('sitools.user.view.component.form.ResultProjectForm', {
 			flex : 1,
 			datasets : this.datasets,
 			formConceptFilters : this.formConceptFilters,
 			urlTask : this.urlTask
-		} );
-//		Ext.apply(results, {
-//			region : "center"
-//		});
-		
+		});
+
 		var description = i18n.get('label.descriptionMultiDS');
 		
 		this.southPanel = Ext.create('Ext.tab.Panel', {
+			itemId : 'result',
         	title : i18n.get('label.results'),
 			height : 300,
-        	split : true, 
-        	autoScroll : false, 
+        	autoScroll : false,
         	collapsible : true,
         	collapsed : true,
 			bodyBorder : false,
 			border : false,
 			collapseFirst : true,
-			collapseDirection : 'bottom'
+			collapseDirection : 'bottom',
+			bodyPadding : 5
 		});
+
+		var splitter  = Ext.create("Ext.resizer.Splitter", {
+		});
+
 		Ext.apply(this, {
 			layout : {
 				type : "vbox",
 				align : 'stretch'
 			},
-			items : [results, this.southPanel]
+			items : [results, splitter, this.southPanel]
 		});
 		
 		if (description !== "label.descriptionMultiDS") {
