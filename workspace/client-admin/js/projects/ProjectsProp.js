@@ -1194,6 +1194,7 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
     applyCkeditor : function () {
         // Selectively replace <textarea> elements, based on
         // custom assertions.
+        CKEDITOR.imagesUrl = loadUrl.get('APP_URL') + loadUrl.get('APP_UPLOAD_URL') + '/?media=json', // use to choose or upload images
         CKEDITOR.replaceAll(function (textarea, config) {
             var tableArea = Ext.get(textarea).up('table').dom;
             if (!Ext.isEmpty(tableArea.classList) && tableArea.classList.contains("ckeditor")) {

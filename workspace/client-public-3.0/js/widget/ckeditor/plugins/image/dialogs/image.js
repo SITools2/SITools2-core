@@ -512,8 +512,8 @@
 	                                title: i18n.get('label.chooseImage'),
 	                                onClick: function() {
 	                                    var chooser = Ext.create('sitools.public.widget.imageChooser.ImageChooser', {
-	                                        url : CKEDITOR.datastorageUrl + '/images/',
-	                                        urlToUpload : CKEDITOR.datastorageUrl + '/images/',
+	                                        url : CKEDITOR.imagesUrl,
+	                                        urlToUpload : CKEDITOR.imagesUrl,
 	                                        isDatastorage : true,
 	                                        width : 515,
 	                                        height : 450,

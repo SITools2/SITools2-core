@@ -57,7 +57,7 @@ Ext.define('sitools.admin.fileEditor.LicenceEditorCrud', { extend : 'Ext.Panel',
     },
     
     afterRender : function () {
-        sitools.admin.fileEditor.LicenceEditorCrud.superclass.afterRender.apply(this, arguments);
+        this.callParent(arguments);
         if (this.url) {
             Ext.Ajax.request({
                 url : this.url + '/cgu.html',
@@ -65,6 +65,7 @@ Ext.define('sitools.admin.fileEditor.LicenceEditorCrud', { extend : 'Ext.Panel',
                 scope : this,
                 success : function (ret) {
                     var data = ret.responseText;
+                    CKEDITOR.imagesUrl = loadUrl.get('APP_URL') + loadUrl.get('APP_UPLOAD_URL') + '/?media=json', // use to choose or upload images
                     CKEDITOR.replace(this.fileEditor.id, {
                         customConfig: 'config-basic-plus.js',
                         fullPage : true,

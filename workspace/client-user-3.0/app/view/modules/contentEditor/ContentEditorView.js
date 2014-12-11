@@ -417,6 +417,7 @@ Ext.define('sitools.user.view.modules.contentEditor.ContentEditorView', {
                         var contentPanelBbar = this.contentPanel.down('toolbar[itemId="contentPanelBbar"]');
                         var height = this.contentPanel.getHeight() - contentPanelBbar.getHeight();
                         CKEDITOR.datastorageUrl = this.dynamicUrlDatastorage; // use to upload file in datastorage
+                        CKEDITOR.imagesUrl = this.dynamicUrlDatastorage + '/images/', // use to choose or upload images
                         CKEDITOR.replace(this.itemIdTextarea, {
                             baseHref : this.dynamicUrlDatastorage + "/",
                             language : locale.getLocale(),

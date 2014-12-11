@@ -12,7 +12,9 @@ CKEDITOR.editorConfig = function( config ) {
 	config.allowedContent = true;
 	
 	config.basicEntities = false;
-	
+
+	config.baseFloatZIndex = 21000;
+
 	// The toolbar groups arrangement, optimized for two toolbar rows.
     config.toolbar = [
 		{ name: 'document',    items : [ 'Source','Preview'] },
