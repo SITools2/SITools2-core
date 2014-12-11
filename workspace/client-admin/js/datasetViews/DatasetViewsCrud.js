@@ -92,7 +92,7 @@ Ext.define('sitools.admin.datasetViews.DatasetViewsCrud', {
             items : [ {
                 header : i18n.get('label.name'),
                 dataIndex : 'name',
-                width : 100,
+                width : 200,
                 sortable : true,
                 renderer : function (value, meta, record) {
                     meta.style = "font-weight: bold;";

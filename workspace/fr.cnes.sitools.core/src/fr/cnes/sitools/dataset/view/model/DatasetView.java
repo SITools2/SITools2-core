@@ -53,6 +53,7 @@ public final class DatasetView implements IResource {
   private String description;
 
   /** dependencies */
+  @Deprecated
   private Dependencies dependencies;
 
   /**
@@ -181,6 +182,7 @@ public final class DatasetView implements IResource {
    * 
    * @return the dependencies
    */
+  @Deprecated
   public Dependencies getDependencies() {
     return dependencies;
   }
@@ -191,6 +193,7 @@ public final class DatasetView implements IResource {
    * @param dependencies
    *          the dependencies to set
    */
+  @Deprecated
   public void setDependencies(Dependencies dependencies) {
     this.dependencies = dependencies;
   }

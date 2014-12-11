@@ -33,8 +33,7 @@ Ext.define('sitools.admin.datasetViews.DatasetViewsProp', {
     modal : true,
     id : ID.PROP.DATAVIEW,
     layout : 'fit',
-    requires : ['sitools.admin.utils.DependenciesPanel'],
-    
+
     initComponent : function () {
         if (this.action == 'create') {
             this.title = i18n.get('label.createDatasetView');
@@ -42,14 +41,13 @@ Ext.define('sitools.admin.datasetViews.DatasetViewsProp', {
             this.title = i18n.get('label.modifyDatasetView');
         }
         
-        this.gridDependencies = Ext.create("sitools.admin.utils.DependenciesPanel");
-        
         this.formPanel = Ext.create("Ext.form.FormPanel", {
-        	title : i18n.get('label.datasetViewInfo'),
             border : false,
             bodyBorder : false,
-            labelWidth : 150,
             padding : 5,
+            defaults : {
+                labelWidth : 150
+            },
             items : [  {
                 xtype : 'textfield',
                 name : 'id',
@@ -73,12 +71,6 @@ Ext.define('sitools.admin.datasetViews.DatasetViewsProp', {
                 anchor : '100%', 
                 allowBlank : false
             }, {
-                xtype : 'textfield',
-                name : 'fileUrl',
-                id : 'fileUrlId', 
-                fieldLabel : i18n.get('label.fileUrl'),
-                anchor : '100%'
-            }, {
                 xtype : 'sitoolsSelectImage',
                 name : 'imageUrl',
                 fieldLabel : i18n.get('label.image'),
@@ -99,24 +91,18 @@ Ext.define('sitools.admin.datasetViews.DatasetViewsProp', {
                 }]
         });
         
-        this.tabPanel = new Ext.TabPanel({
-            activeTab : 0,
-            items : [this.formPanel, this.gridDependencies ],
-            buttons : [ {
-                text : i18n.get('label.ok'),
-                scope : this,
-                handler : this._onValidate
-            }, {
-                text : i18n.get('label.cancel'),
-                scope : this,
-                handler : function () {
-                    this.close();
-                }
-            } ]
-        });
-        
-        
-        this.items = [this.tabPanel];
+        this.buttons = [ {
+            text : i18n.get('label.ok'),
+            scope : this,
+            handler : this._onValidate
+        }, {
+            text : i18n.get('label.cancel'),
+            scope : this,
+            handler : function () {
+                this.close();
+            }
+        } ];
+        this.items = [this.formPanel];
         
         this.callParent(arguments);
     },
@@ -131,19 +117,6 @@ Ext.define('sitools.admin.datasetViews.DatasetViewsProp', {
                 success : function (ret) {
                     var data = Ext.decode(ret.responseText);
                     f.setValues(data.datasetView);
-                    
-                    var dependencies = data.datasetView.dependencies;
-                    var storeDependencies = this.gridDependencies.getStore();
-                    if (!Ext.isEmpty(dependencies.js)) {
-                        Ext.each(dependencies.js, function (item) {
-                            storeDependencies.add(item);
-                        }, this);
-                    }
-                    if (!Ext.isEmpty(dependencies.css)) {
-                        Ext.each(dependencies.css, function (item) {
-                            storeDependencies.add(item);
-                        }, this);
-                    }
                 },
                 failure : alertFailure
             });
@@ -163,32 +136,12 @@ Ext.define('sitools.admin.datasetViews.DatasetViewsProp', {
         var met = this.action == 'modify' ? 'PUT' : 'POST';
         var jsonObject = frm.getFieldValues();
         
-        jsonObject.dependencies = {};
-        jsonObject.dependencies.js = [];
-        jsonObject.dependencies.css = [];
-        this.gridDependencies.getStore().each(function (item) {
-            if (!Ext.isEmpty(item.data.url)) {
-                if (item.data.url.indexOf(".css") != -1) {
-                    jsonObject.dependencies.css.push({
-                        url : item.data.url
-                    });
-                }
-                if (item.data.url.indexOf(".js") != -1) {
-                    jsonObject.dependencies.js.push({
-                        url : item.data.url
-                    });
-                }
-            }
-        });
-
         Ext.Ajax.request({
             url : this.url,
             method : met,
             scope : this,
             jsonData : jsonObject,
             success : function (ret) {
-                //load the scripts defined in this component. 
-//				includeJs(frm.items.get('fileUrlId').getValue());
                 this.store.reload();
                 this.close();
             },
