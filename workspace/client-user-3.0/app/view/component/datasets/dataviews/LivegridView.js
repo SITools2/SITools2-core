@@ -103,6 +103,10 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
         this.callParent(arguments);
     },
 
+    getGrid: function () {
+        return this;
+    },
+
     //generic method
     /**
      * Return an array containing a button to show or hide columns

@@ -35,7 +35,8 @@ Ext.define('sitools.admin.datasets.DatasetSelectTables', {
     
     requires : ['sitools.public.widget.datasets.selectItems',
                 'sitools.public.widget.item.JsonStore'],
-    
+    border : false,
+    bodyBorder : false,
     initComponent : function () {
 		var action = this.action;
 

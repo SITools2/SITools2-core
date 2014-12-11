@@ -27,7 +27,7 @@ Ext.define('sitools.admin.datasets.JoinCrudTreePanel', {
     rootVisible : true,
     layout : 'fit',
     useArrows: true,
-    
+
     requires : ['sitools.admin.datasets.JoinConditionWin',
                 'sitools.admin.datasets.JoinTableWin'],
     
@@ -222,7 +222,7 @@ Ext.define('sitools.admin.datasets.JoinCrudTreePanel', {
             }
         };
         
-        sitools.admin.datasets.JoinCrudTreePanel.superclass.initComponent.call(this);
+        this.callParent(arguments);
     },
 
     _cxtMenuHandler : function (item) {

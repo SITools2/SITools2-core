@@ -30,8 +30,10 @@ Ext.namespace('sitools.admin.datasets');
  */
 Ext.define('sitools.admin.datasets.DatasetViewConfig', { 
     extend : 'Ext.form.Panel',
-    padding : 10,
     autoScroll : true,
+    border : false,
+    bodyBorder : false,
+    padding : 5,
     initComponent : function () {
         this.title = i18n.get('label.viewConfig');
 
@@ -94,6 +96,7 @@ Ext.define('sitools.admin.datasets.DatasetViewConfig', {
             anchor : '100%',    
             allowBlank : false,
             maxHeight : 200,
+            labelWidth : 150,
             validator : function (value) {
                 if (Ext.isEmpty(value)) {
                     return false;
@@ -153,7 +156,7 @@ Ext.define('sitools.admin.datasets.DatasetViewConfig', {
         this.formParametersPanel = Ext.create("sitools.admin.common.FormParametersConfigUtil", {
             rec : record,
             parametersList : this.viewConfigParamsValue,
-            padding : 0
+            padding : 5
         });
         this.add(this.formParametersPanel);
     }, 

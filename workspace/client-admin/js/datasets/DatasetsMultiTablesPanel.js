@@ -34,6 +34,9 @@ Ext.define('sitools.admin.datasets.DatasetsMultiTablesPanel', {
     extend : 'sitools.admin.datasets.AbstractDatasetWin',
 	alias : 'widget.s-datasetsMultiTablesPanel',
 	layout : 'fit',
+
+    border : false,
+    bodyBorder : false,
 	
 	requires : ['sitools.admin.datasets.GridFieldSetup',
 	            'sitools.admin.datasets.DatasetForm',
@@ -204,7 +207,9 @@ Ext.define('sitools.admin.datasets.DatasetsMultiTablesPanel', {
          * @type Ext.TabPanel
          */
         this.tabPanel = Ext.create('Ext.tab.Panel', {
-            height : 450, 
+            height : 450,
+            border : false,
+            bodyBorder : false,
             layoutConfig : {
 				layoutOnCardChange : true
             }, 
@@ -305,7 +310,7 @@ Ext.define('sitools.admin.datasets.DatasetsMultiTablesPanel', {
 
         };
         this.items = [ this.tabPanel ];
-        sitools.admin.datasets.DatasetsMultiTablesPanel.superclass.initComponent.call(this);
+        this.callParent(arguments);
     }, 
     /**
      * called when user click on Ok button. 

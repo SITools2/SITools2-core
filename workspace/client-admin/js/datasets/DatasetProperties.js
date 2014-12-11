@@ -28,7 +28,8 @@ Ext.namespace('sitools.admin.datasets');
 // ExtJS4.3 'Ext.grid.EditorGridPanel'
 Ext.define('sitools.admin.datasets.DatasetProperties', { 
     extend : 'Ext.grid.Panel',
-    
+    border : false,
+    bodyBorder : false,
     initComponent : function () {
 		
 		var storeProperties = Ext.create('Ext.data.JsonStore', {
@@ -191,7 +192,7 @@ Ext.define('sitools.admin.datasets.DatasetProperties', {
         
         });
         
-		sitools.admin.datasets.DatasetProperties.superclass.initComponent.call(this);
+		this.callParent(arguments);
     }, 
     /**
      * A method called on create button of the property grid. 

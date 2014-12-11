@@ -27,6 +27,8 @@ Ext.namespace('sitools.admin.datasets');
  */
 Ext.define('sitools.admin.datasets.DatasetSelectFields', { 
     extend : 'Ext.Panel',
+    border : false,
+    bodyBorder : false,
     initComponent : function () {
         
         Ext.apply(this, {

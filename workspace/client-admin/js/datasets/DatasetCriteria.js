@@ -35,6 +35,11 @@ Ext.define('sitools.admin.datasets.DatasetCriteria', {
     
     requires : ['sitools.admin.datasets.JoinPanel',
                 'sitools.admin.datasets.PredicatsPanel'],
+
+    border : false,
+    bodyBorder : false,
+
+    layout : 'fit',
     
 	initComponent : function () {
 		/**
@@ -57,7 +62,8 @@ Ext.define('sitools.admin.datasets.DatasetCriteria', {
 			gridId : 'whereClauseId', 
 			title : i18n.get('label.wizardWhereClause'), 
 			storeSelectFields : this.scope.gridFields.getStore(), 
-			type : 'where'
+			type : 'where',
+            padding : 5
         });
 
         /**
@@ -155,7 +161,9 @@ Ext.define('sitools.admin.datasets.DatasetCriteria', {
          * @type Ext.Panel
          */
         this.whereClausePanel = Ext.create('Ext.panel.Panel', {
-			flex : 0.9, 
+			flex : 0.9,
+            border : false,
+            bodyBorder : false,
 			layout : {
 			    type : 'vbox', 
 				align : "stretch"
@@ -191,7 +199,7 @@ Ext.define('sitools.admin.datasets.DatasetCriteria', {
             }
         };
         
-        sitools.admin.datasets.DatasetCriteria.superclass.initComponent.call(this);
+       this.callParent(arguments);
     }, 
     /**
      * Returns the wizard panel 

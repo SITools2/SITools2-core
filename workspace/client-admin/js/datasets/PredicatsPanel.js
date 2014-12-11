@@ -20,8 +20,6 @@
 /*
  * @include "../../../client-admin/js/datasets/selectPredicat.js"
  */
-Ext.ns("sitools.admin.datasets");
-
 /**
  * @class sitools.admin.datasets.PredicatsPanel
  * @extends Ext.grid.EditorGridPanel

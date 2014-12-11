@@ -37,25 +37,8 @@ Ext.define('sitools.user.component.datasets.recordDetail.RecordDetailComponent',
             width : 500,
             height : 450,
             datasetName : componentConfig.datasetName,
-	        saveToolbar : true,
 	        iconCls : "dataDetail",
 	        type : "dataDetail"
-	        //shadow : true,
-	        //shadowOffset : 5,
-	        //toolbar : {
-	        //	xtype : 'toolbar',
-	        //	items : [{
-		     //       iconCls : 'arrow-back',
-		     //       handler : function () {
-		     //           this.ownerCt.ownerCt.items.items[0].goPrevious();
-		     //       }
-		     //   }, {
-		     //       iconCls : 'arrow-next',
-		     //       handler : function () {
-		     //           this.ownerCt.ownerCt.items.items[0].goNext();
-		     //       }
-		     //   }]
-	        //}
         };
     	Ext.applyIf(windowBaseConfig, windowConfig);
         
