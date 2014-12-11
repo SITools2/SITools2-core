@@ -67,11 +67,13 @@ public final class FormComponent implements IResource {
   /**
    * fileUrlAdmin
    */
+  @Deprecated
   private String fileUrlAdmin;
   
   /**
    * fileUrlUser
    */
+  @Deprecated
   private String fileUrlUser;
   
   /**
@@ -246,6 +248,7 @@ public final class FormComponent implements IResource {
    * Gets the fileUrlAdmin value
    * @return the fileUrlAdmin
    */
+  @Deprecated
   public String getFileUrlAdmin() {
     return fileUrlAdmin;
   }
@@ -254,6 +257,7 @@ public final class FormComponent implements IResource {
    * Sets the value of fileUrlAdmin
    * @param fileUrlAdmin the fileUrlAdmin to set
    */
+  @Deprecated
   public void setFileUrlAdmin(String fileUrlAdmin) {
     this.fileUrlAdmin = fileUrlAdmin;
   }
@@ -262,6 +266,7 @@ public final class FormComponent implements IResource {
    * Gets the fileUrlUser value
    * @return the fileUrlUser
    */
+  @Deprecated
   public String getFileUrlUser() {
     return fileUrlUser;
   }
@@ -270,6 +275,7 @@ public final class FormComponent implements IResource {
    * Sets the value of fileUrlUser
    * @param fileUrlUser the fileUrlUser to set
    */
+  @Deprecated
   public void setFileUrlUser(String fileUrlUser) {
     this.fileUrlUser = fileUrlUser;
   }

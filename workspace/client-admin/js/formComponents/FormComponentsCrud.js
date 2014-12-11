@@ -150,12 +150,12 @@ Ext.define('sitools.admin.formComponents.FormComponentsCrud', {
         this.selModel = Ext.create('Ext.selection.RowModel', {
             mode : "SINGLE"
         });
-                
-        sitools.admin.formComponents.FormComponentsCrud.superclass.initComponent.call(this);
+
+        this.callParent(arguments);
     },
 
     onRender : function () {
-        sitools.admin.formComponents.FormComponentsCrud.superclass.onRender.apply(this, arguments);
+        this.callParent(arguments);
         this.store.load({
             start : 0,
             limit : this.pageSize

@@ -36,11 +36,12 @@ Ext.define('sitools.admin.formComponents.FormComponentsProp', { extend : 'Ext.Wi
         this.items = [ {
             xtype : 'panel',
             layout : 'fit',
-            title : i18n.get('label.formComponentsInfo'),
             items : [ {
                 xtype : 'form',
                 border : false,
-                labelWidth : 150,
+                defaults : {
+                    labelWidth : 180
+                },
                 padding : 10,
                 items : [ {
                     xtype : 'textfield',
@@ -50,63 +51,49 @@ Ext.define('sitools.admin.formComponents.FormComponentsProp', { extend : 'Ext.Wi
                     xtype : 'textfield',
                     name : 'type',
                     fieldLabel : i18n.get('label.type'),
-                    anchor : '100%', 
+                    anchor : '100%',
                     allowBlank : false
                 }, {
                     xtype : 'textfield',
                     name : 'componentDefaultHeight',
                     fieldLabel : i18n.get('label.defaultHeight'),
-                    anchor : '100%', 
+                    anchor : '100%',
                     allowBlank : false
                 }, {
                     xtype : 'textfield',
                     name : 'componentDefaultWidth',
                     fieldLabel : i18n.get('label.defaultWidth'),
-                    anchor : '100%', 
+                    anchor : '100%',
                     allowBlank : false
                 }, {
                     xtype : 'textfield',
                     name : 'jsAdminObject',
                     fieldLabel : i18n.get('label.jsAdminObject'),
-                    anchor : '100%', 
+                    anchor : '100%',
                     allowBlank : false
                 }, {
                     xtype : 'textfield',
                     name : 'jsUserObject',
                     fieldLabel : i18n.get('label.jsUserObject'),
-                    anchor : '100%', 
-                    allowBlank : false
-                }, {
-                    xtype : 'textfield',
-                    name : 'fileUrlUser',
-                    id : 'fileUrlUserId', 
-                    fieldLabel : i18n.get('label.fileUrlUser'),
-                    anchor : '100%', 
-                    allowBlank : false
-                }, {
-                    xtype : 'textfield',
-                    id : 'fileUrlAdminId', 
-                    name : 'fileUrlAdmin',
-                    fieldLabel : i18n.get('label.fileUrlAdmin'),
-                    anchor : '100%', 
+                    anchor : '100%',
                     allowBlank : false
                 }, {
                     xtype : 'sitoolsSelectImage',
                     name : 'imageUrl',
                     fieldLabel : i18n.get('label.image'),
-                    anchor : '100%', 
+                    anchor : '100%',
                     allowBlank : false
                 }, {
                         xtype : 'numberfield',
                         name : 'priority',
-                        id : 'priorityId', 
+                        id : 'priorityId',
                         fieldLabel : i18n.get('label.priority'),
                         minValue : 0,
                         maxValue : 10,
                         allowDecimals : false,
                         incrementValue : 1,
                         accelerate : true,
-                        anchor : "50%", 
+                        anchor : "50%",
                         allowBlank : false
                     }]
             } ],
@@ -122,10 +109,10 @@ Ext.define('sitools.admin.formComponents.FormComponentsProp', { extend : 'Ext.Wi
                 }
             } ]
         } ];
-        sitools.admin.formComponents.FormComponentsProp.superclass.initComponent.call(this);
+        this.callParent(arguments);
     },
     onRender : function () {
-        sitools.admin.formComponents.FormComponentsProp.superclass.onRender.apply(this, arguments);
+        this.callParent(arguments);
         if (this.action == 'modify') {
             var f = this.down('form').getForm();
             Ext.Ajax.request({
@@ -156,9 +143,6 @@ Ext.define('sitools.admin.formComponents.FormComponentsProp', { extend : 'Ext.Wi
             scope : this,
             jsonData : jsonObject,
             success : function (ret) {
-                //load the scripts defined in this component. 
-				includeJs(jsonObject.fileUrlUser);
-                includeJs(jsonObject.fileUrlAdmin);
                 this.store.reload();
                 this.close();
             },
