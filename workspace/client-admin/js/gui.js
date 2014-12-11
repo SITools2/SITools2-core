@@ -107,92 +107,6 @@ function showHelp(helpUrl) {
 
 
 var clientAdmin = {
-    initGuiServices : function (callback) {
-        Ext.Ajax.request({
-            url : loadUrl.get('APP_URL') + loadUrl.get('APP_GUI_SERVICES_URL'),
-            params : {
-                sort : "priority",
-                dir : "DESC"
-            }, 
-            method : "GET",
-            scope : this,
-            success : function (ret) {
-                var json = Ext.decode(ret.responseText);
-                if (!json.success) {
-                    Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noProjectName'));
-                    return false;
-                } else {
-                    var data = json.data;                    
-                    Ext.each(data, function (guiservice) {
-//                        includeJsForceOrder(guiservice.dependencies.js, 0);
-                    });
-                    
-                }
-            },
-            callback : function () {
-                this.initDatasetViews(callback);
-            }
-        }); 
-    }, 
-	initDatasetViews : function (callback) {
-		Ext.Ajax.request({
-	        url : loadUrl.get('APP_URL') + loadUrl.get('APP_DATASETS_VIEWS_URL'),
-	        params : {
-	            sort : "priority",
-	            dir : "DESC"
-	        }, 
-	        method : "GET",
-	        scope : this,
-	        success : function (ret) {
-                var json = Ext.decode(ret.responseText);
-                if (!json.success) {
-                    Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noProjectName'));
-                    return false;
-                } else {
-                    var data = json.data;                    
-                    Ext.each(data, function (datasetViewComponent) {
-//                    	includeJsForceOrder(datasetViewComponent.dependencies.js, 0);
-                    });
-                    
-                }
-	        },
-	        callback : function () {
-	        	this.initProjectsModules(callback);
-	        }
-	    }); 
-	}, 
-	initProjectsModules : function (callback) {
-		Ext.Ajax.request({
-	        url : loadUrl.get('APP_URL') + loadUrl.get('APP_PROJECTS_MODULES_URL'),
-	        params : {
-	            sort : "priority",
-	            dir : "DESC"
-	        }, 
-	        method : "GET",
-	        scope : this,
-	        success : function (ret) {
-	        	
-	        	// utils.js contains commonTreeUtils from env.js
-//	        	includeJs("/sitools/client-user/js/utils.js");
-	        	
-                var json = Ext.decode(ret.responseText);
-                if (!json.success) {
-                    Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noProjectName'));
-                    return false;
-                } else {
-                    var data = json.data;                    
-                    Ext.each(data, function (projectModuleComponent) {
-                    	if (!Ext.isEmpty(projectModuleComponent.dependencies.js)) {
-//                    		includeJsForceOrder(projectModuleComponent.dependencies.js, 0);
-                    	}
-                    });
-                }
-	        },
-	        callback : function () {
-				callback.call(this);
-	        }
-	    }); 
-	}, 
 	initGui : function (callback) {
 	    
 	    var menuLogout = {
@@ -538,35 +452,7 @@ function initAppli(callback) {
         Ext.util.Cookies.set('showQuickStart', true);
     }
     
-//	Ext.Ajax.request({
-//        url : loadUrl.get('APP_URL') + loadUrl.get('APP_FORMCOMPONENTS_URL'),
-//        params : {
-//            sort : "priority",
-//            dir : "DESC"
-//        }, 
-//        method : "GET",
-//        scope : this,
-//        success : function (ret) {
-//            var json = Ext.decode(ret.responseText);
-//            if (!json.success) {
-//                Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noProjectName'));
-//                return false;
-//            } else {
-//                var data = json.data;                    
-//                Ext.each(data, function (formComponent) {
-//                    includeJs(formComponent.fileUrlAdmin);
-//                    includeJs(formComponent.fileUrlUser);
-//                });
-//            }
-//        },
-//        callback : function () {
 	sql2ext.load(loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL') +  "/conf/sql2ext.properties");
-    var cb = function () {
-		clientAdmin.initGui(callback);
-    };
-    clientAdmin.initGuiServices(cb);
-//        }
-//    });       
-    
+	clientAdmin.initGui(callback);
 }
 
