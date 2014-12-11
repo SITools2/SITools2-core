@@ -134,22 +134,32 @@ Ext.define("sitools.user.controller.footer.FooterController", {
     onProjectLoaded : function () {
         this.fillLinks();
         this.versionUrl = loadUrl.get('APP_URL') + '/version';
-        this.FooterView = Ext.create('sitools.user.view.footer.FooterView', {});
-        
+
+        if (Desktop.getBottomEl().getHeight() != 0) {
+            this.FooterView = Ext.create('sitools.user.view.footer.FooterView', {});
+        }
+
         this.getApplication().fireEvent('footerLoaded');
-       
     },
     
     onMaximizeDesktop : function () {
     	var footerView = this.getFooterView();
-    	
+
+        if (Ext.isEmpty(footerView)) {
+            return;
+        }
+
         this.getFooterView().container.setHeight(0);
         this.getFooterView().hide();
     },
     
     onMinimizeDesktop : function () {
     	var footerView = this.getFooterView();
-    	
+
+        if (Ext.isEmpty(footerView)) {
+            return;
+        }
+
     	footerView.container.dom.style.height = "";
     	footerView.setSize(Desktop.getBottomEl().getSize());
     	footerView.show();

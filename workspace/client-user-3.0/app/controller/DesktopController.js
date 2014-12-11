@@ -26,73 +26,6 @@ Ext.define('sitools.user.controller.DesktopController', {
     views : [ 'desktop.DesktopView' ],
 
     init : function () {
-    	this.control({
-            'menu#saveMenuWindow menuitem#saveUser' : {
-                click : function (menuItem) {
-                    var menu = menuItem.up("menu");
-                    var window = menu.window;
-                    var component = window.items.items[0];
-    
-                    var componentSettings = component._getSettings();
-                    window.saveSettings(componentSettings, false);
-                }
-                    
-            },
-            'menu#saveMenuWindow menuitem#savePublic' : {
-                click : function (menuItem) {
-                    var menu = menuItem.up("menu");
-                    var window = menu.window;
-                    var component = window.items.items[0];
-                    
-                    var componentSettings = component._getSettings();
-                    window.saveSettings(componentSettings, true);
-                }
-            
-            },
-            'window tool#save' : {
-                click : function (tool, e, eOpts) {
-                    var window = tool.up("window");
-                   
-                    var saveLabel = Ext.create('Ext.menu.Item', {
-                        text : i18n.get('label.chooseSaveType'),
-                        plain : false,
-                        canActivate : false,
-                        cls : 'userMenuCls'
-                    });
-                    
-                    var menuForms = Ext.create("Ext.menu.Menu", {
-                        border : false,
-                        plain : true,
-                        width : 260,
-                        closeAction : 'hide',
-                        itemId : 'saveMenuWindow',
-                        window : window,
-                        items : [saveLabel, {
-                            xtype : 'menuseparator',
-                            separatorCls : 'customMenuSeparator'
-                        }, {
-                            text: i18n.get("label.myself"),
-                            cls : 'menuItemCls',
-                            iconCls : 'saveUserIcon',
-                            itemId : 'saveUser'
-                        },
-                        {
-                            text: i18n.get("label.publicUser"),
-                            cls : 'menuItemCls',
-                            iconCls : 'savePublicIcon',
-                            itemId : 'savePublic'
-                        }]
-                    });
-                    
-                    var x = e.getX() + 5;
-                    var y = e.getY() + 5;
-                    
-                    menuForms.showAt([x, y]);
-                }
-            }
-    	});
-        
-        
         this.getApplication().on('projectLoaded', this.realInit, this);
     	this.callParent(arguments);
     },
@@ -387,13 +320,17 @@ Ext.define('sitools.user.controller.DesktopController', {
 		
     	var headerView = headerController.getHeaderView();
     	var footerView = footerController.getFooterView();
-    	
-    	headerView.fireEvent("resize", headerView, newW, newH);
-    	headerView.fireEvent("windowResize", headerView, newW, newH);
 
-    	footerView.fireEvent("resize", footerView, newW, newH);
-    	footerView.fireEvent("windowResize", footerView, newW, newH);
-		
+        if (!Ext.isEmpty(headerView)) {
+            headerView.fireEvent("resize", headerView, newW, newH);
+            headerView.fireEvent("windowResize", headerView, newW, newH);
+        }
+
+        if (!Ext.isEmpty(footerView)) {
+            footerView.fireEvent("resize", footerView, newW, newH);
+            footerView.fireEvent("windowResize", footerView, newW, newH);
+        }
+
 	}
 	
 });

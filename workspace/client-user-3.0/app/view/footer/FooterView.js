@@ -41,7 +41,7 @@ Ext.define('sitools.user.view.footer.FooterView', {
 
     initComponent : function () {
 
-        this.defaultBottom = Ext.get('x-bottom').dom.children.length === 0;
+        this.defaultBottom = Desktop.getBottomEl().dom.children.length === 0;
 
         if (this.defaultBottom) {
 

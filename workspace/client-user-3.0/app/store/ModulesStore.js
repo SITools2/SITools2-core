@@ -38,6 +38,10 @@ Ext.define('sitools.user.store.ModulesStore', {
     			Ext.each(records, function (moduleToCheck) {
     				if (moduleFromProject.get('xtype') === moduleToCheck.get('xtype')) {
     					Ext.applyIf(moduleToCheck, moduleFromProject);
+
+						// Overriding needed properties
+						moduleToCheck.set('label', moduleFromProject.get('label'));
+
     					moduleToCheck.set('categoryModule', moduleFromProject.get('categoryModule'));
     					
     					store.add(moduleToCheck);

@@ -104,6 +104,10 @@ Ext.define('sitools.user.Application', {
             };
         }
 
+        if (Ext.isEmpty(Ext.util.Cookies.get('showDesktopHelp'))) {
+            Ext.util.Cookies.set('showDesktopHelp', true);
+        }
+
         Desktop.init();
         Desktop.setApplication(this);
         this.initSiteMap();
@@ -187,6 +191,8 @@ Ext.define('sitools.user.Application', {
         this.setLoaded(true);
         this.fireEvent('projectLoaded');
         this.removeMask();
+
+        this.showDesktopHelp();
     },
 
     addMask: function () {
@@ -211,6 +217,63 @@ Ext.define('sitools.user.Application', {
             duration: 1000,
             remove: true
         });
+    },
+
+    showDesktopHelp : function () {
+        if (Ext.util.Cookies.get('showDesktopHelp') == "false") {
+            return;
+        }
+
+        var containerFrame = Ext.create('Ext.panel.Panel', {
+            header : false,
+            itemId : 'tamere',
+            bodyStyle : 'background-color:#3892d3;',
+            style : 'opacity: .85; z-index:100000; position:absolute; top:0; left:0;',
+            renderTo : Ext.getBody(),
+            loader : {
+                url : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_USER_URL') + '/resources/html/' + locale.getLocale() + '/desktopHelp.html',
+                autoLoad : true
+            },
+            height : Ext.getBody().getHeight(),
+            width : Ext.getBody().getWidth(),
+            //items : [helpFrame],
+            border : false,
+            bbar : ['->', {xtype : 'label', html : '<i>Show Desktop Help on startup<i>'}, {
+                xtype : 'checkbox',
+                listeners : {
+                    change : function (combo, newValue, oldValue) {
+                        Ext.util.Cookies.set('showDesktopHelp', newValue);
+                    },
+                    afterrender : function (cb) {
+                        cb.setValue(Ext.util.Cookies.get('showDesktopHelp'));
+                    }
+                }
+            }],
+            listeners : {
+                afterrender : function (windowFrame) {
+                    windowFrame.body.on('click', function (e, target) {
+                        this.close();
+                    }, windowFrame);
+
+                    Ext.EventManager.onWindowResize(function (width, height) {
+                        this.setSize(width, height);
+                    }, windowFrame);
+                }
+            }
+        });
+
+        Ext.create('Ext.fx.Anim', {
+            target: containerFrame,
+            duration: 800,
+            from: {
+                opacity: 0
+            },
+            to: {
+                opacity:.8
+            }
+        });
+
+        containerFrame.show();
     }
 
 });

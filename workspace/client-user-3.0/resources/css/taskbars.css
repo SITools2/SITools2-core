@@ -35,14 +35,21 @@
 }
 
 .module_button {
-	background: #ebebeb; /* Old browsers */
-	background: -moz-linear-gradient(-45deg,  #ebebeb 0%, #dadada 19%, #e0e0e0 24%, #e0e0e0 36%, #e0e0e0 36%, #ebebeb 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,#ebebeb), color-stop(19%,#dadada), color-stop(24%,#e0e0e0), color-stop(36%,#e0e0e0), color-stop(36%,#e0e0e0), color-stop(100%,#ebebeb)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(-45deg,  #ebebeb 0%,#dadada 19%,#e0e0e0 24%,#e0e0e0 36%,#e0e0e0 36%,#ebebeb 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(-45deg,  #ebebeb 0%,#dadada 19%,#e0e0e0 24%,#e0e0e0 36%,#e0e0e0 36%,#ebebeb 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(-45deg,  #ebebeb 0%,#dadada 19%,#e0e0e0 24%,#e0e0e0 36%,#e0e0e0 36%,#ebebeb 100%); /* IE10+ */
-	background: linear-gradient(135deg,  #ebebeb 0%,#dadada 19%,#e0e0e0 24%,#e0e0e0 36%,#e0e0e0 36%,#ebebeb 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ebebeb', endColorstr='#ebebeb',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+	background: none;
+	border : none;
+	border-radius: 1px;
+}
+
+.module_button:hover {
+	border-radius: 1px;
+	background: #e6e6e6; /* Old browsers */
+	background: -moz-radial-gradient(center, ellipse cover,  #e6e6e6 0%, #eeeeee 33%, #eeeeee 84%, #e6e6e6 100%); /* FF3.6+ */
+	background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#e6e6e6), color-stop(33%,#eeeeee), color-stop(84%,#eeeeee), color-stop(100%,#e6e6e6)); /* Chrome,Safari4+ */
+	background: -webkit-radial-gradient(center, ellipse cover,  #e6e6e6 0%,#eeeeee 33%,#eeeeee 84%,#e6e6e6 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-radial-gradient(center, ellipse cover,  #e6e6e6 0%,#eeeeee 33%,#eeeeee 84%,#e6e6e6 100%); /* Opera 12+ */
+	background: -ms-radial-gradient(center, ellipse cover,  #e6e6e6 0%,#eeeeee 33%,#eeeeee 84%,#e6e6e6 100%); /* IE10+ */
+	background: radial-gradient(ellipse at center,  #e6e6e6 0%,#eeeeee 33%,#eeeeee 84%,#e6e6e6 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e6e6e6', endColorstr='#e6e6e6',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 }
 
 .buttonTaskbar-bg {
@@ -68,7 +75,7 @@
 	background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(244,244,244,1) 55%,rgba(244,244,244,1) 70%,rgba(231,231,231,1) 83%,rgba(231,231,231,1) 83%,rgba(248,248,248,1) 100%); /* W3C */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f8f8f8',GradientType=0 ); /* IE6-9 */
 
-	box-shadow: #313131 4px 0px 4px 0px;
+	box-shadow: #636363 1px 0px 10px 0px;
 }
 
 .moduleInstances-bg {

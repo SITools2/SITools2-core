@@ -65,10 +65,36 @@ Ext.define('sitools.user.core.Desktop', {
 	        desktopEl : Ext.get('x-desktop'),
 	        desktopAndTaskBarEl : Ext.get('x-desktop-taskbar'),
         
-            enteteEl : Ext.get('x-headers'),
+            enteteEl : Ext.get('x-headers') || {
+				getWidth : function () {
+					return 0;
+				},
+				getHeight : function () {
+					return 0;
+				},
+				getSize : function () {
+					return {
+						height : 0,
+						width : 0
+					}
+				}
+			},
             enteteComp : Ext.getCmp('headersCompId'),
             
-            bottomEl : Ext.get('x-bottom'),
+            bottomEl : Ext.get('x-bottom') || {
+				getWidth: function () {
+					return 0;
+				},
+				getHeight: function () {
+					return 0;
+				},
+				getSize : function () {
+					return {
+						height : 0,
+						width : 0
+					}
+				}
+			},
             bottomComp : Ext.getCmp('bottomCompId'),
             
             taskbarEl : Ext.get('ux-taskbar'),

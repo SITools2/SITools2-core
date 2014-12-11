@@ -62,7 +62,7 @@ Ext.define('Ext.ux.desktop.TaskBar', {
     getWindowBarConfig: function () {
         return {
             flex: 1,
-            height : 25,
+            height : 40,
             cls: 'ux-desktop-windowbar',
             border : false,
             items: [],

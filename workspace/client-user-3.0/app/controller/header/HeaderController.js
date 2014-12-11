@@ -62,13 +62,12 @@ Ext.define('sitools.user.controller.header.HeaderController', {
         	/* HeaderView events */
         	'headerView' : {
         		afterrender : function (me) {
-                    // var enteteEl = SitoolsDesk.getEnteteEl();
                     var enteteEl = Ext.get('x-headers');
-                    me.setHeight(enteteEl.getHeight());
 
+                    me.setHeight(enteteEl.getHeight());
                     me.heightNormalMode = enteteEl.getHeight();
-//                    me.heightMaximizeDesktopMode = me.NavBarsPanel.getHeight();
-                    
+                    //me.heightMaximizeDesktopMode = me.NavBarsPanel.getHeight();
+
                 },
                 
                 maximizeDesktop : this.onMaximizeDesktop,
@@ -94,7 +93,7 @@ Ext.define('sitools.user.controller.header.HeaderController', {
                 	var taskbarHeight = this.getController('DesktopController').desktopView.taskbar.getHeight();
                 	
                 	var x = (Desktop.getDesktopEl().getWidth() + Desktop.getDesktopEl().getX()) - usrProfileWindow.getWidth();
-            		var y = this.getEnteteEl().getHeight() + taskbarHeight;
+            		var y = Desktop.getEnteteEl().getHeight() + taskbarHeight;
                     usrProfileWindow.setPosition(x, y);
                 }
             },
@@ -155,7 +154,15 @@ Ext.define('sitools.user.controller.header.HeaderController', {
 					Ext.create('sitools.public.utils.Help').show();
 				}
 			},
-			
+			'menu' : {
+                boxready : function (menu) {
+                    var taskbarHeight = this.getController('DesktopController').desktopView.taskbar.getHeight();
+
+                    var x = (Desktop.getDesktopEl().getWidth() + Desktop.getDesktopEl().getX()) - menu.getWidth();
+                    var y = Desktop.getEnteteEl().getHeight() + taskbarHeight;
+                    menu.setPosition(x, y);
+                }
+            },
 			'menu#saveMenu menuitem#saveUser' : {
 			    click : function (btn) {
 			        Desktop.saveWindowSettings();
@@ -276,32 +283,30 @@ Ext.define('sitools.user.controller.header.HeaderController', {
         var project = Ext.getStore('ProjectStore').getProject();
         
         var modulesStore = Ext.data.StoreManager.lookup("ModulesStore");
-        
+
+        if (Desktop.getEnteteEl().getHeight() == 0) {
+            return this.getApplication().fireEvent('headerLoaded');
+        }
+
         this.HeaderView = this.getView('header.HeaderView').create({
             renderTo : "x-headers",
             htmlContent : project.get('htmlHeader'),
-//            modules : project.modules(),
-            modules : modulesStore,
-            listeners : {
-                resize : function (me) {
-                    me.setSize(SitoolsDesk.getEnteteEl().getSize());
-                }
-            }
+            modules : modulesStore
         });
         
         this.getApplication().fireEvent('headerLoaded');
     },
 
-	getEnteteEl : function () {
-		return this.getHeaderView().getEl();
-	},
-	
 	 /**
      * listeners of maximizeDesktop event :
      */
     onMaximizeDesktop : function () {
     	var me = this.getHeaderView();
-    	
+
+         if (Ext.isEmpty(me)) {
+             return;
+         }
+
     	me.entetePanel.hide();
     	me.container.setHeight(this.heightMaximizeDesktopMode);
     	me.setHeight(this.heightMaximizeDesktopMode);
@@ -319,7 +324,11 @@ Ext.define('sitools.user.controller.header.HeaderController', {
      */
     onMinimizeDesktop : function () {
     	var me = this.getHeaderView();
-    	
+
+        if (Ext.isEmpty(me)) {
+            return;
+        }
+
     	me.entetePanel.setVisible(true);
     	me.container.dom.style.height = "";
     	me.setHeight(me.heightNormalMode);

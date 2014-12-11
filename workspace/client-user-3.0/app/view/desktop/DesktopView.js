@@ -95,7 +95,6 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
             width : 90 // width without save button
         });
         
-//        this.navBarModule = Ext.create('sitools.user.view.header.ModuleTaskBarView', {
         this.leftTaskbar = Ext.create('sitools.user.view.header.LeftTaskBarView', {
         	desktopController : this.desktopController,
         	width : 90,
@@ -113,18 +112,23 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
                 align : "stretch"
             },
 //            items : [ this.navBarModule, this.taskbar, this.navToolbarButtons ]
-            items : [ this.leftTaskbar, this.navBarModules, this.navToolbarButtons ]
+            items : [ this.navBarModules, this.navToolbarButtons ]
         });
-        
-        me.taskbar = navBarInstances;
+
+        me.taskbar = navBarInstances
         me.tbar = this.NavBarsPanel;
-        
-        me.bbar = this.taskbar;
-        
+        me.bbar = Ext.create('Ext.panel.Panel', {
+            cls : 'ux-taskbar moduleInstances-bg',
+            border : false,
+            layout : {
+                type : "hbox",
+                align : "stretch"
+            },
+            items : [this.leftTaskbar, navBarInstances]
+        });
+
         me.taskbar.windowMenu = me.windowMenu;
-
         me.windows = Ext.create("Ext.util.MixedCollection");
-
         me.contextMenu = Ext.create("Ext.menu.Menu", me.createDesktopMenu());
 
         me.items = [
@@ -159,17 +163,15 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
      * @private 
      */
     fitDesktop : function () {
-        var el = Ext.get("x-main");
-//        var enteteEl = SitoolsDesk.getEnteteEl();
-//        var bottom = SitoolsDesk.getBottomEl();
+        var el = Desktop.getMainDesktop();
+
+        var enteteEl = Desktop.getEnteteEl();
+        var bottomEl = Desktop.getBottomEl();
         
-        var enteteEl = Ext.get("x-headers");
-        var bottomEl = Ext.get("x-bottom");
-        
-        var desktopEl = Ext.get('x-desktop');
+        var desktopEl = Desktop.getDesktopEl();
         
         el.setHeight(Ext.getBody().getHeight() - enteteEl.getHeight() - bottomEl.getHeight());
-        var desktopHeight = Ext.get("x-desktop-taskbar").getHeight();
+        var desktopHeight = Desktop.getDesktopAndTaskBarEl().getHeight();
 
         desktopEl.setHeight(desktopHeight);
        

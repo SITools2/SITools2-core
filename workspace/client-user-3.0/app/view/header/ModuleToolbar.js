@@ -41,7 +41,7 @@ Ext.define('sitools.user.view.header.ModuleToolbar', {
 //    	this.store = Ext.create('sitools.user.store.DataviewModulesStore');
     	
         var categories = this.categorizeModules();
-        var items = [];
+        var items = ['|'];
         
         Ext.each(categories, function (category) {
             var modules = category.modules;
@@ -76,8 +76,8 @@ Ext.define('sitools.user.view.header.ModuleToolbar', {
 				                }
 				            }
                         };
-                        
                         items.push(item);
+                        items.push('|');
                     }
                 }
                 catch(err) {
@@ -143,6 +143,7 @@ Ext.define('sitools.user.view.header.ModuleToolbar', {
                     })
                 };
                 items.push(item);
+                items.push('|');
             }
         });
         

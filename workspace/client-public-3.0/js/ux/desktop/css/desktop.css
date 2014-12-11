@@ -100,7 +100,7 @@
 div.ux-taskbar div.x-toolbar {
     background: transparent none;
     border: 0 none;
-    padding: 0;
+    padding: 0px 0px 0px 5px;
 }
 
 .ux-desktop-windowbar .x-btn-inner,
