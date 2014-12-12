@@ -24,7 +24,9 @@ import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.Restlet;
+import org.restlet.data.MediaType;
 import org.restlet.ext.wadl.ApplicationInfo;
+import org.restlet.representation.FileRepresentation;
 import org.restlet.routing.Extractor;
 import org.restlet.routing.Redirector;
 import org.restlet.routing.Router;
@@ -34,6 +36,8 @@ import fr.cnes.sitools.client.ProxyRestlet;
 import fr.cnes.sitools.client.ResetPasswordIndex;
 import fr.cnes.sitools.client.SitoolsVersionResource;
 import fr.cnes.sitools.client.UnlockAccountIndex;
+import fr.cnes.sitools.common.SitoolsSettings;
+import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.exception.SitoolsException;
 import fr.cnes.sitools.common.model.Category;
@@ -106,7 +110,16 @@ public final class PublicApplication extends SitoolsApplication {
 
     Router router = new Router(getContext());
 
-    // Create sub - restlets / applications
+    // Expose single welcome page
+    router.attachDefault(new Restlet() {
+      @Override
+      public void handle(Request arg0, Response arg1) {
+        SitoolsSettings settings = SitoolsSettings.getInstance();
+        File file = new File(settings.getString(Consts.APP_PATH) + settings.getString(Consts.APP_CLIENT_PUBLIC_PATH)
+            + "/res/html/index.htm");
+        arg1.setEntity(new FileRepresentation(file, MediaType.TEXT_HTML));
+      }
+    });
 
     router.attach("/login-details", LoginDetailsResource.class);
     String target = getBaseUrl() + "{keywords}";
@@ -154,20 +167,20 @@ public final class PublicApplication extends SitoolsApplication {
 
     // Captcha resource for unlock account and reset password resource
     router.attach("/captcha", CaptchaResource.class);
-    
+
     router.setDefaultMatchingMode(Template.MODE_STARTS_WITH);
-    
+
     // TODO REMOVE REDIRECTOR AFTER DEMO
-//    Redirector redirectorCommon = new Redirector(getContext(), getSettings().getPublicHostDomain()
-//        + "/sitools/client-public{rr}", Redirector.MODE_SERVER_OUTBOUND);
-//    // attach the portal resource to client-user
-//    router.attach("/common", redirectorCommon);
-//
-//    Redirector redirectorCots = new Redirector(getContext(), getSettings().getPublicHostDomain()
-//        + "/sitools/client-public/cots{rr}", Redirector.MODE_SERVER_OUTBOUND);
-//    router.attach("/cots", redirectorCots);
-//    
-//    router.attach("/", redirectorCommon);
+    // Redirector redirectorCommon = new Redirector(getContext(), getSettings().getPublicHostDomain()
+    // + "/sitools/client-public{rr}", Redirector.MODE_SERVER_OUTBOUND);
+    // // attach the portal resource to client-user
+    // router.attach("/common", redirectorCommon);
+    //
+    // Redirector redirectorCots = new Redirector(getContext(), getSettings().getPublicHostDomain()
+    // + "/sitools/client-public/cots{rr}", Redirector.MODE_SERVER_OUTBOUND);
+    // router.attach("/cots", redirectorCots);
+    //
+    // router.attach("/", redirectorCommon);
 
     return router;
   }

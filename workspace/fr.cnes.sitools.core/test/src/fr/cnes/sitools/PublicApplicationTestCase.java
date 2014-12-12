@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -53,7 +53,7 @@ public class PublicApplicationTestCase extends AbstractSitoolsServerTestCase {
 
   /** Order Folder URL */
   private static final String SVA_ORDER_URL = SitoolsSettings.getInstance().getString(
-    Consts.APP_ADMINSTORAGE_ORDERS_URL);
+      Consts.APP_ADMINSTORAGE_ORDERS_URL);
 
   /**
    * Test to reach the public application

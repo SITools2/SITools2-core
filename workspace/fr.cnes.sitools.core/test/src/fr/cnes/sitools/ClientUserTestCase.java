@@ -36,8 +36,10 @@ import fr.cnes.sitools.util.RIAPUtils;
  */
 public class ClientUserTestCase extends AbstractSitoolsServerTestCase {
 
-  /** Dataset identifier for postgres tests */
-  protected static final String CLIENT_USER = SitoolsSettings.getInstance().getString(Consts.APP_CLIENT_USER_PATH);
+  /** Client user url */
+  protected static final String CLIENT_USER = SitoolsSettings.getInstance().getString(Consts.APP_CLIENT_USER_URL);
+  /** Client portal url */
+  protected static final String CLIENT_PORTAL = SitoolsSettings.getInstance().getString(Consts.APP_CLIENT_PORTAL_URL);
   /** The name of the project to get the desktop from */
   private static final String PROJECT_NAME = "premier";
 
@@ -55,7 +57,7 @@ public class ClientUserTestCase extends AbstractSitoolsServerTestCase {
    * Invoke GET
    */
   public void retrievePortal() {
-    ClientResource cr = new ClientResource(getBaseUrl() + CLIENT_USER + "/");
+    ClientResource cr = new ClientResource(getBaseUrl() + CLIENT_PORTAL + "/index.html");
     Representation result = cr.get();
     assertTrue(cr.getStatus().isSuccess());
     assertNotNull(result);
@@ -67,7 +69,7 @@ public class ClientUserTestCase extends AbstractSitoolsServerTestCase {
    * Invoke GET
    */
   public void retrieveDesktop() {
-    ClientResource cr = new ClientResource(getBaseUrl() + CLIENT_USER + "/" + PROJECT_NAME + "/project-index.html");
+    ClientResource cr = new ClientResource(getBaseUrl() + CLIENT_USER + "/index.html?project=" + PROJECT_NAME);
     Representation result = cr.get();
     assertTrue(cr.getStatus().isSuccess());
     assertNotNull(result);

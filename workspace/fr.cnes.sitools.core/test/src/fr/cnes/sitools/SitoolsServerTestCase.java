@@ -127,13 +127,15 @@ public class SitoolsServerTestCase extends AbstractSitoolsServerTestCase {
     assertEquals(Status.SUCCESS_OK.getCode(), cr.getStatus().getCode());
     assertNotNull(result);
 
-    // ClientUser
-    Reference clientUserRef = new Reference(getBaseUrl()
-        + SitoolsSettings.getInstance().getString(Consts.APP_CLIENT_USER_URL) + "/index.html");
-    cr = new ClientResource(clientUserRef);
+    // ClientPortal
+    Reference clientPortalRef = new Reference(getBaseUrl()
+        + SitoolsSettings.getInstance().getString(Consts.APP_CLIENT_PORTAL_URL) + "/index.html");
+    cr = new ClientResource(clientPortalRef);
     result = cr.get();
     assertEquals(Status.SUCCESS_OK.getCode(), cr.getStatus().getCode());
     assertNotNull(result);
+    
+    
 
   }
 
@@ -157,10 +159,10 @@ public class SitoolsServerTestCase extends AbstractSitoolsServerTestCase {
     assertEquals(Status.SUCCESS_OK.getCode(), cr.getStatus().getCode());
     assertNotNull(result);
 
-    // ClientUser
-    Reference clientUserRef = new Reference(getBaseUrl()
-        + SitoolsSettings.getInstance().getString(Consts.APP_CLIENT_USER_URL) + "/index.html");
-    cr = new ClientResource(clientUserRef);
+    // ClientPortal
+    Reference clientPortalRef = new Reference(getBaseUrl()
+        + SitoolsSettings.getInstance().getString(Consts.APP_CLIENT_PORTAL_URL) + "/index.html");
+    cr = new ClientResource(clientPortalRef);
     cr.setChallengeResponse(challenge);
     result = cr.get();
     assertEquals(Status.SUCCESS_OK.getCode(), cr.getStatus().getCode());
