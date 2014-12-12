@@ -98,8 +98,7 @@ Ext.define('sitools.public.forms.components.TextField', {
         });
         
         this.callParent(arguments);
-//        sitools.public.forms.components.TextField.superclass.initComponent.apply(this, arguments);
-        
+
         if (!Ext.isEmpty(this.label)) {
             this.items.insert(0, Ext.create('Ext.container.Container', {
                 border : false,

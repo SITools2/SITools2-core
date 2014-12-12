@@ -59,8 +59,6 @@ Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.TextField', {
             rec.set('label', labelParam1);
             rec.set('code', code);
             rec.set('css', css);
-//            rec.set('componentDefaultHeight', f.findField('componentDefaultHeight').getValue());
-//            rec.set('componentDefaultWidth', f.findField('componentDefaultWidth').getValue());
             rec.set('defaultValues', [ defaultValue ]);
             rec.set('autoComplete', f.findField('autoComplete').getValue());
         } else {
@@ -73,14 +71,9 @@ Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.TextField', {
                 if (component.data.id > lastId) {
                     lastId = parseInt(component.data.id, 10);
                 }
-//                if (component.data.ypos > greatY) {
-//                    greatY = parseInt(component.data.ypos, 10)  + parseInt(component.data.height, 10);
-//                }
-
             });
             var componentId = lastId + 1;
             componentId = componentId.toString();
-//            var componentYpos = greatY + 10;
             formComponentsStore.add({
                 label : f.findField('LABEL_PARAM1').getValue(),
                 type : this.ctype,
