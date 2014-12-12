@@ -49,11 +49,7 @@ Ext.define('sitools.public.userProfile.editProfile', {
         var cmProperties = {
             items : [{
                 header : i18n.get('headers.name'),
-                dataIndex : 'name',
-                editor : {
-                    xtype : 'textfield',
-                    readOnly : true
-                }
+                dataIndex : 'name'
             }, {
                 header : i18n.get('headers.value'),
                 dataIndex : 'value',
@@ -70,6 +66,7 @@ Ext.define('sitools.public.userProfile.editProfile', {
 
         this.gridProperties = Ext.create('Ext.grid.Panel', {
             title : i18n.get('title.properties'),
+            padding : 5,
             height : 150,
             autoScroll : true,
             clicksToEdit : 1,
@@ -77,6 +74,9 @@ Ext.define('sitools.public.userProfile.editProfile', {
             columns : cmProperties,
             selModel : smProperties,
             forceFit : true,
+            plugins : [Ext.create('Ext.grid.plugin.CellEditing', {
+                clicksToEdit: 1
+            })],
             viewConfig : {
 //                getRowClass : function (row, col) {
 //                    var data = row.data;
@@ -86,9 +86,9 @@ Ext.define('sitools.public.userProfile.editProfile', {
 //                }
             },
             listeners : {
-                beforeedit : function (e) {
-                    var scope = e.record.data.scope;
-                    var name = e.field;
+                beforeedit : function (editor, object) {
+                    var scope = object.record.data.scope;
+                    var name = object.field;
                     if (scope == 'ReadOnly' || name == 'name') {
                         return false;
                     }
@@ -98,7 +98,6 @@ Ext.define('sitools.public.userProfile.editProfile', {
 
         this.items = [{
             xtype : 'form',
-            flex : 1,
             border : false,
             bodyBorder : false,
             buttonAlign : 'center',
@@ -110,7 +109,7 @@ Ext.define('sitools.public.userProfile.editProfile', {
                 xtype : 'textfield',
                 name : 'identifier',
                 fieldLabel : i18n.get('label.login'),
-                anchor : '90%',
+                anchor : '100%',
                 allowBlank : false,
                 readOnly : true,
                 style : {
@@ -123,18 +122,18 @@ Ext.define('sitools.public.userProfile.editProfile', {
                 name : 'firstName',
                 id : 'regFirstName',
                 allowBlank : false,
-                anchor : '90%'
+                anchor : '100%'
             }, {
                 xtype : 'textfield',
                 fieldLabel : i18n.get('label.lastName'),
                 name : 'lastName',
                 id : 'regLastName',
                 allowBlank : false,
-                anchor : '90%'
+                anchor : '100%'
             }, {
                 xtype : 'textfield',
                 fieldLabel : i18n.get('label.password'),
-                anchor : '90%',
+                anchor : '100%',
                 inputType : 'password',
                 name : 'secret',
                 value : '',
@@ -144,7 +143,7 @@ Ext.define('sitools.public.userProfile.editProfile', {
                 id : "confirmSecret",
                 xtype : 'textfield',
                 fieldLabel : i18n.get('label.confirmPassword'),
-                anchor : '90%',
+                anchor : '100%',
                 inputType : 'password',
                 initialPassField : 'passwordField',
                 vtype : 'password',
@@ -159,16 +158,20 @@ Ext.define('sitools.public.userProfile.editProfile', {
                 vtype : 'uniqueemail',
                 allowBlank : false,
                 validationEvent : '',
-                anchor : '90%'
+                anchor : '100%'
             }, this.gridProperties]
         }];
 
-        this.buttons = {
+        this.bbar = {
             xtype : 'toolbar',
-            style : 'background-color:white;',
+            layout : {
+                type : 'hbox',
+                pack : 'center',
+                align : 'middle'
+            },
             items : [{
                 text : i18n.get('label.saveEdit'),
-                x : 30,
+                scale : 'medium',
                 handler : this.saveEdit,
                 scope : this
             }]
@@ -225,9 +228,19 @@ Ext.define('sitools.public.userProfile.editProfile', {
             failure : function (response, opts) {
                 if (response.status == 200) {
                     var ret = Ext.decode(response.responseText).message;
-                    txt = i18n.get('msg.error') + ': ' + ret;
+                    Ext.Msg.show({
+                        title : i18n.get('msg.error'),
+                        msg : ret,
+                        buttons : Ext.Msg.OK,
+                        icon : Ext.Msg.ERROR
+                    });
                 } else {
-                    txt = i18n.get('warning.serverError') + ': ' + response.statusText;
+                    Ext.Msg.show({
+                        title : i18n.get('warning.serverError'),
+                        msg : response.statusText,
+                        buttons : Ext.Msg.OK,
+                        icon : Ext.Msg.ERROR
+                    });
                 }
             }
         });

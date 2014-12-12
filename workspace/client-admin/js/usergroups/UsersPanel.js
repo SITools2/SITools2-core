@@ -138,14 +138,14 @@ Ext.define('sitools.admin.usergroups.UsersPanel', {
             handler : this._onCancel
         }];
         
-        sitools.admin.usergroups.UsersPanel.superclass.initComponent.call(this);
+        this.callParent(arguments);
     },
 
     /**
      * done a specific render to load users from the store. 
      */ 
     onRender : function () {
-        sitools.admin.usergroups.UsersPanel.superclass.onRender.apply(this, arguments);
+        this.callParent(arguments);
         this.store.load({
             params : {
                 start : 0,
@@ -212,7 +212,7 @@ Ext.define('sitools.admin.usergroups.UsersPanel', {
      * Save the user of the current parent object
      */
     _onOK : function () {
-        var putObject = getPutObject();
+        var putObject = this.getPutObject();
         Ext.Ajax.request({
             url : this.url,
             method : 'PUT',

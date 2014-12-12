@@ -37,7 +37,7 @@ Ext.define('sitools.admin.datasource.jdbc.DataBaseProp', {
     extend : 'Ext.Window',
 	alias : 'widget.s-databaseprop',
 	width : 700,
-    height : 480,
+    height : 460,
     modal : true,
     layout : 'fit',
     autoScroll : true,
@@ -208,7 +208,16 @@ Ext.define('sitools.admin.datasource.jdbc.DataBaseProp', {
                                 }
                             }
                         }
-                    ]
+                    ],
+                    listeners : {
+                        scope : this,
+                        collapse : function () {
+                            this.setHeight(460);
+                        },
+                        expand : function () {
+                            this.setHeight(570);
+                        }
+                    }
                 }]
             }];
         

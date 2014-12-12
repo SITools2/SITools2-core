@@ -125,15 +125,15 @@ Ext.define('sitools.admin.usergroups.GroupsPanel', {
             scope : this,
             handler : this._onCancel
         }];
-        
-        sitools.admin.usergroups.GroupsPanel.superclass.initComponent.call(this);
+
+        this.callParent(arguments);
     },
 
     /**
      * done a specific render to load groups from the store. 
      */ 
     onRender : function () {
-        sitools.admin.usergroups.GroupsPanel.superclass.onRender.apply(this, arguments);
+        this.callParent(arguments);
         this.store.load({
             scope : this,
             params : {
@@ -192,7 +192,7 @@ Ext.define('sitools.admin.usergroups.GroupsPanel', {
      * Save the groups of the current role
      */
     _onOK : function () {
-        var putObject = getPutObject();
+        var putObject = this.getPutObject();
         Ext.Ajax.request({
             url : this.url,
             method : 'PUT',

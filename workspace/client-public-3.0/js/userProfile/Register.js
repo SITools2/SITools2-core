@@ -41,6 +41,7 @@ Ext.define('sitools.public.userProfile.Register', {
 	initComponent: function () {
 		this.title = i18n.get('label.register');
 		this.captchaUrl = loadUrl.get('APP_URL') + loadUrl.get('APP_INSCRIPTIONS_USER_URL') + '/captcha?width=300&height=50';
+		var URL_CGU = loadUrl.get('APP_URL') + "/common/res/licences/cgu.html";
 		
 	    this.bbar = Ext.create('sitools.public.widget.StatusBar', {
 			text: i18n.get('label.ready'),
@@ -137,9 +138,9 @@ Ext.define('sitools.public.userProfile.Register', {
 	                icon : loadUrl.get('APP_URL') + '/client-public/common/res/images/icons/refresh.png',
 	                arrowAlign : 'right',
 	                reloadUrl : this.captchaUrl,
-	                width: 90,
+	                width: 100,
 	                height : 30,
-	                margin : '10 0 10 10',
+	                margin : '10 0 10 2',
 	                handler : function (button) {
 	                    Ext.util.Cookies.clear('captcha');
 	                    var box = button.up("form").down("image");

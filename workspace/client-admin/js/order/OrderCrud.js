@@ -209,7 +209,7 @@ Ext.define('sitools.admin.order.OrderCrud', {
         var tot = Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
-            msg : i18n.get('orderCrud.delete'),
+            msg : Ext.String.format(i18n.get('orderCrud.delete'), rec.get('id')),
             scope : this,
             fn : function (btn, text) {
                 if (btn == 'yes') {

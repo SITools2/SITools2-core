@@ -112,9 +112,10 @@ var clientAdmin = {
 	    var menuLogout = {
 	        xtype : 'button',
 	        tooltip : i18n.get('label.logout'),
+			text : i18n.get('label.logout'),
 	        itemId : 'menu_logout',
 	        icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/logout.png',
-	        cls : 'x-custom-button-color',
+			cls : 'x-custom-button-color',
 	        handler : function () {
 				sitools.public.utils.LoginUtils.logout();
 	        }
@@ -146,6 +147,7 @@ var clientAdmin = {
 	        }, '-', {
 	            id : 'quickStart',
 	            tooltip : 'Quick Start',
+				text : 'Quick Start',
 	            icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/quick_start.png',
                 style : 'padding:2px',
                 cls : 'x-custom-button-color',
@@ -176,13 +178,14 @@ var clientAdmin = {
 //                text : 'Version',
                 id : 'versionButtonId',
                 tooltip : 'Version',
+				text : 'Version',
                 icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/version.png',
                 style : 'padding:2px',
                 cls : 'x-custom-button-color',
                 handler : function () {
-                    showVersion();
+					Ext.create('sitools.public.version.Version').show();
                 }
-            }, {
+            }, /*{
 //		        text: 'Show Help',
 		        tooltip: 'Show Help',
 		        enableToggle: true,
@@ -204,7 +207,7 @@ var clientAdmin = {
 			    },
 		        pressed: true,
 		        icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/help.png'
-		    }, /*{
+		    }*/, /*{
 		        tooltip : 'Advanced Mode',
 		        id : 'switchModeId',
 		        icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/maintenance.png',
@@ -294,7 +297,7 @@ var clientAdmin = {
 		            viewport.doLayout();
 		        }
 		    }*/,
-		    "-", menuLogout
+		    "|", menuLogout
 	
 	        // menuList,
 	        // '-',

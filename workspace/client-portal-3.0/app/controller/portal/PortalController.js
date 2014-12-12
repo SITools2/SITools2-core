@@ -262,10 +262,12 @@ Ext.define('sitools.clientportal.controller.portal.PortalController', {
     
     onEditProfile : function (user, url) {
         var win = Ext.create('Ext.window.Window', {
+            title : i18n.get('label.editProfile'),
             modal : true,
             width : 400,
-            height : 430,
+            height : 460,
             resizable : false,
+            layout : 'fit',
             items : [Ext.create('sitools.public.userProfile.editProfile', {
                 identifier : user,
                 url : url

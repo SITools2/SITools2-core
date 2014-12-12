@@ -198,10 +198,7 @@ Ext.define('sitools.admin.applications.ApplicationsCrud', {
         
         Ext.Msg.show({
             title : i18n.get('label.delete'),
-            buttons : {
-                yes : i18n.get('label.yes'),
-                no : i18n.get('label.no')
-            },
+            buttons : Ext.Msg.YESNO,
             msg : Ext.String.format(i18n.get('applicationsCrud.delete'), rec.data.name),
             scope : this,
             fn : function (btn, text) {

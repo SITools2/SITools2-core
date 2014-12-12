@@ -37,7 +37,7 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseProp', {
     extend : 'Ext.Window',
 	alias : 'widget.s-databaseprop',
     width : 700,
-    height : 480,
+    height : 470,
     modal : true,
     id : ID.COMPONENT_SETUP.DATABASE,
     layout : 'fit',

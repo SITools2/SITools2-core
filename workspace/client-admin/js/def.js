@@ -1,29 +1,80 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
-* 
-* This file is part of SITools2.
-* 
-* SITools2 is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-* 
-* SITools2 is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-* 
-* You should have received a copy of the GNU General Public License
-* along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
-***************************************/
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ *
+ * This file is part of SITools2.
+ *
+ * SITools2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * SITools2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
+ ***************************************/
 /*global Ext, sitools, ID, i18n, document, Digest, window*/
 
-Ext.define("sitools.admin.def",{
-    singleton : true,
-    require : ["sitools.public.utils.LoginDef"],
+Ext.define("sitools.admin.def", {
+    singleton: true,
+    require: ["sitools.public.utils.LoginDef"],
 
-    init : function () {
+    init: function () {
         Ext.Ajax.on('requestexception', onRequestException, this);
+    },
+
+    initLocalizedVariables: function () {
+        //Basic formFields Validation
+        Ext.apply(Ext.form.VTypes, {
+            'name': function () {
+                var re = new RegExp("^.*[!\"#$%&\'()*+,:;<=>?@\\`{}|~/]+.*$");
+                return function (v) {
+                    return !re.test(v);
+                };
+            }(),
+            'nameText': "Invalid caracters : should not contain . * [ ! \" # $ % & ' ( ) * + , : ; < = > ? @ \ ` { } | ~ / ] + . * $",
+            'image': function () {
+                var re = new RegExp("^[http://]+[/:a-zA-Z0-9-_]+.*(jpg|gif|png|bmp|ico)$");
+                return function (v) {
+                    return re.test(v);
+                };
+            }(),
+            'imageText': "Invalid image URL : should start with http and finish with a image extension",
+            'attachment': function () {
+                var re1 = new RegExp("^/.*$");
+                var re2 = new RegExp("^.*//.*$");
+                var re3 = new RegExp("^.*[!\"#$%&\'()*+,:;<=>?@\\`{}|~]+.*$");
+                return function (v) {
+                    return (re1.test(v) && !re2.test(v) && !re3.test(v));
+                };
+            }(),
+            'attachmentText': "invalid Attachment : should not contain ! \" # $ % & ' ( ) * + , : ; < = > ? @ \ ` { } | ~ ] + . * and must begin with /",
+            'nameWithoutSpace': function () {
+                var re = new RegExp("^.*[!\"#$%&\'()*+,:;<=>?@\\`{}|~ ]+.*$");
+                return function (v) {
+                    return !re.test(v);
+                };
+            }(),
+            'nameWithoutSpaceText': i18n.get('label.invalidCharacters'),
+            'withoutSpace': function () {
+                var re = new RegExp("^.*[ ]+.*$");
+                return function (v) {
+                    return !re.test(v);
+                };
+            }(),
+            'withoutSpaceText': i18n.get('label.invalidCharacters'),
+            'uri': function () {
+                var re = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+                var regEspace = new RegExp("^.*[ ]+$");
+                return function (v) {
+                    return re.test(v) && !regEspace.test(v);
+                };
+            }(),
+            'uriText': "The format of the URL is invalid, should start with http, ftp or https and finish without space"
+        });
     }
 });
 
@@ -42,33 +93,33 @@ var ADMIN_PANEL_NB_ELEMENTS = 10;
 var SHOW_HELP = true;
 var SITOOLS_DATE_FORMAT = 'Y-m-d\\TH:i:s.u';
 var SITOOLS_DEFAULT_IHM_DATE_FORMAT = 'Y-m-d H:i:s.u';
-var EXT_JS_VERSION=Ext.versions.extjs.version;
-var EXT_JS_FOLDER="extjs4/ext-"+EXT_JS_VERSION;
+var EXT_JS_VERSION = Ext.versions.extjs.version;
+var EXT_JS_FOLDER = "extjs4/ext-" + EXT_JS_VERSION;
 
 var JAVA_TYPES = [{
-	name : "String"
+    name: "String"
 }, {
-	name : "Date"
+    name: "Date"
 }, {
-	name : "Double"
+    name: "Double"
 }, {
-	name : "Float"
+    name: "Float"
 }, {
-	name : "Integer"
+    name: "Integer"
 }, {
-	name : "Boolean"
+    name: "Boolean"
 }, {
-	name : "BasicDBObject"
+    name: "BasicDBObject"
 }, {
-    name : "BasicDBList"
+    name: "BasicDBList"
 }];
 Ext.Ajax.defaultHeaders = {
-    "Accept" : "application/json",
-    "X-User-Agent" : "Sitools"
+    "Accept": "application/json",
+    "X-User-Agent": "Sitools"
 };
 
 var helpUrl;
-Ext.BLANK_IMAGE_URL = '/sitools/client-public/cots/'+EXT_JS_FOLDER+'/resources/themes/images/default/tree/s.gif';
+Ext.BLANK_IMAGE_URL = '/sitools/client-public/cots/' + EXT_JS_FOLDER + '/resources/themes/images/default/tree/s.gif';
 Ext.USE_NATIVE_JSON = DEFAULT_NATIVEJSON;
 Ext.Ajax.timeout = DEFAULT_TIMEOUT;
 // Default headers to pass in every request
@@ -89,21 +140,21 @@ var treePanel, mainPanel, helpPanel;
 var SERVER_OK = 200;
 
 var predicatOperators = {
-    operators : [[ 'EQ', '=' ], [ 'GT', '>' ], [ 'GTE', '>=' ], [ 'LT', '<' ], [ 'LTE', '<=' ], [ 'LIKE', 'like' ],
-                        [ 'NE', '!=' ]],
-                        
-    getOperatorValueForServer : function (clientValue){
+    operators: [['EQ', '='], ['GT', '>'], ['GTE', '>='], ['LT', '<'], ['LTE', '<='], ['LIKE', 'like'],
+        ['NE', '!=']],
+
+    getOperatorValueForServer: function (clientValue) {
         var value = null;
         Ext.each(this.operators, function (operator) {
-			if (operator[1] == clientValue) {
-				value = operator[0];
-				return false;
-			}
-		}, this);
+            if (operator[1] == clientValue) {
+                value = operator[0];
+                return false;
+            }
+        }, this);
         return value;
     },
-    
-    getOperatorValueForClient : function(serverValue) {
+
+    getOperatorValueForClient: function (serverValue) {
         var value = null;
         Ext.each(this.operators, function (operator) {
             if (operator[0] == serverValue) {
@@ -112,16 +163,16 @@ var predicatOperators = {
             }
         }, this);
         return value;
-    }                   
+    }
 };
 
 /**
- * Open a basic alert popup that shows the repsonse Message 
+ * Open a basic alert popup that shows the repsonse Message
  * @param {string} response the server response
  * @param {} opts the options of the Ajax Call
  */
 function alertFailure(response, opts) {
-	var txt;
+    var txt;
     if (response.status == SERVER_OK) {
         var ret = Ext.decode(response.responseText).message;
         txt = i18n.get('msg.error') + ': ' + i18n.get(ret);
@@ -138,8 +189,8 @@ function showResponse(ret) {
             Ext.Msg.alert(i18n.get('label.warning'), i18n.get(Json.message));
             return false;
         }
-        popupMessage("", i18n.get(Json.message), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');
-        
+        popupMessage("", i18n.get(Json.message), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL') + '/res/images/msgBox/16/icon-info.png');
+
         return true;
     } catch (err) {
         Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.javascriptError') + " : " + err);
@@ -147,61 +198,8 @@ function showResponse(ret) {
     }
 }
 
-//Basic formFields Validation
-Ext.apply(Ext.form.VTypes, {
-    'name': function () {
-        var re = new RegExp("^.*[!\"#$%&\'()*+,:;<=>?@\\`{}|~/]+.*$");
-        return function (v) {
-            return ! re.test(v);
-        };
-    }(),
-    'nameText' : "Invalid caracters : should not contain . * [ ! \" # $ % & ' ( ) * + , : ; < = > ? @ \ ` { } | ~ / ] + . * $", 
-    'image' : function () {
-        var re = new RegExp("^[http://]+[/:a-zA-Z0-9-_]+.*(jpg|gif|png|bmp|ico)$");
-        return function (v) {
-            return re.test(v);
-        };
-    }(),
-    'imageText' : "Invalid image URL : should start with http and finish with a image extension", 
-    'attachment' : function () {
-        var re1 = new RegExp("^/.*$");
-        var re2 = new RegExp("^.*//.*$");
-        var re3 = new RegExp("^.*[!\"#$%&\'()*+,:;<=>?@\\`{}|~]+.*$");
-        return function (v) {
-            return (re1.test(v) && ! re2.test(v) && !re3.test(v));
-        };
-    }(),
-    'attachmentText' : "invalid Attachment : should not contain ! \" # $ % & ' ( ) * + , : ; < = > ? @ \ ` { } | ~ ] + . * and must begin with /", 
-    'nameWithoutSpace': function () {
-        var re = new RegExp("^.*[!\"#$%&\'()*+,:;<=>?@\\`{}|~ ]+.*$");
-        return function (v) {
-            return ! re.test(v);
-        };
-    }(),
-    'nameWithoutSpaceText' : i18n.get('label.invalidCharacters'), 
-    'withoutSpace': function () {
-        var re = new RegExp("^.*[ ]+.*$");
-        return function (v) {
-            return ! re.test(v);
-        };
-    }(),
-    'withoutSpaceText' : i18n.get('label.invalidCharacters'),
-    'uri' : function () {
-        var re = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
-		var regEspace = new RegExp("^.*[ ]+$");
-        return function (v) {
-			return re.test(v) && !regEspace.test(v);
-		};
-    }(),
-    'uriText' : "The format of the URL is invalid, should start with http, ftp or https and finish without space"
-     
-     
-
-    
-});
-
 Ext.override(Ext.grid.GridPanel, {
-    stripeRows : true
+    stripeRows: true
 });
 
 //override the spinnerField to use validation when spining
@@ -230,42 +228,40 @@ Ext.override(Ext.grid.GridPanel, {
 //TODO search to resolve bug tooltip on fields
 
 Ext.override(Ext.form.field.Base, {
-	tooltip : null, 
-	listeners : {
-		afterrender: function () {
+    tooltip: null,
+    listeners: {
+        afterrender: function () {
 //			Ext.form.Field.superclass.afterrender.apply(this, arguments);
-			
-			if (!Ext.isEmpty(this.tooltip)) {
-				var ttConfig = {};
-				if (Ext.isString(this.tooltip)) {
-					ttConfig = {
-						html : this.tooltip, 
-						width : 200, 
-						dismissDelay : 5000
-					};
-				} 
-				else if (Ext.isObject(this.tooltip)) {
+
+            if (!Ext.isEmpty(this.tooltip)) {
+                var ttConfig = {};
+                if (Ext.isString(this.tooltip)) {
+                    ttConfig = {
+                        html: this.tooltip,
+                        width: 200,
+                        dismissDelay: 5000
+                    };
+                }
+                else if (Ext.isObject(this.tooltip)) {
                     ttConfig = this.tooltip;
                 } else {
                     return;
                 }
                 Ext.apply(ttConfig, {
-                    target : this.el
+                    target: this.el
                 });
-				this.tTip = new Ext.ToolTip(ttConfig);
-			}
-			
+                this.tTip = new Ext.ToolTip(ttConfig);
+            }
+
 //			this.callParent(arguments);
-		}
-	}
+        }
+    }
 });
 
-
-
-// 
+//
 function onClickOption(urloption) {
 // CHROME : OK	
-	
+
 //	Ext.Ajax.request({
 //			url : urloption + "?media=text/html",
 //			method : "OPTIONS",
@@ -279,24 +275,24 @@ function onClickOption(urloption) {
 //			});
 
 //  SOUS FIREFOX PB : preferer le tunneling si autorisation.
-			
-	var urltunnel = urloption + "?method=options&media=text/html";
-	var saved = Ext.Ajax.defaultHeaders.Authorization;
-	Ext.Ajax.defaultHeaders.Authorization = '';
-	var savedScheme = Ext.util.Cookies.get('scheme');
-	var savedHashCode = Ext.util.Cookies.get('hashCode');
-	Ext.util.Cookies.set('scheme', null);
-	Ext.util.Cookies.set('hashCode', null);
-	
-	Ext.Ajax.un('requestexception', onRequestException, this);
 
-	Ext.Ajax.request({
-        url : urltunnel,
-        headers : {
-            'Authorization' : 'none'
+    var urltunnel = urloption + "?method=options&media=text/html";
+    var saved = Ext.Ajax.defaultHeaders.Authorization;
+    Ext.Ajax.defaultHeaders.Authorization = '';
+    var savedScheme = Ext.util.Cookies.get('scheme');
+    var savedHashCode = Ext.util.Cookies.get('hashCode');
+    Ext.util.Cookies.set('scheme', null);
+    Ext.util.Cookies.set('hashCode', null);
+
+    Ext.Ajax.un('requestexception', onRequestException, this);
+
+    Ext.Ajax.request({
+        url: urltunnel,
+        headers: {
+            'Authorization': 'none'
         },
-        method : "GET",
-        success : function (response) {
+        method: "GET",
+        success: function (response) {
             if (response.status == 200) {
                 var OpenWindow = window.open(urltunnel);
             }
@@ -306,34 +302,34 @@ function onClickOption(urloption) {
             Ext.util.Cookies.set('hashCode', savedHashCode);
             Ext.Ajax.on('requestexception', onRequestException, this);
         },
-        callback : function () {
+        callback: function () {
             Ext.util.Cookies.set('scheme', savedScheme);
             Ext.util.Cookies.set('hashCode', savedHashCode);
             Ext.Ajax.on('requestexception', onRequestException, this);
         },
-        failure : function (response) {
+        failure: function (response) {
             Ext.Ajax.defaultHeaders.Authorization = saved;
             Ext.util.Cookies.set('scheme', savedScheme);
             Ext.util.Cookies.set('hashCode', savedHashCode);
             if (response.status == 403) {
                 Ext.Ajax.request({
-                    url : urloption + "?media=text/html",
-                    method : "OPTIONS",
-                    success : function (response) {
+                    url: urloption + "?media=text/html",
+                    method: "OPTIONS",
+                    success: function (response) {
                         var OpenWindow = window.open("", urloption);
                         OpenWindow.document.write(response.responseText);
                         OpenWindow.document.close();
                     },
-                    failure : function (response) {
+                    failure: function (response) {
                     },
-                    scope : this
+                    scope: this
                 });
             } // SINON ? ...
             Ext.Ajax.on('requestexception', onRequestException, this);
         },
-        scope : this
-    //the scope in which to execute the callbacks  
-    });		
+        scope: this
+        //the scope in which to execute the callbacks
+    });
 
 }
 
@@ -361,7 +357,7 @@ function includeJs(url) {
 //    }
 }
 /**
- * Include JS scripts in the given order and trigger callback when all scripts are loaded  
+ * Include JS scripts in the given order and trigger callback when all scripts are loaded
  * @param ConfUrls {Array} the list of scripts to load
  * @param indexAInclure {int} the index during the iteration
  * @param callback {function} the callback
@@ -406,13 +402,13 @@ function includeJsForceOrder(ConfUrls, indexAInclure, callback, scope) {
 //            }
 //        }
 //    }
-    
+
     if (!Ext.isEmpty(callback)) {
-    	if (Ext.isEmpty(scope)) {
-    		callback.call();
-    	} else {
-    		callback.call(scope);
-    	}
+        if (Ext.isEmpty(scope)) {
+            callback.call();
+        } else {
+            callback.call(scope);
+        }
     }
 }
 
@@ -529,7 +525,7 @@ function includeJsForceOrder(ConfUrls, indexAInclure, callback, scope) {
 //});
 
 Ext.override(Ext.menu.DatePicker, {
-    initComponent : function () {
+    initComponent: function () {
         this.on('beforeshow', this.onBeforeShow, this);
         if (this.strict == (Ext.isIE7 && Ext.isStrict)) {
             this.on('show', this.onShow, this, {single: true, delay: 20});
@@ -546,7 +542,7 @@ Ext.override(Ext.menu.DatePicker, {
 //        
 //        this.picker.clearListeners();
         Ext.menu.DatePicker.superclass.initComponent.call(this);
-        
+
 //        this.relayEvents(this.picker, ['select']);
 //        this.on('show', this.picker.focus, this.picker);
 //        this.on('select', this.menuHide, this);
@@ -620,8 +616,8 @@ Ext.override(Ext.menu.DatePicker, {
 
 //DA Fix a bug on ExtJs 4.2.1 on grouping feature selection
 Ext.define('App.overrides.view.Table', {
-    override : 'Ext.view.Table',
-    getRecord : function (node) {
+    override: 'Ext.view.Table',
+    getRecord: function (node) {
         var me = this;
         if (me.dataSource.buffered) {
             node = this.getNode(node);
@@ -657,7 +653,7 @@ Ext.define('App.overrides.view.Table', {
             }
         }
     },
-    indexInStore : function (node) {
+    indexInStore: function (node) {
         var me = this;
         if (me.dataSource.buffered) {
             node = this.getNode(node, true);
