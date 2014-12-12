@@ -36,8 +36,6 @@ Ext.define('sitools.public.utils.Locale', {
             success : function (response) {
                 var json = Ext.decode(response.responseText);
                 locale.setLanguages(json.data);
-                Project.setLanguages(json.data)
-                
                 Ext.callback(callback, scope);
             },
             failure : function (response, opts) {
@@ -50,7 +48,8 @@ Ext.define('sitools.public.utils.Locale', {
     initLocale : function () {
         if (Ext.isEmpty(Ext.util.Cookies.get('language'))) {
             var navigator = window.navigator;
-            this.setLocale(navigator.language || navigator.browserLanguage || navigator.userLanguage);
+            var localeString = navigator.language || navigator.browserLanguage || navigator.userLanguage;
+            this.setLocale(localeString.substring(0, 2));
         }
         else {
             this.setLocale(Ext.util.Cookies.get('language'));

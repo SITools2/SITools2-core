@@ -33,7 +33,7 @@ Ext.define('sitools.admin.Application', {
         'sitools.public.utils.Logout',
         'sitools.public.crypto.Base64',
         'sitools.public.utils.PopupMessage',
-
+        'sitools.public.utils.Utils',
         'sitools.public.utils.LoginDef',
         'sitools.admin.def',
         'sitools.admin.id',

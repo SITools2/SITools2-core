@@ -41,7 +41,6 @@ Ext.define('sitools.admin.datasource.DataBaseTest', {
         this.title = i18n.get('label.databaseInfo');
         this.bbar = new Ext.ux.StatusBar({
             text : i18n.get('label.ready'),
-            id : 'sbDBTest',
             iconCls : 'x-status-valid'
         });
         
@@ -51,7 +50,7 @@ Ext.define('sitools.admin.datasource.DataBaseTest', {
             layout : 'fit',
             items : [ {
                 xtype : 'textarea',
-                id : 'DBText'
+                itemId : 'DBText'
             } ]
         }];
         
@@ -63,12 +62,13 @@ Ext.define('sitools.admin.datasource.DataBaseTest', {
             }
         }];
 
-        sitools.admin.datasource.DataBaseTest.superclass.initComponent.call(this);
+        this.callParent(arguments);
     },
 
     onRender : function () {
-        sitools.admin.datasource.DataBaseTest.superclass.onRender.apply(this, arguments);
-        Ext.getCmp('sbDBTest').showBusy();
+        this.callParent(arguments);
+        this.down('toolbar').showBusy();
+
         Ext.Ajax.request({
             url : this.url,
             method : 'PUT',
@@ -78,11 +78,11 @@ Ext.define('sitools.admin.datasource.DataBaseTest', {
                 var rep = Ext.decode(ret.responseText);
                 var status = rep.success ? i18n.get('msg.success') : i18n.get('msg.failure');
                 var msg = rep.data ? rep.data.join('\n') : rep.message;
-                Ext.getCmp('sbDBTest').setStatus({
+                this.down('toolbar').setStatus({
                     text : status,
                     iconCls : rep.success ? 'x-status-valid' : 'x-status-error'
                 });
-                Ext.getCmp('DBText').setValue(msg);
+                this.down('textarea#DBText').setValue(msg);
             },
             failure : function (ret) {
                 var rep = i18n.get('warning.serverError');
@@ -90,11 +90,11 @@ Ext.define('sitools.admin.datasource.DataBaseTest', {
                     rep = Ext.decode(ret.responseText).logs.join('\n');
                 } catch (Exception) {
                 }
-                Ext.getCmp('sbDBTest').setStatus({
+                this.down('toolbar').setStatus({
                     text : ret.statusText,
                     iconCls : 'x-status-error'
                 });
-                Ext.getCmp('DBText').setValue(rep);
+                this.down('textarea#DBText').setValue(rep);
             }
         });
     }

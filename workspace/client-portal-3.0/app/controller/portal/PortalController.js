@@ -44,10 +44,7 @@ Ext.define('sitools.clientportal.controller.portal.PortalController', {
     views : ['sitools.clientportal.view.portal.PortalView'],
     
     init : function () {
-        this.initAppliPortal({
-            siteMapRes : '/sitools' + '/client-user'
-        });
-        
+
         this.control({
             'dataview[cls=projectDataView]' : {
                 itemclick : this.openProject
@@ -62,150 +59,6 @@ Ext.define('sitools.clientportal.controller.portal.PortalController', {
                 }
             }
         });
-    },
-    
-    initProjects : function (callback) {
-        Ext.Ajax.request({
-            scope : this,
-            /* sitools/portal/projects...*/
-            url : loadUrl.get('APP_URL') + loadUrl.get('APP_PORTAL_URL') + '/projects?media=json', 
-            method : 'GET',
-            success : function (response) {
-                try {
-                    this.projects = Ext.decode(response.responseText).data;
-                    if (this.autoChainAjaxRequest) {
-                        this.initLanguages();
-                    }
-                } catch (err) {
-                    Ext.Msg.alert(i18n.get('label.error'), err);
-                }
-
-                // portal = new sitools.Portal(response.responseJSON.data);
-            },
-            failure : function (response) {
-                Ext.Msg.alert('Status', i18n.get('warning.serverError'));
-            }
-        });
-    },
-    
-    initLanguages : function () {
-        Ext.Ajax.request({
-            scope : this,
-            method : "GET",
-            /* /sitools/client-user */
-            url : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL') + '/res/statics/langues.json',
-            success : function (response) {
-                this.languages = Ext.decode(response.responseText).data;
-                if (this.autoChainAjaxRequest) {
-                    this.initPreferences();
-                }
-            },
-            failure : function (response) {
-                Ext.Msg.alert('Status', i18n.get('warfning.serverError'));
-            }
-        });
-    },
-    
-    initPreferences : function (cb) {
-        if (Ext.isEmpty(userLogin)) {
-            var projects = this.projects;
-            var languages = this.languages;
-            var preferences = this.preferences;
-            var callback;
-            if (this.autoChainAjaxRequest) {
-                callback = function () {
-                    if(!checkCookieDuration()){
-                        Ext.Msg.show({
-                            title: i18n.get('label.warning'),
-                            msg : i18n.get("label.wrongcookieduration.configuration")
-                        });
-                        return;
-                    }
-                    // loadUrl.load('/sitools/client-user/siteMap', function (){
-//                    portal = new sitools.Portal(projects, languages, preferences);
-                    portal = Ext.create('sitools.clientportal.view.portal.PortalView', {
-                        projects : projects,
-                        languages : languages,
-                        preferences : preferences
-                    });
-                    // });
-                };
-            }
-            else {
-                callback = cb;
-            }
-            
-            i18n.load(loadUrl.get('APP_URL') + '/client-public/res/i18n/' + locale.getLocale() + '/gui.properties', callback);
-            
-            return;
-        }
-        var filePath = "/" + DEFAULT_PREFERENCES_FOLDER + '/portal';
-        var success = function (response) {
-            this.preferences = Ext.decode(response.responseText);
-            if (!Ext.isEmpty(this.preferences.language)) {
-                locale.setLocale(this.preferences.language);
-            }
-
-        };
-        var failure = function () {
-            return;
-        };
-        var callback = function () {
-            var projects = this.projects;
-            var languages = this.languages;
-            var preferences = this.preferences;
-            i18n.load(loadUrl.get('APP_URL') + '/client-public/res/i18n/' + locale.getLocale() + '/gui.properties', function () {
-                if(!checkCookieDuration()){
-                    Ext.Msg.show({
-                        title: i18n.get('label.warning'),
-                        msg : i18n.get("label.wrongcookieduration.configuration")
-                    });
-                    return;
-                }
-
-                // loadUrl.load('/sitools/client-user/siteMap', function (){
-//                portal = new sitools.Portal(projects, languages, preferences);
-                portal = Ext.create('sitools.clientportal.view.portal.PortalView', {
-                    projects : projects,
-                    languages : languages,
-                    preferences : preferences
-                });
-                // });
-            });
-        };
-        
-        UserStorage.get("portal", filePath, this, success, failure, callback);
-        
-    },
-    
-    initAppliPortal : function (opts, callback) {
-        if (!Ext.isEmpty(Ext.util.Cookies.get('userLogin'))) {
-            var auth = Ext.util.Cookies.get('hashCode');
-            Ext.Ajax.defaultHeaders = {
-                "Authorization" : auth,
-                "Accept" : "application/json",
-                "X-User-Agent" : "Sitools"
-            };
-        } else {
-            Ext.Ajax.defaultHeaders = {
-                "Accept" : "application/json",
-                "X-User-Agent" : "Sitools"
-            };
-        }
-        Ext.QuickTips.init();
-//        this.callbacks[0](opts.siteMapRes, callback);
-        this.callSiteMapResource(opts.siteMapRes, callback);
-        //this.initProjects();
-    },
-    
-    callSiteMapResource : function (res, cb) {
-        var callback;
-        if (this.autoChainAjaxRequest) {
-            callback = this.initProjects;
-        } else {
-            callback = cb;
-        }
-        loadUrl.load(res + '/siteMap', callback, this);
     },
     
     openProject : function (dataView, record, item, index, node, e) {
@@ -276,9 +129,6 @@ Ext.define('sitools.clientportal.controller.portal.PortalController', {
         
         win.show();
     }
-    
 });
 
-var portalApp = {
-    
-};
+var portalApp = {};
