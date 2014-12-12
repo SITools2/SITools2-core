@@ -1,6 +1,6 @@
 <resourceAuthorization>
-  <id>urn:uuid:client-public:type:fr.cnes.sitools.applications.PublicApplication</id>
-  <name>client-public</name>
+  <id>urn:uuid:Public:type:fr.cnes.sitools.applications.PublicApplication</id>
+  <name>Public</name>
   <description>web client application for public resources used by other sitools client applications -&gt; Administrator must have all authorizations on this application
 -&gt; Public user must have at least GET and PUT authorizations on this application
 PUT authorization is used to reset User password</description>
@@ -27,4 +27,5 @@ PUT authorization is used to reset User password</description>
       <OPTIONS>false</OPTIONS>
     </authorize>
   </authorizations>
+  <lastAuthorizationUpdate>2014-12-12 15:08:32.287 CET</lastAuthorizationUpdate>
 </resourceAuthorization>
