@@ -238,7 +238,10 @@ Ext.define('sitools.user.Application', {
             width : Ext.getBody().getWidth(),
             //items : [helpFrame],
             border : false,
-            bbar : ['->', {xtype : 'label', html : '<i>Show Desktop Help on startup<i>'}, {
+            bbar : ['->', {
+                xtype : 'label',
+                html : i18n.get('label.showDesktopHelp')
+            }, {
                 xtype : 'checkbox',
                 listeners : {
                     change : function (combo, newValue, oldValue) {

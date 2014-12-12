@@ -77,7 +77,7 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsViewerMainView', {
 
                     this.additionalContainer.removeAll();
                     
-                    if (node.get('text') == "TABLE" || node.get('text') == "BINTABLE") {
+                    if (node.get('text') == "TABLE" || node.get('text') == "BINTABLE" || node.get('text') == "") { // empty for Primary HDU case
                         this.getEl().mask(this.i18nFitsViewer.get('label.loadingFits'), "x-mask-loading");
 
                         Ext.defer(function () {

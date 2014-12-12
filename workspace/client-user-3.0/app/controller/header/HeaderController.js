@@ -154,7 +154,7 @@ Ext.define('sitools.user.controller.header.HeaderController', {
 					Ext.create('sitools.public.utils.Help').show();
 				}
 			},
-			'menu' : {
+			'menu#saveMenu' : {
                 boxready : function (menu) {
                     var taskbarHeight = this.getController('DesktopController').desktopView.taskbar.getHeight();
 

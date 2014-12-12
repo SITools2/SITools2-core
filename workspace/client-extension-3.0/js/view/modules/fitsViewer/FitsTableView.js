@@ -91,16 +91,18 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsTableView', {
             collapsible : true
         });
 
-        this.tbar = {
-        	border : false,
-        	items : [{
-	            text : 'Plot',
-	            scope : this,
-	            handler : this.plot,
-	            icon : "/sitools/common/res/images/icons/plot.png"
-	        }] 
-        };
-        
+        if (this.data != "") { // cannot plot without data
+            this.tbar = {
+                border : false,
+                items : [{
+                    text : 'Plot',
+                    scope : this,
+                    handler : this.plot,
+                    icon : "/sitools/common/res/images/icons/plot.png"
+                }]
+            };
+        }
+
         this.items = [this.gridPanel, this.headerPanel];
         
         this.callParent(arguments);
