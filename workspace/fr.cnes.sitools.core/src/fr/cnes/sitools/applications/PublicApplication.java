@@ -110,17 +110,6 @@ public final class PublicApplication extends SitoolsApplication {
 
     Router router = new Router(getContext());
 
-    // Expose single welcome page
-    router.attachDefault(new Restlet() {
-      @Override
-      public void handle(Request arg0, Response arg1) {
-        SitoolsSettings settings = SitoolsSettings.getInstance();
-        File file = new File(settings.getString(Consts.APP_PATH) + settings.getString(Consts.APP_CLIENT_PUBLIC_PATH)
-            + "/res/html/index.htm");
-        arg1.setEntity(new FileRepresentation(file, MediaType.TEXT_HTML));
-      }
-    });
-
     router.attach("/login-details", LoginDetailsResource.class);
     String target = getBaseUrl() + "{keywords}";
 
@@ -181,7 +170,16 @@ public final class PublicApplication extends SitoolsApplication {
     // router.attach("/cots", redirectorCots);
     //
     // router.attach("/", redirectorCommon);
-
+ // Expose single welcome page
+    router.attachDefault(new Restlet() {
+      @Override
+      public void handle(Request arg0, Response arg1) {
+        SitoolsSettings settings = SitoolsSettings.getInstance();
+        File file = new File(settings.getString(Consts.APP_PATH) + settings.getString(Consts.APP_CLIENT_PUBLIC_PATH)
+            + "/res/html/index.htm");
+        arg1.setEntity(new FileRepresentation(file, MediaType.TEXT_HTML));
+      }
+    });
     return router;
   }
 

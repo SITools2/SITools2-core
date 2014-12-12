@@ -20,45 +20,34 @@ Ext.namespace('sitools.public.userProfile');
 /*
  * config { url + handler }
  */
-Ext.define('sitools.public.userProfile.resetPasswordPanel', {
+Ext.define('sitools.public.userProfile.ResetPasswordPanel', {
     extend : 'Ext.panel.Panel',
-	padding : "10px 10px 0px 60px",
-	frame : true,
-	layout : "fit", 
-
+	layout : "fit",
+    width: 500,
     initComponent : function () {
         this.captchaUrl = loadUrl.get('APP_URL') + '/captcha?width=300&height=50';
 
-    	this.bodyStyle = "background-image: url("+loadUrl.get('APP_URL')+"/client-public/common/res/images/ux/login-big.gif);" +
-    			"background-position: top left;" +
-    			"background-repeat: no-repeat;";
-
-//        this.title = i18n.get('label.editProfile');
         this.bbar = Ext.create('sitools.public.widget.StatusBar', {
             text : i18n.get('label.ready'),
-            iconCls : 'x-status-valid',
-            id : 'sbWinRegister'
+            iconCls : 'x-status-valid'
         });
-        
-        this.captcha = Ext.create('Ext.Component', {
-            id : 'captchaBox',
-            autoEl: {
-                tag: 'img',
-                src: this.captchaUrl + '&_dc=' + new Date().getTime()
-            },
-            fieldLabel : i18n.get('label.captcha'),
+
+        this.captcha = Ext.create('Ext.Img', {
+            itemId : 'captchaBox',
+            src: this.captchaUrl + '&_dc=' + new Date().getTime(),
             height : 50,
-            width : 300,
-            anchor: '100%'
+            width : 200
         });
-        
         
         this.form = Ext.create('Ext.form.Panel', {
             border : false,
             buttonAlign : 'center',
-            id : 'frmEditProfile',
-            labelWidth : 120,
             height : 200,
+            padding : 5,
+            width: 400,
+            defaults : {
+                labelWidth : 150
+            },
             items : [{
                 xtype : 'textfield',
                 fieldLabel : i18n.get('label.password'),
@@ -78,17 +67,29 @@ Ext.define('sitools.public.userProfile.resetPasswordPanel', {
                 name : 'confirmSecret',
                 submitValue : false,
                 value : ''
-            }, 
-                this.captcha,
-            {
-                xtype: 'button',
-                text: i18n.get('label.captchaReload'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/refresh.png',
-                x : 150,
-                arrowAlign : 'right',
-                reloadUrl : this.captchaUrl,
-                handler : this.reloadCaptcha,
-                scope : this
+            }, {
+                fieldLabel : i18n.get('label.captcha'),
+                xtype : 'fieldcontainer',
+                layout : {
+                    type : 'hbox'
+                },
+                items : [this.captcha,{
+                    xtype: 'button',
+                    itemId : 'reload',
+                    text: i18n.get('label.captchaReload'),
+                    icon : loadUrl.get('APP_URL') + '/client-public/common/res/images/icons/refresh.png',
+                    arrowAlign : 'right',
+                    reloadUrl : this.captchaUrl,
+                    width: 100,
+                    height : 30,
+                    margin : '10 0 10 2',
+                    handler : function (button) {
+                        Ext.util.Cookies.clear('captcha');
+                        var box = button.up("form").down("image");
+                        box.setSrc(this.reloadUrl + '&_dc=' + new Date().getTime());
+                        box.getEl().slideIn('l');
+                    }
+                }]
             }, {
                 xtype: 'textfield',
                 fieldLabel: i18n.get('label.fieldCaptcha'),
@@ -97,11 +98,16 @@ Ext.define('sitools.public.userProfile.resetPasswordPanel', {
                 allowBlank: false,
                 anchor: '100%'
             }],
-            buttons : [ {
-                text : i18n.get('label.saveEdit'),
-                handler : this.saveEdit,
-                scope : this
-            }]
+            buttons: {
+                xtype: 'toolbar',
+                style: 'background-color:white;',
+                items: [{
+                    text: i18n.get('label.saveEdit'),
+                    handler: this.saveEdit,
+                    scope: this,
+                    style: 'background-color:white;'
+                }]
+            }
         });
         
         this.items = [this.form];
@@ -114,7 +120,7 @@ Ext.define('sitools.public.userProfile.resetPasswordPanel', {
         var f = this.form.getForm();
 
         if (!f.isValid()) {
-            Ext.getCmp('sbWinRegister').setStatus({
+            this.down('statusbar').setStatus({
                 text : i18n.get('warning.checkForm'),
                 iconCls : 'x-status-error'
             });
@@ -133,7 +139,7 @@ Ext.define('sitools.public.userProfile.resetPasswordPanel', {
         var capt = f.findField('captcha').getValue();
         
         this.body.mask();
-        Ext.getCmp('sbWinRegister').showBusy();
+        this.down('statusbar').showBusy();
 
         Ext.Ajax.request({
             url : loadUrl.get('APP_URL') + this.resourceUrl,
@@ -151,13 +157,13 @@ Ext.define('sitools.public.userProfile.resetPasswordPanel', {
                     this.ownerCt.close();
 
                     Ext.Msg.alert(i18n.get("label.information"), i18n.get("label.passwordChanged.success"), function() {
-                        var link = loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_USER_URL') + "/index.html";
+                        var link = loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PORTAL_URL') + "/index.html";
                         window.open(link, "_self");
                     });
                     
                 } else {
                     this.body.unmask();
-                     Ext.getCmp('sbWinRegister').setStatus({
+                     this.down('statusbar').setStatus({
                         text : json.message,
                         iconCls : 'x-status-error'
                     });
@@ -178,7 +184,7 @@ Ext.define('sitools.public.userProfile.resetPasswordPanel', {
                     txt = i18n.get('warning.serverError') + ': ' + response.statusText;
                 }
                 this.body.unmask();
-                 Ext.getCmp('sbWinRegister').setStatus({
+                 this.down('statusbar').setStatus({
                     text : txt,
                     iconCls : 'x-status-error'
                 });
@@ -190,11 +196,12 @@ Ext.define('sitools.public.userProfile.resetPasswordPanel', {
     
     reloadCaptcha : function () {
         Ext.util.Cookies.clear('captcha');
-        var box = Ext.get('captchaBox');
-        box.dom.src = this.captchaUrl + '&_dc=' + new Date().getTime();
-        box.slideIn('l');
-        
-        var f = this.form.getForm();
-        var capt = f.findField('captcha').setValue("");
+        var box = this.down("form image");
+        var button = this.down("button#reload");
+        box.setSrc(button.reloadUrl + '&_dc=' + new Date().getTime());
+        box.getEl().slideIn('l');
+
+        //clear the captcha value
+        this.down("form textfield#captcha").setValue("");
     }
 });

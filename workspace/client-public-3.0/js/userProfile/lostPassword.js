@@ -153,17 +153,13 @@ Ext.define('sitools.public.userProfile.lostPassword', {
                         iconCls : 'x-status-valid'
                     });
                     
-                    var notify = new Ext.ux.Notification({
+                    popupMessage({
                         iconCls : 'x-icon-information',
                         title : i18n.get('label.information'),
                         html : i18n.get('label.emailSent') + json.message,
                         autoDestroy : true,
                         hideDelay : 1300
                     });
-                    notify.show(document);
-//                    if (this.handler !== null && this.handler !== undefined) {
-//                        this.handler.call(this.scope || this);
-//                    }
                     this.openLoginWindow();
                 } else {
                     Ext.getCmp('winPassword').body.unmask();

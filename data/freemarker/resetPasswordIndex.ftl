@@ -20,7 +20,7 @@
 
 <html>
 
-  <head>
+ <head>
 
 	<meta http-equiv="Expires" content="0">
 	<meta http-equiv="Pragma" content="no-cache">
@@ -36,94 +36,35 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>SITOOLS WEB CLIENT</title>
 
-    <link rel="stylesheet" type="text/css" href="${appUrl}/cots/extjs/resources/css/ext-all.css">
-    <link rel="stylesheet" type="text/css" href="${appUrl}/common/res/css/desktop.css">
-    <link rel="stylesheet" type="text/css" href="${appUrl}/common/res/css/statusbar.css">
-	<link rel="stylesheet" type="text/css" href="${appUrl}/client-user/res/css/portal.css">
-	<link rel="stylesheet" type="text/css" href="${appUrl}/common/res/css/main.css">
-    <link rel="stylesheet" type="text/css" href="${appUrl}/common/js/widgets/notification/css/Notification.css">
-	<link rel="stylesheet" type="text/css" href="${appUrl}/common/res/css/combo.css">
-    
-	<!-- First of javascript includes must be an adapter... -->
-    <!--script type="text/javascript" src="/cots/extjs/adapter/ext/ext-base-debug.js"></script-->
-    <script type="text/javascript" src="${appUrl}/cots/extjs/adapter/ext/ext-base.js"></script>
-
-    <!-- Need the Ext itself, either debug or production version. -->
-    <script type="text/javascript" src="${appUrl}/cots/extjs/ext-all-debug.js"></script>
-    <!--script type="text/javascript" src="${appUrl}/cots/extjs/ext-all.js"></script-->
-
-<!-- --------------------------------------------------------------------------------------------------
-						LISTE DES FICHIERS A INCLURE POUR LA VERSION DE DEV
---------------------------------------------------------------------------------------------------- -->
-<!-- BEGIN_JS_DEV_INCLUDES -->
-	<script type="text/javascript" src="${appUrl}/common/js/crypto/base64.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/crypto/MD5.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/crypto/digest.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/utils/console.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/widgets/statusbar.js"></script>
-	<script type="text/javascript" src="${appUrl}/common/js/userProfile/loginUtils.js"></script>
-	<script type="text/javascript" src="${appUrl}/common/js/userProfile/resetPasswordPanel.js"></script>
-    
-    <script type="text/javascript" src="${appUrl}/common/js/widgets/vtype.js"></script>
-
-    <script type="text/javascript" src="${appUrl}/common/js/widgets/notification/Ext.ux.Notification.js"></script>
-   
-    <script type="text/javascript" src="${appUrl}/common/js/siteMap.js"></script>
+	<link rel="stylesheet" href="${appUrl}/client-portal/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="${appUrl}/client-public/cots/extjs4/ext-4.2.1.883/resources/css/ext-all-neptune-debug.css"></link>
+    <link rel="stylesheet" type="text/css" href="${appUrl}/client-portal/resources/css/portal.css">
+	<link rel="stylesheet" type="text/css" href="${appUrl}/client-public/res/css/main.css">
+	<link rel="stylesheet" type="text/css" href="${appUrl}/client-public/res/css/statusbar.css"></link>
+	<link rel="stylesheet" type="text/css" href="${appUrl}/client-public/res/css/feed.css"></link>
 	
-    <script type="text/javascript" src="${appUrl}/client-user/js/env.js"></script>
-    <script type="text/javascript" src="${appUrl}/client-user/js/def.js"></script>
-    <script type="text/javascript" src="${appUrl}/client-user/js/gui.js"></script>
-
-<!-- END_JS_DEV_INCLUDES -->
-  
-<!-- --------------------------------------------------------------------------------------------------
- 						A INCLURE POUR LA VERSION DE DEBUG
---------------------------------------------------------------------------------------------------- -->
-<!--	<script type="text/javascript" src="js/minified/client-user-portal-all.js"></script> -->
-	
-<!-- --------------------------------------------------------------------------------------------------
- 						A INCLURE POUR LA VERSION DE PROD
---------------------------------------------------------------------------------------------------- -->
-<!--
-	<script type="text/javascript" src="js/minified/client-user-portal-all.min.js"></script> 
--->	
+	<script src="${appUrl}/client-public/cots/extjs4/ext-4.2.1.883/ext-all-debug.js"></script>
+		
 	<link rel="shortcut icon" href="${appUrl}/common/res/images/icons/logo_fav_icone.ico" type="image/x-icon">
+	
+	<script type="text/javascript">
+		Ext.Loader.setConfig('disableCaching', false);
+	</script>
+	
+	<script type="text/javascript" src="${appUrl}/client-user/appResetPassword.js"></script>
 	
   </head>
 
   <body>
+  
+  <script type="text/javascript">
 	
-	<script type="text/javascript">
-    	Ext.onReady(function(){
-			Ext.Ajax.defaultHeaders = {
-				"Accept" : "application/json",
-				"X-User-Agent" : "Sitools"
-			};
-			i18n.load('${appUrl}/common/res/i18n/en/gui.properties', function() {
-			    loadUrl.load('${appUrl}/client-user/siteMap', function () {
-					Ext.MessageBox.buttonText.yes = i18n.get('label.yes');
-		      		Ext.MessageBox.buttonText.no = i18n.get('label.no');
-					Ext.QuickTips.init();
-					
-					var resetPasswordPanel = new sitools.userProfile.resetPasswordPanel({
-						challengeToken : "${challengeToken}",
-						resourceUrl : "${resourceUrl}"
-					});
-					
-					var win = new Ext.Window({
-						title : i18n.get("title.changePassword"),
-						items : [resetPasswordPanel], 
-						modal : true, 
-						width : 400, 
-						resizable : false
-					});
-					
-					win.show();
-					
-				});
-    		});
-        });
-    </script>
+	var challengeToken = "${challengeToken}";
+	var resourceUrl = "${resourceUrl}";
+	var appUrl = "${appUrl}";
+	
+  </script>
+	
 
 </body>
 </html>

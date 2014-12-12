@@ -133,7 +133,7 @@ public class UnblacklistUserResource extends SitoolsResource {
    */
   private String getUnlockAccountUrl(User user) {
     String token = application.getChallengeToken().getToken(user.getIdentifier());
-    return getSitoolsSetting(Consts.APP_CLIENT_PUBLIC_URL) + "/unlockAccount/index.html?cdChallengeMail=" + token;
+    return "/unlockAccount/index.html?cdChallengeMail=" + token;
   }
 
   @Override
