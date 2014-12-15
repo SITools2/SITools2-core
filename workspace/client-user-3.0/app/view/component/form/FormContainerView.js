@@ -54,13 +54,7 @@ Ext.define('sitools.user.view.component.form.FormContainerView', {
             autoScroll : true,
 
             /** The parameters retrieved from server. * */
-            parameters : [],
-            bbar : Ext.create("sitools.public.widget.StatusBar", {
-                text : i18n.get('label.ready'),
-                iconCls : 'x-status-valid',
-                hidden : true,
-                itemId : 'formStatusBar'
-            })
+            parameters : []
         });
         
         this.addEvents(
@@ -200,7 +194,7 @@ Ext.define('sitools.user.view.component.form.FormContainerView', {
      */
     isComponentsValid : function () {
         var valid = true;
-        var containers = this.down('[stype="sitoolsFormContainer"]');
+        var containers = Ext.ComponentQuery.query('[stype="sitoolsFormContainer"]', this);
         Ext.each(containers, function (container) {
             if(Ext.isFunction(container.isValid)) {
                 if(!container.isValid()){

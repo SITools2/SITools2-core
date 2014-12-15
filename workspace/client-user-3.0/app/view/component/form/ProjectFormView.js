@@ -226,11 +226,12 @@ Ext.define('sitools.user.view.component.form.ProjectFormView', {
             text : i18n.get('label.search')
         });
 
-        this.bbar = Ext.create('sitools.public.widget.StatusBar', {
+        this.bbar= Ext.create("sitools.public.widget.StatusBar", {
             text : i18n.get('label.ready'),
             iconCls : 'x-status-valid',
-            hidden : true
-        })
+            hidden : true,
+            itemId : 'formStatusBar'
+        });
         
         this.items = [ firstPanel, displayComponentPanel ];
         this.buttons = [ this.searchButton ];

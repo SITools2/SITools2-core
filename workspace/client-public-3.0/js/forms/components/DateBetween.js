@@ -55,8 +55,13 @@ Ext.define('sitools.public.forms.components.DateBetween', {
         
         var valueFrom = this.getDefaultValue(this.defaultValues[0]) ;
 		var valueTo = this.getDefaultValue(this.defaultValues[1]) ;
+
+        var dateClass = "Ext.form.field.Date";
+        if(this.showTime) {
+            dateClass = "Ext.ux.date.form.DateTimeField";
+        }
 		
-        this.fieldFrom = Ext.create("Ext.ux.date.form.DateTimeField", {
+        this.fieldFrom = Ext.create(dateClass, {
             allowBlank : true,
             format : dateFormat, 
             flex : 1,
@@ -71,7 +76,7 @@ Ext.define('sitools.public.forms.components.DateBetween', {
                 }
             }
         });
-        this.fieldTo = Ext.create("Ext.ux.date.form.DateTimeField", {
+        this.fieldTo = Ext.create(dateClass, {
             allowBlank : true,
             format : dateFormat, 
             flex : 1,

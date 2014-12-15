@@ -189,15 +189,15 @@ Ext.define('sitools.user.controller.component.form.ProjectFormController', {
         },projectformview);
 
         if (!valid) {
-            projectformview.down('toolbar').setStatus({
+            projectformview.down('toolbar#formStatusBar').setStatus({
                 text : i18n.get('label.checkformvalue'),
                 iconCls : 'x-status-error'
             });
-            projectformview.down('toolbar').setVisible(true);
+            projectformview.down('toolbar#formStatusBar').setVisible(true);
             button.setDisabled(false);
             return;
         } else {
-            projectformview.down('toolbar').setVisible(false);
+            projectformview.down('toolbar#formStatusBar').setVisible(false);
         }
 
         var formConceptParams = {};

@@ -140,5 +140,8 @@ Ext.define('sitools.public.forms.components.TextField', {
             code : this.code.join(','),
             value : value
         };
+    },
+    isValid : function () {
+        return (this.tf.isValid());
     }
 });
