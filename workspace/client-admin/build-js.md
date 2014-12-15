@@ -4,7 +4,20 @@
 
 ### Pre requisite
 
-Install nodejs
+Install nodejs on Ubuntu
+	
+	//Configuration du proxy (if needed)
+	export http_proxy=http://user:password@proxy2.akka.eu:9090
+	export https_proxy=http://user:password@proxy2.akka.eu:9090
+	//add custom repository to have last nodejs version
+	sudo -E apt-add-repository ppa:chris-lea/node.js
+	//install nodejs
+	sudo apt-get update
+	sudo apt-get install nodejs
+	//Configure nodejs repository in http to avoid proxy problems
+	npm config set registry http://registry.npmjs.org/
+
+
 
 Configure the proxy (if needed)
 
@@ -12,14 +25,6 @@ Configure the proxy (if needed)
 	npm config set https-proxy http://proxy.company.com:8080
 
 ### Intialise gulp
-
-	cd workspace/client-admin
-	npm install --global gulp
-	npm install --save-dev gulp
-	npm install gulp-concat
-	npm install gulp-uglifyjs
-
-or run directly
 
 	npm install gulp gulp-concat gulp-uglifyjs
 
