@@ -126,32 +126,32 @@ Ext.define('sitools.admin.datasets.DatasetProperties', {
 						panel.getEl().mask();
 					}
                 },
-				beforeedit : function (e) {
+				beforeedit : function (editor, e) {
 					//Créer l'éditeur en fonction du type 
-					if (e.column == 2) {
+					if (e.colIdx == 2) {
 						var grid = e.grid;
 						var rec = e.record;
-						var column = grid.getColumnModel().columns[e.column];
+						var column = e.column;
 						if (Ext.isEmpty(rec.get("type"))) {
 							return false;
 						}
 						var editor;
 						switch (rec.get('type')) {
 						case "String" : 
-							editor = new Ext.form.TextField();
+							editor = Ext.create("Ext.form.field.Text");
 							break;
 						
 						case "Numeric" : 
-							editor = new Ext.form.NumberField();
+							editor = Ext.create("Ext.form.field.Number");
 							break;
-						case "Date" : 
-							editor = new Ext.form.DateField({
-								format : SITOOLS_DEFAULT_IHM_DATE_FORMAT, 
-								showTime : true
+						case "Date" :
+							editor = Ext.create("Ext.ux.date.form.DateTimeField", {
+								format : SITOOLS_DEFAULT_IHM_DATE_FORMAT,
+                                value : e.value
 							});
 							break;
 						case "Enum" : 
-							editor = new Ext.form.TextField();
+							editor = new Ext.create("Ext.form.field.Text");
 							break;
 						}
 						
@@ -159,12 +159,12 @@ Ext.define('sitools.admin.datasets.DatasetProperties', {
 					}
 					return true;
 				}, 
-				afteredit : function (e) {
+				afteredit : function (editor, e) {
 					//Formatter en string
 					if (e.column == 2) {
 						var grid = e.grid;
 						var rec = e.record;
-						var column = grid.getColumnModel().columns[e.column];
+						var column = e.column;
 						var value = e.value;
 						if (Ext.isEmpty(rec.get("type"))) {
 							return false;
