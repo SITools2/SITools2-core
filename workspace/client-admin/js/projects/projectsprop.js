@@ -149,12 +149,6 @@ sitools.component.projects.ProjectsPropPanel = Ext.extend(Ext.Window, {
                 hidden : this.mode === 'select',
                 icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png',
                 handler : this._onDelete
-            }, '->', {
-                xtype : 's-filter',
-                hidden : this.mode === 'list',
-                emptyText : i18n.get('label.search'),
-                store : this.store,
-                pageSize : this.pageSize
             } ]
         };
 
