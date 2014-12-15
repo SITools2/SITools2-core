@@ -328,9 +328,9 @@
 			<description>Ext-js librairy, Openlayers, GeoExt</description>
 			<fileset override="update" dir="../../cots/extjs4" targetdir="$INSTALL_PATH/cots/extjs4"
 				excludes="**/*.zip" />
-			<fileset override="update" dir="../../cots/geoext2-2.0.2" targetdir="$INSTALL_PATH/cots/GeoExt"
+			<fileset override="update" dir="../../cots/geoext2-2.0.2" targetdir="$INSTALL_PATH/cots/geoext2-2.0.2"
 				excludes="**/*.zip" />
-			<fileset override="update" dir="../../cots/OpenLayers-2.13.1" targetdir="$INSTALL_PATH/cots/OpenLayers-2.11"
+			<fileset override="update" dir="../../cots/OpenLayers-2.13.1" targetdir="$INSTALL_PATH/cots/OpenLayers-2.13.1"
 				excludes="**/*.zip" />
 		</pack>
 		<!-- PUBLIC -->
