@@ -46,7 +46,8 @@
 	
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>SITOOLS WEB CLIENT</title>
-
+	
+	<!-- CSS stylesheets  -->
 	<link rel="stylesheet" href="${appUrl}/client-portal/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="${appUrl}/client-public/cots/extjs4/ext-4.2.1.883/resources/css/ext-all-neptune-debug.css"></link>
     <link rel="stylesheet" type="text/css" href="${appUrl}/client-portal/resources/css/portal.css">
@@ -54,34 +55,36 @@
 	<link rel="stylesheet" type="text/css" href="${appUrl}/client-public/res/css/statusbar.css"></link>
 	<link rel="stylesheet" type="text/css" href="${appUrl}/client-public/res/css/feed.css"></link>
 	
+	<!-- Javascript sources  -->
+	
+<!-- --------------------------------------------------------------------------------------------------
+							LISTE DES FICHIERS A INCLURE POUR LA VERSION DE DEV
+--------------------------------------------------------------------------------------------------- -->
+<!-- BEGIN_JS_DEV_INCLUDES -->
 	<script src="${appUrl}/client-public/cots/extjs4/ext-4.2.1.883/ext-all-debug.js"></script>
 	<script src="${appUrl}/client-portal/bootstrap.js"></script>
-	<!-- --------------------------------------------------------------------------------------------------
-							LISTE DES FICHIERS A INCLURE POUR LA VERSION DE DEV
-	--------------------------------------------------------------------------------------------------- -->
-<!-- BEGIN_JS_DEV_INCLUDES -->
-		<script type="text/javascript" src="app.js"></script>
+	<script type="text/javascript" src="app.js"></script>
 <!-- END_JS_DEV_INCLUDES -->
 	  
-	<!-- --------------------------------------------------------------------------------------------------
+<!-- --------------------------------------------------------------------------------------------------
 							A INCLURE POUR LA VERSION DE DEBUG
-	--------------------------------------------------------------------------------------------------- -->
-	<!--
-		<script type="text/javascript" src="dist/app.all.js"></script>
-		<script type="text/javascript" src="app.js"></script>
-	-->
+--------------------------------------------------------------------------------------------------- -->
+<!--
+	<script src="${appUrl}/client-public/cots/extjs4/ext-4.2.1.883/ext-all-debug.js"></script>
+	<script src="${appUrl}/client-portal/bootstrap.js"></script>
+	<script type="text/javascript" src="dist/app.all.js"></script>
+	<script type="text/javascript" src="app.js"></script>
+-->
 
 	<!-- --------------------------------------------------------------------------------------------------
 							A INCLURE POUR LA VERSION DE PROD
 	--------------------------------------------------------------------------------------------------- -->
 <!-- BEGIN_PROD
-		<script type="text/javascript" src="dist/app.min.js"></script>
-		<script type="text/javascript" src="app.js"></script>
+	<script src="${appUrl}/client-public/cots/extjs4/ext-4.2.1.883/ext-all.js"></script>
+	<script src="${appUrl}/client-portal/bootstrap.js"></script>
+	<script type="text/javascript" src="dist/app.min.js"></script>
+	<script type="text/javascript" src="app.js"></script>
 END PROD -->
-	
-	
-	
-	
 	
 	<link rel="shortcut icon" href="${appUrl}/common/res/images/icons/logo_fav_icone.ico" type="image/x-icon">
 	

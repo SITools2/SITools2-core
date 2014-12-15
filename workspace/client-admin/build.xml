@@ -11,30 +11,14 @@
 	Public License == along with SITools2. If not, see <http://www.gnu.org/licenses/>. 
 	==================================== -->
 <project name="fr.cnes.sitools.client-admin" basedir="." default="js.minify">
-	<property name="appUrl" value=".." />
-	<target name="js.concat">
-		<copy tofile="jsDevIncludes" file="../../data/freemarker/adminIndex.ftl" overwrite="true"/>
-		<replaceregexp file="jsDevIncludes" flags="s" match=".*&lt;!-- BEGIN_JS_DEV_INCLUDES --&gt;" replace=""/>
-		<replaceregexp file="jsDevIncludes" flags="s" match="&lt;!-- END_JS_DEV_INCLUDES --&gt;.*" replace=""/>
-		<replaceregexp file="jsDevIncludes" flags="mg" match="^.*&lt;script type=&quot;text/javascript&quot; src=&quot;" replace=""/>
-		<replaceregexp file="jsDevIncludes" flags="mg" match="&quot;&gt;&lt;/script&gt;.*$" replace=""/>
-		<replaceregexp file="jsDevIncludes" flags="mg" match="/common/" replace="/client-public/"/>
-		<loadfile property="jsDevIncludesList" srcFile="jsDevIncludes" >
-			<filterchain>
-				<expandproperties />
-			</filterchain>
-		</loadfile>
-		<concat destfile="./js/minified/client-admin-all.js">
-			<filelist dir="./" files="${jsDevIncludesList}" />
-		</concat>
-		<delete file="jsDevIncludes"/>
-	</target>
-	<target name="js.minify" depends="js.concat">
-	    <java jar="../../cots/yuiCompressor/yuicompressor-2.4.7.jar" fork="true">
-	        <arg value="./js/minified/client-admin-all.js"/>
-	    	<arg value="-o"/>
-	    	<arg value="./js/minified/client-admin-all-min.js"/>
-	    </java>
+	<target name="js.minify">
+		<exec executable="conf/scripts/minifyjs.bat" osfamily="windows" failonerror="true">
+            <arg value="."/>
+        </exec>
+        
+        <exec executable="conf/scripts/minifyjs.sh" osfamily="unix" failonerror="true">
+            <arg value="."/>
+        </exec>
 	</target>
 	
 </project>

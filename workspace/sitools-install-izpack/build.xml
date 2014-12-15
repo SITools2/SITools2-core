@@ -167,15 +167,9 @@
 	<target name="minify-javascripts" description="build javascript and freemarker for production use">
 		
 		<exec executable="conf/scripts/minifyjs.bat" osfamily="windows" failonerror="true">
-            <arg value="${ROOT_DIRECTORY_LOCAL}/workspace/client-user-3.0"/>
+            <arg value="${ROOT_DIRECTORY_LOCAL}"/>
         </exec>
-		<exec executable="conf/scripts/minifyjs.bat" osfamily="windows" failonerror="true">
-			<arg value="${ROOT_DIRECTORY_LOCAL}/workspace/client-portal-3.0"/>
-        </exec>
-		<exec executable="conf/scripts/minifyjs.bat" osfamily="windows" failonerror="true">
-			<arg value="${ROOT_DIRECTORY_LOCAL}/workspace/client-admin"/>
-        </exec>
-        
+		
         <exec executable="conf/scripts/minifyjs.sh" osfamily="unix" failonerror="true">
             <arg value="${ROOT_DIRECTORY_LOCAL}"/>
         </exec>

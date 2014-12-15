@@ -21,11 +21,12 @@
 <html>
 
   <head>
-
+	
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>SITOOLS WEB PROJECT CLIENT ${projectName!}</title>
+	
+	<!-- CSS stylesheets  -->
 	<link rel="stylesheet" href="bootstrap.css">
-    <!--<link rel="stylesheet" type="text/css" href="${appUrl}/cots/extjs/resources/css/ext-all.css">-->
 	
     <link rel="stylesheet" type="text/css" href="${appUrl}/client-public/res/css/desktop.css">
 	
@@ -33,72 +34,57 @@
 	<link rel="stylesheet" type="text/css" href="${appUrl}/client-user/resources/css/userProfilePopup.css"></link>
 	<link rel="stylesheet" type="text/css" href="${appUrl}/client-user/resources/css/header.css"></link>
 	<link rel="stylesheet" type="text/css" href="${appUrl}/client-user/resources/css/modulesDataview.css"></link>
-		<link rel="stylesheet" type="text/css" href="${appUrl}/client-user/resources/css/taskbars.css"></link>
+	<link rel="stylesheet" type="text/css" href="${appUrl}/client-user/resources/css/taskbars.css"></link>
 		
 	<link rel="stylesheet" type="text/css" href="${appUrl}/client-public/res/css/main.css"></link>
 	<link rel="stylesheet" type="text/css" href="${appUrl}/client-public/res/css/feed.css"></link>
 	<link rel="stylesheet" type="text/css" href="${appUrl}/client-public/res/css/statusbar.css">
 	<link rel="stylesheet" type="text/css" href="${appUrl}/client-public/res/css/formComponents.css"></link>
 
-	<!--
-    <link rel="stylesheet" type="text/css" href="${appUrl}/client-public/js/widgets/notification/css/Notification.css">
-	<link rel="stylesheet" type="text/css" href="${appUrl}/client-public/js/widgets/reorderer/multiple-sorting.css">
-    <link rel="stylesheet" type="text/css" href="${appUrl}/client-public/res/css/treegrid.css">
-    <link rel="stylesheet" type="text/css" href="${appUrl}/client-public/res/css/spinner.css">
-
-    <link rel="stylesheet" type="text/css" href="${appUrl}/client-user/js/components/dataviews/livegrid/css/ext-ux-livegrid.css">
-    <link rel="stylesheet" type="text/css" href="${appUrl}/client-user/js/components/dataviews/livegrid/css/dataView.css">
-    <link rel="stylesheet" type="text/css" href="${appUrl}/client-public/js/widgets/gridfilters/css/GridFilters.css">
-    <link rel="stylesheet" type="text/css" href="${appUrl}/client-public/js/widgets/gridfilters/css/RangeMenu.css">
-    <link rel="stylesheet" type="text/css" href="${appUrl}/client-public/js/widgets/multiSelect/css/multiSelect.css">
-
-	<link rel="stylesheet" type="text/css" href="${appUrl}/client-public/res/css/combo.css">
-    <link rel="stylesheet" type="text/css" href="${appUrl}/client-public/res/css/formComponents.css">
-	<link rel="stylesheet" type="text/css" href="${appUrl}/client-public/res/css/main.css">
-	<link rel="stylesheet" type="text/css" href="${appUrl}/client-public/js/widgets/fileUploadField/fileUploadField.css">-->
-	
 	<link rel="stylesheet" type="text/css" href="${appUrl}/client-public/js/widget/imageChooser/imageChooser.css"></link>
 	
-	<!-- HTML EDITOR ADVANCED CSS -->
-	<!--<link rel="stylesheet" type="text/css" href="${appUrl}/client-public/js/widgets/htmlEditorAdvanced/resources/css/htmleditorplugins.css">
-	<link rel="stylesheet" type="text/css" href="${appUrl}/cots/extjs/resources/css/xtheme-gray-custom.css">
 	
-	<link rel="stylesheet" type="text/css" href="${appUrl}/client-user/js/components/dataviews/services/servicesToolbar.css">-->
-	
+	<!-- Javascript sources  -->
 	<script type="text/javascript" src="${appUrl}/client-public/js/utils/prototyp.js"></script>
-	<script type="text/javascript" src="${appUrl}/client-public/cots/OpenLayers-2.13.1/OpenLayers.debug.js"></script>
 	
-	<script type="text/javascript" src="${appUrl}/client-public/cots/extjs4/ext-4.2.1.883/ext-all-debug.js"></script>
-	<script type="text/javascript" src="${appUrl}/client-public/cots/geoext2-2.0.2/geoext2.js"></script>
-	
-	
-
-	<!-- Need in debug mode, to remove in production version. -->
-
 <!-- --------------------------------------------------------------------------------------------------
 						LISTE DES FICHIERS A INCLURE POUR LA VERSION DE DEV
 --------------------------------------------------------------------------------------------------- -->
 <!-- BEGIN_JS_DEV_INCLUDES -->
-		<script src="${appUrl}/client-user/bootstrap.js"></script>
-		<script type="text/javascript" src="${appUrl}/client-public/js/widget/ckeditor/ckeditor.js"></script>		
-		<script type="text/javascript" src="app.js"></script>	
+	<!-- LIBRARIES -->
+	<script type="text/javascript" src="${appUrl}/client-public/cots/OpenLayers-2.13.1/OpenLayers.debug.js"></script>
+	<script type="text/javascript" src="${appUrl}/client-public/cots/extjs4/ext-4.2.1.883/ext-all-debug.js"></script>
+	<script type="text/javascript" src="${appUrl}/client-public/cots/geoext2-2.0.2/geoext2.js"></script>
+	<script type="text/javascript" src="${appUrl}/client-public/js/widget/ckeditor/ckeditor.js"></script>		
+	<!-- SITOOLS FILES -->
+	<script src="${appUrl}/client-user/bootstrap.js"></script>
+	<script type="text/javascript" src="app.js"></script>	
 <!-- END_JS_DEV_INCLUDES -->
   
 <!-- --------------------------------------------------------------------------------------------------
  						A INCLURE POUR LA VERSION DE DEBUG
 --------------------------------------------------------------------------------------------------- -->
 <!--
+	
+	<script type="text/javascript" src="${appUrl}/client-public/cots/OpenLayers-2.13.1/OpenLayers.debug.js"></script>
+	<script type="text/javascript" src="${appUrl}/client-public/cots/extjs4/ext-4.2.1.883/ext-all-debug.js"></script>
+	<script type="text/javascript" src="${appUrl}/client-public/cots/geoext2-2.0.2/geoext2.js"></script>
+	
 	<script src="${appUrl}/client-user/bootstrap.js"></script>
 	<script type="text/javascript" src="${appUrl}/client-public/js/widget/ckeditor/ckeditor.js"></script>
 	<script type="text/javascript" src="dist/app.all.js"></script>
 	<script type="text/javascript" src="app.js"></script>
-	-->
+-->
 
 
 <!-- --------------------------------------------------------------------------------------------------
  						A INCLURE POUR LA VERSION DE PROD
 --------------------------------------------------------------------------------------------------- -->
 <!-- WITHOUT_PLUGIN_BEGIN_PROD
+	<script type="text/javascript" src="${appUrl}/client-public/cots/OpenLayers-2.13.1/OpenLayers.js"></script>
+	<script type="text/javascript" src="${appUrl}/client-public/cots/extjs4/ext-4.2.1.883/ext-all.js"></script>
+	<script type="text/javascript" src="${appUrl}/client-public/cots/geoext2-2.0.2/geoext2.js"></script>
+
 	<script src="${appUrl}/client-user/bootstrap.js"></script>
 	<script type="text/javascript" src="${appUrl}/client-public/js/widget/ckeditor/ckeditor.js"></script>
 	<script type="text/javascript" src="dist/app.min.js"></script>
@@ -106,6 +92,10 @@
 <!-- WITHOUT_PLUGIN_END_PROD -->
 
 <!-- BEGIN_PROD
+	<script type="text/javascript" src="${appUrl}/client-public/cots/OpenLayers-2.13.1/OpenLayers.js"></script>
+	<script type="text/javascript" src="${appUrl}/client-public/cots/extjs4/ext-4.2.1.883/ext-all.js"></script>
+	<script type="text/javascript" src="${appUrl}/client-public/cots/geoext2-2.0.2/geoext2.js"></script>
+
 	<script src="${appUrl}/client-user/bootstrap.js"></script>
 	<script type="text/javascript" src="${appUrl}/client-public/js/widget/ckeditor/ckeditor.js"></script>
 	<script type="text/javascript" src="dist/app.withplugins.min.js"></script>
@@ -138,33 +128,18 @@ END PROD -->
 	
 	<meta NAME="DC.Title" content="${projectName!}">
 	<meta NAME="DC.Creator" content="SITools2 - CNES">
-	<!--<meta NAME="DC.Description" content="${projectDescription!}">-->
-	
-	<link rel="shortcut icon" href="${appUrl}/client-public/res/images/icons/logo_fav_icone.ico" type="image/x-icon">
-	
-	<!-- CSS client-supervision -->
-<!--	<link rel="stylesheet" type="text/css" href="${appUrl}/client-supervision/js/components/corot/dataview/css/dataView.css">-->
-<!--	<link rel="stylesheet" type="text/css" href="${appUrl}/client-supervision/js/components/corot/dataview/css/ext-ux-livegrid.css">-->
 
+	<link rel="shortcut icon" href="${appUrl}/client-public/res/images/icons/logo_fav_icone.ico" type="image/x-icon">
 
 	<script type="text/javascript">
 		Ext.Loader.setConfig('disableCaching', false);
 	</script>
 
   </head>
-
- 
  
   <body>
-	
-
-	
 	<div id="sitools-desktop">
 		<#include "${project.ftlTemplateFile}">
 	</div>
-	
-	
-	<!--<div id="fisheye-menu-bottom" style="/*z-index: 12001;*/margin-bottom: 30px;"></div>-->
-
 </body>
 </html>
