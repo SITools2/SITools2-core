@@ -177,7 +177,7 @@
         </exec>
         
         <exec executable="conf/scripts/minifyjs.sh" osfamily="unix" failonerror="true">
-            <arg value="${ROOT_DIRECTORY}"/>
+            <arg value="${ROOT_DIRECTORY_LOCAL}"/>
         </exec>
 		
 		<antcall target="build-freemarker-sources"/>
