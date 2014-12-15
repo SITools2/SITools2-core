@@ -632,6 +632,7 @@ Ext.define('sitools.admin.multiDs.MultiDsProp', {
             title : i18n.get('label.disposition'),
 			flex : 1, 
 			autoScroll : true,
+            border : false,
 			tbar : Ext.create("Ext.Toolbar", {
                 items : [{
                     scope : this,
@@ -644,7 +645,6 @@ Ext.define('sitools.admin.multiDs.MultiDsProp', {
                     icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/tree_forms.png',
                     handler : this._addPanel
                 }]
-    
             }),
 			items : [this.absoluteLayout]
         });
@@ -663,9 +663,10 @@ Ext.define('sitools.admin.multiDs.MultiDsProp', {
         var dispPanel = Ext.create("Ext.Panel", {
 			layout : {
 			    type : "hbox",
-			    align : "stretch"
-			    
+			    align : "stretch",
+                padding : 10
 			},
+            border : false,
 			title : i18n.get('label.disposition'),
 			items : [this.componentListPanel, absContainer], 
 			listeners : {
@@ -674,10 +675,8 @@ Ext.define('sitools.admin.multiDs.MultiDsProp', {
 					this.absoluteLayout.fireEvent('activate');
 				}
 			}
-			
 		});
 
-        
         /**
          * The main tapPanel of the window. 
          */

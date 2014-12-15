@@ -29,7 +29,7 @@ Ext.define('sitools.public.utils.PopupMessage', {
             return '<div class="msg ' + Ext.baseCSSPrefix + 'border-box"><h3>' + t + '</h3><p><span style="padding:6px;"><img src="' + i +'"/></span>' + s + '</p></div>';
         } 
         else if (iclass) {
-            return '<div class="msg ' + Ext.baseCSSPrefix + 'border-box"><h3>' + t + '</h3><p><span style="padding:0px 12px 0px 12px;" class="'+iclass+'"></span>' + s + '</p></div>';
+            return '<div class="msg ' + Ext.baseCSSPrefix + 'border-box"><h3>' + t + '</h3><p><span style="padding:3px 12px 0px 12px;" class="'+iclass+'"></span>' + s + '</p></div>';
         }
         else {
             return '<div class="msg ' + Ext.baseCSSPrefix + 'border-box"><h3>' + t + '</h3><p>' + s + '</p></div>';
@@ -55,7 +55,7 @@ Ext.define('sitools.public.utils.PopupMessage', {
         var s = Ext.String.format.apply(String, [message]);
         var m = Ext.DomHelper.append(this.msgCt, sitools.public.utils.PopupMessage.createBox(title, s, icon, iconClass), true);
         m.hide();
-        m.slideIn('t').ghost("t", { delay: delayTime || 1000, remove: true});
+        m.slideIn('t').ghost("t", { delay: delayTime || 1300, remove: true});
     }
 });
 

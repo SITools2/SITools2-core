@@ -84,6 +84,8 @@ Ext.define('sitools.admin.datasets.JoinCrudTreePanel', {
                     scope : this,
                     handler: this._cxtMenuHandler
                 },
+                border : false,
+                plain : true,
                 items : [{
                     id : 'INNER_JOIN',
                     action : "addTable",
@@ -132,7 +134,7 @@ Ext.define('sitools.admin.datasets.JoinCrudTreePanel', {
             handler: this._cxtMenuHandler
         }, {
             id : 'edit-jointure',
-            text : i18n.get("editJointure"), 
+            text : i18n.get("Edit Jointure"),
             icon : loadUrl.get('APP_URL') + loadUrl.get("APP_CLIENT_PUBLIC_URL") + '/res/images/icons/toolbar_edit.png',
             scope : this,
             handler: this._cxtMenuHandler,
@@ -141,6 +143,8 @@ Ext.define('sitools.admin.datasets.JoinCrudTreePanel', {
                     scope : this,
                     handler: this._cxtMenuHandler
                 },
+                border : false,
+                plain : true,
                 items : [ {
                     id : 'INNER_JOIN',
                     action : "editJointure",
@@ -443,11 +447,11 @@ Ext.define('sitools.admin.datasets.JoinCrudTreePanel', {
         }
     }, 
     deleteJoinPanelItems : function () {
-        var root = Ext.create("Ext.tree.TreeNode", {
+        var root = {
             text : this.name, 
             leaf : false, 
             expanded : true
-        }); 
+        };
         this.setRootNode(root);
 
     }

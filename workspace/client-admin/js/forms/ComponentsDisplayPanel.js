@@ -40,7 +40,7 @@ Ext.define('sitools.admin.forms.ComponentsDisplayPanel', {
 	padding : 5,
 	border : false, 
 	bodyBorder : false,
-	bodyStyle : 'background-color : #EDF2FF;',
+	bodyStyle : 'background-color : #EAEAEA;',
 	requires : ['sitools.admin.forms.AdvancedFormPanel'],
 	
 	initComponent : function () {
@@ -49,7 +49,8 @@ Ext.define('sitools.admin.forms.ComponentsDisplayPanel', {
 			id : "absoluteLayout",
 			layout : {
                 type : 'vbox',
-                align : 'stretch'
+                align : 'stretch',
+				padding : 5
             },
 	        autoScroll : true,
 	        height : this.formSize.height, 

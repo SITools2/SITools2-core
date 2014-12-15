@@ -127,8 +127,14 @@ Ext.define('sitools.admin.datasets.columnRenderer.DatasetLinkPanel', {
             allowBlank : false,
             listeners : {
                 scope : this,
-                select : function (combo, rec, index) {
-                    this.loadColumns(rec[0].data.id);                    
+                select : function (combo, recs, index) {
+                    var id;
+                    if (Ext.isArray(recs)) {
+                        id = recs[0].get('id');
+                    } else {
+                        id = recs.get('id');
+                    }
+                    this.loadColumns(id);
                 }
 
             }
@@ -150,7 +156,7 @@ Ext.define('sitools.admin.datasets.columnRenderer.DatasetLinkPanel', {
                             var columnAlias = this.columnRenderer.columnAlias;
                             var index = this.gridColumns.getStore().find("columnAlias", columnAlias);
                             if (index != -1) {
-                                this.gridColumns.getSelectionModel().selectRow(index);
+                                this.gridColumns.getSelectionModel().select(index);
                             }
                         }
                     }

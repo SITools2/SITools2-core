@@ -257,10 +257,8 @@ Ext.define('sitools.admin.projects.modules.ProjectModulesCrud', {
             scope : this,
             success : function (ret) {
                 var jsonResponse = Ext.decode(ret.responseText);
-                popupMessage("",  
-                        Ext.String.format(i18n.get(jsonResponse.message), rec.get("name")),
-                        loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_disactive.png');
-                
+                popupMessage("", Ext.String.format(i18n.get(jsonResponse.message), rec.get("name")), null, 'x-info');
+
                 if (jsonResponse.success) {
                     this.store.reload();
                 }

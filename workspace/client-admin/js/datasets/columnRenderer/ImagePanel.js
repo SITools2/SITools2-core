@@ -150,7 +150,7 @@ Ext.define('sitools.admin.datasets.columnRenderer.ImagePanel', {
                         var columnAlias = this.columnRenderer.columnAlias;
                         var index = this.gridColumns.getStore().find("columnAlias", columnAlias);
                         if (index != -1) {
-                            this.gridColumns.getSelectionModel().selectRow(index);
+                            this.gridColumns.getSelectionModel().select(index);
                         }
                     }
                 }

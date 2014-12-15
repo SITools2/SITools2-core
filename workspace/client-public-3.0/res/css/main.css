@@ -54,6 +54,11 @@ body,a,p,div,td,input,select,label,th,button,dt,em {
 	background-image: url(/sitools/common/res/images/icons/sitoolsLoading.gif);
 }
 
+.x-info {
+	background-image: url('/sitools/common/res/images/msgBox/16/icon-info.png');
+	background-repeat: no-repeat;
+}
+
 /* END CUSTOMING */
 
 .formBg {

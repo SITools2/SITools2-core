@@ -257,6 +257,8 @@ Ext.define('sitools.admin.forms.AdvancedFormPanel', {
 		//ici le this est le container sur lequel on a cliqu�. 
 		event.stopEvent();
 		var ctxMenu = new Ext.menu.Menu({
+            border : false,
+            plain : true,
 			items : [{
 				text : i18n.get('label.edit'), 
 				scope : this, 

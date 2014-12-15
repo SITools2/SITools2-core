@@ -83,7 +83,6 @@ Ext.define('sitools.admin.graphs.GraphsCrudTreePanel', {
         this.listeners = {
             scope : this,
             itemclick : function (view, record, item, index) {
-                
                 var toolbar = this.graphsCrud.down('toolbar[name=menuTreeToolbar]');
                 toolbar.removeAll();
                 
@@ -101,11 +100,23 @@ Ext.define('sitools.admin.graphs.GraphsCrudTreePanel', {
             },
             afterrender : function () {
                 this.loadStore();
+            },
+            viewready : function () {
+                Ext.defer(function () {
+                    this.on('itemappend', function () {
+                        var saveButton = this.graphsCrud.down('button#saveGraphBtnId');
+                        saveButton.addCls('not-save-textfield');
+                    }, this);
+                }, 300, this);
+
+                this.on('itemremove', function () {
+                    var saveButton = this.graphsCrud.down('button#saveGraphBtnId');
+                    saveButton.addCls('not-save-textfield');
+                }, this);
             }
         };
         
-        
-        sitools.admin.graphs.GraphsCrudTreePanel.superclass.initComponent.call(this);
+        this.callParent(arguments);
     },
 
     loadStore : function () {
@@ -184,12 +195,14 @@ Ext.define('sitools.admin.graphs.GraphsCrudTreePanel', {
             
             if (node.isLeaf()) {
                 up = Ext.create("sitools.admin.graphs.GraphsDatasetWin", {
+                    graphTree : this,
                     node : node,
                     url : loadUrl.get('APP_URL') + '/projects/' + this.projectId + '?media=json',
                     mode : 'edit'
                 });
             } else {
                 up = Ext.create("sitools.admin.graphs.GraphsNodeWin", {
+                    graphTree : this,
                     node : node,
                     mode : 'edit'
                 });

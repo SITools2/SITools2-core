@@ -118,7 +118,6 @@ Ext.define('sitools.admin.datasets.AbstractDatasetWin', {
             return;
         } else if (root.isLeaf()) {
             var predicat = root.get("predicat");
-            delete predicat.rightAttribute.columnClass;
             node = {
                 leaf : true,
                 predicat : predicat,

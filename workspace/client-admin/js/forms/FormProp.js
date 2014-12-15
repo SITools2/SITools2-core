@@ -34,7 +34,7 @@ Ext.namespace('sitools.admin.forms');
  */
 Ext.define('sitools.admin.forms.FormProp', { 
     extend : 'Ext.Window',
-    width : 700,
+    width : 800,
     height : 580,
     modal : true,
     pageSize : ADMIN_PANEL_NB_ELEMENTS,
@@ -306,7 +306,8 @@ Ext.define('sitools.admin.forms.FormProp', {
             bodyBorder : false,
 			layout : {
 			    type : "hbox", 
-			    align : "stretch"
+			    align : "stretch",
+                padding : 10
 			},
 			title : i18n.get('label.disposition'),
 			autoScroll : true,

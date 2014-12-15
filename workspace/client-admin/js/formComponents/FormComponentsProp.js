@@ -20,14 +20,17 @@
  showHelp, includeJs*/
 Ext.namespace('sitools.admin.formComponents');
 
-Ext.define('sitools.admin.formComponents.FormComponentsProp', { extend : 'Ext.Window',
+Ext.define('sitools.admin.formComponents.FormComponentsProp', {
+    extend : 'Ext.window.Window',
 	alias : 'widget.s-formComponentsprop',
     width : 700,
     height : 480,
     modal : true,
     id : ID.COMPONENT_SETUP.FORMCOMPONENTS,
     layout : 'fit',
+
     initComponent : function () {
+
         if (this.action == 'create') {
             this.title = i18n.get('label.createFormComponents');
         } else if (this.action == 'modify') {
@@ -97,17 +100,21 @@ Ext.define('sitools.admin.formComponents.FormComponentsProp', { extend : 'Ext.Wi
                         allowBlank : false
                     }]
             } ],
-            buttons : [ {
-                text : i18n.get('label.ok'),
-                scope : this,
-                handler : this._onValidate
-            }, {
-                text : i18n.get('label.cancel'),
-                scope : this,
-                handler : function () {
-                    this.close();
-                }
-            } ]
+            buttons: {
+                xtype: 'toolbar',
+                style: 'background-color:white;',
+                items: [{
+                    text: i18n.get('label.ok'),
+                    scope: this,
+                    handler: this._onValidate
+                }, {
+                    text: i18n.get('label.cancel'),
+                    scope: this,
+                    handler: function () {
+                        this.close();
+                    }
+                }]
+            }
         } ];
         this.callParent(arguments);
     },
@@ -149,6 +156,5 @@ Ext.define('sitools.admin.formComponents.FormComponentsProp', { extend : 'Ext.Wi
             failure : alertFailure
         });
     }
-
 });
 

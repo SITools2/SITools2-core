@@ -183,7 +183,10 @@ Ext.define('sitools.admin.graphs.GraphsDatasetWin', {
 		if (this.mode == 'create') {
 		    this.node.appendChild(node);
 		}
-        
+
+        var saveButton = this.graphTree.graphsCrud.down('button#saveGraphBtnId');
+        saveButton.addCls('not-save-textfield');
+
         this.close();
     },
 

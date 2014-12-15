@@ -88,12 +88,9 @@ Ext.define('sitools.admin.forms.AbsoluteLayoutProp', {
 //			width : size.width + 225, 
 //			height : size.height
 //        });
-//        this.tabPanel.doLayout();
         this.absoluteLayout.setSize(size);
-        this.absoluteLayout.doLayout();
         this.absoluteLayout.formSize = size;
         this.win.formSize = size;
-//        this.win.doLayout();
         this.destroy();
 
     },

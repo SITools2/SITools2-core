@@ -46,6 +46,11 @@ html,body {
 	background-image: url(/sitools/common/res/images/icons/sitoolsLoading.gif);
 }
 
+.x-info {
+	background-image: url('/sitools/common/res/images/msgBox/16/icon-info.png');
+	background-repeat: no-repeat;
+}
+
 a {
 	color: blue;
 	text-decoration: none;
@@ -173,11 +178,19 @@ pre {
 	opacity: .60;
 }
 
+.not-save-textfield .x-btn-inner {
+	color : #F73434 !important;
+}
+
 .not-save-textfield {
-	-moz-border-radius: 3px;
-	-webkit-border-radius: 3px;
-	border-radius: 3px;
-	border:1px outset #FF3F40;
+	background: #efd0d0 !important; /* Old browsers */
+	background: -moz-linear-gradient(top,  #efd0d0 0%, #ffe0e0 50%, #fff0f0 51%, #ffdfdf 100%) !important; /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#efd0d0), color-stop(50%,#ffe0e0), color-stop(51%,#fff0f0), color-stop(100%,#ffdfdf)) !important; /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #efd0d0 0%,#ffe0e0 50%,#fff0f0 51%,#ffdfdf 100%) !important; /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #efd0d0 0%,#ffe0e0 50%,#fff0f0 51%,#ffdfdf 100%) !important; /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #efd0d0 0%,#ffe0e0 50%,#fff0f0 51%,#ffdfdf 100%) !important; /* IE10+ */
+	background: linear-gradient(to bottom,  #efd0d0 0%,#ffe0e0 50%,#fff0f0 51%,#ffdfdf 100%) !important; /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#efd0d0', endColorstr='#ffdfdf',GradientType=0 ) !important; /* IE6-9 */
 }
 
 .over-dd-form {

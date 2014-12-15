@@ -79,6 +79,7 @@ Ext.define('sitools.admin.graphs.GraphsCrud', {
             },
             items : [ this.comboProjects, {
                 text : i18n.get('label.saveGraph'),
+                itemId : 'saveGraphBtnId',
                 scope : this,
                 handler : this._onSave,
                 xtype : 's-menuButton',
@@ -106,10 +107,8 @@ Ext.define('sitools.admin.graphs.GraphsCrud', {
             items : []
         };
 
-        
         this.buttons = [ ];
-        
-        
+
         this.callParent(arguments);
 
     },
@@ -129,8 +128,6 @@ Ext.define('sitools.admin.graphs.GraphsCrud', {
         
         
         this.add(this.tree);
-//        this.doLayout();
-
     },
 
     _onSave : function () {
@@ -173,7 +170,11 @@ Ext.define('sitools.admin.graphs.GraphsCrud', {
                         this.loadGraph(projectId);
                     }
                 },
-                failure : alertFailure
+                failure : alertFailure,
+                callback : function () {
+                    var saveButton = this.down('button#saveGraphBtnId');
+                    saveButton.removeCls('not-save-textfield');
+                }
             });
         } else {
             Ext.Msg.alert(i18n.get("label.warning"), i18n.get("warning.noselection"));

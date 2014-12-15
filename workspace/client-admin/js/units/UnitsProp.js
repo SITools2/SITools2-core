@@ -556,14 +556,7 @@ Ext.define('sitools.admin.units.UnitsProp', {
 
 					return false;
 				}
-
-                var tmp = new Ext.ux.Notification({
-                    iconCls : 'x-icon-information',
-                    title : i18n.get('label.information'),
-                    html : i18n.get('label.unitsSaved'),
-                    autoDestroy : true,
-                    hideDelay : 1000
-                }).show(document);
+                popupMessage(i18n.get('label.information'), i18n.get('label.unitsSaved'), null, 'x-icon-information');
 
                 this.parent.getStore().reload();
                 this.close();

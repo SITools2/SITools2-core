@@ -400,7 +400,6 @@ Ext.define('sitools.admin.datasets.DatasetsMultiTablesPanel', {
                     visible : rec.visible,
                     filter : rec.filter,
                     sqlColumnType : rec.sqlColumnType,
-                    columnOrder : rec.columnOrder,
                     primaryKey : rec.primaryKey,
                     schema : rec.schemaName,
                     tableAlias : rec.tableAlias,
@@ -411,8 +410,7 @@ Ext.define('sitools.admin.datasets.DatasetsMultiTablesPanel', {
                     columnAliasDetail : rec.columnAliasDetail, 
                     javaSqlColumnType : rec.javaSqlColumnType,
                     format : rec.format,
-                    columnClass : rec.columnClass || undefined,
-                    image : rec.image, 
+                    image : rec.image,
                     dimensionId : rec.dimensionId, 
                     unit : rec.unit
                 };
@@ -420,7 +418,7 @@ Ext.define('sitools.admin.datasets.DatasetsMultiTablesPanel', {
                     tmp.columnRenderer = rec.columnRenderer;
                 }
 
-                delete tmp.columnOrder;
+                //delete tmp.columnOrder;
                 putObject.columnModel.push(tmp);
             }
         }

@@ -53,11 +53,13 @@ Ext.define('sitools.admin.datasets.columnRenderer.UrlPanel', {
                     columns : 2,
                     items : [{
                         boxLabel : 'Text',
+                        itemId : 'displayTextId',
                         name : 'display',
                         inputValue : "Text",
                         checked : true
                     }, {
                         boxLabel : 'Image',
+                        itemId : 'displayImageId',
                         name : 'display',
                         inputValue : "Image"
                     }],
@@ -155,11 +157,13 @@ Ext.define('sitools.admin.datasets.columnRenderer.UrlPanel', {
                     record.linkText = this.columnRenderer.linkText;
                     record.display = "Text";
                     isImage = false;
+                    this.down('radiogroup radio#displayTextId').setValue(true);
                 }
                 if (!Ext.isEmpty(this.columnRenderer.image)) {
                     record.image = this.columnRenderer.image.url;
                     record.display = "Image";
                     isImage = true;
+                    this.down('radiogroup radio#displayImageId').setValue(true);
                 }
                 if (this.behaviorType == ColumnRendererEnum.URL_EXT_DESKTOP) {
                     record.displayable = this.columnRenderer.displayable;

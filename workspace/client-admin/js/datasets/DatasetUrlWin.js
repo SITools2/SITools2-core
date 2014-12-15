@@ -69,7 +69,7 @@ Ext.define('sitools.admin.datasets.DatasetUrlWin', {
                     if (!Ext.isEmpty(this.selectedRecord.data.columnAliasDetail)) {
                         var recIndex = this.storeColumns.find('columnAlias', this.selectedRecord.data.columnAliasDetail);
                         if (recIndex > -1) {
-                            this.smColumns.selectRow(recIndex);    
+                            this.smColumns.select(recIndex);
                         }
                     }
                 }

@@ -316,6 +316,8 @@ Ext.define('sitools.admin.datasets.GridFieldSetup', {
         });
 
         var menuActions = Ext.create('Ext.menu.Menu', {
+            border : false,
+            plain : true,
             defaults : {
                 scope : this
             },
@@ -333,12 +335,20 @@ Ext.define('sitools.admin.datasets.GridFieldSetup', {
                 text : i18n.get('label.setAllVisible'),
                 iconCls : "x-form-checkbox",
                 cls : 'x-form-cb-checked',
-                handler : this.onSetAllVisible
+                handler : this.onSetAllVisible,
+                tooltip : {
+                    text : i18n.get('label.tipSetAllVisible'),
+                    showDelay : 20
+                }
             }, {
                 text : i18n.get('label.setAllInvisible'),
                 iconCls : "x-form-checkbox",
                 cls : 'x-form-cb-unchecked',
-                handler : this.onSetAllInvisible
+                handler : this.onSetAllInvisible,
+                tooltip : {
+                    text : i18n.get('label.tipSetAllInvisible'),
+                    showDelay : 20
+                }
             }]
         });
         
@@ -525,7 +535,6 @@ Ext.define('sitools.admin.datasets.GridFieldSetup', {
                 visible : columnModel[i].visible,
                 filter : columnModel[i].filter,
                 sqlColumnType : columnModel[i].sqlColumnType,
-                columnOrder : columnModel[i].columnOrder,
                 primaryKey : columnModel[i].primaryKey,
                 columnRenderer : columnRenderer,
                 columnRendererCategory : columnRendererCategory,                
@@ -535,8 +544,7 @@ Ext.define('sitools.admin.datasets.GridFieldSetup', {
                 specificColumnType : columnModel[i].specificColumnType,
                 columnAlias : columnModel[i].columnAlias, 
                 javaSqlColumnType : columnModel[i].javaSqlColumnType, 
-                columnClass : columnModel[i].columnClass,
-                format : columnModel[i].format, 
+                format : columnModel[i].format,
                 dimensionId : columnModel[i].dimensionId, 
                 unit : columnModel[i].unit
             });

@@ -61,7 +61,7 @@ Ext.define('sitools.admin.graphs.GraphsNodeWin', {
             } ]
         };
 
-        this.formPanel = new Ext.FormPanel({
+        this.formPanel = Ext.create('Ext.form.Panel', {
             labelWidth : 100,
             border : false,
             bodyBorder : false,
@@ -72,17 +72,11 @@ Ext.define('sitools.admin.graphs.GraphsNodeWin', {
         });
 
         this.items = [ this.formPanel ];
-        // this.relayEvents(this.store, ['destroy', 'save', 'update']);
-        sitools.admin.graphs.GraphsNodeWin.superclass.initComponent.call(this);
-    },
-
-    onRender : function () {
-        sitools.admin.graphs.GraphsNodeWin.superclass.onRender.apply(this, arguments);
+        this.callParent(arguments);
     },
 
     afterRender : function () {
-
-        sitools.admin.graphs.GraphsNodeWin.superclass.afterRender.apply(this, arguments);
+        this.callParent(arguments);
 
         if (this.mode == 'edit') {
             var node = this.node;
@@ -98,6 +92,11 @@ Ext.define('sitools.admin.graphs.GraphsNodeWin', {
 
     _onOK : function () {
         var form = this.formPanel.getForm();
+
+        if (!form.isValid()) {
+            return;
+        }
+
         var values = form.getValues();
         var image = {};
         
@@ -126,6 +125,9 @@ Ext.define('sitools.admin.graphs.GraphsNodeWin', {
             }
             this.node.appendChild(newNode);
         }
+
+        var saveButton = this.graphTree.graphsCrud.down('button#saveGraphBtnId');
+        saveButton.addCls('not-save-textfield');
 
         this.close();
     },

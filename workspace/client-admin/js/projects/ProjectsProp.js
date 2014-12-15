@@ -155,12 +155,6 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
                 hidden : this.mode === 'select',
                 icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_delete.png',
                 handler : this._onDelete
-            }, '->', {
-                xtype : 's-filter',
-                hidden : this.mode === 'list',
-                emptyText : i18n.get('label.search'),
-                store : this.store,
-                pageSize : this.pageSize
             }]
         };
 
@@ -219,8 +213,6 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
                 name : 'description',
                 fieldLabel : i18n.get('label.description'),
                 anchor : '100%'
-//                ,
-//                maxLength : 100
             }, {
                 xtype : 'textfield',
                 vtype : "attachment",

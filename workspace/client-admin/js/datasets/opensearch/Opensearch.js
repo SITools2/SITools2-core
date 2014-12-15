@@ -79,7 +79,7 @@ Ext.define('sitools.admin.datasets.opensearch.Opensearch', {
 
         this.formPanel = Ext.create("Ext.FormPanel", {
             labelWidth : 100,
-            height : 150,
+            height : 160,
             defaultType : 'textfield',
             items : itemsForm,
             region : 'north',
@@ -720,28 +720,23 @@ Ext.define('sitools.admin.datasets.opensearch.Opensearch', {
 //            this.grid.getView().mainBody.unmask();
             this.formPanel.getEl().unmask();
 		}
-		this.doLayout();
 	},
     
     /**
      * Apply a loading Mask on grid
      */
     applyLoadingMask : function () {
-        this.items.items[0].getEl().mask();
+        this.down('form').getEl().mask();
         this.down('toolbar').getEl().mask();
-
-        var myMask = new Ext.LoadMask(this.items.items[1].getEl(), {
-            msg : i18n.get("label.waitForActivation") + "<br/>" + i18n.get("label.refreshOsToCheckStatus")
-        });
-        myMask.show();
+        this.down('grid').getEl().mask(i18n.get("label.waitForActivation") + "<br/>" + i18n.get("label.refreshOsToCheckStatus"));
 
     },
     /**
      * hide loadingMask
      */
     hideLoadingMask : function () {
-        this.items.items[0].getEl().unmask();
-        this.items.items[1].getEl().unmask();        
+        this.down('form').getEl().unmask();
+        this.down('grid').getEl().unmask();
         this.down('toolbar').getEl().unmask();
     },
 
@@ -779,6 +774,9 @@ Ext.define('sitools.admin.datasets.opensearch.Opensearch', {
 			},
             failure : function (response, opts) {
                 alertFailure(response, opts);
+            },
+            callback : function () {
+                this.hideLoadingMask();
             }
         });
     },

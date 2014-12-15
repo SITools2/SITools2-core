@@ -38,6 +38,7 @@ Ext.define('sitools.admin.forms.ComponentsListPanel', {
     autoScroll : true, 
     forceFit : true,
     stripeRows: true,
+    margin : '0 5 0 0',
 
     initComponent : function () {
         
