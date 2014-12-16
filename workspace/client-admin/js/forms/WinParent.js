@@ -46,14 +46,24 @@ Ext.define('sitools.admin.forms.WinParent', {
             }
         };
         this.gridFormComponents = Ext.create("Ext.grid.GridPanel", {
-            //title : i18n.get('title.gridComponents'),
-            layout : 'fit', 
+            layout : 'fit',
             id : "gridFormParentComponents",
             height : 430,
             store : storeComponents,
             columns : columns,
             selModel : smComponents,
-            forceFit : true
+            forceFit : true,
+            listeners : {
+                scope : this,
+                viewready : function (grid) {
+                    if (!Ext.isEmpty(this.parentParamField) && !Ext.isEmpty(this.parentParamField.getValue())) {
+                        var rec = grid.getStore().getById(this.parentParamField.getValue());
+                        if (!Ext.isEmpty(rec)) {
+                            grid.getSelectionModel().select(rec);
+                        }
+                    }
+                }
+            }
         });
         
         this.items = [{
@@ -75,8 +85,9 @@ Ext.define('sitools.admin.forms.WinParent', {
                 handler : this._close
             }]
         }];
-        sitools.admin.forms.WinParent.superclass.initComponent.call(this);
-    }, 
+        this.callParent();
+    },
+
     onValidate : function () {
         if (!Ext.isEmpty(this.gridFormComponents.getSelectionModel().getLastSelected())) {
             var selected = this.gridFormComponents.getSelectionModel().getLastSelected(); 
