@@ -43,6 +43,8 @@ Ext.namespace('sitools.user.view.component.form');
 Ext.define('sitools.user.view.component.form.ProjectFormView', {
     extend : 'Ext.panel.Panel',
     alias : 'widget.projectformview',
+    border : false,
+    bodyBorder : false,
     layout : {
         type : 'vbox',
         align : 'stretch'
@@ -82,7 +84,8 @@ Ext.define('sitools.user.view.component.form.ProjectFormView', {
                 border : true,
                 css : this.formCss,
                 formId : this.formId,
-                formWidth : this.formWidth
+                formWidth : this.formWidth,
+                autoScroll: false
             });
 
             if (!Ext.isEmpty(this.formZones)) {
@@ -112,7 +115,7 @@ Ext.define('sitools.user.view.component.form.ProjectFormView', {
             itemId : 'displayPanelId',
             title : i18n.get('label.formConcepts'),
             flex : 2,
-            autoScroll : true,
+            autoScroll : false,
             border : false,
             items : [this.zonesPanel],
             layout : "fit"
@@ -127,15 +130,25 @@ Ext.define('sitools.user.view.component.form.ProjectFormView', {
             title : i18n.get("label.defineProperties"),
             labelWidth : 100,
             flex : 2,
+            bodyPadding : 5,
             autoScroll : true,
             border : false,
             defaults : {
                 labelSeparator : ""
             },
-            buttons : [ {
-                text : i18n.get('label.refreshDatasets'),
-                itemId : "refreshDatasets"
-            } ]
+            buttons : {
+                xtype: 'toolbar',
+                style: 'background-color:white;',
+                layout: {
+                    type: 'hbox',
+                    pack: 'center',
+                    align: 'middle'
+                },
+                items: [{
+                    text: i18n.get('label.refreshDatasets'),
+                    itemId: "refreshDatasets"
+                }]
+            }
         });
         if (!Ext.isEmpty(this.properties)) {
             Ext.each(this.properties, function (prop) {
@@ -218,13 +231,25 @@ Ext.define('sitools.user.view.component.form.ProjectFormView', {
                 align : 'stretch'
             }
         });
-        /**
-         * A simple button to launch the main request on each selected dataset. 
-         */
-        this.searchButton = Ext.create('Ext.button.Button', {
-            itemId : 'btnSearchForm',
-            text : i18n.get('label.search')
-        });
+
+        this.buttons = {
+            xtype: 'toolbar',
+            style: 'background-color:white;',
+            layout: {
+                type: 'hbox',
+                pack: 'center',
+                align: 'middle'
+            },
+            items: [{
+                text : i18n.get("label.reset"),
+                itemId : 'resetSearchForm',
+                scale : 'large'
+            }, {
+                text: i18n.get('label.search'),
+                itemId: 'btnSearchForm',
+                scale: 'large'
+            }]
+        };
 
         this.bbar= Ext.create("sitools.public.widget.StatusBar", {
             text : i18n.get('label.ready'),
@@ -234,8 +259,7 @@ Ext.define('sitools.user.view.component.form.ProjectFormView', {
         });
         
         this.items = [ firstPanel, displayComponentPanel ];
-        this.buttons = [ this.searchButton ];
-        
+
         Ext.apply(this, {
             listeners : {
                 scope : this,

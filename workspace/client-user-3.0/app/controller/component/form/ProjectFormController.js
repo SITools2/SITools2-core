@@ -48,6 +48,10 @@ Ext.define('sitools.user.controller.component.form.ProjectFormController', {
                 click : this.onSearch
             },
 
+            'projectformview button#resetSearchForm': {
+                click: this.resetSearchForm
+            },
+
             'projectformview button#refreshDatasets' : {
                 click : this.propertySearch
             },
@@ -160,7 +164,7 @@ Ext.define('sitools.user.controller.component.form.ProjectFormController', {
 //        button.setDisabled(true);
 
         var projectformview = button.up('projectformview');
-        var containers = projectformview.down('[stype="sitoolsFormContainer"]');
+        var containers = projectformview.query('[stype="sitoolsFormContainer"]');
 
         var formConceptFilters = [];
         var glue = "";
@@ -261,10 +265,6 @@ Ext.define('sitools.user.controller.component.form.ProjectFormController', {
                     //On ouvre le composant
                     sitoolsController.openSimpleWindow(viewResultForm, windowConfig);
 
-                    //
-                    //
-                    //Desktop.getNavMode().openComponent(viewResultForm, windowConfig);
-
                 //}
                 //catch (err) {
                 //    Ext.Msg.alert(i18n.get('label.error'), err);
@@ -346,6 +346,16 @@ Ext.define('sitools.user.controller.component.form.ProjectFormController', {
             params : params
         });
         view.datasetPanel.getView().refresh();
+    },
+
+    resetSearchForm: function (btn) {
+        var view = btn.up('projectformview');
+        var containers = view.query('[stype="sitoolsFormContainer"]');
+        Ext.each(containers, function (container) {
+            if (Ext.isFunction(container.resetToDefault)) {
+                container.resetToDefault();
+            }
+        }, this);
     }
     
 });
