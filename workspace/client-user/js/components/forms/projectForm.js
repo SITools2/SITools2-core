@@ -231,12 +231,30 @@ sitools.user.component.forms.projectForm = Ext.extend(Ext.Panel, {
                 align : "stretch"   
             }
         });
+
+//      ************************* Reset Form button ************************** //
+        this.resetFormButton = new Ext.Button({
+            text : i18n.get("label.reset"),
+            scope : this,
+            iconCls : 'x-btn-reset',
+            handler : function () {
+                var containers = this.find("stype", 'sitoolsFormContainer');
+                Ext.each(containers, function (container) {
+                        if(Ext.isFunction(container.resetToDefault)){
+                        container.resetToDefault();
+                        }
+                }, this);
+            }
+        });
+//      ********************************************************************** //
+
         /**
          * A simple button to launch the main request on each selected dataset. 
          */
         this.searchButton = new Ext.Button({
             text : i18n.get('label.search'),
             scope : this,
+            iconCls : 'x-btn-search',
             handler : function (button) {
                 this.onSearch(button);
             }
@@ -249,7 +267,7 @@ sitools.user.component.forms.projectForm = Ext.extend(Ext.Panel, {
                 align : "stretch"
             },
             items : [ firstPanel, displayComponentPanel ],
-            buttons : [this.searchButton], 
+            buttons : [this.resetFormButton, this.searchButton], //reset button
             listeners : {
                 scope : this, 
                 propertyChanged : function () {
@@ -269,6 +287,7 @@ sitools.user.component.forms.projectForm = Ext.extend(Ext.Panel, {
                     });
                 }, 
                 multiDsSearchDone : function () {
+                    this.resetFormButton.setDisabled(false); //reset button
                     this.searchButton.setDisabled(false);
                 }
 
@@ -438,6 +457,13 @@ sitools.user.component.forms.projectForm = Ext.extend(Ext.Panel, {
         }  
         return stringParam;
     }, 
+
+//  ******** Reset Form Button *********//
+    getResetFormButton : function () {
+        return this.resetFormButton;
+    },
+//  ************************************//
+
     /**
      * Returns the search Button. 
      * @return {}
@@ -445,6 +471,7 @@ sitools.user.component.forms.projectForm = Ext.extend(Ext.Panel, {
     getSearchButton : function () {
         return this.searchButton;
     }, 
+   
     /**
      * Build for a properties a new formField depending on property type. 
      * The property type could be one of : 

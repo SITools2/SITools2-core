@@ -32,7 +32,7 @@ sitools.common.forms.components.TextField = Ext.extend(Ext.Container, {
 
     initComponent : function () {
         this.context = new sitools.common.forms.ComponentFactory(this.context);
-        // alert (this.valueSelection);
+        //alert (this.valueSelection);
         var store;
         var params = {
             colModel : [ this.code[0]],
@@ -51,7 +51,6 @@ sitools.common.forms.components.TextField = Ext.extend(Ext.Container, {
             restful : true,
             url : this.dataUrl + "/records" ,
             baseParams : params
-            
         });
 
         this.tf = new Ext.form.ComboBox ({
@@ -67,7 +66,6 @@ sitools.common.forms.components.TextField = Ext.extend(Ext.Container, {
             autoSelect : false,
 //            width : this.width - 110,
             value : this.defaultValues[0],
-
             
             /**
              * The code of the parameter to notify changed event.
@@ -80,7 +78,7 @@ sitools.common.forms.components.TextField = Ext.extend(Ext.Container, {
                     if (Ext.isEmpty(this.dataUrl)) {
                     	return false;
                     }
-                    return this.autoComplete;
+                    return this.autoComplete; // boolean
                 }
             }
         });
@@ -122,6 +120,7 @@ sitools.common.forms.components.TextField = Ext.extend(Ext.Container, {
     setSelectedValue : function (value) {
         this.tf.setValue(value);
     },
+
     getParameterValue : function () {
       var value = this.getSelectedValue();
       if (Ext.isEmpty(value)) {
@@ -130,7 +129,14 @@ sitools.common.forms.components.TextField = Ext.extend(Ext.Container, {
       return {
       	type : this.type, 
       	code : this.code.join(','), 
-      	value : value
+      	value : '%'+value
       };
+    },
+
+//  *** Reset function for RESET button ***//
+    resetToDefault : function () {
+        this.tf.reset();
     }
+//  ***************************************//
+
 });

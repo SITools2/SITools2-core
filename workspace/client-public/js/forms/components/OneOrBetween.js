@@ -214,5 +214,15 @@ sitools.common.forms.components.OneOrBetween = Ext.extend(sitools.common.forms.A
 	    	userDimension : this.userDimension, 
 	    	userUnit : this.userUnit
 	    };
+    },
+
+//  *** Reset function for RESET button ***//
+    resetToDefault : function () {
+        this.fieldOne.reset();
+        this.fieldFrom.reset();
+	this.fieldTo.reset();
     }
+//  ***************************************//
+
+
 });

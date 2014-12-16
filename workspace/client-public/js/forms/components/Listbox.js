@@ -147,5 +147,13 @@ sitools.common.forms.components.ListBox = Ext.extend(Ext.Container, {
 	    	value : value
 	    };
 	    
+    },
+
+//  *** Reset function for RESET button ***//
+    resetToDefault : function () {
+	this.multiSelect.reset();
+        this.form.fireEvent('componentChanged', this.form, this); 
     }
+//  **************************************//
+
 });

@@ -134,14 +134,36 @@ sitools.user.component.forms.mainContainer = function (config) {
         autoScroll : true,
         bodyBorder : false,
         border : false,
+        iconCls : 'z-btn-search',
         items : [this.zonesPanel],
-        buttons : [ {
+        buttons : [ 
+
+//      ************************* Reset Form button ************************** //
+	{
+            text : i18n.get("label.reset"),
+            scope : this,
+            iconCls : 'x-btn-reset',
+            handler : function () {
+                var containers = this.find("stype", 'sitoolsFormContainer');
+                Ext.each(containers, function (container) {
+                    if (Ext.isFunction(container.resetToDefault)) {
+                        container.resetToDefault();
+                    }
+                }, this);
+
+            }
+        },
+//      ********************************************************************** //
+
+	{
             text : i18n.get('label.search'),
             scope : this,
+            iconCls : 'x-btn-search',
             handler : function () {
                 this.onSearch(config);
             }
-        } ],
+        }
+	],
         listeners : {
 			scope : this, 
 			resize : function () {

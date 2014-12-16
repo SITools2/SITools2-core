@@ -173,5 +173,12 @@ sitools.common.forms.components.ComboBox = Ext.extend(Ext.Container, {
 	    	value : value
 	    };
 	    
+    },
+    
+//  *** Reset function for RESET button ***//
+    resetToDefault : function () {
+        this.combo.reset();
+        this.form.fireEvent('componentChanged', this.form, this); 
     }
+//  **************************************//
 });

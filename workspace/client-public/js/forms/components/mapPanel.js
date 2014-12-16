@@ -50,7 +50,7 @@ sitools.common.forms.components.mapPanel = Ext.extend(Ext.Container, {
  			});
  		}
     	
-	    var map = new OpenLayers.Map();
+	    this.map = new OpenLayers.Map();
 	    var layer, layerName;
 	    if (Ext.isEmpty(wmsUrl)) {
 	    	layersName = this.defaultLayers;
@@ -65,15 +65,15 @@ sitools.common.forms.components.mapPanel = Ext.extend(Ext.Container, {
 		        {layers: layerName},
             	{isBaseLayer: index == 0}
 		    );
-		    map.addLayer(layer);
+		    this.map.addLayer(layer);
 	    }
 	    
 	    var vectorLayer = new OpenLayers.Layer.Vector("Vector Layer", {});
 		
-		map.addLayer(vectorLayer);
+		this.map.addLayer(vectorLayer);
 		
-		map.addControl(new OpenLayers.Control.MouseToolbar());
-		map.addControl(new OpenLayers.Control.MousePosition());
+		this.map.addControl(new OpenLayers.Control.MouseToolbar());
+		this.map.addControl(new OpenLayers.Control.MousePosition());
 		
 		var action, actions = {}, toolbarItems = [];
 		
@@ -81,7 +81,7 @@ sitools.common.forms.components.mapPanel = Ext.extend(Ext.Container, {
 	        text: i18n.get('label.navigate'),
 	        iconCls: 'btn-navigate', 
 	        control: new OpenLayers.Control.Navigation(),
-	        map: map,
+	        map: this.map,
 	        // button options
 	        tooltip: i18n.get('label.navigate'),
 	        toggleGroup: "draw",
@@ -109,13 +109,13 @@ sitools.common.forms.components.mapPanel = Ext.extend(Ext.Container, {
 	            }
     		}
         );
-        map.addControl(ctrl_draw);
+        this.map.addControl(ctrl_draw);
         
 	    action = new GeoExt.Action({
 	        text: i18n.get('label.drawPoly'),
 	        iconCls: 'btn-drawPoly', 
 	        control: ctrl_draw,
-	        map: map,
+	        map: this.map,
 	        // button options
 	        toggleGroup: "draw",
 	        enableToggle : true,
@@ -131,7 +131,7 @@ sitools.common.forms.components.mapPanel = Ext.extend(Ext.Container, {
 	        text: i18n.get('label.clearPoly'),
 	        tooltip: i18n.get('label.clearPoly'),
 	        iconCls: 'btn-clearPoly', 
-	        map: map,
+	        map: this.map,
 	        scope : this,
 	        handler : function (btn , e){
 	        	btn.map.getLayersByName("Vector Layer")[0].removeAllFeatures();
@@ -142,12 +142,12 @@ sitools.common.forms.components.mapPanel = Ext.extend(Ext.Container, {
 
 	    var ctrl_drag = new OpenLayers.Control.DragFeature(vectorLayer);
 	    
-	    map.addControl(ctrl_drag);
+	    this.map.addControl(ctrl_drag);
 	    ctrl_drag.activate();
 	    this.mapPanel = new GeoExt.MapPanel({
 	        height: 300,
 	        width: 300,
-	        map: map,
+	        map: this.map,
 	        center: new OpenLayers.LonLat(5, 45),
 	        zoom: 4, 
 	        tbar : new Ext.Toolbar({
@@ -198,5 +198,17 @@ sitools.common.forms.components.mapPanel = Ext.extend(Ext.Container, {
 	    };
 //      	return this.type + "|" + this.code + "|" + value.left + "," + value.bottom + "," + value.right + "," + value.top;
 
+    },
+    
+    
+//  *** Reset function for RESET button ***//
+    resetToDefault : function () {
+        this.map.getLayersByName("Vector Layer")[0].removeAllFeatures();
     }
+//  ***************************************//
+
+    
+    
+    
+    
 });
