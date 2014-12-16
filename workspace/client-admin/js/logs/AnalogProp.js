@@ -23,10 +23,11 @@ Ext.namespace('sitools.component.logs');
 
 Ext.define('sitools.admin.logs.AnalogProp', { 
     extend : 'Ext.panel.Panel',
+
     alias : 'widget.s-analog',
     height : 480,
-    id : "analogBoxId",
     width : 700,
+    border : false,
     
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_ADMINISTRATOR_URL') + '/plugin/analog';
@@ -42,17 +43,18 @@ Ext.define('sitools.admin.logs.AnalogProp', {
                 text : i18n.get('label.logGenerate'),
                 scope : this,
                 icon : '/sitools' + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/tree_application_plugin.png',
-                handler : this.refresh
+                handler : this.onGenerate
             } ]
         };
         
         this.items = [this.createLogPanel()];
         
-        sitools.admin.logs.AnalogProp.superclass.initComponent.call(this);
-        
+        this.callParent(arguments);
     },
 
     onGenerate : function () {
+        this.getEl().mask('Generating');
+
         Ext.Ajax.request({
             url : this.url,
             method : 'PUT',
@@ -62,34 +64,18 @@ Ext.define('sitools.admin.logs.AnalogProp', {
                 if (!json.success) {
                     Ext.Msg.alert(i18n.get("label.warning"), json.message);
                     return;
-                }                
-                var temp = new Ext.ux.Notification({
-                    iconCls : 'x-icon-information',
-                    title : i18n.get('label.information'),
-                    html : i18n.get('label.logsChanged'),
-                    autoDestroy : true,
-                    hideDelay : 1000
-                }).show(document);
-                
-                
-                
+                }
+                popupMessage(i18n.get('label.information'), i18n.get('label.logsChanged'), null, 'x-info');
+
                 this.removeAll();
                 this.add(this.createLogPanel());
                 
             },
             failure : alertFailure,
             callback : function () {
-                Ext.getCmp('analogBoxId').getEl().unmask();
+                this.getEl().unmask();
             }
         });
-    },
-    
-    refresh : function () {
-        var myMask = new Ext.LoadMask(Ext.getCmp('analogBoxId').getEl(), {
-            msg : "Generating"
-        });
-        myMask.show();
-        this.onGenerate();
     },
     
     createLogPanel : function () {
@@ -108,6 +94,4 @@ Ext.define('sitools.admin.logs.AnalogProp', {
             padding : 10
         });
     }
-    
-
 });

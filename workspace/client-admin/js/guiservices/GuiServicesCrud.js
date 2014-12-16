@@ -183,16 +183,14 @@ Ext.define('sitools.admin.guiservices.GuiServicesCrud', {
         Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
-            msg : i18n.get('guiServicesCrud.delete'),
+            msg : Ext.String.format(i18n.get('guiServicesCrud.delete'), rec.get('name')),
             scope : this,
             fn : function (btn, text) {
                 if (btn === 'yes') {
                     this.doDelete(rec);
                 }
             }
-
         });
-
     },
     
     /**

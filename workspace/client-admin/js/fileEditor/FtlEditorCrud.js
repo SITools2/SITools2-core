@@ -88,7 +88,11 @@ Ext.define('sitools.admin.fileEditor.FtlEditorCrud', {
             items : [ {
                 header : i18n.get('label.name'),
                 dataIndex : 'name',
-                width : 500
+                width : 500,
+                renderer : function (value, meta, record) {
+                    meta.style = "font-weight: bold;";
+                    return value;
+                }
             }, {
                 header : i18n.get('label.size'),
                 dataIndex : 'size',
@@ -118,7 +122,7 @@ Ext.define('sitools.admin.fileEditor.FtlEditorCrud', {
                 itemdblclick : this.onModify
             };
         
-        sitools.admin.fileEditor.FtlEditorCrud.superclass.initComponent.call(this);
+        this.callParent(arguments);
     },
     onModify : function () {
         var rec = this.getLastSelectedRecord();
@@ -130,7 +134,8 @@ Ext.define('sitools.admin.fileEditor.FtlEditorCrud', {
         var from = l - 3;
         var ftlProp;
         if (rec.data.id.substring(from, l) == "txt") {
-            ftlProp = new sitools.admin.fileEditor.FileEditorProp({
+            ftlProp = Ext.create('sitools.admin.fileEditor.FileEditorProp', {
+                parentCrudEditor : this,
                 url : this.url + '/ftl/' + rec.data.id,
                 fileName : rec.data.id,
                 sourceEdit : false,
@@ -140,7 +145,8 @@ Ext.define('sitools.admin.fileEditor.FtlEditorCrud', {
             });
             ftlProp.show();
         } else {
-            ftlProp = new sitools.admin.fileEditor.FileEditorProp({
+            ftlProp = Ext.create('sitools.admin.fileEditor.FileEditorProp', {
+                parentCrudEditor : this,
                 url : this.url + '/ftl/' + rec.data.id,
                 fileName : rec.data.id,
                 sourceEdit : true,
@@ -151,5 +157,4 @@ Ext.define('sitools.admin.fileEditor.FtlEditorCrud', {
             ftlProp.show();
         }
     }
-    
 });

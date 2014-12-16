@@ -21,43 +21,47 @@
 
 Ext.namespace('sitools.admin.fileEditor');
 
-Ext.define('sitools.admin.fileEditor.LicenceEditorCrud', { extend : 'Ext.Panel',
+Ext.define('sitools.admin.fileEditor.LicenceEditorCrud', {
+    extend : 'Ext.panel.Panel',
     alias : 'widget.s-licenceEditor',
+
     border : false,
     height : 480,
     id : ID.BOX.FILEEDITORLICENCE,
     width : 700,
+    layout : 'fit',
     
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_ADMINISTRATOR_URL');
-        this.layout = 'fit';
-        
-        var bToolBar = new Ext.Toolbar({
 
-            items : [ '->', {
+        this.bbar = Ext.create('Ext.toolbar.Toolbar', {
+            border : false,
+            layout : {
+                type : 'hbox',
+                pack : 'center',
+                align : 'middle'
+            },
+            items : [{
                 xtype : 'button',
                 text : i18n.get('label.save'),
                 scope : this,
+                scale : 'medium',
                 icon : '/sitools' + loadUrl.get('APP_CLIENT_PUBLIC_URL') + '/res/images/icons/save.png',
                 handler : this.onValidate
-            } ]
+            }]
         });
-        
-        this.bbar = bToolBar;
-        
-        
-        this.fileEditor = new Ext.form.TextArea({
+
+        this.fileEditor = Ext.create('Ext.form.field.TextArea', {
+            border : false
         });
-        
         this.items = [this.fileEditor];
         
-        sitools.admin.fileEditor.LicenceEditorCrud.superclass.initComponent.call(this);
-        
-        
+        this.callParent(arguments);
     },
     
     afterRender : function () {
         this.callParent(arguments);
+
         if (this.url) {
             Ext.Ajax.request({
                 url : this.url + '/cgu.html',
@@ -69,7 +73,7 @@ Ext.define('sitools.admin.fileEditor.LicenceEditorCrud', { extend : 'Ext.Panel',
                     CKEDITOR.replace(this.fileEditor.id, {
                         customConfig: 'config-basic-plus.js',
                         fullPage : true,
-                        height : 350
+                        height : 330
                     });
                     this.fileEditor.setValue(data);
                     CKEDITOR.instances[this.fileEditor.id].setData(data); 
@@ -91,18 +95,10 @@ Ext.define('sitools.admin.fileEditor.LicenceEditorCrud', { extend : 'Ext.Panel',
             },
             jsonData : text,
             success : function (ret) {
-                var temp = new Ext.ux.Notification({
-                    iconCls : 'x-icon-information',
-                    title : i18n.get('label.information'),
-                    html : i18n.get('label.changeSaved'),
-                    autoDestroy : true,
-                    hideDelay : 1000
-                }).show(document);
+                popupMessage(i18n.get('label.information'), i18n.get('label.changeSaved'), null, 'x-info');
             },
             failure : alertFailure
         });
     }
-    
-
 });
 

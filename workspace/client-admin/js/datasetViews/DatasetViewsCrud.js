@@ -92,7 +92,7 @@ Ext.define('sitools.admin.datasetViews.DatasetViewsCrud', {
             items : [ {
                 header : i18n.get('label.name'),
                 dataIndex : 'name',
-                width : 200,
+                width : 230,
                 sortable : true,
                 renderer : function (value, meta, record) {
                     meta.style = "font-weight: bold;";
@@ -101,17 +101,17 @@ Ext.define('sitools.admin.datasetViews.DatasetViewsCrud', {
             }, {
                 header : i18n.get('label.description'),
                 dataIndex : 'description',
-                width : 350,
+                width : 300,
                 sortable : false
             }, {
                 header : i18n.get('label.jsObject'),
                 dataIndex : 'jsObject',
-                width : 350,
+                width : 340,
                 sortable : false
             }, {
                 header : i18n.get('label.priority'),
                 dataIndex : 'priority',
-                width : 50,
+                width : 70,
                 sortable : true
             } ]
         };
@@ -162,11 +162,11 @@ Ext.define('sitools.admin.datasetViews.DatasetViewsCrud', {
             mode : "SINGLE"
         });
         
-        sitools.admin.datasetViews.DatasetViewsCrud.superclass.initComponent.call(this);
+        this.callParent(arguments);
     },
 
     onRender : function () {
-        sitools.admin.datasetViews.DatasetViewsCrud.superclass.onRender.apply(this, arguments);
+        this.callParent(arguments);
         this.store.load({
             start : 0,
             limit : this.pageSize
@@ -205,7 +205,7 @@ Ext.define('sitools.admin.datasetViews.DatasetViewsCrud', {
         Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
-            msg : i18n.get('datasetViewsCrud.delete'),
+            msg : Ext.String.format(i18n.get('datasetViewsCrud.delete'), rec.get('name')),
             scope : this,
             fn : function (btn, text) {
                 if (btn == 'yes') {

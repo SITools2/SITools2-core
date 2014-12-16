@@ -20,6 +20,8 @@ Ext.namespace('sitools.public.widget.grid');
 
 Ext.define('sitools.public.widget.grid.GridUp', {
     extend: 'Ext.button.Button',
+    alias : 'widget.gridUp',
+
     initComponent : function () {
         this.icon = loadUrl.get('APP_URL') + '/common/res/images/icons/simple-arrow-up.png';
         sitools.public.widget.grid.GridUp.superclass.initComponent.call(this);
@@ -54,121 +56,4 @@ Ext.define('sitools.public.widget.grid.GridUp', {
 		}
 		grid.getView().refresh();
 	}
-
-	
-});
-
-Ext.define('sitools.public.widget.grid.GridDown', {
-    extend: 'Ext.button.Button',
-    initComponent : function () {
-        this.icon = loadUrl.get('APP_URL') + '/common/res/images/icons/simple-arrow-down.png';
-        sitools.public.widget.grid.GridDown.superclass.initComponent.call(this);
-    },  
-	handler: function (){
-	    if (Ext.isEmpty(this.gridId)) {
-            var grid = this.down('grid');
-        } else {
-            var grid = Ext.getCmp(this.gridId);
-        }
-		 
-		if (!grid) {
-			var grid = this;
-		} 
-		
-//		var grid = this;
-		
-		var rec = grid.getSelectionModel().getLastSelected();
-        if (!rec){
-            return;
-        }
-		var store = grid.getStore();
-		if (!store){
-			return;
-		}
-		var index = store.data.items.indexOf(rec);
-		
-		if(index < store.getCount()-1){
-			store.remove (rec);
-			store.insert (index+1, rec);
-			grid.getSelectionModel().select(index+1);
-			
-		}
-		grid.getView().refresh();
-	}
-
-	
-});
-
-Ext.define('sitools.public.widget.grid.GridTop', {
-    extend: 'Ext.button.Button',
-    initComponent : function () {
-        this.icon = loadUrl.get('APP_URL') + '/common/res/images/icons/double-arrow-up.png';
-        sitools.public.widget.grid.GridTop.superclass.initComponent.call(this);
-    },
-    handler: function (){
-        if (Ext.isEmpty(this.gridId)) {
-            var grid = this.down('grid');
-          } else {
-              var grid = Ext.getCmp(this.gridId);
-          }
-         
-        if (!grid) {
-            var grid = this;
-        } 
-          
-//        var grid = this;
-        
-        var rec = grid.getSelectionModel().getLastSelected();
-        if (!rec){
-            return;
-        }
-        var store = grid.getStore();
-        if (!store){
-            return;
-        }
-        
-        store.remove (rec);
-        store.insert (0, rec);
-        grid.getSelectionModel().select(0);
-		grid.getView().refresh();
-    }
-});
-
-Ext.define('sitools.public.widget.grid.GridBottom', {
-    extend: 'Ext.button.Button',
-    
-    initComponent : function () {
-        this.icon = loadUrl.get('APP_URL') + '/common/res/images/icons/double-arrow-down.png';
-        sitools.public.widget.grid.GridBottom.superclass.initComponent.call(this);
-    },
-    handler: function (){
-          if (Ext.isEmpty(this.gridId)) {
-              var grid = this.down('grid');
-          } else {
-              var grid = Ext.getCmp(this.gridId);
-          }
-         
-        if (!grid) {
-            var grid = this;
-        } 
-          
-//        var grid = this;
-        var rec = grid.getSelectionModel().getLastSelected();
-        if (!rec){
-            return;
-        }
-        var store = grid.getStore();
-        if (!store){
-            return;
-        }
-        var index = store.data.items.indexOf(rec);
-        
-        store.remove (rec);
-        store.insert (store.getCount(), rec);
-        grid.getSelectionModel().select(store.getCount() - 1);
-		grid.getView().refresh();
-            
-    }
-
-    
 });

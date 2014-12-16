@@ -21,13 +21,14 @@
 Ext.namespace('sitools.admin.forms');
 
 Ext.define('sitools.admin.forms.WinParent', { 
-    extend : 'Ext.Window',
+    extend : 'Ext.window.Window',
     modal : true,
     title : i18n.get('label.chooseParent'),
-    width : 500, 
+    width : 500,
+    border : false,
     initComponent : function () {
         var storeComponents = this.store;
-        var smComponents = Ext.create('Ext.selection.RowModel',{
+        var smComponents = Ext.create('Ext.selection.RowModel', {
             mode : 'SINGLE'
         });
     
@@ -41,26 +42,25 @@ Ext.define('sitools.admin.forms.WinParent', {
             }],
             defaults : {
                 sortable : true,
-                width : 100
+                width : 250
             }
         };
         this.gridFormComponents = Ext.create("Ext.grid.GridPanel", {
-            title : i18n.get('title.gridComponents'),
+            //title : i18n.get('title.gridComponents'),
             layout : 'fit', 
             id : "gridFormParentComponents",
             height : 430,
             store : storeComponents,
             columns : columns,
             selModel : smComponents,
-            viewConfig : {
-                forceFit : true
-            }
+            forceFit : true
         });
         
         this.items = [{
             xtype : 'panel', 
             layout : 'fit', 
-            items : [this.gridFormComponents ], 
+            items : [this.gridFormComponents ],
+            border : false,
             buttons : [{
                 text : i18n.get('label.ok'),
                 scope : this,

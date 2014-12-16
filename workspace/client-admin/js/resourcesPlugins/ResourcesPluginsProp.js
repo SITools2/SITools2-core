@@ -58,7 +58,7 @@ Ext.define('sitools.admin.resourcesPlugins.CustomCheckColumn', {
  * @extends Ext.Window
  */
 Ext.define('sitools.admin.resourcesPlugins.ResourcesPluginsProp', {
-    extend : 'Ext.Window',
+    extend : 'Ext.window.Window',
     width : 700,
     height : 480,
     modal : true,
@@ -201,6 +201,7 @@ Ext.define('sitools.admin.resourcesPlugins.ResourcesPluginsProp', {
         });
         
         this.gridFieldMapping = Ext.create('Ext.grid.Panel', {
+            padding : 10,
             forceFit : true,
             viewConfig : {
                 scope : this,
@@ -318,7 +319,7 @@ Ext.define('sitools.admin.resourcesPlugins.ResourcesPluginsProp', {
             }, {
                 header : i18n.get('label.value'),
                 dataIndex : 'value',
-                width : 230,
+                width : 220,
                 editable : true,
                 editor : {
                     xtype : 'textfield'
@@ -326,7 +327,7 @@ Ext.define('sitools.admin.resourcesPlugins.ResourcesPluginsProp', {
             }, Ext.create("sitools.admin.resourcesPlugins.CustomCheckColumn", {
                 header : i18n.get('headers.userUpdatable'),
                 dataIndex : 'userUpdatable',
-                width : 55                
+                width : 60
             })],
             listeners : {
                 scope : this,
@@ -440,9 +441,10 @@ Ext.define('sitools.admin.resourcesPlugins.ResourcesPluginsProp', {
         });
         
         // set the search form
-        this.fieldMappingFormPanel = Ext.create("Ext.FormPanel", {
+        this.fieldMappingFormPanel = Ext.create("Ext.form.Panel", {
             height : 95,
-            frame : true,
+            padding : 5,
+            border : false,
             defaultType : 'textfield',
 			items : [{
                 fieldLabel : i18n.get('label.name'),
@@ -460,6 +462,8 @@ Ext.define('sitools.admin.resourcesPlugins.ResourcesPluginsProp', {
             layout : 'border',
             id : 'fieldMappingPanel',
             title : i18n.get('title.fieldMapping'),
+            border : false,
+            bodyStyle : 'background-color:white;',
             items : [ this.fieldMappingFormPanel, this.gridFieldMapping ], 
             listeners : {
 				scope : this,
@@ -470,6 +474,7 @@ Ext.define('sitools.admin.resourcesPlugins.ResourcesPluginsProp', {
         });
         
         this.tabPanel = Ext.create("Ext.TabPanel", {
+            border : false,
             height : 450,
             activeTab : 0,
             items : (this.action == "create") ? [ this.gridresourcePlugin, this.fieldMappingPanel ] : [
@@ -498,12 +503,11 @@ Ext.define('sitools.admin.resourcesPlugins.ResourcesPluginsProp', {
                 var size = window.body.getSize();
                 this.tabPanel.setSize(size);
             }
-
-        };  
+        };
         
         this.items = [ this.tabPanel ];
 
-        sitools.admin.resourcesPlugins.ResourcesPluginsProp.superclass.initComponent.call(this);
+        this.callParent(arguments);
     },
 
     /**

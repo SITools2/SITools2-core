@@ -47,7 +47,6 @@ Ext.define('sitools.admin.storages.plugins.StorageCopyProp', {
             xtype : 'form',
             id : 'formCopyId',
             layout : 'fit',
-            frame : false,
             border : false,
             buttonAlign : 'center',
             bodyStyle : 'padding:15px 10px 15px 15px;',
@@ -93,7 +92,7 @@ Ext.define('sitools.admin.storages.plugins.StorageCopyProp', {
                 success : function (ret) {
                     var Json = Ext.decode(ret.responseText);
                     if (showResponse(ret)) {
-                        this.store.reload();
+                        //this.store.reload();
                     }
                     this.close();
                 },

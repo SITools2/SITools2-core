@@ -163,6 +163,7 @@ Ext.define('sitools.admin.filtersPlugins.FiltersPluginsSingle', {
         
         this.gridFieldMapping = Ext.create('Ext.grid.Panel', {
             forceFit : true,
+            padding : 10,
             viewConfig : {
                 scope : this,
 //                getRowClass : function (record, index, rowParams, store) {
@@ -278,10 +279,11 @@ Ext.define('sitools.admin.filtersPlugins.FiltersPluginsSingle', {
         
         
         // set the search form
-        this.fieldMappingFormPanel = Ext.create("Ext.FormPanel", {
+        this.fieldMappingFormPanel = Ext.create("Ext.form.Panel", {
             height : 65,
-//            frame : true,
             defaultType : 'textfield',
+            padding : 5,
+            border : false,
             items : [{
                 fieldLabel : i18n.get('label.name'),
                 name : 'name',
@@ -298,6 +300,7 @@ Ext.define('sitools.admin.filtersPlugins.FiltersPluginsSingle', {
             layout : 'border',
             id : 'fieldMappingPanel',
             title : i18n.get('title.fieldMapping'),
+            bodyStyle : 'background-color:white;',
             items : [ this.fieldMappingFormPanel, this.gridFieldMapping ]
         });
         
@@ -338,7 +341,7 @@ Ext.define('sitools.admin.filtersPlugins.FiltersPluginsSingle', {
         }; 
         this.items = [ this.tabPanel ];
 
-        sitools.admin.filtersPlugins.FiltersPluginsSingle.superclass.initComponent.call(this);
+        this.callParent(arguments);
     },
 
     beforeTabChange : function (self, newTab, currentTab) {
@@ -346,29 +349,21 @@ Ext.define('sitools.admin.filtersPlugins.FiltersPluginsSingle', {
             if (newTab.id == "fieldMappingPanel") {
                 var rec = this.getLastSelectedRecord(this.gridfilterPlugin);
                 if (!rec) {
-                    Ext.create("Ext.ux.Notification", {
-                        iconCls : 'x-icon-information',
-                        title : i18n.get('label.information'),
-                        html : i18n.get('warning.noselection'),
-                        autoDestroy : true,
-                        hideDelay : 1000
-                    }).show(document);
+                    popupMessage(i18n.get('label.information'), i18n.get('warning.noselection'), null, 'x-info');
                     return false;
                 }
             }
         }
-
     },
+
     onClassClick : function (self, rowIndex, e) {
         if (this.action == "create") {
             var rec = this.getLastSelectedRecord(this.gridfilterPlugin);
             if (!rec) {
                 return false;
             }
-            
             this.fillGridAndForm(rec.data, this.action);
         }
-
     },
 
     afterRender : function () {
@@ -382,6 +377,7 @@ Ext.define('sitools.admin.filtersPlugins.FiltersPluginsSingle', {
         }
         this.tabPanel.setHeight(this.body.getHeight());
     },
+
     fillGridAndForm : function (filterPlugin, action) {
         if (!Ext.isEmpty(filterPlugin)) {
             
@@ -418,13 +414,7 @@ Ext.define('sitools.admin.filtersPlugins.FiltersPluginsSingle', {
         if (this.action == "create") {
             rec = this.getLastSelectedRecord(this.gridfilterPlugin);
             if (!rec) {
-                Ext.create("Ext.ux.Notification", {
-                    iconCls : 'x-icon-information',
-                    title : i18n.get('label.information'),
-                    html : i18n.get('warning.noselection'),
-                    autoDestroy : true,
-                    hideDelay : 1000
-                }).show(document);
+                popupMessage(i18n.get('label.information'), i18n.get('warning.noselection'), null, 'x-info');
                 return false;
             }
             filterPlugin = rec.data;
@@ -496,22 +486,13 @@ Ext.define('sitools.admin.filtersPlugins.FiltersPluginsSingle', {
                     }
                     return false;
                 }
-
-                Ext.create("Ext.ux.Notification", {
-                    iconCls : 'x-icon-information',
-                    title : i18n.get('label.information'),
-                    html : i18n.get('label.filterPlugin' + this.parentType + 'Saved'),
-                    autoDestroy : true,
-                    hideDelay : 1000
-                }).show(document);
+                popupMessage(i18n.get('label.information'), i18n.get('label.filterPlugin' + this.parentType + 'Saved'), null, 'x-info');
 
                 this.parentPanel.getStore().reload();
                 this.close();
-
             },
             failure : alertFailure
         });
-
     },
     
     notifyViolations : function (violations) {
@@ -556,11 +537,8 @@ Ext.define('sitools.admin.filtersPlugins.FiltersPluginsSingle', {
                 if (showResponse(ret)) {
                     this.close();
                 }
-                
             },
             failure : alertFailure
         });
-        
     }
-
 });

@@ -65,7 +65,6 @@ Ext.define('sitools.extension.component.datasets.services.fitsService.FitsServic
                     width: 200,
                     typeAhead: true,
                     queryMode: 'local',
-                    forceSelection: true,
                     triggerAction: 'all',
                     valueField: 'display',
                     displayField: 'display',
@@ -96,7 +95,6 @@ Ext.define('sitools.extension.component.datasets.services.fitsService.FitsServic
                     width: 200,
                     typeAhead: true,
                     queryMode: 'local',
-                    forceSelection: true,
                     triggerAction: 'all',
                     store: Ext.create('Ext.data.JsonStore', {
                         autoLoad: true,

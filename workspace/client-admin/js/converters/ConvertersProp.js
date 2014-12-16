@@ -42,6 +42,7 @@ Ext.define('sitools.admin.converters.ConvertersProp', {
     mixins : {
         utils : "sitools.admin.utils.utils"
     },
+    border : false,
 
     initComponent : function () {
         this.convertersPluginUrl = loadUrl.get('APP_URL') + loadUrl.get('APP_DATASETS_CONVERTERS_PLUGINS_URL');
@@ -106,15 +107,16 @@ Ext.define('sitools.admin.converters.ConvertersProp', {
             title : i18n.get('title.converterClass'),
             selModel : Ext.create('Ext.selection.RowModel'),
             store : this.storeGridConverter,
+            border : false,
             columns : [{
                     header : i18n.get('label.name'),
                     dataIndex : 'name',
-                    width : 100,
+                    width : 150,
                     sortable : true
                 }, {
                     header : i18n.get('label.className'),
                     dataIndex : 'className',
-                    width : 300,
+                    width : 250,
                     sortable : true
                 }, {
                     header : i18n.get('label.author'),
@@ -185,6 +187,7 @@ Ext.define('sitools.admin.converters.ConvertersProp', {
         
         this.gridFieldMapping = Ext.create('Ext.grid.Panel', {
             forceFit : true,
+            border : false,
             viewConfig : {
                 scope : this,
 //                getRowClass : function (record, index, rowParams, store) {
@@ -254,7 +257,7 @@ Ext.define('sitools.admin.converters.ConvertersProp', {
                     width : 100,
                     sortable : false
                 }, {
-                    header : i18n.get('label.value') + '<img title="Editable" height=14 widht=14 src="/sitools ' + loadUrl.get('APP_CLIENT_PUBLIC_URL') + '/res/images/icons/toolbar_edit.png"/>',
+                    header : i18n.get('label.value') + '<img title="Editable" height=14 widht=14 src="' + loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL') + '/res/images/icons/toolbar_edit.png"/>',
                     dataIndex : 'value',
                     width : 80,
                     sortable : false,
@@ -297,6 +300,7 @@ Ext.define('sitools.admin.converters.ConvertersProp', {
             height : 40,
             defaultType : 'textfield',
             padding : 5,
+            border : false,
             items : [{
                 fieldLabel : i18n.get('label.descriptionAction'),
                 name : 'descriptionAction',
@@ -310,6 +314,8 @@ Ext.define('sitools.admin.converters.ConvertersProp', {
             layout : 'border',
             id : 'gridFieldMapping',
             title : i18n.get('title.fieldMapping'),
+            bodyStyle : 'background-color:white;',
+            border : false,
             items : [ this.fieldMappingFormPanel, this.gridFieldMapping ]
 
         });
@@ -344,7 +350,7 @@ Ext.define('sitools.admin.converters.ConvertersProp', {
         }; 
         this.items = [ this.tabPanel ];
 
-        sitools.admin.converters.ConvertersProp.superclass.initComponent.call(this);
+        this.callParent(arguments);
     },
 
     /**
@@ -359,13 +365,7 @@ Ext.define('sitools.admin.converters.ConvertersProp', {
             if (newTab.id == "gridFieldMapping") {
                 var rec = this.getLastSelectedRecord(this.gridConverter);
                 if (!rec) {
-                    Ext.create("Ext.ux.Notification", {
-                        iconCls : 'x-icon-information',
-                        title : i18n.get('label.information'),
-                        html : i18n.get('warning.noselection'),
-                        autoDestroy : true,
-                        hideDelay : 1000
-                    }).show(document);
+                    popupMessage(i18n.get('label.information'), i18n.get('warning.noselection'), null, 'x-info');
                     return false;
                 }
             }
@@ -395,18 +395,16 @@ Ext.define('sitools.admin.converters.ConvertersProp', {
                     idProperty : 'name'
                 }
             });			
-			
 			store.removeAll();
 			store.load();
 		}
-
 	},
 
     /**
      * load the selected converter properties
      */
     afterRender : function () {
-        sitools.admin.converters.ConvertersProp.superclass.afterRender.apply(this, arguments);
+        this.callParent(arguments);
 
         if (this.action == "modify") {
 
@@ -423,9 +421,7 @@ Ext.define('sitools.admin.converters.ConvertersProp', {
                     store.add(recTmp);
                 }
                 this.gridFieldMapping.getView().refresh();
-
             }
-
         }
     },
     /**
@@ -435,13 +431,7 @@ Ext.define('sitools.admin.converters.ConvertersProp', {
     onValidate : function () {
         var rec = this.getLastSelectedRecord(this.gridConverter);
         if (!rec && this.action == "create") {
-            Ext.create("Ext.ux.Notification", {
-                iconCls : 'x-icon-information',
-                title : i18n.get('label.information'),
-                html : i18n.get('warning.noselection'),
-                autoDestroy : true,
-                hideDelay : 1000
-            }).show(document);
+            popupMessage(i18n.get('label.information'), i18n.get('warning.noselection'), null, 'x-info');
             return false;
         }
         var jsonReturn = {};
@@ -509,17 +499,9 @@ Ext.define('sitools.admin.converters.ConvertersProp', {
                     }
                     return false;
                 }
-                Ext.create("Ext.ux.Notification", {
-                    iconCls : 'x-icon-information',
-                    title : i18n.get('label.information'),
-                    html : i18n.get('label.converterSaved'),
-                    autoDestroy : true,
-                    hideDelay : 1000
-                }).show(document);
-	            
-                
-                //var idConvChained = data.converterChainedModel.id;
-                this.parent.getStore().reload();                
+                popupMessage(i18n.get('label.information'), i18n.get('label.converterSaved'), null, 'x-info');
+
+                this.parent.getStore().reload();
                 this.close();
                 
             }

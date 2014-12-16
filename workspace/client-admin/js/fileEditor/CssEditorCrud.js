@@ -118,8 +118,8 @@ Ext.define('sitools.admin.fileEditor.CssEditorCrud', {
             scope : this,
             itemdblclick : this.onModify
         };
-        
-        sitools.admin.fileEditor.CssEditorCrud.superclass.initComponent.call(this);
+
+        this.callParent(arguments);
     },
 
     onModify : function () {
@@ -129,6 +129,7 @@ Ext.define('sitools.admin.fileEditor.CssEditorCrud', {
         }
 
         var cssProp = Ext.create("sitools.admin.fileEditor.FileEditorProp", {
+            parentCrudEditor : this,
             url : this.url + '/css/' + rec.data.id,
             fileName : rec.data.id,
             sourceEdit : true,

@@ -90,21 +90,25 @@ Ext.define('sitools.admin.forms.ComponentProp', {
             bodyBorder : false,
             autoScroll : true,
             items : [ specificComponent ],
-            buttons : [ {
-                text : i18n.get('label.addColumn'),
-                hidden : !Ext.isFunction(specificComponent.addColumn),
-                handler : function () {
-                    specificComponent.addColumn();
-                }
-            }, {
-                text : i18n.get('label.ok'),
-                scope : this,
-                handler : this.onValidate
-            }, {
-                text : i18n.get('label.cancel'),
-                scope : this,
-                handler : this._close
-            } ]
+            buttons : {
+                xtype: 'toolbar',
+                style: 'background-color:white;',
+                    items : [{
+                    text: i18n.get('label.addColumn'),
+                    hidden: !Ext.isFunction(specificComponent.addColumn),
+                    handler: function () {
+                        specificComponent.addColumn();
+                    }
+                }, {
+                    text: i18n.get('label.ok'),
+                    scope: this,
+                    handler: this.onValidate
+                }, {
+                    text: i18n.get('label.cancel'),
+                    scope: this,
+                    handler: this._close
+                }]
+            }
         });
         
         this.listeners = {

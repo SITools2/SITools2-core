@@ -347,9 +347,7 @@ Ext.define('sitools.admin.projects.ProjectsCrud', {
                     this.doDelete(rec);
                 }
             }
-
         });
-
     },
     /**
      * Delete the project with the specified identifier given

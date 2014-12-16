@@ -37,6 +37,8 @@ Ext.define('sitools.admin.datasets.SelectColumn', {
     height : 480,
     modal : true,
     pageSize : ADMIN_PANEL_NB_ELEMENTS,
+    border : false,
+    layout : 'fit',
 
     initComponent : function () {
         this.title = i18n.get('title.selectColumn');
@@ -49,6 +51,7 @@ Ext.define('sitools.admin.datasets.SelectColumn', {
             height : 380,
             autoScroll : true,
             forceFit : true,
+            border : false,
             store : Ext.create("Ext.data.JsonStore", {
                 proxy : {
                     type :'ajax',
@@ -118,9 +121,9 @@ Ext.define('sitools.admin.datasets.SelectColumn', {
                     this.close();
                 }
             } ]
-
         } ];
-        sitools.admin.datasets.SelectColumn.superclass.initComponent.call(this);
+
+        this.callParent(arguments);
     },
     /**
      * Method called on Ok button. 
@@ -137,13 +140,7 @@ Ext.define('sitools.admin.datasets.SelectColumn', {
 	        this.parentView.refresh();
 	        this.close();
         } else {
-            new Ext.ux.Notification({
-                    iconCls : 'x-icon-information',
-                    title : i18n.get('label.information'),
-                    html : i18n.get('warning.noselection'),
-                    autoDestroy : true,
-                    hideDelay : 1000
-                }).show(document);
+            popupMessage(i18n.get('label.information'), i18n.get('warning.noselection'), null, 'x-info');
         }
 
     }

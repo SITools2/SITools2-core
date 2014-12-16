@@ -171,15 +171,15 @@ Ext.define('sitools.admin.datasets.services.DatasetServicesProp', {
 
         this.centerPanel = Ext.create("Ext.Panel", {
             layout : 'fit',
-            region : 'center'
+            region : 'center',
+            border : false
         });
         
         this.fieldMappingFormPanel = Ext.create("Ext.FormPanel", {
             height : 115,
             border :false,
             bodyBorder : false,
-            padding : 5,
-            frame : true,
+            padding : 10,
             region : 'north',
             defaultType : 'textfield',
 			items : [{
@@ -204,12 +204,15 @@ Ext.define('sitools.admin.datasets.services.DatasetServicesProp', {
             id : 'dsFieldParametersPanel',
             urlDataset : this.urlDataset,
             title : i18n.get('title.formFieldParameters'),
+            bodyStyle : 'background-color:white;',
+            border : false,
             items : [ this.fieldMappingFormPanel, this.centerPanel ]
         });
         
         this.tabPanel = Ext.create("Ext.TabPanel", {
             height : 450,
             activeTab : 0,
+            border : false,
             items : (this.action === "create") ? [ this.gridDatasetServices, this.dsFieldParametersPanel ] : [
                 this.dsFieldParametersPanel 
             ],
@@ -238,8 +241,7 @@ Ext.define('sitools.admin.datasets.services.DatasetServicesProp', {
         };
         
         this.items = [ this.tabPanel ];
-
-        sitools.admin.datasets.services.DatasetServicesProp.superclass.initComponent.call(this);
+        this.callParent(arguments);
     },
 
     /**
@@ -251,13 +253,7 @@ Ext.define('sitools.admin.datasets.services.DatasetServicesProp', {
             if (newTab.id === "dsFieldParametersPanel") {
                 var rec = this.getLastSelectedRecord(this.gridDatasetServices);
                 if (!rec) {
-                    Ext.create("Ext.ux.Notification", {
-                        iconCls : 'x-icon-information',
-                        title : i18n.get('label.information'),
-                        html : i18n.get('warning.noselection'),
-                        autoDestroy : true,
-                        hideDelay : 1000
-                    }).show(document);
+                    popupMessage(i18n.get('label.information'), i18n.get('warning.noselection'), null, 'x-info');
                     return false;
                 }
                 
@@ -266,9 +262,7 @@ Ext.define('sitools.admin.datasets.services.DatasetServicesProp', {
                     return;
                 }
                 this.currentRecordId = rec.data.id;
-                
                 this.centerPanel.remove(this.formParametersPanel);
-                
 
                 this.formParametersPanel = Ext.create("sitools.admin.common.FormParametersConfigUtil", {
                     rec : rec.data
@@ -309,7 +303,7 @@ Ext.define('sitools.admin.datasets.services.DatasetServicesProp', {
             this.gridDatasetServices.getStore().load();
         }
         
-        sitools.admin.datasets.services.DatasetServicesProp.superclass.afterRender.apply(this, arguments);
+        this.callParent(arguments);
     },
 
     /**
@@ -328,14 +322,7 @@ Ext.define('sitools.admin.datasets.services.DatasetServicesProp', {
         if (this.action === "create") {
             rec = this.getLastSelectedRecord(this.gridDatasetServices);
             if (!rec) {
-                Ext.create("Ext.ux.Notification", {
-                    iconCls : 'x-icon-information',
-                    title : i18n.get('label.information'),
-                    html : i18n.get('warning.noselection'),
-                    autoDestroy : true,
-                    hideDelay : 1000
-                }).show(document);
-                return false;
+                popupMessage(i18n.get('label.information'), i18n.get('warning.noselection'), null, 'x-info');
             }
             rec = rec.data;
         } else {
@@ -399,14 +386,7 @@ Ext.define('sitools.admin.datasets.services.DatasetServicesProp', {
                     }
                     return false;
                 }
-
-                Ext.create("Ext.ux.Notification", {
-                    iconCls : 'x-icon-information',
-                    title : i18n.get('label.information'),
-                    html : i18n.get('label.datasetServiceIHMSaved'),
-                    autoDestroy : true,
-                    hideDelay : 1000
-                }).show(document);
+                popupMessage(i18n.get('label.information'), i18n.get('label.datasetServiceIHMSaved'), null, 'x-info');
 
                 this.parentPanel.getStore().reload();
                 this.close();

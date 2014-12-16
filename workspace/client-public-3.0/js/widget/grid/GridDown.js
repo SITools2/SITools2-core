@@ -20,6 +20,8 @@ Ext.namespace('sitools.public.widget.grid');
 
 Ext.define('sitools.public.widget.grid.GridDown', {
     extend: 'Ext.button.Button',
+	alias : 'widget.gridDown',
+
     initComponent : function () {
         this.icon = loadUrl.get('APP_URL') + '/common/res/images/icons/simple-arrow-down.png';
         sitools.public.widget.grid.GridDown.superclass.initComponent.call(this);

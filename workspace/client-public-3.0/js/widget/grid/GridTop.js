@@ -20,6 +20,8 @@ Ext.namespace('sitools.public.widget.grid');
 
 Ext.define('sitools.public.widget.grid.GridTop', {
     extend: 'Ext.button.Button',
+    alias : 'widget.gridTop',
+
     initComponent : function () {
         this.icon = loadUrl.get('APP_URL') + '/common/res/images/icons/double-arrow-up.png';
         sitools.public.widget.grid.GridTop.superclass.initComponent.call(this);

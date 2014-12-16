@@ -29,7 +29,7 @@ Ext.namespace('sitools.admin.applications.plugins');
  * @extends Ext.Window
  */
 Ext.define('sitools.admin.applications.plugins.ApplicationPluginProp', { 
-    extend : 'Ext.Window',
+    extend : 'Ext.window.Window',
     width : 700,
     height : 480,
     modal : true,
@@ -62,7 +62,7 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginProp', {
             expandOnDblClick : true
         };
         
-        this.gridapplicationPlugin = new Ext.grid.GridPanel({
+        this.gridapplicationPlugin = Ext.create('Ext.grid.GridPanel', {
             forceFit : true,
             id : 'gridapplicationPlugin',
             title : i18n.get('title.applicationPluginClass'),
@@ -385,7 +385,7 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginProp', {
         
         this.items = [ this.tabPanel ];
 
-        sitools.admin.applications.plugins.ApplicationPluginProp.superclass.initComponent.call(this);
+        this.callParent(arguments);
     },
 
     /**
@@ -401,13 +401,6 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginProp', {
                 var rec = this.getLastSelectedRecord(this.gridapplicationPlugin);
                 if (!rec) {
                     popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');
-//                    var tmp = new Ext.ux.Notification({
-//                        iconCls : 'x-icon-information',
-//                        title : i18n.get('label.information'),
-//                        html : i18n.get('warning.noselection'),
-//                        autoDestroy : true,
-//                        hideDelay : 1000
-//                    }).show(document);
                     return false;
                 }
             }
@@ -447,7 +440,7 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginProp', {
      * Requests the selected plugin Application properties
      */
     afterRender : function () {
-        sitools.admin.applications.plugins.ApplicationPluginProp.superclass.afterRender.apply(this, arguments);
+        this.callParent(arguments);
 
         if (this.action == "modify") {
             this.applicationPluginId = this.record.data.id;
@@ -502,14 +495,7 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginProp', {
         if (this.action == "create") {
             rec = this.getLastSelectedRecord(this.gridapplicationPlugin);
             if (!rec) {
-                return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');
-//                var tmp = new Ext.ux.Notification({
-//                    iconCls : 'x-icon-information',
-//                    title : i18n.get('label.information'),
-//                    html : i18n.get('warning.noselection'),
-//                    autoDestroy : true,
-//                    hideDelay : 1000
-//                }).show(document);
+                return popupMessage("", i18n.get('warning.noselection'), null, 'x-info');
                 return false;
             }
             jsonReturn.name = rec.data.name;
@@ -518,13 +504,7 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginProp', {
         }
         var form = this.fieldMappingFormPanel.getForm();
         if (!form.isValid()) {
-            var temp = new Ext.ux.Notification({
-				iconCls : 'x-icon-information',
-				title : i18n.get('label.information'),
-				html : i18n.get('warning.invalidForm'),
-				autoDestroy : true,
-				hideDelay : 1000
-			}).show(document);
+            popupMessage("", i18n.get('warning.invalidForm'), null, 'x-info');
 			return false;
         }
         
@@ -603,22 +583,13 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginProp', {
                     }
                     return false;
                 }
-
-                var tmp = new Ext.ux.Notification({
-                    iconCls : 'x-icon-information',
-                    title : i18n.get('label.information'),
-                    html : i18n.get('label.applicationPluginSaved'),
-                    autoDestroy : true,
-                    hideDelay : 1000
-                }).show(document);
+                popupMessage(i18n.get('label.information'), i18n.get('label.applicationPluginSaved'), null, 'x-info');
 
                 this.parent.getStore().reload();
                 this.close();
-
             },
             failure : alertFailure
         });
-
     },
     /**
      * Notify violations. 

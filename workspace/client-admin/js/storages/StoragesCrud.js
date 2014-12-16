@@ -242,14 +242,14 @@ Ext.define('sitools.admin.storages.StoragesCrud', {
             mode : "SINGLE"
         });
         
-        sitools.admin.storages.StoragesCrud.superclass.initComponent.call(this);
+        this.callParent(arguments);
     },
 
     /**
-     * do a specific render to load storages from the store. 
+     * do a specific render to load storages from the store.
      */
     afterRender : function () {
-        sitools.admin.storages.StoragesCrud.superclass.afterRender.apply(this, arguments);
+        this.callParent(arguments);
         this.store.load({
             start : 0,
             limit : this.pageSize,
@@ -262,6 +262,11 @@ Ext.define('sitools.admin.storages.StoragesCrud', {
      */
     onDefineRole : function () {
         var rec = this.getLastSelectedRecord();
+
+        if (Ext.isEmpty(rec)) {
+            return;
+        }
+
         var up = Ext.create("sitools.admin.applications.ApplicationsRole", {
             urlAuthorizations : this.urlAuthorizations + "/" + rec.data.id,
             applicationRecord : rec
@@ -311,13 +316,10 @@ Ext.define('sitools.admin.storages.StoragesCrud', {
                     filterPlugin : filterPlugin
                 });
                 up.show(ID.BOX.STORAGES);
-
             },
             failure : alertFailure
         });
-        
-        
-    },    
+    },
     
     /**
      * Open a {sitools.admin.storages.StoragesProp} storage property panel to create a new storage
@@ -358,7 +360,7 @@ Ext.define('sitools.admin.storages.StoragesCrud', {
         Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
-            msg : i18n.get('storageCrud.delete'),
+            msg : Ext.String.format(i18n.get('storageCrud.delete'), rec.get('name')),
             scope : this,
             fn : function (btn, text) {
                 if (btn == 'yes') {

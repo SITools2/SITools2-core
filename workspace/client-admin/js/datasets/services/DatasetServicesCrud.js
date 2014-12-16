@@ -260,12 +260,13 @@ Ext.define('sitools.admin.datasets.services.DatasetServicesCrud', {
                 typeAhead : true,
                 triggerAction : 'all',
                 queryMode : 'local',
+                editable : false,
                 store : Ext.create("Ext.data.ArrayStore", {
                     id : 0,
                     fields : ['position'],
                     data : [['left'], ['right']]
                 }),
-                value : 'Left',
+                value : 'left',
                 valueField : 'position',
                 displayField : 'position',
                 listeners : {
@@ -535,6 +536,13 @@ Ext.define('sitools.admin.datasets.services.DatasetServicesCrud', {
      * Save all Services Properties (label, icon, category) for the current Dataset
      */
     onSaveProperties : function () {
+
+        var comboDataset = this.down('toolbar combo');
+
+        if (comboDataset.getValue() == null) {
+            return;
+        }
+
         var service = {};
         service.id = this.parentId;
         service.name = "";

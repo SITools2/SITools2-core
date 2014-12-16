@@ -233,14 +233,14 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginCrud', {
             mode : "SINGLE"
         });
         
-        sitools.admin.applications.plugins.ApplicationPluginCrud.superclass.initComponent.call(this);
+        this.callParent(arguments);
     },
 
 	/**
-	 * Load the Store on render event 
+	 * Load the Store on render event
 	 */
     onRender : function () {
-        sitools.admin.applications.plugins.ApplicationPluginCrud.superclass.onRender.apply(this, arguments);
+        this.callParent(arguments);
         this.store.load({
             start : 0,
             limit : this.pageSize
@@ -292,19 +292,18 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginCrud', {
     onDelete : function () {
         var rec = this.getLastSelectedRecord();
         if (!rec) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');
+            return popupMessage("", i18n.get('warning.noselection'), null, 'x-info');
         }
         Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
-            msg : i18n.get('applicationPluginCrud.delete'),
+            msg : Ext.String.format(i18n.get('applicationPluginCrud.delete'), rec.get('name')),
             scope : this,
             fn : function (btn, text) {
                 if (btn == 'yes') {
                     this.doDelete(rec);
                 }
             }
-
         });
     },
 

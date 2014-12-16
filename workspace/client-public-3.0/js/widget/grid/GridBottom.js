@@ -20,6 +20,7 @@ Ext.namespace('sitools.public.widget.grid');
 
 Ext.define('sitools.public.widget.grid.GridBottom', {
     extend: 'Ext.button.Button',
+    alias : 'widget.gridBottom',
     
     initComponent : function () {
         this.icon = loadUrl.get('APP_URL') + '/common/res/images/icons/double-arrow-down.png';

@@ -28,7 +28,7 @@ Ext.namespace('sitools.admin.datasets');
  * @class sitools.admin.datasets.DatasetForm
  * @extends Ext.Panel
  */
-Ext.define('sitools.admin.datasets.DatasetServicesConfig', { 
+Ext.define('sitools.admin.datasets.DatasetServicesConfig', { // apparently never use...
     extend : 'Ext.form.Panel', 
     padding : 10, 
     
@@ -36,11 +36,17 @@ Ext.define('sitools.admin.datasets.DatasetServicesConfig', {
         this.title = i18n.get('label.viewConfig');
         var action = this.action;
         //Store of the comboDatasetsViews.
-        this.storeDatasetViews = new Ext.data.JsonStore({
+        this.storeDatasetViews = Ext.create('Ext.data.JsonStore', {
             fields : [ 'id', 'name', 'description', 'jsObject', 'fileUrl', 'priority' ],
-            url : this.urlDatasetViews,
+            proxy : {
+                type : 'ajax',
+                url : this.urlDatasetViews,
+                reader : {
+                    type : 'json',
+                    root : 'data'
+                }
+            },
             autoLoad : false,
-            root : "data", 
             sortInfo : {
                 field : 'priority',
                 direction : 'ASC'
@@ -72,7 +78,7 @@ Ext.define('sitools.admin.datasets.DatasetServicesConfig', {
          * Combo to select Datasets Views.
          * Uses the storeDatasetViews. 
          */
-        this.comboDatasetViews = new Ext.form.ComboBox({
+        this.comboDatasetViews = Ext.create('Ext.form.field.ComboBox', {
             disabled : this.action == 'view' ? true : false, 
             id : "comboDatasetViews",
             store : this.storeDatasetViews,
@@ -119,10 +125,11 @@ Ext.define('sitools.admin.datasets.DatasetServicesConfig', {
             }
         });
 
-        this.parametersFieldset = new Ext.form.FieldSet({
+        this.parametersFieldset = Ext.create('Ext.form.FieldSet', {
             title : i18n.get('label.parameters'), 
             anchor : "95%"
         });
+
         Ext.apply(this, {
             items : [this.comboDatasetViews, this.parametersFieldset], 
             listeners : {
@@ -134,8 +141,7 @@ Ext.define('sitools.admin.datasets.DatasetServicesConfig', {
             }
         });
         
-        sitools.admin.datasets.DatasetServicesConfig.superclass.initComponent.call(this);
-
+        this.callParent(arguments);
 
     }, 
     getDatasetViewsCombo : function () {

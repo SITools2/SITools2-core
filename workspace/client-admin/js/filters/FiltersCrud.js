@@ -244,6 +244,7 @@ Ext.define('sitools.admin.filters.FiltersCrud', {
                 xtype : 's-menuButton'
             }, {
                 text : i18n.get('label.saveOrder'),
+                itemId : 'saveOrderBtnId',
                 icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/save.png',
                 handler : this.onSave,
                 xtype : 's-menuButton'
@@ -257,7 +258,23 @@ Ext.define('sitools.admin.filters.FiltersCrud', {
                 icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_disactive.png',
                 handler : this._onDisactive,
                 xtype : 's-menuButton'
-            } ]
+            } ],
+            listeners : {
+                scope : this,
+                afterrender : function (toolbar) {
+                    var buttons = toolbar.query('button');
+                    Ext.each(buttons, function (button) {
+                        if (button.alias == 'widget.gridUp' || button.alias == 'widget.gridDown' ||
+                            button.alias == 'widget.gridTop' || button.alias == 'widget.gridBottom') {
+
+                            button.on('click', function () {
+                                var saveButton = this.down('toolbar button#saveOrderBtnId');
+                                saveButton.addCls('not-save-textfield');
+                            }, this);
+                        }
+                    }, this);
+                }
+            }
         };
 
         this.listeners = {
@@ -321,7 +338,8 @@ Ext.define('sitools.admin.filters.FiltersCrud', {
 
                 Ext.Msg.alert(i18n.get("label.information"), i18n.get("label.restartDsNeededFilter"));
 
-                //this.fillGrid(data);
+                var saveButton = this.down('toolbar button#saveOrderBtnId');
+                saveButton.removeCls('not-save-textfield');
                 this.getStore().reload();
             }
         });
@@ -336,7 +354,7 @@ Ext.define('sitools.admin.filters.FiltersCrud', {
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
-        var up = Ext.create("sitools.admin.filters.filtersProp", {
+        var up = Ext.create("sitools.admin.filters.FiltersProp", {
             action : 'modify',
             parent : this,
             filter : rec.data,
@@ -358,7 +376,7 @@ Ext.define('sitools.admin.filters.FiltersCrud', {
         Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
-            msg : i18n.get('label.filtersCrud.delete'),
+            msg : Ext.String.format(i18n.get('label.filtersCrud.delete'), rec.get('name')),
             scope : this,
             fn : function (btn, text) {
                 if (btn == 'yes') {

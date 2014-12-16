@@ -29,6 +29,7 @@ Ext.define('sitools.admin.filters.FiltersProp', {
     height : 480,
     modal : true,
     resizable : true,
+    border : false,
     mixins : {
         utils : "sitools.admin.utils.utils"
     },
@@ -131,7 +132,6 @@ Ext.define('sitools.admin.filters.FiltersProp', {
             selModel : Ext.create('Ext.selection.RowModel',{
                 mode: 'SINGLE'
             })
-
         });
 
         
@@ -308,6 +308,8 @@ Ext.define('sitools.admin.filters.FiltersProp', {
             layout : 'border',
             id : 'gridFieldMapping',
             title : i18n.get('title.fieldMapping'),
+            bodyStyle : 'background-color:white;',
+            border : false,
             items : [ this.fieldMappingFormPanel, this.gridFieldMapping ]
 
         });
@@ -352,13 +354,7 @@ Ext.define('sitools.admin.filters.FiltersProp', {
             if (newTab.id == "gridFieldMapping") {
                 var rec = this.getLastSelectedRecord(this.gridFilter);
                 if (!rec) {
-                    Ext.create("Ext.ux.Notification", {
-                            iconCls : 'x-icon-information',
-                            title : i18n.get('label.information'),
-                            html : i18n.get('warning.noselection'),
-                            autoDestroy : true,
-                            hideDelay : 1000
-                        }).show(document);
+                    popupMessage(i18n.get('label.information'), i18n.get('warning.noselection'), null, 'x-info');
                     return false;
                 }      
             }
@@ -369,13 +365,6 @@ Ext.define('sitools.admin.filters.FiltersProp', {
     onClassClick : function (self, rec, item, index, e, eOpts) {
         if (this.action == "create") {
             if (!rec) {
-//                var tmp = new Ext.ux.Notification({
-//                        iconCls : 'x-icon-information',
-//                        title : i18n.get('label.information'),
-//                        html : i18n.get('warning.noselection'),
-//                        autoDestroy : true,
-//                        hideDelay : 1000
-//                    }).show(document);
                 return false;
             }
             var className = rec.get("className");
@@ -422,13 +411,7 @@ Ext.define('sitools.admin.filters.FiltersProp', {
     onValidate : function () {
         var rec = this.getLastSelectedRecord(this.gridFilter);
         if (!rec && this.action == "create") {
-            Ext.create("Ext.ux.Notification", {
-                iconCls : 'x-icon-information',
-                title : i18n.get('label.information'),
-                html : i18n.get('warning.noselection'),
-                autoDestroy : true,
-                hideDelay : 1000
-            }).show(document);
+            popupMessage(i18n.get('label.information'), i18n.get('warning.noselection'), null, 'x-info');
             return false;
         }
         var jsonReturn = {};
@@ -497,14 +480,8 @@ Ext.define('sitools.admin.filters.FiltersProp', {
                     }
                     return false;
                 }
-                Ext.create("Ext.ux.Notification", {
-                    iconCls : 'x-icon-information',
-                    title : i18n.get('label.information'),
-                    html : i18n.get('label.filterSaved'),
-                    autoDestroy : true,
-                    hideDelay : 1000
-                }).show(document);
-                
+                popupMessage(i18n.get('label.information'), i18n.get('label.filterSaved'), null, 'x-info');
+
                 this.parent.getStore().reload();                
                 this.close();
                 

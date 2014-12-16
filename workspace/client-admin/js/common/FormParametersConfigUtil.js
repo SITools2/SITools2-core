@@ -75,6 +75,7 @@ Ext.define('sitools.admin.common.FormParametersConfigUtil', {
         // }
         this.parametersFieldset.add(p);
     },
+
     buildViewConfig : function (recSelected) {
         this.parametersFieldset.removeAll();
 
@@ -122,7 +123,7 @@ Ext.define('sitools.admin.common.FormParametersConfigUtil', {
                                     var p = Ext.create(param.jsObj, config);
                                     
                                     if (Ext.isFunction(p.setValue)) {
-                                        p.setValue(customValue);
+                                        p.setValue(customValue, true);
                                     }
                                     this.parametersFieldset.add(p);
                                 }
@@ -134,7 +135,6 @@ Ext.define('sitools.admin.common.FormParametersConfigUtil', {
                         } else {
                             this.addDefaultParameter(param);
                         }
-                        
                     }, this);
             }, this);
         } catch (err) {
@@ -147,7 +147,6 @@ Ext.define('sitools.admin.common.FormParametersConfigUtil', {
             // i18n.get('label.notImplementedMethod'));
             // return;
         }
-            
     },
 
     getParametersValue : function () {

@@ -119,12 +119,9 @@ Ext.define('sitools.admin.converters.ConvertersCrud', {
                     
                     this.getStore().removeAll();
                     this.getStore().load();
-
                 }
-
             }
         });
-        
         
         this.store = Ext.create("Ext.data.JsonStore", {
             fields : [ {
@@ -164,8 +161,6 @@ Ext.define('sitools.admin.converters.ConvertersCrud', {
                 type : 'string'
             }]
         });
-
-       
 
         this.columns = {
             // specify any defaults for each column
@@ -252,6 +247,7 @@ Ext.define('sitools.admin.converters.ConvertersCrud', {
                 xtype : 's-menuButton'
             }, {
                 text : i18n.get('label.saveOrder'),
+                itemId : 'saveOrderBtnId',
                 icon : loadUrl.get("APP_URL") + loadUrl.get('APP_CLIENT_PUBLIC_URL') +'/res/images/icons/save.png',
                 handler : this.onSave,
                 xtype : 's-menuButton'
@@ -265,7 +261,23 @@ Ext.define('sitools.admin.converters.ConvertersCrud', {
                 icon : loadUrl.get("APP_URL") + loadUrl.get('APP_CLIENT_PUBLIC_URL') + '/res/images/icons/toolbar_disactive.png',
                 handler : this._onDisactive,
                 xtype : 's-menuButton'
-            } ]
+            } ],
+            listeners : {
+                scope : this,
+                afterrender : function (toolbar) {
+                    var buttons = toolbar.query('button');
+                    Ext.each(buttons, function (button) {
+                        if (button.alias == 'widget.gridUp' || button.alias == 'widget.gridDown' ||
+                            button.alias == 'widget.gridTop' || button.alias == 'widget.gridBottom') {
+
+                            button.on('click', function () {
+                                var saveButton = this.down('toolbar button#saveOrderBtnId');
+                                saveButton.addCls('not-save-textfield');
+                            }, this);
+                        }
+                    }, this);
+                }
+            }
         };
         
         this.listeners = {
@@ -273,8 +285,7 @@ Ext.define('sitools.admin.converters.ConvertersCrud', {
             itemdblclick : this.onModify
         };
 
-        sitools.admin.converters.ConvertersCrud.superclass.initComponent.call(this);
-
+        this.callParent(arguments);
     },
 
     onCreate : function () {
@@ -317,17 +328,12 @@ Ext.define('sitools.admin.converters.ConvertersCrud', {
                     Ext.Msg.alert(i18n.get('label.warning'), data.message);
                     return false;
                 }
-                Ext.create("Ext.ux.Notification", {
-                    iconCls : 'x-icon-information',
-                    title : i18n.get('label.information'),
-                    html : i18n.get('label.converterSaved'),
-                    autoDestroy : true,
-                    hideDelay : 1000
-                }).show(document);
 
+                popupMessage(i18n.get('label.information'), i18n.get('label.converterSaved'), null, 'x-info');
                 Ext.Msg.alert(i18n.get("label.information"), i18n.get("label.restartDsNeededConv"));
 
-                //this.fillGrid(data);
+                var saveButton = this.down('toolbar button#saveOrderBtnId');
+                saveButton.removeCls('not-save-textfield');
                 this.getStore().reload();
             }
         });
@@ -353,7 +359,6 @@ Ext.define('sitools.admin.converters.ConvertersCrud', {
             converterChainedId : this.converterChainedId
         });
         up.show(ID.BOX.CONVERTERS);
-
     },
 
     onDelete : function () {
@@ -388,7 +393,6 @@ Ext.define('sitools.admin.converters.ConvertersCrud', {
                     this.getStore().reload();
                     Ext.Msg.alert(i18n.get("label.information"), i18n.get("label.restartDsNeededConvDelete"));
                 }
-
             }
         });
     },
@@ -407,7 +411,6 @@ Ext.define('sitools.admin.converters.ConvertersCrud', {
                     this.doDeleteAll();
                 }
             }
-
         });
     },
 
@@ -425,7 +428,6 @@ Ext.define('sitools.admin.converters.ConvertersCrud', {
                     this.getStore().reload();
                     Ext.Msg.alert(i18n.get("label.information"), i18n.get("label.restartDsNeededConvDelete"));
                 }
-
             }
         });
     },

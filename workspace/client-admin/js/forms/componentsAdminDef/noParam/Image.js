@@ -27,7 +27,7 @@ Ext.namespace('sitools.admin.forms.componentsAdminDef.noParam');
  */
 Ext.define('sitools.admin.forms.componentsAdminDef.noParam.Image', { 
     extend : 'Ext.form.Panel',
-    height : 210,
+    height : 220,
     border : false,
     bodyBorder : false,
     padding : 10,

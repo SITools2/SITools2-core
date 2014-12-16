@@ -33,7 +33,6 @@ Ext.define('sitools.public.widget.imageChooser.ImageChooser', {
    alternateClassName : ['ImageChooser'], 
    extend : 'Ext.window.Window',
    
-   title: i18n.get('label.chooseImage'),
    layout: 'border',
    minWidth: 550,
    minHeight: 450,
@@ -44,6 +43,7 @@ Ext.define('sitools.public.widget.imageChooser.ImageChooser', {
    
    initComponent : function () {
 
+       this.title = i18n.get('label.chooseImage');
        this.initTemplates();
 
        this.store = Ext.create("Ext.data.JsonStore", {
@@ -116,11 +116,10 @@ Ext.define('sitools.public.widget.imageChooser.ImageChooser', {
            fileUpload: true,
            formId : 'formUploadId', 
            height: 100,
-           padding: '5 5 5 5',
+           padding: 10,
            labelWidth: 50,
            border : false,
            bodyBorder : false,
-           buttonAlign : 'center',
            defaults: {
                allowBlank: false,
                msgTarget: 'side'
@@ -129,14 +128,14 @@ Ext.define('sitools.public.widget.imageChooser.ImageChooser', {
                xtype: 'filefield',
                fieldLabel: 'Photo',
                name: 'image',
-               anchor: '95%',
+               anchor: '100%',
                buttonText: i18n.get("label.browse"),
                iconCls: 'upload-icon'
            }, {
                xtype : 'button',
                text: i18n.get('label.uploadFile'),
                scope : this,
-               anchor: '50%',
+               anchor: '30%',
                handler : this.uploadFile
            }]
        });
@@ -193,7 +192,8 @@ Ext.define('sitools.public.widget.imageChooser.ImageChooser', {
            title : i18n.get('label.uploadFile'),
            region: 'south', 
            collapsible : true, 
-           autoHeight : true, 
+           autoHeight : true,
+           border : false,
            items: [this.fp]
        }];
        

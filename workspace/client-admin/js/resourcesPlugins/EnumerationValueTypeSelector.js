@@ -34,12 +34,14 @@ Ext.namespace('sitools.admin.resourcesPlugins');
  * @extends Ext.Window
  */
 Ext.define('sitools.admin.resourcesPlugins.EnumerationValueTypeSelector', { 
-    extend : 'Ext.Window',
+    extend : 'Ext.window.Window',
+
     width : 700,
     height : 480,
     modal : true,
     pageSize : ADMIN_PANEL_NB_ELEMENTS,
-	editable : false, 
+	editable : false,
+    layout : 'fit',
 	
     initComponent : function () {
         this.title = i18n.get('title.select' + this.type);
@@ -66,8 +68,7 @@ Ext.define('sitools.admin.resourcesPlugins.EnumerationValueTypeSelector', {
                 enumValue : item.trim()
             });
         }, this);
-        
-        
+
         var column = {
                 id : 'name',
                 header : i18n.get('headers.name'),
@@ -119,7 +120,8 @@ Ext.define('sitools.admin.resourcesPlugins.EnumerationValueTypeSelector', {
             autoScroll : true,
             store : this.storeEnum,
             columns : [column],
-            selModel : this.smSelectColumn, 
+            selModel : this.smSelectColumn,
+            forceFit : true,
             listeners : {
 				scope : this, 
 				viewready : this.showSelectedRecords
@@ -148,7 +150,7 @@ Ext.define('sitools.admin.resourcesPlugins.EnumerationValueTypeSelector', {
             scope : this
         };
         
-        sitools.admin.resourcesPlugins.EnumerationValueTypeSelector.superclass.initComponent.call(this);
+        this.callParent(arguments);
     },
     
     /**
@@ -177,7 +179,6 @@ Ext.define('sitools.admin.resourcesPlugins.EnumerationValueTypeSelector', {
         
         this.parentView.refresh();
         this.close();
-
     },
     
     /**
@@ -200,7 +201,6 @@ Ext.define('sitools.admin.resourcesPlugins.EnumerationValueTypeSelector', {
 				grid.getSelectionModel().selectRange(index, index);
 			}
 		});
-
     },
     
     /**

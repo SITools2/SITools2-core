@@ -86,7 +86,11 @@ Ext.define('sitools.admin.formComponents.FormComponentsCrud', {
                 header : i18n.get('label.type'),
                 dataIndex : 'type',
                 width : 100,
-                sortable : true
+                sortable : true,
+                renderer : function (value, meta, record) {
+                    meta.style = "font-weight: bold;";
+                    return value;
+                }
             }, {
                 header : i18n.get('label.jsAdminObject'),
                 dataIndex : 'jsAdminObject',
@@ -194,14 +198,13 @@ Ext.define('sitools.admin.formComponents.FormComponentsCrud', {
         Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
-            msg : i18n.get('formComponentsCrud.delete'),
+            msg : Ext.String.format(i18n.get('formComponentsCrud.delete'), rec.get('type')),
             scope : this,
             fn : function (btn, text) {
                 if (btn == 'yes') {
                     this.doDelete(rec);
                 }
             }
-
         });
 
     },
