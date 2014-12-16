@@ -146,8 +146,7 @@ Ext.define('sitools.admin.datasets.DatasetProperties', {
 							break;
 						case "Date" :
 							editor = Ext.create("Ext.ux.date.form.DateTimeField", {
-								format : SITOOLS_DEFAULT_IHM_DATE_FORMAT,
-                                value : e.value
+								format : SITOOLS_DEFAULT_IHM_DATE_FORMAT
 							});
 							break;
 						case "Enum" : 
@@ -159,9 +158,9 @@ Ext.define('sitools.admin.datasets.DatasetProperties', {
 					}
 					return true;
 				}, 
-				afteredit : function (editor, e) {
+				edit : function (editor, e) {
 					//Formatter en string
-					if (e.column == 2) {
+					if (e.colIdx == 2) {
 						var grid = e.grid;
 						var rec = e.record;
 						var column = e.column;
@@ -178,15 +177,16 @@ Ext.define('sitools.admin.datasets.DatasetProperties', {
 							value = Ext.util.Format.number(value, "0.00");
 							break;
 						case "Date" : 
-							value = value.format(SITOOLS_DEFAULT_IHM_DATE_FORMAT);
+							value = Ext.Date.format(value, SITOOLS_DEFAULT_IHM_DATE_FORMAT);
 							break;
 						case "Enum" : 
 							value = Ext.String.format(value);
 							break;
 						}
-						rec.set("value", value);	
+                        rec.set("value", value);
+                        e.value = value;
 					}
-					
+
 				}
             }
         

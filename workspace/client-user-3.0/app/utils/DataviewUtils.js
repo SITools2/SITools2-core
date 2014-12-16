@@ -181,7 +181,7 @@ Ext.define('sitools.user.utils.DataviewUtils', {
                 
             } else {
                 if (sql2ext.get(col.sqlColumnType) == 'dateAsString') {
-                    tplString += Ext.String.format('<span class="dataview_columnValue"><div class=x-view-entete style="{2}">{0} </div> <tpl if=\"this.isValidDate({1})\">{[Date.parseDate(values.{1}, SITOOLS_DATE_FORMAT).format("{3}")]}</tpl></span>', 
+                    tplString += Ext.String.format('<span class="dataview_columnValue"><div class=x-view-entete style="{2}">{0} </div> <tpl if=\"this.isValidDate({1})\">{[Ext.Date.parse(values.{1}, SITOOLS_DATE_FORMAT).format("{3}")]}</tpl></span>',
                         col.header, 
                         col.columnAlias, 
                         style, 

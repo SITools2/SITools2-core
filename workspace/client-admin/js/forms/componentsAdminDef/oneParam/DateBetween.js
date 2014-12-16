@@ -91,14 +91,14 @@ Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.DateBetween', {
             var regToday = new RegExp("^\{\\$TODAY\}");
             if (!Ext.isEmpty(this.selectedRecord.data.defaultValues)) {
                 if (!regToday.test(this.selectedRecord.data.defaultValues[0])) {
-                    this.componentDefaultValueFrom.setValue(Ext.Date.parseDate(this.selectedRecord.data.defaultValues[0], SITOOLS_DATE_FORMAT));
+                    this.componentDefaultValueFrom.setValue(Ext.Date.parse(this.selectedRecord.data.defaultValues[0], SITOOLS_DATE_FORMAT));
                 }
                 else {
                     //use setRawValue to bypass date value conversion
                     this.componentDefaultValueFrom.setRawValue(this.selectedRecord.data.defaultValues[0]);
                 }
                 if (!regToday.test(this.selectedRecord.data.defaultValues[1])) {
-                    this.componentDefaultValueTo.setValue(Ext.Date.parseDate(this.selectedRecord.data.defaultValues[1], SITOOLS_DATE_FORMAT));
+                    this.componentDefaultValueTo.setValue(Ext.Date.parse(this.selectedRecord.data.defaultValues[1], SITOOLS_DATE_FORMAT));
                 }
                 else {
                     //use setRawValue to bypass date value conversion

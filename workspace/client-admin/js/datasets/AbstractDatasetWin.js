@@ -289,11 +289,11 @@ Ext.define('sitools.admin.datasets.AbstractDatasetWin', {
 						var recProp;
 						Ext.each(data.properties, function (prop) {
                             if (prop.type == "Date") {
-                                var date = Date.parseDate(prop.value, SITOOLS_DATE_FORMAT);
+                                var date = Ext.Date.parse(prop.value, SITOOLS_DATE_FORMAT);
                                 if (Ext.isEmpty(date)) {
                                     prop.value = "invalid date";
                                 } else {
-								    prop.value = date.format(SITOOLS_DEFAULT_IHM_DATE_FORMAT);
+								    prop.value = Ext.Date.format(date, SITOOLS_DEFAULT_IHM_DATE_FORMAT);
                                 }
 							}
 							storeProp.add(prop);

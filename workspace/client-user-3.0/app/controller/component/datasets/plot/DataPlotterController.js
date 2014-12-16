@@ -461,7 +461,7 @@ Ext.define('sitools.user.controller.component.datasets.plot.DataPlotterControlle
             var xValue, yValue;
             switch (colXType) {
                 case "dateAsString" :
-                    xValue = Ext.Date.parseDate(item.get(view.comboX.getValue()), SITOOLS_DATE_FORMAT, true);
+                    xValue = Ext.Date.parse(item.get(view.comboX.getValue()), SITOOLS_DATE_FORMAT, true);
                     if (!Ext.isEmpty(xValue)) {
                         xValue = xValue.getTime();
                     }
@@ -476,7 +476,7 @@ Ext.define('sitools.user.controller.component.datasets.plot.DataPlotterControlle
             switch (colYType) {
                 case "dateAsString" :
                     var value = item.get(view.comboY.getValue());
-                    yValue = Ext.Date.parseDate(value, SITOOLS_DATE_FORMAT, true);
+                    yValue = Ext.Date.parse(value, SITOOLS_DATE_FORMAT, true);
 
                     if (!Ext.isEmpty(yValue)) {
                         yValue = yValue.getTime();

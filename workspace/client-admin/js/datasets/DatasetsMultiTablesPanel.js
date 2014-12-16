@@ -337,11 +337,11 @@ Ext.define('sitools.admin.datasets.DatasetsMultiTablesPanel', {
         //save Properties...
         putObject.properties = [];
         this.gridProperties.getStore().each(function (rec) {
-			if (rec.data.type === "Date") {
+			if (rec.get("type") === "Date") {
 			    var dateValue = rec.get("value");
-			    var date = Date.parseDate(dateValue, SITOOLS_DEFAULT_IHM_DATE_FORMAT);
+			    var date = Ext.Date.parse(dateValue, SITOOLS_DEFAULT_IHM_DATE_FORMAT);
 			    if (!Ext.isEmpty(date)) {
-					rec.data.value = date.format(SITOOLS_DATE_FORMAT);
+					rec.set("value", Ext.Date.format(date, SITOOLS_DATE_FORMAT));
 			    }
 			}
 			putObject.properties.push(rec.data);
