@@ -225,7 +225,7 @@ Ext.define('sitools.public.forms.components.DateBetween', {
 			}
 		}
 		
-		if (this.truncateDefaultValue) {
+		if (this.truncateDefaultValue && !Ext.isEmpty(result)) {
 			return Ext.Date.clearTime(result);
 		}
 		else {

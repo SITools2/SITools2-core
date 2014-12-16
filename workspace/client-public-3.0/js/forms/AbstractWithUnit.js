@@ -54,7 +54,7 @@ Ext.define('sitools.public.forms.AbstractWithUnit', {
     * On Callback : show a {Ext.Window} with the result in a gridPanel
     * @param {} event The click event (to get coordinates) 
     */
-   loadUnits : function (event) {
+   loadUnits : function (button) {
         if (!this.unitsLoaded) {
             this.storeUnits.removeAll();
             Ext.Ajax.request({
@@ -70,18 +70,18 @@ Ext.define('sitools.public.forms.AbstractWithUnit', {
                     var units = Json.dimension.sitoolsUnits;
                     this.dimensionName = Json.dimension.name;
                     for (var i = 0; i < units.length; i++) {
-                        this.storeUnits.add(new Ext.data.Record(units[i]));
+                        this.storeUnits.add(units[i]);
                     }
                 }, 
                 failure : alertFailure,
                 callback : function () {
                     this.unitsLoaded = true;
-                    this.showWinUnits(event);
+                    this.showWinUnits(button);
                 }
             });
         }
         else {
-            this.showWinUnits(event);
+            this.showWinUnits(button);
         }
     }, 
     
@@ -90,17 +90,23 @@ Ext.define('sitools.public.forms.AbstractWithUnit', {
      * build the gridUnits. 
      * @param {} event The click event to get coordinates for the window
      */
-    showWinUnits : function (event) {
+    showWinUnits : function (button) {
 
         var cmUnits = {
             items : [ {
                 header : i18n.get('headers.name'),
                 dataIndex : 'label',
                 width : 100
+            },
+            {
+                header : i18n.get('label.unit'),
+                dataIndex : 'unitName',
+                width : 100
             }],
             defaults : {
                 sortable : true,
-                width : 100
+                width : 100,
+                menuDisabled : true
             }
         };
 
@@ -113,11 +119,19 @@ Ext.define('sitools.public.forms.AbstractWithUnit', {
             store : this.storeUnits,
             columns : cmUnits,
             sm : smUnits, 
-            layout : 'fit', 
+            layout : 'fit',
+            forceFit : true,
             listeners : {
                 scope : this,
                 itemclick : function (grid, record, item, rowIndex) {
-                    this.onValidateUnits();
+                    this.onValidateUnits(grid);
+                },
+                afterrender : function(grid) {
+                    var buttonValue = button.getText();
+                    var record = grid.getStore().findRecord("label", buttonValue);
+                    if (!Ext.isEmpty(record)) {
+                        grid.getSelectionModel().select(record);
+                    }
                 }
             }
         });
@@ -126,60 +140,43 @@ Ext.define('sitools.public.forms.AbstractWithUnit', {
             width : 200, 
             title : i18n.get('title.unitList'),
             modal : true,
-            height : 300, 
-            items : [this.gridUnits], 
+            height : 300,
+            items : [this.gridUnits],
             buttons : [{
                 text : i18n.get('label.ok'), 
                 handler : this.onValidateUnits, 
                 scope : this
             }, {
                 text : i18n.get('label.cancel'), 
-                scope : winUnit, 
-                handler : function () {
-                    this.ownerCt.ownerCt.close();                
+                handler : function (btn) {
+                    btn.up("window").close();
                 }
             }]
         }); 
         
         winUnit.show();
-        winUnit.setPosition(event.getXY()[0], event.getXY()[1]);
-    }, 
+    },
     /**
      * update property this.userDimension and this.userUnit, depending on the selected record in this.gridUnits
      * update the label of the button withe the new unit
      */
-    onValidateUnits : function () {
+    onValidateUnits : function (cmp) {
         var rec = this.gridUnits.getSelectionModel().getSelection()[0];
         if (Ext.isEmpty(rec)) {
             Ext.Msg.alert(i18n.get('label.error'), i18n.get('label.noSelection'));
             return;
         }
-        
-        this.userUnit = rec.data;
+
+        this.userUnit = rec.getData();
         this.userDimension = this.dimensionName;
-        var btn = this.getEl().query("button")[0];
-        if (! Ext.isEmpty(btn)) {
-        	this.getEl().query("button")[0].update(rec.get('label'));
+
+        var unitButton = this.down("button#unitButton");
+        if (! Ext.isEmpty(unitButton)) {
+            this.down("button#unitButton").setText(rec.get("label"));
         }
-        this.gridUnits.ownerCt.close();
+        cmp.up("window").close();
     }, 
-//    /**
-//     * Return the unit corresponding to a given column Alias
-//     * @param {String} columnAlias the column Alias to retrieve
-//     * @return {} the unit founded
-//     */
-//    getColumnUnit : function (columnAlias) {
-//    	if (Ext.isEmpty(this.datasetCm)) {
-//    		return;
-//    	}
-//    	var result;
-//    	Ext.each(this.datasetCm, function(column){
-//    		if (column.columnAlias == columnAlias) {
-//    			result = column.unit;
-//    		}
-//    	});
-//    	return result;
-//    }, 
+
     /**
      * build a {Ext.Container} container with 
      * <ul><li>a {Ext.Button} button if column unit is not null and administrator defines a dimension</li>
@@ -192,13 +189,13 @@ Ext.define('sitools.public.forms.AbstractWithUnit', {
         //the administrator defines a dimension for this component
 	    // and the column unit is not null
         if (!Ext.isEmpty(this.dimensionId)) {
-            var btn = new Ext.Button({
-                scope : this, 
+            var btn = Ext.create("Ext.Button", {
+                scope : this,
+                itemId : 'unitButton',
                 text : Ext.isEmpty(columnUnit) ? "    " : columnUnit.label, 
                 width : 90,
-                handler : function (b, e) {
-                    this.loadUnits(e);
-                    //this.userDimension = this.dimensionId;
+                handler : function (button, e) {
+                    this.loadUnits(button);
                 }
             });
             unit = Ext.create('Ext.container.Container', {

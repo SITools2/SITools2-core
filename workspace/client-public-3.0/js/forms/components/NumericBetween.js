@@ -69,16 +69,16 @@ Ext.define('sitools.public.forms.components.NumericBetween', {
 
         var unit = this.getUnitComponent();
 
-        this.fieldFrom = new Ext.form.NumberField({
+        this.fieldFrom = Ext.create("Ext.form.NumberField", {
             allowBlank: true,
             flex: 1,
             //height : this.height,
             value: this.defaultValues[0],
             validator: function (value) {
-                if (Ext.isEmpty(this.ownerCt.fieldTo.getValue())) {
+                if (Ext.isEmpty(this.up("container").fieldTo.getValue())) {
                     return true;
                 }
-                if (value > this.ownerCt.fieldTo.getValue()) {
+                if (value > this.up("container").fieldTo.getValue()) {
                     return "invalid Value";
                 } else {
                     return true;
@@ -86,13 +86,13 @@ Ext.define('sitools.public.forms.components.NumericBetween', {
             },
             decimalPrecision: 20
         });
-        this.fieldTo = new Ext.form.NumberField({
+        this.fieldTo = Ext.create("Ext.form.NumberField", {
             allowBlank: true,
             flex: 1,
             //height : this.height,
             value: this.defaultValues[1],
             validator: function (value) {
-                if (value < this.ownerCt.fieldFrom.getValue()) {
+                if (value < this.up("container").fieldFrom.getValue()) {
                     return "invalid Value";
                 } else {
                     return true;
@@ -120,27 +120,27 @@ Ext.define('sitools.public.forms.components.NumericBetween', {
             },
             items: items
         });
-        sitools.public.forms.components.NumericBetween.superclass.initComponent.apply(
-            this, arguments);
+        this.callParent(arguments);
+
         if (!Ext.isEmpty(this.label)) {
             var labels = this.label.split("|") || [];
             switch (labels.length) {
                 case 0 :
                     break;
                 case 1 :
-                    this.items.insert(0, new Ext.Container({
+                    this.items.insert(0, Ext.create("Ext.Container", {
                         border: false,
                         html: labels[0],
                         width: 100
                     }));
                     break;
                 case 2 :
-                    this.items.insert(0, new Ext.Container({
+                    this.items.insert(0, Ext.create("Ext.Container", {
                         border: false,
                         html: labels[0],
                         width: 50
                     }));
-                    this.items.insert(2, new Ext.Container({
+                    this.items.insert(2, Ext.create("Ext.Container", {
                         border: false,
                         html: labels[1],
                         width: 50,
@@ -150,12 +150,12 @@ Ext.define('sitools.public.forms.components.NumericBetween', {
                     }));
                     break;
                 case 3 :
-                    this.items.insert(0, new Ext.Container({
+                    this.items.insert(0, Ext.create("Ext.Container", {
                         border: false,
                         html: labels[0],
                         width: 50
                     }));
-                    this.items.insert(1, new Ext.Container({
+                    this.items.insert(1, Ext.create("Ext.Container", {
                         border: false,
                         html: labels[1],
                         width: 50,
@@ -163,7 +163,7 @@ Ext.define('sitools.public.forms.components.NumericBetween', {
                             "padding-left": "10px"
                         }
                     }));
-                    this.items.insert(3, new Ext.Container({
+                    this.items.insert(3, new Ext.create("Ext.Container", {
                         border: false,
                         html: labels[2],
                         width: 50,
@@ -231,6 +231,10 @@ Ext.define('sitools.public.forms.components.NumericBetween', {
             userUnit: this.userUnit
         };
 
+    },
+
+    isValid : function () {
+        return (this.fieldFrom.isValid() && this.fieldTo.isValid());
     },
 
 //  *** Reset function for RESET button ***//

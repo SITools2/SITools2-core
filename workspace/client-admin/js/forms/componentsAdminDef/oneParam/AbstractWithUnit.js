@@ -62,7 +62,6 @@ Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.AbstractWithUnit', {
             autoLoad : false, 
             listeners : {
                 scope : this, 
-//                beforeload : this.onBeforeLoad,
                 load : this._onDimensionLoad
             }
         }); 
@@ -75,10 +74,6 @@ Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.AbstractWithUnit', {
             this.storeDimension.load();
         }    
     },
-//    onBeforeLoad : function () {
-//        this.storeDimension.baseParams = this.baseParams;
-//        return true;
-//    },
     _onDimensionLoad : function () {
         this.dimension = Ext.create("Ext.form.ComboBox", {
             fieldLabel : i18n.get('label.dimension'),

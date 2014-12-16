@@ -32,7 +32,6 @@ Ext.define('sitools.admin.forms.componentsAdminDef.multiParam.ConeSearch', {
     extend : 'sitools.admin.forms.componentsAdminDef.multiParam.Abstract',
     height : 550,
     columnUnitName : "°", 
-    //TODO améliorer ça pour que ce ne soit plus statique.
     columnDimensionId : "Angle",
     
     initComponent : function () {
@@ -71,7 +70,6 @@ Ext.define('sitools.admin.forms.componentsAdminDef.multiParam.ConeSearch', {
             autoLoad : false, 
             listeners : {
                 scope : this, 
-                beforeload : this.onBeforeLoad,
                 load : this._onDimensionLoad
             }
         }); 
@@ -207,17 +205,16 @@ Ext.define('sitools.admin.forms.componentsAdminDef.multiParam.ConeSearch', {
             selectOnFocus : true,
             valueField : "id",
             name : 'dimensionId',
-            anchor : '100%', 
+            anchor : '100%',
             value : Ext.isEmpty(this.selectedRecord) ? null : this.selectedRecord.data.dimensionId
         });
-		
-		this.dimension.on("select", this.context.onChangeDimension, this);
-		
+
         this.add(this.dimension);
         this.doLayout();
+
         this.context.buildUnit.call(this);
     },
-	_onValidate : function (action, formComponentsStore) {
+    _onValidate : function (action, formComponentsStore) {
         var f = this.getForm();
         if (!f.isValid()) {
             Ext.Msg.alert(i18n.get('label.error'), i18n.get('warning.invalidForm'));

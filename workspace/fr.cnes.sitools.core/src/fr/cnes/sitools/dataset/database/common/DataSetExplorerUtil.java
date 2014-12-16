@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.logging.Level;
 
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.JsonParseException;
@@ -622,8 +623,8 @@ public class DataSetExplorerUtil {
       }
     }
     catch (ResourceException e) {
-      application.getLogger().warning(
-          "Exception when applying filterChained on dataset " + application.getDataSet().getName());
+      application.getLogger().log(Level.WARNING,
+          "Exception when applying filterChained on dataset " + application.getDataSet().getName(), e);
       throw e;
     }
     catch (Exception e) {
