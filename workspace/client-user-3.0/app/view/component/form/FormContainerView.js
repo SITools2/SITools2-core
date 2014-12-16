@@ -67,37 +67,6 @@ Ext.define('sitools.user.view.component.form.FormContainerView', {
          */
         'componentChanged');
 
-        this.on('componentChanged', function (formContainer, componentChanged) {
-            // look for all the childrens of the component
-            var childrens = formContainer.find("parentParam", componentChanged.parameterId);
-            // For each children, add a query string on the componentChanged
-            // value and reset children Value.
-            // Also, fire the event ComponentChanged for the children to cascade
-            // changes.
-            Ext.each(childrens, function (children) {
-                if (children.valueSelection == 'D') {
-                    var store = children.find("stype", "sitoolsFormItem")[0].store;
-
-                    var baseParams = store.baseParams;
-
-                    if (!Ext.isEmpty(componentChanged.getSelectedValue())) {
-                        var filter = componentChanged.getParameterValue();
-                        baseParams["p[0]"] = this.paramToAPI(filter);
-                    } else {
-                        baseParams["p[0]"] = null;
-                    }
-                    store.baseParams = baseParams;
-                    children.setSelectedValue(null);
-                    store.reload({
-                        callback : function () {
-                            formContainer.fireEvent('componentChanged', formContainer, children);
-                        }
-                    });
-
-                }
-            }, this);
-        });
-        
         this.callParent(arguments);
     },
     
@@ -111,7 +80,6 @@ Ext.define('sitools.user.view.component.form.FormContainerView', {
         
         if (!Ext.isEmpty(parameters.formZones)) {
             Ext.each(parameters.formZones, function (zone) {
-//                var zoneFieldset = Ext.create('sitools.public.ux.form.ToolFieldSet', {
             	var zoneFieldset = Ext.create('Ext.form.FieldSet', {
                     title : (!Ext.isEmpty(zone.title) ? zone.title : zone.id),
                     itemId : zone.id,
@@ -179,14 +147,6 @@ Ext.define('sitools.user.view.component.form.FormContainerView', {
             }, this);
         }
     }, 
-    
-    paramToAPI : function (paramValue) {
-        var stringParam = paramValue.type + "|" + paramValue.code + "|" + paramValue.value;
-        if (!Ext.isEmpty(paramValue.userDimension) && !Ext.isEmpty(paramValue.userUnit)) {
-            stringParam += "|" + paramValue.userDimension + "|" + paramValue.userUnit.unitName; 
-        }  
-        return stringParam;
-    },
     
     /**
      * Check that all the components are valid

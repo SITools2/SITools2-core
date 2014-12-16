@@ -354,7 +354,16 @@ Ext.define('sitools.public.forms.components.AbstractConeSearch', {
     
     isEmpty : function (field) {
         return Ext.isEmpty(field.getValue())
-    }
+    },
+
+//  *** Reset function for RESET button ***//
+	resetToDefault: function () {
+		this.raParam.reset();
+		this.decParam.reset();
+		this.thirdParam.reset();
+		this.targetName.reset();
+	}
+//  **************************************//
     
 	
 });

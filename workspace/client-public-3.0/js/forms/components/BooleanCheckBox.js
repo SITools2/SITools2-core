@@ -77,6 +77,13 @@ Ext.define('sitools.public.forms.components.BooleanCheckbox', {
 	    	code : this.code, 
 	    	value : value
 	    };
-    }
+    },
+
+//  *** Reset function for RESET button ***//
+	resetToDefault: function () {
+		this.cbGroup.reset();
+		this.form.fireEvent('componentChanged', this.form, this);
+	}
+//  **************************************//
 
 });

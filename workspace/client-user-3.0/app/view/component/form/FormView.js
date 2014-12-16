@@ -138,10 +138,13 @@ Ext.define('sitools.user.view.component.form.FormView', {
                 align: 'middle'
             },
             items: [{
+                text : i18n.get("label.reset"),
+                itemId : 'resetSearchForm',
+                scale : 'large'
+            }, {
                 text: i18n.get('label.search'),
                 itemId: 'btnSearchForm',
-                scale: 'large',
-                scope: this
+                scale: 'large'
             }]
         };
 
