@@ -29,7 +29,15 @@ Ext.define("sitools.user.utils.Def",{
 
     requires : ['sitools.public.widget.item.TextPanelView'],
 
-    singleton : true
+    singleton : true,
+
+    getInfiniteCookieDuration : function () {
+        var date = new Date();
+        var expireDate = Ext.Date.add(date, Ext.Date.YEAR, 5);
+        return expireDate;
+    }
+
+
 });
 
 // GLOBAL BEHAVIOUR

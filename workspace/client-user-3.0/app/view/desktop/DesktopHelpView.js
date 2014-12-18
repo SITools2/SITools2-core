@@ -75,7 +75,7 @@ Ext.define('sitools.user.view.desktop.DesktopHelpView', {
                 xtype: 'checkbox',
                 listeners: {
                     change: function (combo, newValue, oldValue) {
-                        Ext.util.Cookies.set('showDesktopHelp', newValue);
+                        Ext.util.Cookies.set('showDesktopHelp', newValue, sitools.user.utils.Def.getInfiniteCookieDuration());
                     },
                     afterrender: function (cb) {
                         cb.setValue(Ext.util.Cookies.get('showDesktopHelp'));

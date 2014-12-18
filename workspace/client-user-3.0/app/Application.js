@@ -105,7 +105,7 @@ Ext.define('sitools.user.Application', {
         }
 
         if (Ext.isEmpty(Ext.util.Cookies.get('showDesktopHelp'))) {
-            Ext.util.Cookies.set('showDesktopHelp', true);
+            Ext.util.Cookies.set('showDesktopHelp', true, sitools.user.utils.Def.getInfiniteCookieDuration());
         }
 
         Desktop.init();
