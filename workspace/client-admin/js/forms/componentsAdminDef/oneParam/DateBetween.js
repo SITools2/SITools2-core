@@ -27,17 +27,16 @@ Ext.namespace('sitools.admin.forms.componentsAdminDef.oneParam');
  */
 Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.DateBetween', { 
     extend : 'sitools.admin.forms.componentsAdminDef.oneParam.Abstract', 
-    height : 330,
+    height : 480,
     
     require : ['sitools.public.widget.item.DateFieldWithToday'],
-//    id : "sitools.component.forms.definitionId",
-    
+
     initComponent : function () {
         //formattage de extraParams : 
-        this.winPropComponent.specificHeight = 430;
+        this.winPropComponent.specificHeight = this.height;
         this.winPropComponent.specificWidth = 400;
-        sitools.admin.forms.componentsAdminDef.oneParam.DateBetween.superclass.initComponent.call(this);
-        this.componentDefaultValueFrom = Ext.create("sitools.public.widget.item.DateFieldWithToday", {
+        this.callParent(arguments);
+        this.componentDefaultValueFrom = Ext.create("Ext.ux.date.form.DateTimeField", {
             fieldLabel : i18n.get('label.defaultValueFrom'),
             name : 'componentDefaultValueFrom',
             anchor : '100%', 
@@ -45,7 +44,7 @@ Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.DateBetween', {
             showTime : true, 
             tooltip : i18n.get('label.explainDateDefault')
         });
-        this.componentDefaultValueTo = Ext.create("sitools.public.widget.item.DateFieldWithToday", {
+        this.componentDefaultValueTo = Ext.create("Ext.ux.date.form.DateTimeField", {
             fieldLabel : i18n.get('label.defaultValueTo'),
             name : 'componentDefaultValueTo',
             anchor : '100%', 
@@ -53,9 +52,7 @@ Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.DateBetween', {
             showTime : true, 
             tooltip : i18n.get('label.explainDateDefault')
         });
-//        this.add(this.componentDefaultValueFrom);
-//        this.add(this.componentDefaultValueTo);
-        
+
         this.truncateDefaultValue = Ext.create("Ext.form.Checkbox", {
             fieldLabel : i18n.get('label.truncateDefaultValue'),
             name : 'truncateDefaultValue',

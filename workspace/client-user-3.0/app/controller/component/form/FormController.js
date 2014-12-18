@@ -119,7 +119,6 @@ Ext.define('sitools.user.controller.component.form.FormController', {
         } catch (err) {
             return;
         }
-        formContainer.doLayout();
     },
 
     resizeForm: function (form) {

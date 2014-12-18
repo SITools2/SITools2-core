@@ -30,7 +30,7 @@ Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.WithValues', {
     alias : 'widget.sitools.admin.forms.componentsAdminDef.oneParam.WithValues',
     requires : ['sitools.admin.forms.WinParent'],
 //    id : "sitools.component.forms.definitionId",
-    height : 450,
+    height : 580,
     initComponent : function () {
         sitools.admin.forms.componentsAdminDef.oneParam.WithValues.superclass.initComponent.call(this);
         var urlFormulaire = this.winPropComponent.urlFormulaire;
@@ -58,7 +58,7 @@ Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.WithValues', {
         this.add(this.parentParam);
         this.add(this.parentParamDisplay);
         
-        this.winPropComponent.specificHeight = 550;
+        this.winPropComponent.specificHeight = this.height;
         this.winPropComponent.specificWidth = 400;
         
         var storeValues = Ext.create("Ext.data.JsonStore", {
@@ -166,9 +166,11 @@ Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.WithValues', {
         this.add(fieldSet);
         if (this.ctype == 'LISTBOX' || this.ctype == 'LISTBOXMULTIPLE' || this.ctype == 'DROPDOWNLIST') {
             fieldSet.setVisible(true);
+            this.parentParamDisplay.setVisible(true);
         }
         else {
             fieldSet.setVisible(false);
+            this.parentParamDisplay.setVisible(false);
         }
 
         this.add(this.gridValues);
@@ -196,7 +198,7 @@ Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.WithValues', {
         this.gridValues.getStore().remove(recs);
     },
     afterRender : function () {
-        sitools.admin.forms.componentsAdminDef.oneParam.WithValues.superclass.afterRender.apply(this, arguments);
+        this.callParent(arguments);
         
         if (this.action == 'modify') {
             // gridEl = Ext.get ('componentGridValues');

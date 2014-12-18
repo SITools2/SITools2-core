@@ -26,14 +26,18 @@ Ext.namespace('sitools.admin.forms.componentsAdminDef.multiParam');
  * @extends Ext.form.FormPanel
  */
 Ext.define('sitools.admin.forms.componentsAdminDef.multiParam.Abstract', { 
-    extend : 'Ext.form.Panel',
-    autoScroll : true, 
-    border : false,
-    bodyBorder : false,
-    padding : 10,
+    extend : 'sitools.admin.forms.componentsAdminDef.Abstract',
     initComponent : function () {
+        this.callParent(arguments);
         this.context = sitools.admin.forms.componentsAdminDef.ComponentFactory.getContext(this.context);
-        
+        this.componentType = Ext.create("Ext.form.TextField", {
+            fieldLabel : i18n.get('label.component'),
+            name : 'FORM_COMPONENT',
+            anchor : '100%',
+            tooltip : i18n.get("label.component"),
+            disabled : true,
+            value : this.ctype
+        });
         this.storeColumn = Ext.create("Ext.data.JsonStore", {
             id : 'storeColumnSelect',
             proxy : {
@@ -144,14 +148,10 @@ Ext.define('sitools.admin.forms.componentsAdminDef.multiParam.Abstract', {
             value : this.componentDefaultWidth, 
             allowBlank : false
         });
-        this.items = [ this.labelParam1, this.css ];
+        this.add([this.componentType, this.labelParam1, this.css ]);
         if (this.action == "create") {
-			this.items.push(this.componentDefaultHeight, this.componentDefaultWidth); 
+			this.add([this.componentDefaultHeight, this.componentDefaultWidth]);
 		}
-
-        this.padding = 10;
-
-        this.callParent(arguments);
     },
     afterRender : function () {
         this.callParent(arguments);

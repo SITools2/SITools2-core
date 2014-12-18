@@ -27,22 +27,23 @@ Ext.namespace('sitools.admin.forms.componentsAdminDef.oneParam');
  */
 Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.WithoutValues', { 
     extend : 'sitools.admin.forms.componentsAdminDef.oneParam.Abstract', 
-    height : 250,
+    height : 380,
 //    id : "sitools.component.forms.definitionId",
     initComponent : function () {
-        this.winPropComponent.specificHeight = 350;
+        this.winPropComponent.specificHeight = this.height;
         this.winPropComponent.specificWidth = 400;
-        sitools.admin.forms.componentsAdminDef.oneParam.WithoutValues.superclass.initComponent.call(this);
-        this.componentDefaultValue = new Ext.form.TextField({
+        this.callParent(arguments);
+        this.componentDefaultValue = Ext.create("Ext.form.TextField", {
             fieldLabel : i18n.get('label.defaultValue'),
             name : 'componentDefaultValue',
-            anchor : '100%'
+            anchor : '100%',
+            itemId : 'defaultValue'
         });
         this.add(this.componentDefaultValue);
 
     },
     afterRender : function () {
-        sitools.admin.forms.componentsAdminDef.oneParam.WithoutValues.superclass.afterRender.apply(this, arguments);
+        this.callParent(arguments);
         if (this.action == 'modify') {
             if (!Ext.isEmpty(this.selectedRecord.data.defaultValues)) {
                 this.componentDefaultValue.setValue(this.selectedRecord.data.defaultValues[0]);

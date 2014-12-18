@@ -61,7 +61,7 @@ Ext.define('sitools.admin.forms.ComponentsDisplayPanel', {
 	        }        
         });
         
-        sitools.admin.forms.ComponentsDisplayPanel.superclass.initComponent.call(this);
+        this.callParent(arguments);
 	},
 
 	_activeDisposition : function () {
@@ -110,8 +110,8 @@ Ext.define('sitools.admin.forms.ComponentsDisplayPanel', {
         }
         
         if (this.formSize.height <= totalHeight) {
-			this.formSize.height = totalHeight + 20;
-        	this.setHeight(totalHeight + 20);	
+			this.formSize.height = totalHeight + 30;
+        	this.setHeight(totalHeight + 30);
 		}
         
 //        this.doLayout();

@@ -96,7 +96,7 @@ Ext.define('sitools.admin.forms.AdvancedFormPanel', {
             activate : this.onActivate
         };
         
-        sitools.admin.forms.AdvancedFormPanel.superclass.initComponent.call(this);
+        this.callParent(arguments);
     },
 
     afterRender : function () {
@@ -262,11 +262,13 @@ Ext.define('sitools.admin.forms.AdvancedFormPanel', {
 			items : [{
 				text : i18n.get('label.edit'), 
 				scope : this, 
-				handler : this.onEdit
+				handler : this.onEdit,
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_edit.png'
 			}, {
 				text : i18n.get('label.delete'), 
 				scope : this, 
-				handler : this.onDelete
+				handler : this.onDelete,
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_delete.png'
 			} ]
         });
 		var xy = event.getXY();

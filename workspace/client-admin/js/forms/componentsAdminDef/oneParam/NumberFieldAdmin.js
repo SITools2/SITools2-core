@@ -22,13 +22,12 @@ Ext.namespace('sitools.admin.forms.componentsAdminDef.oneParam');
 
 Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.NumberFieldAdmin', { 
     extend : 'sitools.admin.forms.componentsAdminDef.oneParam.AbstractWithUnit', 
-    height : 250,
-//    id : "sitools.component.forms.definitionId",
-    
+    height : 360,
+
     initComponent : function () {
-        this.winPropComponent.specificHeight = 350;
+        this.winPropComponent.specificHeight = this.height;
         this.winPropComponent.specificWidth = 400;
-        sitools.admin.forms.componentsAdminDef.oneParam.NumberFieldAdmin.superclass.initComponent.call(this);
+        this.callParent(arguments);
         this.componentDefaultValue = new Ext.form.TextField({
             fieldLabel : i18n.get('label.defaultValue'),
             name : 'componentDefaultValue',
@@ -40,7 +39,7 @@ Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.NumberFieldAdmin', {
         this.mapParam1.on("select", this.onChangeColumn, this);
     },
     afterRender : function () {
-        sitools.admin.forms.componentsAdminDef.oneParam.NumberFieldAdmin.superclass.afterRender.apply(this, arguments);
+        this.callParent(arguments);
         if (this.action == 'modify') {
             if (!Ext.isEmpty(this.selectedRecord.data.defaultValues)) {
                 this.componentDefaultValue.setValue(this.selectedRecord.data.defaultValues[0]);

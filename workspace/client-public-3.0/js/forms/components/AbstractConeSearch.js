@@ -49,18 +49,19 @@ Ext.define('sitools.public.forms.components.AbstractConeSearch', {
         var unit;
         //the administrator defines a dimension for this component
         if (!Ext.isEmpty(this.dimensionId)) {
-            var unit = new Ext.Button({
+            var unit = Ext.create("Ext.Button", {
                 scope : this, 
-                text : i18n.get('label.degree'), 
+                text : i18n.get('label.degree'),
+				itemId : 'unitButton',
                 width : 100,
                 handler : function (b, e) {
                     //inherited method 
-                    this.loadUnits(e);
+                    this.loadUnits(b);
                 }
             });
         }
         else {
-            unit = new Ext.Container({
+            unit = Ext.create("Ext.Container", {
 				html : i18n.get('label.degree'),
         		width : 100
 	    	});
@@ -178,8 +179,7 @@ Ext.define('sitools.public.forms.components.AbstractConeSearch', {
 	        overCls : 'fieldset-child',
 	        stype : "sitoolsFormContainer"
 	    });
-	    sitools.public.forms.components.AbstractConeSearch.superclass.initComponent.apply(
-	            this, arguments);
+	    this.callParent(arguments);
    	    if (!Ext.isEmpty(this.label)) {
 	    	this.items.insert(0, Ext.create("Ext.Container", {
 	            border : false,

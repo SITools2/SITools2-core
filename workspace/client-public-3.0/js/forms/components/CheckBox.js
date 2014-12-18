@@ -41,12 +41,13 @@ Ext.define('sitools.public.forms.components.CheckBox', {
                 value: value.value,
                 boxLabel: value.value,
                 name: this.code,
+                inputValue : value.value,
                 checked: value.defaultValue,
                 height: 25
 
             });
         }
-        this.cbGroup = new Ext.form.CheckboxGroup({
+        this.cbGroup = Ext.create("Ext.form.CheckboxGroup", {
             allowBlank: true,
             columns: 3,
             flex: 1,
@@ -60,10 +61,10 @@ Ext.define('sitools.public.forms.components.CheckBox', {
             stype: "sitoolsFormContainer",
             items: [this.cbGroup]
         });
-        sitools.public.forms.components.CheckBox.superclass.initComponent.apply(this, arguments);
+        this.callParent(arguments);
 
         if (!Ext.isEmpty(this.label)) {
-            this.items.insert(0, new Ext.Container({
+            this.items.insert(0, Ext.create("Ext.Container", {
                 border: false,
                 html: this.label,
                 width: 100
@@ -72,15 +73,19 @@ Ext.define('sitools.public.forms.components.CheckBox', {
     },
 
     getSelectedValue: function () {
-        var values = this.cbGroup.getValue();
-        if (values && values.length > 0) {
-            var selectedValues = [];
-            for (var i = 0; i < values.length; i++) {
-                if (Ext.isString(values[i].value) && !Ext.isNumber(parseFloat(values[i].value))) {
-                    values[i].value = values[i].value;
-                }
-                selectedValues.push(values[i].value);
+        var values = this.cbGroup.getValue()[this.code];
+        if (!Ext.isEmpty(values)) {
+            if (Ext.isString(values)) {
+                values = [values];
             }
+            var selectedValues = [];
+            Ext.each(values, function(value) {
+                //OLD CODE, WEIRD CODE....
+                //if (Ext.isString(values[i].value) && !Ext.isNumber(parseFloat(values[i].value))) {
+                //    values[i].value = values[i].value;
+                //}
+                selectedValues.push(value);
+            });
             return selectedValues;
         } else {
             return null;

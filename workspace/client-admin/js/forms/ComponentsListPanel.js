@@ -104,7 +104,7 @@ Ext.define('sitools.admin.forms.ComponentsListPanel', {
             header : i18n.get('headers.image'),
             dataIndex : 'imageUrl',
             renderer : function (value) {
-                return "<a href='#' onClick='sitools.admin.forms.ComponentsListPanel.showPreview(\"" + value + "\"); return false;'>" + i18n.get('label.preview') + "</a>";
+                return "<a style='color:blue !important' href='#' onClick='sitools.admin.forms.ComponentsListPanel.showPreview(\"" + value + "\"); return false;'>" + i18n.get('label.preview') + "</a>";
             }, 
             width : 70
         }];

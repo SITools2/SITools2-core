@@ -20,8 +20,6 @@
 /*
  * @include "../ComponentFactory.js"
  */
-Ext.ns('sitools.public.forms.components');
-
 /**
  * @requires sitools.common.forms.ComponentFactory
  * @class sitools.public.forms.components.Radio
@@ -40,13 +38,14 @@ Ext.define('sitools.public.forms.components.Radio', {
             value = this.values[i];
             items.push({
                 value: value.value,
+                inputValue: value.value,
                 boxLabel: value.value,
-                name: this.code[0],
+                name: this.code,
                 checked: value.defaultValue
             });
         }
 
-        this.radioGroup = new Ext.form.RadioGroup({
+        this.radioGroup = Ext.create("Ext.form.RadioGroup", {
             allowBlank: true,
             //height : this.height,
             items: items,
@@ -87,7 +86,7 @@ Ext.define('sitools.public.forms.components.Radio', {
      },
      */
     isValueDefined: function () {
-        if (this.radioGroup.getValue()) {
+        if (this.radioGroup.getValue()[this.code]) {
             return true;
         } else {
             return false;
@@ -95,9 +94,11 @@ Ext.define('sitools.public.forms.components.Radio', {
     },
 
     getSelectedValue: function () {
-        if (this.radioGroup.getValue()) {
-            return this.radioGroup.getValue().value;
-        } else {
+        var value = this.radioGroup.getValue()[this.code];
+        if (!Ext.isEmpty(value)) {
+            return value;
+        }
+        else {
             return null;
         }
     },

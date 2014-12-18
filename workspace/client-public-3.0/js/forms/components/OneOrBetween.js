@@ -67,72 +67,78 @@ Ext.define('sitools.public.forms.components.OneOrBetween', {
         //formattage de extraParams : 
         var unit = this.getUnitComponent();
 
-        this.fieldOne = new Ext.form.NumberField({
+        this.fieldOne = Ext.create("Ext.form.NumberField", {
             allowBlank: true,
+            itemId : 'one',
             //height : this.height,
             value: this.defaultValues[0],
             flex: 2,
             listeners: {
                 scope: this,
                 change: function () {
-                    this.fieldTo.setValue("");
-                    this.fieldFrom.setValue("");
+                    this.fieldTo.setRawValue("");
+                    this.fieldFrom.setRawValue("");
                 }
             },
             decimalPrecision: 20
         });
 
-        this.fieldFrom = new Ext.form.NumberField({
+        this.fieldFrom = Ext.create("Ext.form.NumberField", {
             allowBlank: true,
+            itemId : 'from',
             //height : this.height,
             flex: 2,
             validator: function (value) {
-                if (Ext.isEmpty(this.ownerCt.fieldTo.getValue())) {
+                var valueTo = this.up("component").down("numberfield#to").getValue();
+                if (Ext.isEmpty(valueTo)) {
                     return true;
                 }
-                if (value > this.ownerCt.fieldTo.getValue()) {
+                if (value > valueTo) {
                     return "invalid Value";
                 } else {
                     return true;
                 }
             },
             listeners: {
+                scope : this,
                 change: function () {
-                    this.ownerCt.fieldOne.setValue("");
+                    this.fieldOne.setRawValue("");
                 }
             },
             decimalPrecision: 20
         });
-        this.fieldTo = new Ext.form.NumberField({
+        this.fieldTo = Ext.create("Ext.form.NumberField", {
             allowBlank: true,
+            itemId : 'to',
             //height : this.height,
             flex: 2,
             validator: function (value) {
-                if (value < this.ownerCt.fieldFrom.getValue()) {
+                if (value < this.up("component").down("numberfield#from").getValue()) {
                     return "invalid Value";
                 } else {
                     return true;
                 }
             },
             listeners: {
+                scope : this,
                 change: function () {
-                    this.ownerCt.fieldOne.setValue("");
+                    this.fieldOne.setRawValue("");
                 }
             },
             decimalPrecision: 20
         });
-        var items = [this.fieldOne, new Ext.Container({
+        var items = [this.fieldOne, Ext.create("Ext.Container", {
             border: false,
             html: i18n.get('label.or'),
             width: 35
         }), new Ext.Container({
             border: false,
             html: i18n.get('label.min'),
-            width: 35
-        }), this.fieldFrom, new Ext.Container({
+            width: 40
+        }), this.fieldFrom, new Ext.create("Ext.Container", {
             border: false,
             html: i18n.get('label.max'),
-            width: 35
+            width: 40
         }), this.fieldTo];
         if (!Ext.isEmpty(unit)) {
             items.push(unit);
@@ -146,10 +152,9 @@ Ext.define('sitools.public.forms.components.OneOrBetween', {
 
             items: items
         });
-        sitools.public.forms.components.OneOrBetween.superclass.initComponent
-            .apply(this, arguments);
+        this.callParent(arguments);
         if (!Ext.isEmpty(this.label)) {
-            this.items.insert(0, new Ext.Container({
+            this.items.insert(0, Ext.create("Ext.Container", {
                 border: false,
                 html: this.label,
                 width: 100
@@ -202,14 +207,18 @@ Ext.define('sitools.public.forms.components.OneOrBetween', {
             return null;
         }
 
-        var result = this.type + "|" + this.code + "|" + value.one + "|" + value.from + "|" + value.to;
-        if (!Ext.isEmpty(this.userDimension) && !Ext.isEmpty(this.userUnit)) {
-            result += "|" + this.userDimension + "|" + this.userUnit;
+        var valueTemplate = "{0}|{1}|{2}";
+        var value;
+        if(value.one == null) {
+            value = Ext.String.format(valueTemplate, "", value.from, value.to);
+        } else {
+            value = Ext.String.format(valueTemplate, value.one, "", "");
         }
+
         return {
             type: this.type,
             code: this.code,
-            value: value.one + "|" + value.from + "|" + value.to,
+            value: value,
             userDimension: this.userDimension,
             userUnit: this.userUnit
         };

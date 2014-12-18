@@ -25,14 +25,12 @@ Ext.namespace('sitools.admin.forms.componentsAdminDef.noParam');
  * @class sitools.admin.forms.componentsAdminDef.noParam.Label
  * @extends Ext.form.FormPanel
  */
-Ext.define('sitools.admin.forms.componentsAdminDef.noParam.Label', { 
-    extend : 'Ext.form.Panel',
-    height : 250,
-    border : false,
-    bodyBorder : false,
-    padding : 10,
-    
+Ext.define('sitools.admin.forms.componentsAdminDef.noParam.Label', {
+    extend : 'sitools.admin.forms.componentsAdminDef.Abstract',
+    height : 280,
+
     initComponent : function () {
+        this.callParent(arguments);
         this.css = Ext.create("Ext.form.TextField", {
             fieldLabel : i18n.get('label.css'),
             name : 'CSS',
@@ -58,14 +56,13 @@ Ext.define('sitools.admin.forms.componentsAdminDef.noParam.Label', {
         });
         this.winPropComponent.specificHeight = this.height;
         this.winPropComponent.specificWidth = 400;
-        this.items = [ this.label, this.css ];
+        this.add([ this.label, this.css ]);
         if (this.action == "create") {
-			this.items.push(this.componentDefaultHeight, this.componentDefaultWidth); 
+            this.add([ this.componentDefaultHeight, this.componentDefaultWidth]);
 		}
-        sitools.admin.forms.componentsAdminDef.noParam.Label.superclass.initComponent.call(this);
     },
     afterRender : function () {
-        sitools.admin.forms.componentsAdminDef.noParam.Label.superclass.afterRender.apply(this, arguments);
+        this.callParent(arguments);
         if (this.action == 'modify') {
             this.css.setValue(this.selectedRecord.data.css);
         }

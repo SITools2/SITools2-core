@@ -46,7 +46,7 @@ Ext.define('sitools.public.forms.components.ListBox', {
 
         var store;
         if (this.valueSelection == 'S') {
-            store = new Ext.data.ArrayStore({
+            store = Ext.create("Ext.data.ArrayStore", {
                 fields: ['value', 'text'],
                 data: items,
                 valueField: 'value',
@@ -118,7 +118,7 @@ Ext.define('sitools.public.forms.components.ListBox', {
         this.callParent(arguments);
 
         if (!Ext.isEmpty(this.label)) {
-            this.items.insert(0, new Ext.Container({
+            this.items.insert(0, Ext.create("Ext.Container", {
                 border: false,
                 html: this.label,
                 width: 100

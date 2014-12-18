@@ -34,13 +34,14 @@ Ext.define('sitools.public.forms.components.BooleanCheckbox', {
 
     initComponent : function () {
 	    this.context = sitools.public.forms.ComponentFactory.getContext(this.context);
-        this.cbGroup = new Ext.form.CheckboxGroup ({
+        this.cbGroup = Ext.create("Ext.form.CheckboxGroup", {
 	        allowBlank : true,
 	        flex : 1,
 	        items : [ {
 	            xtype : "checkbox",
-	            checked : eval(this.defaultValues[0]),
-	            value : true
+	            checked : this.defaultValues[0] === "true",
+	            value : true,
+				name : this.code
 	        } ]
 	    });
 	    Ext.apply(this, {
@@ -49,11 +50,10 @@ Ext.define('sitools.public.forms.components.BooleanCheckbox', {
 	    	overCls : 'fieldset-child',
 	        items : [this.cbGroup]
 	    });
-	    sitools.public.forms.components.BooleanCheckbox.superclass.initComponent.apply(
-	            this, arguments);
+	    this.callParent(arguments);
    	    
    	    if (!Ext.isEmpty(this.label)) {
-	    	this.items.insert(0, new Ext.Container({
+	    	this.items.insert(0, Ext.create("Ext.Container", {
 	            border : false,
 	            html : this.label,
 	            width : 100
@@ -63,7 +63,7 @@ Ext.define('sitools.public.forms.components.BooleanCheckbox', {
 	},
 
     getSelectedValue : function () {
-	    if (this.cbGroup.getValue() && this.cbGroup.getValue().length > 0) {
+	    if (!Ext.isEmpty(this.cbGroup.getValue()[this.code])) {
 		    return "true";
 	    } else {
 		    return "false";

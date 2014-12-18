@@ -28,16 +28,11 @@ Ext.namespace('sitools.admin.forms.componentsAdminDef.oneParam');
  * @class sitools.admin.forms.componentsAdminDef.oneParam.Abstract
  * @extends Ext.form.FormPanel
  */
-Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.Abstract', { 
-    extend : 'Ext.form.Panel',
-    autoScroll : true, 
-    context : null, 
-    border : false,
-    bodyBorder : false,
-    padding : 5,
+Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.Abstract', {
+    extend : 'sitools.admin.forms.componentsAdminDef.Abstract',
     initComponent : function () {
+        this.callParent(arguments);
         this.context = sitools.admin.forms.componentsAdminDef.ComponentFactory.getContext(this.context);
-        
         this.buttonAdd = Ext.create("Ext.Button", {
 			text : i18n.get('label.addColumn'), 
 			scope : this, 
@@ -85,16 +80,13 @@ Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.Abstract', {
             value : this.componentDefaultWidth, 
             allowBlank : false
         });
-        this.items = [ this.labelParam1, this.mapParam1, this.css];
+        this.add([this.labelParam1, this.mapParam1, this.css]);
 		if (this.action == "create") {
-			this.items.push(this.componentDefaultHeight, this.componentDefaultWidth); 
+            this.add([this.componentDefaultHeight, this.componentDefaultWidth]);
 		}
-        this.padding = 10;
-
-        sitools.admin.forms.componentsAdminDef.oneParam.Abstract.superclass.initComponent.call(this);
     },
     afterRender : function () {
-        sitools.admin.forms.componentsAdminDef.oneParam.Abstract.superclass.afterRender.apply(this, arguments);
+        this.callParent(arguments);
         if (this.action == 'modify') {
             this.labelParam1.setValue(this.selectedRecord.data.label);
             this.css.setValue(this.selectedRecord.data.css);

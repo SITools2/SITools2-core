@@ -151,7 +151,6 @@ Ext.define('sitools.admin.forms.SetupAdvancedFormPanel', {
         }
         
         this.destroy();
-//        this.parentContainer.doLayout();
         this.parentContainer.fireEvent('activate');
     },
     
