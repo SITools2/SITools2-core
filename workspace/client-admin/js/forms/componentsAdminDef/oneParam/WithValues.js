@@ -44,7 +44,7 @@ Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.WithValues', {
             name : 'PARENT_PARAM_DISPLAY',
             anchor : '100%', 
             editable : false, 
-            disabled : this.context.context == "project"
+            disabled : true // always disable at first (will still be disabled in projectmode, will be enabled when choosing fromData)
         });
         this.parentParamDisplay.onTriggerClick = function (event) {
             var winParent = Ext.create("sitools.admin.forms.WinParent", {
@@ -57,7 +57,7 @@ Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.WithValues', {
         };
         this.add(this.parentParam);
         this.add(this.parentParamDisplay);
-        
+
         this.winPropComponent.specificHeight = this.height;
         this.winPropComponent.specificWidth = 400;
         
@@ -144,10 +144,12 @@ Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.WithValues', {
                 change : function (rg, newValue, oldValue, opts) {
                     var gridEl;
                     if (newValue.valuesType == 'D') {
+                        this.parentParamDisplay.setDisabled(false);
                         gridEl = Ext.get('componentGridValues');
                         gridEl.mask();
                         // this.mask = this.gridValues().loadMask();
                     } else {
+                        this.parentParamDisplay.setDisabled(true);
                         gridEl = Ext.get('componentGridValues');
                         gridEl.unmask();
                     }
@@ -227,6 +229,10 @@ Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.WithValues', {
                 };
                 this.gridValues.getStore().add(rec);
             }, this);
+
+            //if(this.selectedRecord.get("valueSelection") == 'D') {
+            //    this.parentParamDisplay.setDisabled(false);
+            //}
         }
 
     },

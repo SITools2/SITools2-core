@@ -94,10 +94,10 @@ Ext.define('sitools.public.forms.components.ListBox', {
             ddReorder: true,
             valueField: 'value',
             displayField: 'text',
+            value : this.defaultValues,
             listeners: {
                 scope: this,
                 afterrender: function (multiselect) {
-                    this.setSelectedValue(this.defaultValues);
                     //get the inner list to listen on its selection model
                     multiselect.down("boundlist").getSelectionModel().on("selectionchange", function () {
                         this.form.fireEvent('componentChanged', this.form, this);

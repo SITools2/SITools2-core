@@ -65,7 +65,7 @@ Ext.define('sitools.public.forms.components.ListBoxMultiple', {
                     name: 'text',
                     mapping: this.code
                 }],
-                autoLoad: !Ext.isEmpty(this.dataUrl) ? true : false,
+                autoLoad: !Ext.isEmpty(this.dataUrl),
                 proxy: {
                     type: 'ajax',
                     url: this.dataUrl + "/records",
@@ -88,10 +88,10 @@ Ext.define('sitools.public.forms.components.ListBoxMultiple', {
             flex: 1,
             delimiter: '|',
             stype: "sitoolsFormItem",
+            value : this.defaultValues,
             listeners: {
                 scope: this,
                 afterrender: function (multiselect) {
-                    this.setSelectedValue(this.defaultValues);
                     //get the inner list to listen on its selection model
                     multiselect.down("boundlist").getSelectionModel().on("selectionchange", function () {
                         this.form.fireEvent('componentChanged', this.form, this);

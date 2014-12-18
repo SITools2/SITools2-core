@@ -60,7 +60,8 @@ Ext.define('sitools.user.utils.FormUtils', {
             extraParams : parameter.extraParams, 
             datasetCm : datasetCm, 
             context : context,
-            form : form
+            form : form,
+            stype : "sitoolsFormComponent"
 //            padding : 5
         });
         
