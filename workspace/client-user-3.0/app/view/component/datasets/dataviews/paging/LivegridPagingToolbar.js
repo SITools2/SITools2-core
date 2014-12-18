@@ -55,8 +55,12 @@ Ext.define('sitools.user.view.component.datasets.dataviews.paging.LivegridPaging
             var renderer = this.getRenderer() ;
             var firstIndex = renderer.getFirstVisibleRowIndex()+1;
             var lastIndex = renderer.getLastVisibleRowIndex();
-            
+
             count = store.getCount();
+
+            if (lastIndex > count) {
+                lastIndex = count;
+            }
             if (count === 0) {
                 msg = me.emptyMsg;
             } else {
