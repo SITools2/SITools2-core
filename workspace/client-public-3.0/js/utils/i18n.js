@@ -32,23 +32,24 @@ Ext.define('sitools.public.utils.i18n', {
      * @param callback No args function that will be executed
      * @returns void
      */
-    load : function (url, callback, scope) {
+    load : function (url, callback, scope, loopOnFailure) {
     	this.doLoad(url, callback, function(response, opts) {
     		if (!opts.loopOnFailure) {
                 Ext.Msg.alert("Error! Can't read i18n file with url :" + url);
             } else {
                 locale.restoreDefault();
                 url = loadUrl.get("APP_URL") + loadUrl.get("APP_CLIENT_PUBLIC_URL") + '/res/i18n/' + locale.getLocale() + '/gui.properties';
-                i18n.load(url, callback, scope);
+                i18n.load(url, callback, scope, false);
             }
     	}, scope);
     },
     
-    doLoad : function (url, callback, onFailure, scope) {
+    doLoad : function (url, callback, onFailure, scope, loopOnFailure) {
         var i18nRef = this;
         Ext.Ajax.request({
             method : 'GET',
             url : url,
+            loopOnFailure : (Ext.isEmpty(loopOnFailure)) ? true : loopOnFailure,
             // params:'formLogin', using autorization instead
             success : function (response, opts) {
                 i18nRef.map = i18nRef.transformsPropertiesToMap(response.responseText);

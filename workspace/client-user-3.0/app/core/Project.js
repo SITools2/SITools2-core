@@ -48,7 +48,7 @@ Ext.define('sitools.user.core.Project', {
     init : function (callback, scope) {
         this.projectName = this.initProjectName();
         this.initProjectInfo(callback, scope);
-        this.setLanguages(locale.getLocale());
+        this.setLanguages(locale.getLanguages());
     },
     
     initProjectName : function () {
