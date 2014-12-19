@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -23,6 +23,7 @@ import java.util.logging.Level;
 
 import org.restlet.Context;
 import org.restlet.data.Form;
+import org.restlet.data.Status;
 import org.restlet.ext.wadl.MethodInfo;
 import org.restlet.ext.wadl.ParameterInfo;
 import org.restlet.ext.wadl.ParameterStyle;
@@ -36,6 +37,7 @@ import fr.cnes.sitools.dataset.database.DatabaseRequestParameters;
 import fr.cnes.sitools.dataset.database.common.DataSetExplorerUtil;
 import fr.cnes.sitools.dataset.dto.DictionaryMappingDTO;
 import fr.cnes.sitools.dataset.model.DataSet;
+import fr.cnes.sitools.datasource.common.SitoolsDataSource;
 import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
 
 /**
@@ -98,6 +100,16 @@ public abstract class AbstractJeoSearchResource extends SitoolsParameterizedReso
 
     // Get DatabaseRequestParameters
     DatabaseRequestParameters params = dsExplorerUtil.getDatabaseParams();
+
+    // first check if the datasource is activated or not
+    SitoolsDataSource datasource = params.getDb();
+    if (datasource == null || !"ACTIVE".equals(datasource.getDsModel().getStatus())) {
+      // Response response = new Response(false, "Datasource not activated");
+      // return getRepresentation(response, media);
+
+      getResponse().setStatus(Status.SERVER_ERROR_SERVICE_UNAVAILABLE, "Datasource not activated");
+      return null;
+    }
 
     Form queryParams = getRequest().getResourceRef().getQueryAsForm();
 
