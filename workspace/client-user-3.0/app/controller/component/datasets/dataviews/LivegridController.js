@@ -73,28 +73,6 @@ Ext.define('sitools.user.controller.component.datasets.dataviews.LivegridControl
                 }
             },
             'livegridView' : {
-                
-                render : function (view) {
-                    view.getStore().on("load", function() {
-                     // do selection if those ranges are passed to the dataview
-                        var ranges = view.getRanges();
-                        if (!Ext.isEmpty(ranges)) {
-                            var nbRecordsSelection = view.getNbRecordsSelection(); 
-                             if (!Ext.isEmpty(nbRecordsSelection) && (nbRecordsSelection === view.store.getTotalCount())) {
-                                 view.getSelectionModel().selectAll();
-                                 view.setNbRecordsSelection(null);
-                                 view.setRanges(null);
-                             } else {
-                                 ranges = Ext.JSON.decode(ranges);
-                                 this.selectRangeDataview(view, ranges);
-                                 view.setNbRecordsSelection(null);
-                                 view.setRanges(null);
-                             }
-                         }
-                    }, this);
-                    
-                },
-                
             	resize : function (view) {
                     view.getSelectionModel().updateSelection();
                     view.down("pagingtoolbar").updateInfo();
@@ -105,6 +83,39 @@ Ext.define('sitools.user.controller.component.datasets.dataviews.LivegridControl
                         view.getSelectionModel().updateSelection();
                         view.down("pagingtoolbar").updateInfo();
                     }, view);
+
+
+                    view.getStore().on("load", function(records, operation, success) {
+                        //check that the store is well loaded
+                        if(!success) {
+                            var response = view.getStore().getProxy().exceptionResponse;
+
+                            var parent = view.up("component");
+                            parent.remove(view);
+
+                            parent.add(Ext.create("Ext.panel.Panel", {
+                                title : i18n.get("label.error"),
+                                layout : 'fit',
+                                html : response.responseText
+                            }));
+                            return;
+                        }
+                        // do selection if those ranges are passed to the dataview
+                        var ranges = view.getRanges();
+                        if (!Ext.isEmpty(ranges)) {
+                            var nbRecordsSelection = view.getNbRecordsSelection();
+                            if (!Ext.isEmpty(nbRecordsSelection) && (nbRecordsSelection === view.store.getTotalCount())) {
+                                view.getSelectionModel().selectAll();
+                                view.setNbRecordsSelection(null);
+                                view.setRanges(null);
+                            } else {
+                                ranges = Ext.JSON.decode(ranges);
+                                this.selectRangeDataview(view, ranges);
+                                view.setNbRecordsSelection(null);
+                                view.setRanges(null);
+                            }
+                        }
+                    }, this);
                 },
 
                 cellclick : function (table, td, cellIndex, record, tr, rowIndex, e) {

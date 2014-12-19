@@ -114,6 +114,12 @@ Ext.define('sitools.user.store.dataviews.AbstractDataviewStore', {
                         };
                     }
                     return this.applyEncoding(min);
+                },
+                listeners : {
+                    scope : this,
+                    exception : function(proxy, response, operation) {
+                        proxy.exceptionResponse = response;
+                    }
                 }
             }
         });

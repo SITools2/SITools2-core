@@ -63,6 +63,12 @@ Ext.define('sitools.user.store.dataviews.map.ProtocolProxy', {
                     };
                 }
                 return this.applyEncoding(min);
+            },
+            listeners : {
+                scope : this,
+                exception : function(proxy, response, operation) {
+                    proxy.exceptionResponse = response.priv;
+                }
             }
         });
 

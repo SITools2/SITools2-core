@@ -101,6 +101,22 @@ Ext.define('sitools.user.controller.component.datasets.dataviews.CartoViewContro
                         view.getStore().load();
                     }
                     view.getStore().on("load", function (store, records, success, eOpts) {
+
+                        //check that the store is well loaded
+                        if(!success) {
+                            var response = view.getStore().getProxy().exceptionResponse;
+
+                            var parent = view.up("component");
+                            parent.remove(view);
+
+                            parent.add(Ext.create("Ext.panel.Panel", {
+                                title : i18n.get("label.error"),
+                                layout : 'fit',
+                                html : response.responseText
+                            }));
+                            return;
+                        }
+
                         // do selection if those ranges are passed to the dataview
                         var ranges = view.getRanges();
                         if (!Ext.isEmpty(ranges)) {

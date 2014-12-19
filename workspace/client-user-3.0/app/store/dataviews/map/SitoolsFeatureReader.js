@@ -21,14 +21,14 @@
  *
  * Cartoview store used for cartoView
  *
- * @class sitools.user.store.dataviews.map.ProtocolProxy
+ * @class sitools.user.store.dataviews.map.SitoolsFeatureReader
  */
 Ext.define('sitools.user.store.dataviews.map.SitoolsFeatureReader', {
 
         extend : 'GeoExt.data.reader.Feature',
         alias : 'reader.sitoolsfeaturereader',
 
-        constructor : function () {
+        constructor : function (config) {
             this.callParent(arguments);
             this.extractTotal = this.getTotal;
 
