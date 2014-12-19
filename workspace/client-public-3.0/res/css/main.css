@@ -629,3 +629,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 .languageMenuIcon {
     background-image: url(/sitools/client-user/resources/images/icons/session/language.png) !important;
 }
+
+.userPersonalIcon {
+	background-image: url(/sitools/common/res/images/icons/general/user.png) !important;
+	background-size : 15px 15px;
+}
