@@ -17,10 +17,12 @@
 * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
 ***************************************/
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure*/
-Ext.namespace('sitools.admin.quickStart');
+Ext.namespace('sitools.admin.quickstart');
 
 Ext.define('sitools.admin.quickstart.QsDataset', { 
     extend : 'Ext.panel.Panel',
+    widget : 'widget.qsDataset',
+
     forceLayout : true, 
     layout : {
         type : "vbox",
@@ -32,34 +34,18 @@ Ext.define('sitools.admin.quickstart.QsDataset', {
     
     initComponent : function () {
         
-        var title = new Ext.form.Label({
+        var title = Ext.create('Ext.form.Label', {
             cls : 'qs-h1',
-            html : i18n.get('label.qsDatasetTitle'),
-            listeners : {
-                render : function (img) {
-                    img.getEl().fadeIn({
-                        easing : 'easeIn',
-                        duration: 1
-                    });
-                }
-            }
+            html : i18n.get('label.qsDatasetTitle')
         });
         
-        var desc = new Ext.form.Label({
+        var desc = Ext.create('Ext.form.Label', {
             cls : 'qs-div',
             id : "start-desc",
-            html : i18n.get('label.qsDatasetDesc'),
-            listeners : {
-                render : function (desc) {
-                   desc.getEl().fadeIn({
-                       easing : 'easeIn',
-                       duration: 1
-                   });
-               }
-            }
+            html : i18n.get('label.qsDatasetDesc')
         });
         
-        var img = new Ext.form.Label({
+        var img = Ext.create('Ext.form.Label', {
             html : '<img id="qs-dataset" class="qs-image" src="/sitools/client-admin/res/html/quickStart/screenshots/datasets.png"/>',
             tooltip : 'Open Dataset',
             listeners : {
@@ -67,26 +53,12 @@ Ext.define('sitools.admin.quickstart.QsDataset', {
                 afterrender : function (img) {
                     Ext.get("qs-dataset").on('load', function () {
                         
-                        img.getEl().fadeIn({
-                            opacity: 1,
-                            easing : 'easeIn',
-                            duration: 1,
-                            useDisplay : true
-                        });
                         img.getEl().alignTo("start-desc", "tl-bl");
                         
-                        var imgProjet = new Ext.form.Label({
+                        var imgProjet = Ext.create('Ext.form.Label', {
                             html : '<img id="qs-dataset-logo" class="bouton_action" src="/sitools/client-admin/res/html/quickStart/icons/dataset-logo.png"/>',
                             listeners : {
                                 scope : this,
-                                render : function (imgProjet) {
-                                    imgProjet.getEl().fadeIn({
-                                        opacity: 1,
-                                        easing : 'easeIn',
-                                        duration: 1.5,
-                                        useDisplay : true
-                                    });
-                                },
                                 afterrender : function (imgProjet) {
                                     Ext.get("qs-dataset-logo").on('load', function () {
                                         
@@ -115,16 +87,14 @@ Ext.define('sitools.admin.quickstart.QsDataset', {
                             }
                         });
                         this.add(imgProjet);
-                        this.doLayout();
-                        
+
                     }, this);
                 }
             }
         });
         
         this.items = [title, desc, img];
-        
-        sitools.admin.quickstart.QsDataset.superclass.initComponent.call(this);
+        this.callParent(arguments);
     }
 });
 
