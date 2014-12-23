@@ -65,8 +65,6 @@ Ext.define('sitools.admin.Application', {
         
         'sitools.public.widget.datasets.columnRenderer.BehaviorEnum',
         
-        'sitools.public.widget.grid.SitoolsView',
-        
         'sitools.public.widget.item.menuButton',
         'sitools.public.widget.item.TextFilter',
         'Ext.ux.form.MultiSelect',

@@ -22,7 +22,6 @@
  * @class Ext.ux.sitoolsGridView
  * @extends Ext.grid.GridView
  */
-// Ext.define('Ext.ux.sitoolsGridView', { extend : 'Ext.grid.GridView', 
 Ext.define('sitools.public.widget.grid.SitoolsView', {
     extend : 'Ext.grid.View',
     alternateClassNames : 'Ext.ux.sitoolsGridView',
