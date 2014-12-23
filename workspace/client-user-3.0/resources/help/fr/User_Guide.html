@@ -26,7 +26,7 @@
 body {
 	text-align: left;
 	color: #333;
-	text-shadow: 0.1em 0.1em #FFF0F0;
+	text-shadow: 0.1em 0.01em #F0F0F0;
 	width: 900px;
 	background: #cfe3f1;
 }
@@ -45,15 +45,15 @@ body {
 	text-align: justify;
 	font-family: serif;
 	padding: 8px;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-	border-radius: 5px;
+	-moz-border-radius: 1px;
+	-webkit-border-radius: 1px;
+	border-radius: 1px;
 	background-color: #F5FCFF;
 	border: 1px solid #E4E4E4;
-	-moz-box-shadow: 1px 1px 3px 0px #999;
-	-webkit-box-shadow: 1px 1px 3px 0px #999;
-	-o-box-shadow: 1px 1px 3px 0px #999;
-	box-shadow: 1px 1px 3px 0px #999;
+	-moz-box-shadow: 1px 1px 3px 0px #BEBEBE;
+	-webkit-box-shadow: 1px 1px 3px 0px #BEBEBE;
+	-o-box-shadow: 1px 1px 3px 0px #BEBEBE;
+	box-shadow: 1px 1px 3px 0px #BEBEBE;
 	filter: progid:DXImageTransform.Microsoft.Shadow(color=#656565,
 		Direction=134, Strength=5);
 }
@@ -61,15 +61,15 @@ body {
 .screenshot_effect {
 	margin: auto;
 	display: block;
-	-moz-box-shadow: 0px 0px 10px 2px #999;
-	-webkit-box-shadow: 0px 0px 10px 2px #999;
-	-o-box-shadow: 0px 0px 10px 2px #999;
-	box-shadow: 0px 0px 10px 2px #999;
+	-moz-box-shadow: 0px 0px 5px 2px #BEBEBE;
+	-webkit-box-shadow: 0px 0px 5px 2px #BEBEBE;
+	-o-box-shadow: 0px 0px 5px 2px #BEBEBE;
+	box-shadow: 0px 0px 5px 2px #BEBEBE;
 	filter: progid:DXImageTransform.Microsoft.Shadow(color=#656565,
 		Direction=134, Strength=5);
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-	border-radius: 5px;
+	-moz-border-radius: 1px;
+	-webkit-border-radius: 1px;
+	border-radius: 1px;
 }
 
 hr {
@@ -92,10 +92,8 @@ ol {
 	<p class="paragraph">
 		Le portail donne accès aux diffèrents projets visible par
 		l'utilisateur. Il contient plusieurs «&nbsp;portlets&nbsp;» que l'on
-		peut déplacer sur la page. Il est possible de choisir quels
-		«&nbsp;portlets&nbsp;» sont affichés en les cochant ou en les
-		décochant sur la partie <strong>Components</strong> à gauche. On peut
-		consulter la liste des projets dans le «&nbsp; portlets &nbsp;» <strong>Projects</strong>
+		peut déplacer sur la page. On peut
+		consulter la liste des projets dans le «&nbsp; portlets &nbsp;» <strong>Projects Publics</strong>
 		ainsi que différents flux RSS définis au niveau du portail dans le
 		portlet <strong>Portal feeds</strong>. On accède à un projet en
 		cliquant dessus.
@@ -122,24 +120,14 @@ ol {
 	</p>
 
 	<div class="paragraph">
-		<img class="icon" src="./images/button-home.png" /> Recharge le
-		bureau avec les préférences sauvegardés par l'utilisateur
 
 		<p style="clear: both;" />
 		<img class="icon" src="./images/user-icon.png" /> Affiche la fenêtre
 		personnelle de l'utilisateur
 
 		<p style="clear: both;" />
-		<img class="icon" src="./images/version-icon.png" /> Affiche la
-		version ainsi que la licence de SITools 2
-
-		<p style="clear: both;" />
 		<img class="icon" src="./images/save-icon.png" /> Affiche une fenêtre
 		pour sauvegarder les préférences du bureau
-
-		<p style="clear: both;" />
-		<img class="icon" src="./images/help-icon.png" /> Affiche la
-		documentation utilisateur
 
 		<p style="clear: both;" />
 		<img class="icon" src="./images/maxi-icon.png" /> Etend le bureau
@@ -148,6 +136,9 @@ ol {
 		<p style="clear: both;" />
 		<img class="icon" src="./images/display_desktop.png" /> Affiche le
 		bureau (masque toutes les fenêtres actives)
+
+		<p style="clear: both;" />
+		<img class="icon" src="./images/close-icon.png" /> Ferme toute les fenêtres ouvertes
 
 	</div>
 	<hr />
@@ -180,7 +171,7 @@ ol {
 	</h3>
 
 	<p>
-		<img class="screenshot_effect " width="400" height="180"
+		<img class="screenshot_effect " width="450" height="250"
 			src="./images/user_information.png" />
 	</p>
 
@@ -193,11 +184,11 @@ ol {
 		<a name="Espace_Disque">1.2.2.1 Espace Disque</a>
 	</h4>
 	<p class="paragraph">L'espace personnel est une zone de stockage
-		privé dédiée à l'utilisateur. A cet endroit seront sauvegardés ses
+		privée dédiée à l'utilisateur. A cet endroit seront sauvegardés ses
 		préférences du projet, ses sélections et ses commandes. Il sera
 		également possible de consulter et supprimer ces fichiers.</p>
 	<p>
-		<img class="screenshot_effect" width="370" height="390"
+		<img class="screenshot_effect" width="600" height="420"
 			src="./images/user_storage.png" />
 	</p>
 
@@ -209,7 +200,7 @@ ol {
 		Une action peut être par exemple un téléchargement, une commande...</p>
 
 	<p>
-		<img class="screenshot_effect" width="660" height="230"
+		<img class="screenshot_effect" width="600" height="420"
 			src="./images/taches.png" />
 	</p>
 
@@ -218,19 +209,17 @@ ol {
 	</h4>
 
 	<p class="paragraph">Cette interface répertorie toutes les
-		commandes qui ont été passées par l'utilisateur. Exemple : Une
-		commande est la sélection et le téléchargement d'enregistrement
-		choisis par l'utilisateur.</p>
+		commandes qui ont été passées par l'utilisateur.</p>
 
 	<p>
-		<img class="screenshot_effect" width="570" height="540"
+		<img class="screenshot_effect" width="600" height="440"
 			src="./images/order_cart.png" />
 	</p>
 
 	<hr />
 
 	<h3 class="title">
-		<a name="Explorateur_de_jeux_de_donnees">1.2.3 Explorateur de jeux
+		<a name="Explorateur_de_jeux_de_donnees">1.2.3 Vue Explorateur de jeux
 			de données</a>
 	</h3>
 
@@ -238,7 +227,7 @@ ol {
 		données du projet (visible pour l'utilisateur) et aux différents
 		services de jeux de données (Recherche formulaire, RSS, OpenSearch...)</p>
 	<p>
-		<img class="screenshot_effect " width="212" height="331"
+		<img class="screenshot_effect " width="570" height="540"
 			src="./images/dataset_explorer.png" />
 	</p>
 
@@ -278,22 +267,21 @@ ol {
 		services sur une sélection de données.
 	</p>
 
-	<h4>1.3.1.1 Ajouter à mes sélections</h4>
+	<h4>1.3.1.1 Ajouter à mon panier (commandes)</h4>
 	<div class="paragraph">
 		<ol style="padding-left: 20px;" start="1" type="1">
 			<li>Sélectionner une ou plusieurs lignes (utiliser shift et ctrl
 				pour en sélectionner plusieurs)</li>
-			<li>Cliquer droit sur une des lignes</li>
-			<li>Cliquer sur <strong>Ajouter à mes sélections</strong></li>
+			<li>Cliquer sur le bouton <b>Sauvegarder dans le panier</b> dans la barre des services</li>
 		</ol>
 	</div>
 
-	<h4>1.3.1.2 Ajouter toutes les données à ma sélection</h4>
+	<h4>1.3.1.2 Ajouter toutes les données à mon panier (commande)</h4>
 
 	<div class="paragraph">
 		<ol style="padding-left: 20px;" start="1" type="1">
-			<li>Cliquer droit sur une des lignes</li>
-			<li>Cliquer sur <strong>Télécharger le jeu de données</strong></li>
+			<li>Cliquer sur l'icone <b>case à cocher</b> en haut à gauche du dataset</li>
+			<li>Cliquer sur le bouton <b>Sauvegarder dans le panier</b> dans la barre des services</li>
 		</ol>
 	</div>
 
@@ -301,27 +289,10 @@ ol {
 
 	<div class="paragraph">
 		<ol style="padding-left: 20px;" start="1" type="1">
-			<li>Avec menu contextuel</li>
-			<ol start="1" type="a">
-				<li>Sélectionner une ligne</li>
-				<li>Cliquer droit sur cette ligne</li>
-				<li>Cliquer sur <strong>Détails</strong></li>
-			</ol>
-			<li>Sans menu contextuel</li>
-			<ol start="1" type="a">
-				<li>Double cliquer sur la ligne</li>
-			</ol>
+			<li>Sélectionner une ligner</li>
+			<li>Cliquer sur le bouton <b>Détail</b> dans la barre des services</li>
 		</ol>
 	</div>
-
-	<h4>1.3.1.4 Sauvegarde des paramètres de la fenêtre</h4>
-
-	<p class="paragraph">
-		Il est possible de sauvegarder les paramètres de cette fenêtre en
-		cliquant sur <strong>Enr. configuration</strong>. Dans ce cas, sont
-		sauvegardés la position et la taille de la fenétre, la position et la
-		taille des colonnes ainsi que leurs visibilitées.
-	</p>
 
 	<hr />
 
@@ -338,7 +309,7 @@ ol {
 	</p>
 
 	<p>
-		<img class="screenshot_effect" width="700" height="450"
+		<img class="screenshot_effect" width="500" height="450"
 			src="./images/record_details.png" />
 	</p>
 
@@ -366,7 +337,7 @@ ol {
 	</p>
 
 	<p>
-		<img class="screenshot_effect" width="760" height="120"
+		<img class="screenshot_effect" width="760" height="500"
 			src="./images/save_dataset.png" />
 	</p>
 
@@ -397,7 +368,7 @@ ol {
 			height="410" src="./images/form_advanced.png" />
 	</p>
 	<p>
-		<img style="margin: none;" class="screenshot_effect" width="400"
+		<img class="screenshot_effect" width="400"
 			height="410" src="./images/form_geo_search.png" />
 	</p>
 
@@ -413,7 +384,7 @@ ol {
 		données.
 	</p>
 	<p>
-		<img class="screenshot_effect" width="410" height="420"
+		<img class="screenshot_effect" width="600" height="250"
 			src="./images/dataset_rss.png" />
 	</p>
 
@@ -483,11 +454,6 @@ ol {
 			<li>Cliquer sur le bouton <strong>Recherche</strong></li>
 		</ol>
 	</div>
-	<p>
-		<img class="screenshot_effect" width="500" height="440"
-			src="./images/opensearch_result.png" />
-	</p>
-
 
 	<h4>1.3.6.2 Consulter les détails d'une donnée</h4>
 	
