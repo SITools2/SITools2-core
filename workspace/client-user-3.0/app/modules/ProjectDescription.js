@@ -49,30 +49,30 @@ Ext.define('sitools.user.modules.ProjectDescription', {
         });
     },
     
-    createViewForDiv : function () {
-    	var project = Ext.getStore('ProjectStore').getProject();
-    	
-        Ext.Ajax.request({
-            method : "GET",
-            url : project.get('sitoolsAttachementForUsers'), 
-            scope : this,
-            success : function (response) {
-                var json = Ext.decode(response.responseText);
-                
-                this.view = Ext.create('sitools.user.view.modules.projectDescription.ProjectDescription', {
-                    html : Ext.util.Format.htmlDecode(json.project.htmlDescription), 
-                    autoScroll : true
-                });
-                
-            },
-            callback : function (success) {
-            	if (success) {
-            		return this.view;
-            	}
-            },
-            failure : alertFailure
-        });
-    },
+    //createViewForDiv : function () {
+    //	var project = Ext.getStore('ProjectStore').getProject();
+    //
+    //    Ext.Ajax.request({
+    //        method : "GET",
+    //        url : project.get('sitoolsAttachementForUsers'),
+    //        scope : this,
+    //        success : function (response) {
+    //            var json = Ext.decode(response.responseText);
+    //
+    //            this.view = Ext.create('sitools.user.view.modules.projectDescription.ProjectDescription', {
+    //                html : Ext.util.Format.htmlDecode(json.project.htmlDescription),
+    //                autoScroll : true
+    //            });
+    //
+    //        },
+    //        callback : function (success) {
+    //        	if (success) {
+    //        		return this.view;
+    //        	}
+    //        },
+    //        failure : alertFailure
+    //    });
+    //},
     
     /**
      * method called when trying to save preference
@@ -83,6 +83,5 @@ Ext.define('sitools.user.modules.ProjectDescription', {
             preferencesPath : "/modules", 
             preferencesFileName : this.id
         };
-
     }
 });

@@ -137,6 +137,7 @@ Ext.define('sitools.user.view.component.datasets.opensearch.OpensearchView', {
         var result = Ext.create('sitools.user.view.component.datasets.opensearch.OpensearchResultFeedView', {
             input : search,
             dataUrl : this.dataUrl,
+            urlFeed : this.dataUrl + "/clientFeeds/" + this.datasetId,
             pagging : true,
             datasetName : this.datasetName,
             datasetId : this.datasetId,

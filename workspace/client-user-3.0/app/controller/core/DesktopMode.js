@@ -54,7 +54,7 @@ Ext.define('sitools.user.controller.core.DesktopMode', {
     },
     
     getFormOpenMode : function () {
-        return sitools.user.component.form.FormComponent;
+        return "sitools.user.component.form.FormComponent";
     },
     
     getDesktopSettings : function (forPublicUser) {

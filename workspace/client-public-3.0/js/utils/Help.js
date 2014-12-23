@@ -24,7 +24,6 @@ Ext.namespace('sitools.public.utils');
  * @extends Ext.Panel
  */
 Ext.define('sitools.public.utils.Help', {
-//	extend : 'Ext.panel.Panel',
 	extend : 'Ext.window.Window',
 	
     /**
@@ -32,12 +31,11 @@ Ext.define('sitools.public.utils.Help', {
 	 * @type Ext.tree.TreeNode
 	 */
     activeNode : null,
-    
+    modal : true,
     width : 800,
     height : 600,
     
     initComponent : function () {
-//        this.url = loadUrl.get('APP_URL') + "/client-user/res/help/fr/Client-userUG.html";
         this.url = loadUrl.get('APP_URL') + "/client-user/resources/help/fr/User_Guide.html";
         this.layout = "border";
         var htmlReaderCfg = {

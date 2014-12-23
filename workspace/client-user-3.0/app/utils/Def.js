@@ -74,6 +74,18 @@ var DEFAULT_LOCALE = "en";
 var SITOOLS_DATE_FORMAT = 'Y-m-d\\TH:i:s.u';
 var SITOOLS_DEFAULT_IHM_DATE_FORMAT = 'Y-m-d H:i:s.u';
 
+var onRequestFeedException = function (proxy, type, action, options, response, args) {
+    // si on a un cookie de session et une erreur 403
+    if ((response.status == 403) && !Ext.isEmpty(Ext.util.Cookies.get('hashCode'))) {
+        Ext.MessageBox.minWidth = 360;
+        Ext.MessageBox.alert(i18n.get('label.session.expired'), response.responseText);
+    } else {
+        Ext.MessageBox.minWidth = 360;
+        Ext.MessageBox.alert(i18n.get('label.error'), response.responseText);
+    }
+    return false;
+};
+
 //var locale = {
 //    locale : DEFAULT_LOCALE,
 //    isInit : false,

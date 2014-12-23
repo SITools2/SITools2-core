@@ -111,7 +111,7 @@ Ext.define('sitools.user.core.Project', {
                         }
                     });
                 }
-                if (response.status === 503) {
+                else if (response.status === 503) {
                     Ext.MessageBox.buttonText.ok = i18n.get('label.login');
                     Ext.Msg.show({
                         title : i18n.get('label.information'),

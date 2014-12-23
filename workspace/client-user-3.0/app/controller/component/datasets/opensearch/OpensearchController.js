@@ -72,14 +72,15 @@ Ext.define('sitools.user.controller.component.datasets.opensearch.OpensearchCont
 
             "opensearchView button#help": {
                 click: function (button) {
-                    //          var helpModule = SitoolsDesk.app.findModule("helpWindow");
-                    //          if (!Ext.isEmpty(helpModule.getWindow())) {
-                    //              helpModule.getWindow().close();
-                    //          }
-                    //          helpModule.openModule({
-                    //              activeNode : "Recherche_OpenSearch"
-                    //          });
-                    alert("TODO HELP MODULE");
+                    var helpModule = Ext.create('sitools.public.utils.Help', {
+                        listeners : {
+                            boxready : function (help) {
+                                var urlHelp = loadUrl.get('APP_URL') + "/client-user/resources/help/fr/User_Guide.html";
+                                help.htmlReader.load(urlHelp + "#" + "Recherche_OpenSearch");
+                            }
+                        }
+                    });
+                    helpModule.show();
                 }
             },
 

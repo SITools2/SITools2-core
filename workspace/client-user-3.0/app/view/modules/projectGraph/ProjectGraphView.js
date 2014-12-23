@@ -81,7 +81,7 @@ Ext.define('sitools.user.view.modules.projectGraph.ProjectGraphView', {
                 renderer : function (value, metadata, record, rowIndex, colIndex, store, view) {
                     var me = view.up("projectGraph");
                     if(me.isNodeADataset(record) && !Ext.isEmpty(value)) {
-                        return Ext.String.format('<img class="imageDsNode" src="{0}"></img>', value);
+                        return Ext.String.format('<img class="imageDsNode" src="{0}"/>', value);
                     }                    
                 }
             }, {
@@ -178,7 +178,7 @@ Ext.define('sitools.user.view.modules.projectGraph.ProjectGraphView', {
 	
 	getClickDatasetIconString : function (url, type, imgSrc) {
 	    var imageUrl = Ext.String.format("{0}/common/res/images/icons/{1}", loadUrl.get('APP_URL'), imgSrc);
-	    return Ext.String.format("<a href='#' onClick='sitools.user.utils.DatasetUtils.clickDatasetIcone(\"{0}\", \"{1}\"); return false;'><img src='{2}'></img></a>", url, type, imageUrl);
+	    return Ext.String.format("<a href='#' onClick='sitools.user.utils.DatasetUtils.clickDatasetIcone(\"{0}\", \"{1}\"); return false;'><img src='{2}'/></a>", url, type, imageUrl);
 	}
 	
 });
