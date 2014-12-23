@@ -17,6 +17,8 @@
  ******************************************************************************/
 /*global Ext, sitools, window */
 
+Ext.namespace("sitools.user.store.dataviews.map");
+
 sitools.user.store.dataviews.map.ProtocolHttp = OpenLayers.Class(OpenLayers.Protocol.HTTP, {
     handleResponse: function(resp, options) {
         var request = resp.priv;

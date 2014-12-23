@@ -96,9 +96,11 @@ Ext.define('sitools.user.component.datasets.services.DisplaySelectionCartService
 		Ext.apply(this, config);
 		(Ext.isEmpty(userLogin)) ? this.user = "public" : this.user = userLogin;
 		this.getCart();
+	},
+
+	statics : {
+		getParameters : function() {
+			return [];
+		}
 	}
 });
-
-sitools.user.component.datasets.services.DisplaySelectionCartService.getParameters = function() {
-	return [];
-};
