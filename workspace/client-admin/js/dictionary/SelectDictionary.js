@@ -121,7 +121,7 @@ Ext.define('sitools.admin.dictionary.SelectDictionary', {
      * update the Record and close the window
      */
     onValidate: function () {
-        var rec = this.getLastSelectedRecord();
+        var rec = this.getLastSelectedRecord(this.gridselectDictionary);
         if (rec !== null) {
             this.record.data[this.field] = rec.data.name;
             this.parentView.refresh();
