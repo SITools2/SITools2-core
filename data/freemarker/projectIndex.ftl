@@ -51,12 +51,10 @@
 						LISTE DES FICHIERS A INCLURE POUR LA VERSION DE DEV
 --------------------------------------------------------------------------------------------------- -->
 <!-- BEGIN_JS_DEV_INCLUDES -->
-	<!-- LIBRARIES -->
 	<script type="text/javascript" src="${appUrl}/client-public/cots/OpenLayers-2.13.1/OpenLayers.debug.js"></script>
 	<script type="text/javascript" src="${appUrl}/client-public/cots/extjs4/ext-4.2.1.883/ext-all-debug.js"></script>
 	<script type="text/javascript" src="${appUrl}/client-public/cots/geoext2-2.0.2/geoext2.js"></script>
 	<script type="text/javascript" src="${appUrl}/client-public/js/widget/ckeditor/ckeditor.js"></script>		
-	<!-- SITOOLS FILES -->
 	<script src="${appUrl}/client-user/bootstrap.js"></script>
 	<script type="text/javascript" src="app.js"></script>	
 <!-- END_JS_DEV_INCLUDES -->
@@ -72,8 +70,8 @@
 	
 	<script src="${appUrl}/client-user/bootstrap.js"></script>
 	<script type="text/javascript" src="${appUrl}/client-public/js/widget/ckeditor/ckeditor.js"></script>
-	<script type="text/javascript" src="dist/app.all.js"></script>
 	<script type="text/javascript" src="app.js"></script>
+	<script type="text/javascript" src="dist/app.all.js"></script>	
 -->
 
 
@@ -87,8 +85,8 @@
 
 	<script src="${appUrl}/client-user/bootstrap.js"></script>
 	<script type="text/javascript" src="${appUrl}/client-public/js/widget/ckeditor/ckeditor.js"></script>
-	<script type="text/javascript" src="dist/app.min.js"></script>
 	<script type="text/javascript" src="app.js"></script>
+	<script type="text/javascript" src="dist/app.min.js"></script>	
 <!-- WITHOUT_PLUGIN_END_PROD -->
 
 <!-- BEGIN_PROD
@@ -98,8 +96,8 @@
 
 	<script src="${appUrl}/client-user/bootstrap.js"></script>
 	<script type="text/javascript" src="${appUrl}/client-public/js/widget/ckeditor/ckeditor.js"></script>
-	<script type="text/javascript" src="dist/app.withplugins.min.js"></script>
 	<script type="text/javascript" src="app.js"></script>
+	<script type="text/javascript" src="dist/app.withplugins.min.js"></script>	
 END PROD -->
 
 	<!-- Opensearch list -->

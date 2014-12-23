@@ -72,8 +72,8 @@
 <!--
 	<script src="${appUrl}/client-public/cots/extjs4/ext-4.2.1.883/ext-all-debug.js"></script>
 	<script src="${appUrl}/client-portal/bootstrap.js"></script>
-	<script type="text/javascript" src="dist/app.all.js"></script>
 	<script type="text/javascript" src="app.js"></script>
+	<script type="text/javascript" src="dist/app.all.js"></script>	
 -->
 
 	<!-- --------------------------------------------------------------------------------------------------
@@ -82,8 +82,8 @@
 <!-- BEGIN_PROD
 	<script src="${appUrl}/client-public/cots/extjs4/ext-4.2.1.883/ext-all.js"></script>
 	<script src="${appUrl}/client-portal/bootstrap.js"></script>
-	<script type="text/javascript" src="dist/app.min.js"></script>
 	<script type="text/javascript" src="app.js"></script>
+	<script type="text/javascript" src="dist/app.min.js"></script>	
 END PROD -->
 	
 	<link rel="shortcut icon" href="${appUrl}/common/res/images/icons/logo_fav_icone.ico" type="image/x-icon">
