@@ -59,10 +59,12 @@ Ext.define('sitools.user.core.Module', {
 
     /**
      * Initialize the module
-     * 
+     *
      * @param application
      *            the application
-     * @moduleModel moduleModel
+     * @param moduleModel moduleModel
+     * @param callback the callback called when the module is initialised
+     * @param scope the scope of the callback
      */
     create : function (application, moduleModel, callback, scope) {
         this.setModuleModel(moduleModel);
@@ -74,10 +76,13 @@ Ext.define('sitools.user.core.Module', {
             }, this);
         }
         
-        //load javascripts, this css then internationalization
+        //load javascripts, then css then internationalization
         this.loadJs(callback, scope);
     },
-    
+
+    /**
+     * Method called when a module is opened into a static DIV.
+     */
     createViewForDiv : Ext.emptyFn,
     
     /**
