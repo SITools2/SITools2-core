@@ -114,33 +114,9 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
         store.load({
         	scope : this,
         	callback : function (modules, operation, success) {
-                this.loadGuiServices();
-            }
-        })
-    },
-    // 10
-    loadGuiServices : function () {
-        Ext.Ajax.request({
-            method : 'GET',
-            url : Project.getSitoolsAttachementForUsers() + loadUrl.get('APP_GUI_SERVICES_URL'),
-            scope : this,
-            success : function (response) {
-                var services = Ext.decode(response.responseText).data;
-		        Ext.each(services, function (service) {
-		            var dependencies = service.dependencies;
-		            if (!Ext.isEmpty(dependencies)) {
-		                includeJsForceOrder(dependencies.js, 0, Ext.emptyFn);
-		                
-		                Ext.each(dependencies.css, function (css) {
-		                    includeCss(css.url);
-		                });
-		            }
-		        });
-            },
-            callback : function () {
                 this.getApplication().noticeProjectLoaded();
             }
-        });
+        })
     },
 
     openModule : function (moduleModel, componentConfig) {
