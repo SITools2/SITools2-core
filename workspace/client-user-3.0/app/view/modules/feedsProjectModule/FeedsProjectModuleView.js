@@ -36,10 +36,10 @@ Ext.namespace('sitools.user.view.modules.feedsProjectModule');
 Ext.define('sitools.user.view.modules.feedsProjectModule.FeedsProjectModuleView', {
     extend : 'Ext.panel.Panel',
     alias : 'widget.feedsProjectModuleView',
-    layout : 'fit',
-    
     requires : ['sitools.user.model.FeedModel'],
-    
+
+    layout : 'fit',
+    border : false,
     config : {
         feedsReader : null
     },

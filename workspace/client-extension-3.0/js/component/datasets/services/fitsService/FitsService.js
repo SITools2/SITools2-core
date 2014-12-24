@@ -136,7 +136,8 @@ Ext.define('sitools.extension.component.datasets.services.fitsService.FitsServic
     init: function (config) {
         var selected;
         if (Ext.isEmpty(config.record)) {
-            selected = config.dataview.getSelections()[0];
+            index = config.dataview.getSelections()[0];
+            selected = config.dataview.getStore().getAt(index);
         } else {
             selected = config.record;
         }

@@ -24,8 +24,7 @@
  * http://www.extjs.com/license
  */
 html, body {
-	/*background:#3d71b8 url(../wallpapers/desktop_large.jpg) no-repeat left top;*/
-	background:#3d71b8 url(../wallpapers/desktop2.jpg) no-repeat left top;
+	background:url(../wallpapers/paper.jpg) repeat left top !important;
 	background-size : 100%;
     font: normal 12px tahoma, arial, verdana, sans-serif;
 	margin: 0;

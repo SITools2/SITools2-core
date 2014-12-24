@@ -21,7 +21,7 @@
 Ext.namespace('sitools.admin.graphs');
 
 Ext.define('sitools.admin.graphs.GraphsDatasetWin', { 
-    extend : 'Ext.Window',
+    extend : 'Ext.window.Window',
     width : 350,
     modal : true,
     closable : false,

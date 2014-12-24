@@ -281,6 +281,7 @@ Ext.define('sitools.public.widget.imageChooser.ImageChooser', {
            form.submit({
                url: urlUpload,
                waitMsg: 'Uploading your photo...',
+               scope : this,
                success: function(form, action) {
                    // as the server sends no content back, it is considered by extjs as a failure.
                },
@@ -289,8 +290,10 @@ Ext.define('sitools.public.widget.imageChooser.ImageChooser', {
                    var dataview = this.down('dataview');
                    dataview.getStore().load();
                    dataview.refresh();
-               },
-               scope : this
+
+                   this.setZIndex(22000);
+                   Ext.WindowManager.bringToFront(this);
+               }
            });
            
        }

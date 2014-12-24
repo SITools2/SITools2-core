@@ -375,28 +375,28 @@ Ext.define('sitools.user.controller.DesktopController', {
 			Desktop.getDesktopEl().setHeight(Ext.getBody().getHeight() - Desktop.getEnteteEl().getHeight());
 			Desktop.getDesktopEl().setWidth(Ext.getBody().getWidth());
 		}
-        
+
 		this.desktopView.fitDesktop();
 		
 		this.desktopView.windows.each(function (win) {
 				win.fireEvent("resizeDesktop", win, newW, newH);
 		});
 		
-		var headerController = this.getApplication().getController('header.HeaderController');
-    	var footerController = this.getApplication().getController('footer.FooterController');
-		
-    	var headerView = headerController.getHeaderView();
-    	var footerView = footerController.getFooterView();
-
-        if (!Ext.isEmpty(headerView)) {
-            headerView.fireEvent("resize", headerView, newW, newH);
-            headerView.fireEvent("windowResize", headerView, newW, newH);
-        }
-
-        if (!Ext.isEmpty(footerView)) {
-            footerView.fireEvent("resize", footerView, newW, newH);
-            footerView.fireEvent("windowResize", footerView, newW, newH);
-        }
+        //var headerController = this.getApplication().getController('header.HeaderController');
+        //var footerController = this.getApplication().getController('footer.FooterController');
+        //
+        //var headerView = headerController.getHeaderView();
+        //var footerView = footerController.getFooterView();
+        //
+        //if (!Ext.isEmpty(headerView)) {
+        //    headerView.fireEvent("resize", headerView, newW, newH);
+        //    headerView.fireEvent("windowResize", headerView, newW, newH);
+        //}
+        //
+        //if (!Ext.isEmpty(footerView)) {
+        //    footerView.fireEvent("resize", footerView, newW, newH);
+        //    footerView.fireEvent("windowResize", footerView, newW, newH);
+        //}
 
 	}
 	

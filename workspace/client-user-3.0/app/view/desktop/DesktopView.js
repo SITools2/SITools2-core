@@ -169,7 +169,11 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
         var bottomEl = Desktop.getBottomEl();
         
         var desktopEl = Desktop.getDesktopEl();
-        
+
+        enteteEl.setWidth(Ext.getBody().getWidth());
+        bottomEl.setWidth(Ext.getBody().getWidth());
+        el.setWidth(Ext.getBody().getWidth());
+
         el.setHeight(Ext.getBody().getHeight() - enteteEl.getHeight() - bottomEl.getHeight());
         var desktopHeight = Desktop.getDesktopAndTaskBarEl().getHeight();
 
@@ -183,7 +187,8 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
 
     createDesktopMenu: function () {
         var me = this, ret = {
-    		border : false,
+            border : false,
+            plain : true,
             items: me.contextMenuItems || []
         };
 

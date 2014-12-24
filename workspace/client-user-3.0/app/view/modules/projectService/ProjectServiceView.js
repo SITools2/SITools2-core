@@ -147,7 +147,7 @@ Ext.define('sitools.user.view.modules.projectService.ProjectServiceView', {
 			grid : this.grid, 
 			datasetUrl : Project.sitoolsAttachementForUsers, 
 			datasetId : Project.projectId, 
-			origin : "sitools.user.modules.projectServices"
+			origin : "sitools.user.modules.ProjectService"
 		});
 		
 		this.items = [this.grid];

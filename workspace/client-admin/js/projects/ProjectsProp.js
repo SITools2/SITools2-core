@@ -319,7 +319,7 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
                 value : this.defaultValueTpl,
                 listeners : {
                     scope : this,
-                    afterrender : function (combo) {
+                    boxready : function (combo) {
                         if (this.action == 'create') {
                             combo.setValue(this.defaultValueTpl);
                         }
@@ -341,7 +341,6 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
                     }
                 }
             }
-
         });
         
         this.allModulesAttachedBtn = Ext.create('Ext.button.Button', {

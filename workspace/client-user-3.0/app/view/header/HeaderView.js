@@ -84,7 +84,7 @@ Ext.define('sitools.user.view.header.HeaderView', {
 //                    if (!Ext.isEmpty(this.userContainer) && this.userContainer.isVisible()) {
 //                        this.userContainer.hide();
 //                    }
-//                },
+//                }
 //                desktopReady : function (me) {
 //                    this.entetePanel.fireEvent("desktopReady", this.navToolbarButtons);
 //                }

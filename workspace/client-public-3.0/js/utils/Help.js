@@ -32,6 +32,7 @@ Ext.define('sitools.public.utils.Help', {
 	 */
     activeNode : null,
     modal : true,
+    maximizable : true,
     width : 800,
     height : 600,
     
@@ -70,7 +71,7 @@ Ext.define('sitools.public.utils.Help', {
         this.tree = Ext.create('Ext.tree.Panel', {
             region : 'west',
             animate : true,
-            width : 200,
+            width : 250,
             rootVisible : false,
             useArrows : true,
             autoScroll : true,
