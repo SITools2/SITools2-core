@@ -2,8 +2,8 @@
 ______________
 
 Identification                       : SITools2
-Date                                 : 2014-10-13
-Version                              : 2.4.2
+Date                                 : 2015-01-12
+Version                              : 2.5
 Owner                                : CNES
 Developer                            : AKKA Technologies
 Type                                 : Complete
@@ -12,9 +12,33 @@ Project page                         : http://sitools2.github.io/
 Classification                       : Not Confidential - Opensource GPL V3
 Characteristics                      : Standalone, Java, ExtJS
 Role/Function                        : Adaptable web interface for scientific data exposition.
-Reference tag                        : (2.4)
+Reference tag                        : (2.5)
 
 2/ Changes
+
+_________________
+-2.4.3 (2015-01-12)
+	* New features :
+		- Set all columns visible/invisible in the dataset configuration
+	
+	* Enhancements :
+		- User profile can be updated by admin without setting a new password
+		- Apply Alessandro's contribution to reset form fields to default values
+		- Fix USER_PROPERTIES primary key in MySQL
+		- Default data files (client plugins) into map/ folder
+		- Fix Datastorage to create datastorage with file:///
+		- Auto reconnect to MySQL database after long inactivity period
+		
+	* Bug Fixed :
+		- #66 Fits change frame menu visible
+		- #73 multiple datastorage problem
+		- #72 space disk not updated
+		- #73 multiple datastorage problem
+		- #75 project category removed when updating a project
+		- #76 CONE_SEARCH_CARTESIEN with name resolver BUG
+		
+	* Know bugs
+		- #70 Authorizations are not removed when a role is deleted
 
 _________________
 -2.4.2 (2014-10-13)
