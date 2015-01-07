@@ -112,7 +112,15 @@ Ext.define('sitools.common.forms.components.Radio', {
 	    	code : this.code, 
 	    	value : value
 	    };
+    },
+
+//  *** Reset function for RESET button ***//
+    resetToDefault : function () {
+	this.radioGroup.reset();
+        this.form.fireEvent('componentChanged', this.form, this); 
     }
+//  ***************************************//
+
 
 
 

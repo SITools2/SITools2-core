@@ -333,7 +333,7 @@ Ext.define('sitools.common.forms.components.AbstractConeSearch', {
     	this.raParam.setValue(coord[0]);
     	this.decParam.setValue(coord[1]);
     },
-    
+  
     isValid : function () {
         if(!this.isEmpty(this.raParam) || !this.isEmpty(this.decParam) || !this.isEmpty(this.decParam)) {
             var valid = true;
@@ -358,8 +358,16 @@ Ext.define('sitools.common.forms.components.AbstractConeSearch', {
     
     isEmpty : function (field) {
         return Ext.isEmpty(field.getValue())
-    }
+    },
     
+//  *** Reset function for RESET button ***//
+    resetToDefault : function () {
+        this.raParam.reset();
+        this.decParam.reset();
+        this.thirdParam.reset();
+        this.targetName.reset();
+    }
+//  **************************************//
 	
 });
 
@@ -371,7 +379,7 @@ Ext.define('sitools.common.forms.components.AbstractConeSearch', {
 Ext.define('sitools.common.forms.components.ConeSearchCartesien', {
     extend : 'sitools.common.forms.components.AbstractConeSearch',
     getLabelThirdParam : function () {
-		return "SR";
+		return "Search Radius";
     }
 });
 

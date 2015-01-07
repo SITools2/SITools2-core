@@ -148,5 +148,12 @@ Ext.define('sitools.common.forms.components.NumberField', {
 	    	userDimension : this.userDimension, 
 	    	userUnit : this.userUnit
 	    };
-    }
+    },
+
+    //  *** Reset function for RESET button ***//
+    resetToDefault : function () {
+	this.field.reset();
+    },
+    //
+
 });

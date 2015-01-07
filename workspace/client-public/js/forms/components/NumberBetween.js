@@ -229,5 +229,13 @@ Ext.define('sitools.common.forms.components.NumericBetween', {
 	    	userUnit : this.userUnit
 	    };
 
+    },
+
+//  *** Reset function for RESET button ***//
+    resetToDefault : function () {
+        this.fieldFrom.reset();
+        this.fieldTo.reset();
     }
+//  ***************************************//
+
 });

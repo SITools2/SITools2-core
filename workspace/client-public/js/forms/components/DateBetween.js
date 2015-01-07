@@ -228,6 +228,14 @@ Ext.define('sitools.common.forms.components.DateBetween', {
     
     isValid : function () {
         return (this.fieldFrom.isValid() && this.fieldTo.isValid());
+    },
+
+//  *** Reset function for RESET button ***//
+    resetToDefault : function () {
+	this.fieldFrom.reset();
+	this.fieldTo.reset();
     }
+//  **************************************//
+
 });
 
