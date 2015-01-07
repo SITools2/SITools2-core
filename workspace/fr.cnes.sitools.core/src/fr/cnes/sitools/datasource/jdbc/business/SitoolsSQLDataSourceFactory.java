@@ -1,4 +1,4 @@
-     /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -55,16 +55,16 @@ public final class SitoolsSQLDataSourceFactory {
    */
   private static Map<String, SitoolsSQLDataSource> dataSources = new ConcurrentHashMap<String, SitoolsSQLDataSource>();
 
-  
   /**
    * Private constructor for utility class
    */
   private SitoolsSQLDataSourceFactory() {
     super();
   }
-  
+
   /**
    * Get an instance of SitoolsDatasource
+   * 
    * @return an instance of SitoolsDatasource
    */
   public static synchronized SitoolsSQLDataSourceFactory getInstance() {
@@ -73,8 +73,6 @@ public final class SitoolsSQLDataSourceFactory {
     }
     return instance;
   }
-
-
 
   /**
    * Local creation of a DataSource
@@ -107,8 +105,12 @@ public final class SitoolsSQLDataSourceFactory {
       ds.setUrl(connectURI);
       ds.setMaxActive(10);
       ds.setInitialSize(1);
-//      ds.setDefaultReadOnly(false);
-//      ds.setDefaultAutoCommit(true);
+      // test that the connection is alive on each request. If not It will be dropped from the pool and another
+      // connection will be created
+      ds.setTestOnBorrow(true);
+      ds.setValidationQuery("SELECT 1");
+      // ds.setDefaultReadOnly(false);
+      // ds.setDefaultAutoCommit(true);
       JDBCDataSource jdbcDS = new JDBCDataSource();
       jdbcDS.setName(key);
       jdbcDS.setDriverClass(driver);
@@ -140,6 +142,10 @@ public final class SitoolsSQLDataSourceFactory {
       ds.setMaxActive(dataSource.getMaxActive());
       ds.setInitialSize(dataSource.getInitialSize());
       ds.setDefaultReadOnly(true);
+      // test that the connection is alive on each request. If not It will be dropped from the pool and another
+      // connection will be created
+      ds.setTestOnBorrow(true);
+      ds.setValidationQuery("SELECT 1");
       if ((dataSource.getSchemaOnConnection() != null) && !dataSource.getSchemaOnConnection().equals("")) {
         ds.setDefaultCatalog(dataSource.getSchemaOnConnection());
       }
@@ -148,7 +154,6 @@ public final class SitoolsSQLDataSourceFactory {
     }
     return foundDatasource;
   }
-
 
   /**
    * removeDataSource
