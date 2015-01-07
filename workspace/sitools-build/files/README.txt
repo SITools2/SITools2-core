@@ -3,7 +3,7 @@ ______________
 
 Identification                       : SITools2
 Date                                 : 2015-01-12
-Version                              : 2.5
+Version                              : 3.0
 Owner                                : CNES
 Developer                            : AKKA Technologies
 Type                                 : Complete
@@ -12,12 +12,44 @@ Project page                         : http://sitools2.github.io/
 Classification                       : Not Confidential - Opensource GPL V3
 Characteristics                      : Standalone, Java, ExtJS
 Role/Function                        : Adaptable web interface for scientific data exposition.
-Reference tag                        : (2.5)
+Reference tag                        : (3.0)
 
 2/ Changes
+_________________
+-3.0 (2015-01-12)
+
+    This version implies a lot of modifications to the client and server code. 
+    In order to migrate from 2.4.x to 3.0 follow the instruction in the file installation-notes.txt (English) or in the Developper Guide (French).
+    Client plugin from the 2.x versions cannot be used anymore and have to be refactored using Extjs4 (see Developper Guide for more information).
+
+    * New features :
+        - Brand new web client based on Extjs4
+        - Choose visibility of Project graph column
+        - Client plugin definition dependencies inside source code
+        - Client plugin language file configuration
+    
+    * API changes :
+        - Upgrade Extjs to version 4.2.1.883
+        - Upgrade Openlayers to version 2.13.1
+        - Upgrade geoext to version 2.0.2
+        - Data folder
+            * freemarker
+            * gui_services
+            * projects_modules
+            * datasets_views
+            * formComponents
+        - Plugin JavaScript object name changed (Use the updateData.sh script to update your existing files).    
+                            
+    * Missing features from version 2.4.3
+        - Dataset template view
+        - Poster module
+                
+    * Know bugs
+        - Bad resizing of the desktop when resizing the window
+        - A group cannot be modified if it has more than 10 users 
 
 _________________
--2.4.3 (2015-01-12)
+-2.5 (2015-01-12)
 	* New features :
 		- Set all columns visible/invisible in the dataset configuration
 	
