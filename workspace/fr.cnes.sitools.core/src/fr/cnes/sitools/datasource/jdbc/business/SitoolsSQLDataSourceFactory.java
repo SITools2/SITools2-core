@@ -107,10 +107,10 @@ public final class SitoolsSQLDataSourceFactory {
       ds.setInitialSize(1);
       // test that the connection is alive on each request. If not It will be dropped from the pool and another
       // connection will be created
-      ds.setTestOnBorrow(true);
-      ds.setValidationQuery("SELECT 1");
-      // ds.setDefaultReadOnly(false);
-      // ds.setDefaultAutoCommit(true);
+      if (!"org.hsqldb.jdbcDriver".equals(driver)) {
+        ds.setTestOnBorrow(true);
+        ds.setValidationQuery("SELECT 1");
+      }
       JDBCDataSource jdbcDS = new JDBCDataSource();
       jdbcDS.setName(key);
       jdbcDS.setDriverClass(driver);
