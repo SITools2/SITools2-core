@@ -147,85 +147,61 @@
 	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		Targets for IzPack 
 	+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-	<target name="izpack" depends="izpack-init, izpack-compile-core, izpack-compile-extension, izpack-minify-js, izpack-compile, izpack-finish" description="Generate izpack"/>
+    <target name="izpack" depends="izpack-init, izpack-compile-core, izpack-compile-extension, izpack-compile, izpack-finish" description="Generate izpack"/>
 
 	<target name="izpack-init" description="Generate izpack file : prepare">
-		<!-- Creating temporary folder for compilation -->
-		<delete dir="tmp"/>
-		<mkdir dir="tmp/cots"/>
-		<mkdir dir="tmp/data"/>
-		<mkdir dir="tmp/database"/>
-		<mkdir dir="tmp/workspace"/>
-		<!-- Copying needed projects and resources -->
-		<copy todir="tmp/cots">
-			<fileset dir="${distribution.sources.dir}/cots"/>
-		</copy>
-		<copy todir="tmp/data">
-			<fileset dir="${distribution.sources.dir}/data"/>
-		</copy>
-		<copy todir="tmp/database">
-			<fileset dir="${distribution.sources.dir}/database"/>
-		</copy>
-		<copy todir="tmp/workspace">
-			<fileset 
-				dir="${distribution.sources.dir}/workspace" 
-				excludes="**/fr.cnes.sitools.s*/** **/sitools-build/** **/sitools-t*/** **/tools/**"/>
-		</copy>
-	</target>
+        <!-- Creating temporary folder for compilation -->
+        <delete dir="tmp"/>
+        <mkdir dir="tmp/cots"/>
+        <mkdir dir="tmp/data"/>
+        <mkdir dir="tmp/database"/>
+        <mkdir dir="tmp/workspace"/>
+        <!-- Copying needed projects and resources -->
+        <copy todir="tmp/cots">
+            <fileset dir="${distribution.sources.dir}/cots"/>
+        </copy>
+        <copy todir="tmp/data">
+            <fileset dir="${distribution.sources.dir}/data"/>
+        </copy>
+        <copy todir="tmp/database">
+            <fileset dir="${distribution.sources.dir}/database"/>
+        </copy>
+        <copy todir="tmp/workspace">
+            <fileset 
+                dir="${distribution.sources.dir}/workspace" 
+                excludes="**/fr.cnes.sitools.s*/** **/sitools-build/** **/sitools-t*/** **/tools/**"/>
+        </copy>
+        
+        <chmod file="tmp/workspace/sitools-install-izpack/conf/scripts/minifyjs.sh" perm="a+x"/>
+    </target>
 
-	<target name="izpack-compile-core" description="Generate izpack file : compile core">
-		<subant target="build" buildpath="./tmp/workspace/fr.cnes.sitools.core/">
-			<property name="ROOT_DIRECTORY" value="${sitools.ROOT_DIRECTORY}/workspace/sitools-build/tmp"/>
-		</subant>
-	</target>
-	
-	<target name="izpack-minify-js" description="Minify javascript client sources">
-		<subant target="js.jsMinifyProject" buildpath="./tmp/workspace/client-user/">
-			<property name="ROOT_DIRECTORY" value="${sitools.ROOT_DIRECTORY}/workspace/sitools-build/tmp"/>
-		</subant>
-		<subant target="js.jsMinifyPortal" buildpath="./tmp/workspace/client-user/">
-			<property name="ROOT_DIRECTORY" value="${sitools.ROOT_DIRECTORY}/workspace/sitools-build/tmp"/>
-		</subant>
-		<subant target="js.minify" buildpath="./tmp/workspace/client-admin/">
-			<property name="ROOT_DIRECTORY" value="${sitools.ROOT_DIRECTORY}/workspace/sitools-build/tmp"/>
-		</subant>
-	</target>
+    <target name="izpack-compile-core" description="Generate izpack file : compile core">
+        <subant target="build" buildpath="./tmp/workspace/fr.cnes.sitools.core/">
+            <property name="ROOT_DIRECTORY" value="${sitools.ROOT_DIRECTORY}/workspace/sitools-build/tmp"/>
+        </subant>
+    </target>
+	    
+    <target name="izpack-compile-extension" description="Generate izpack file : compile extension">
+        <subant target="build-extensions" buildpath="./tmp/workspace/fr.cnes.sitools.extensions/">
+            <property name="ROOT_DIRECTORY" value="${sitools.ROOT_DIRECTORY}/workspace/sitools-build/tmp"/>
+        </subant>
+    </target>
 
-	<target name="izpack-compile-extension" description="Generate izpack file : compile extension">
-		<subant target="build-extensions" buildpath="./tmp/workspace/fr.cnes.sitools.extensions/">
-			<property name="ROOT_DIRECTORY" value="${sitools.ROOT_DIRECTORY}/workspace/sitools-build/tmp"/>
-		</subant>
-	</target>
+    <target name="izpack-compile" description="Generate izpack file : compile">
+        <subant  target="build" buildpath="./tmp/workspace/sitools-install-izpack/">
+            <property name="ROOT_DIRECTORY_LOCAL" value="${sitools.ROOT_DIRECTORY}/workspace/sitools-build/tmp"/>
+            <property name="properties.Starter.VERSION" value="${sitools.project.tag}"/>
+        </subant>
+    </target>
 
-	<target name="izpack-compile" description="Generate izpack file : compile">
-		
-		<subant  target="build-jars" buildpath="./tmp/workspace/sitools-install-izpack/">
-			<property name="ROOT_DIRECTORY_LOCAL" value="${sitools.ROOT_DIRECTORY}/workspace/sitools-build/tmp"/>
-		</subant>
-
-		<mkdir dir="dist"/>
-				
-		<copy todir="dist">
-			<fileset dir="./tmp/workspace/sitools-install-izpack/dist">
-				<include name="*.jar"/>
-			</fileset>
-		</copy>
-		
-		<subant  target="build" buildpath="./tmp/workspace/sitools-install-izpack/">
-			<property name="ROOT_DIRECTORY_LOCAL" value="${sitools.ROOT_DIRECTORY}/workspace/sitools-build/tmp"/>
-			<property name="properties.Starter.VERSION" value="${sitools.project.tag}"/>
-		</subant>
-	</target>
-
-	<target name="izpack-finish" description="Generate izpack file : copy">
-		<copy todir="${distribution.dir}">
-			<fileset dir="./tmp/workspace/sitools-install-izpack/">
-				<include name="*.jar"/>
-			</fileset>
-		</copy>
-		<delete dir="bin"/>
-	</target>
-
+    <target name="izpack-finish" description="Generate izpack file : copy">
+        <copy todir="${distribution.dir}">
+            <fileset dir="./tmp/workspace/sitools-install-izpack/">
+                <include name="*.jar"/>
+            </fileset>
+        </copy>
+        <delete dir="bin"/>
+    </target>
 
 	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		Target for file lists and README.txt 
