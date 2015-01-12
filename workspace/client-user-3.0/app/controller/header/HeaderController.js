@@ -209,11 +209,13 @@ Ext.define('sitools.user.controller.header.HeaderController', {
             this.getApplication().getController('DesktopController').maximize();
             Desktop.setDesktopMaximized(true);
             btn.setIconCls('mini_button_img');
+            Ext.ComponentQuery.query("tooltip#maximizeButtonTip")[0].update(i18n.get('label.minimize'));
         }
         else {
             this.getApplication().getController('DesktopController').minimize();
             Desktop.setDesktopMaximized(false);
             btn.setIconCls('maxi_button_img');
+            Ext.ComponentQuery.query("tooltip#maximizeButtonTip")[0].update(i18n.get('label.maximize'));
         }
     },
 
