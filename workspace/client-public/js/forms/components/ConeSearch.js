@@ -347,6 +347,7 @@ sitools.common.forms.components.AbstractConeSearch = Ext.extend(sitools.common.f
     },
     
 //  *** Reset function for RESET button ***//
+    // Alessandro's contribution from IAS
     resetToDefault : function () {
         this.raParam.reset();
         this.decParam.reset();

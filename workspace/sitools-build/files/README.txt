@@ -17,7 +17,7 @@ Reference tag                        : (2.5)
 2/ Changes
 
 _________________
--2.4.3 (2015-01-12)
+-2.5 (2015-01-12)
 	* New features :
 		- Set all columns visible/invisible in the dataset configuration
 	

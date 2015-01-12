@@ -176,6 +176,7 @@ sitools.common.forms.components.ComboBox = Ext.extend(Ext.Container, {
     },
     
 //  *** Reset function for RESET button ***//
+    // Alessandro's contribution from IAS
     resetToDefault : function () {
         this.combo.reset();
         this.form.fireEvent('componentChanged', this.form, this); 

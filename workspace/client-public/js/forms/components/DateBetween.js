@@ -231,6 +231,7 @@ sitools.common.forms.components.DateBetween = Ext.extend(Ext.Container, {
     },
 
 //  *** Reset function for RESET button ***//
+    // Alessandro's contribution from IAS
     resetToDefault : function () {
 	this.fieldFrom.reset();
 	this.fieldTo.reset();

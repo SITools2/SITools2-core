@@ -217,6 +217,7 @@ sitools.common.forms.components.OneOrBetween = Ext.extend(sitools.common.forms.A
     },
 
 //  *** Reset function for RESET button ***//
+    // Alessandro's contribution from IAS
     resetToDefault : function () {
         this.fieldOne.reset();
         this.fieldFrom.reset();

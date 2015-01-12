@@ -232,6 +232,7 @@ sitools.common.forms.components.NumericBetween = Ext.extend(sitools.common.forms
     },
 
 //  *** Reset function for RESET button ***//
+    // Alessandro's contribution from IAS
     resetToDefault : function () {
         this.fieldFrom.reset();
         this.fieldTo.reset();
