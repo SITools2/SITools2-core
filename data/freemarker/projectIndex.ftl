@@ -97,7 +97,7 @@
 	<script src="${appUrl}/client-user/bootstrap.js"></script>
 	<script type="text/javascript" src="${appUrl}/client-public/js/widget/ckeditor/ckeditor.js"></script>
 	<script type="text/javascript" src="app.js"></script>
-	<script type="text/javascript" src="dist/app.withplugins.min.js"></script>	
+	<script type="text/javascript" src="dist/app.withPlugins.min.js"></script>	
 END PROD -->
 
 	<!-- Opensearch list -->
