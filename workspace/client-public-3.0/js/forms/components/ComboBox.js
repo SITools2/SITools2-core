@@ -183,6 +183,7 @@ Ext.define('sitools.public.forms.components.ComboBox', {
     },
 
 //  *** Reset function for RESET button ***//
+ // Alessandro's contribution from IAS
     resetToDefault: function () {
         this.combo.reset();
         this.form.fireEvent('componentChanged', this.form, this);

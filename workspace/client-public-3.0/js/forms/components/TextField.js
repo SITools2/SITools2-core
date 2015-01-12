@@ -146,6 +146,7 @@ Ext.define('sitools.public.forms.components.TextField', {
     },
 
     //  *** Reset function for RESET button ***//
+ // Alessandro's contribution from IAS
     resetToDefault: function () {
         this.tf.reset();
     }

@@ -210,6 +210,7 @@ Ext.define('sitools.public.forms.components.MapPanel', {
 
     },
     //  *** Reset function for RESET button ***//
+ // Alessandro's contribution from IAS
     resetToDefault: function () {
         this.map.getLayersByName("Vector Layer")[0].removeAllFeatures();
     }
