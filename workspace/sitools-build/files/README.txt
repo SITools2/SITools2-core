@@ -46,7 +46,8 @@ _________________
                 
     * Know bugs
         - Bad resizing of the desktop when resizing the window
-        - A group cannot be modified if it has more than 10 users 
+        - A group cannot be modified if it has more than 10 users
+        - Atom feeds are invalid (missing id tag) and cannot be displayed in web client
 
 _________________
 -2.5 (2015-01-12)
