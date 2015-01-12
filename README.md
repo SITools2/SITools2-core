@@ -74,7 +74,7 @@ Go to : http://{publicHostDomain}/sitools/client-admin/index.html
 
 ### Portal UI
 
-Go to : http://{publicHostDomain}/sitools/client-user/index.html
+Go to : http://{publicHostDomain}/sitools/client-portal/index.html
 
 ## Features
 - Client/server application

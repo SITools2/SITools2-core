@@ -129,7 +129,7 @@ Ext.define('sitools.common.forms.components.TextField', {
       return {
       	type : this.type, 
       	code : this.code.join(','), 
-      	value : '%'+value
+      	value : value
       };
     },
 
