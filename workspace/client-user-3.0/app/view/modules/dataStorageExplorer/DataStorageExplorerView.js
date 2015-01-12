@@ -260,8 +260,8 @@ Ext.define('sitools.user.view.modules.dataStorageExplorer.DataStorageExplorerVie
             bodyBorder : false,
             collapsible : true,
             collapsed : true,
+            collapseDirection : 'bottom',
             height : 350
-//            cls : 'detail-panel-datastorage',
         });
 
         this.contentPanel = Ext.create('Ext.panel.Panel', {

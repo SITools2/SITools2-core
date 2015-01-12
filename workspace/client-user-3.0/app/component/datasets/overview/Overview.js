@@ -112,9 +112,9 @@ Ext.define('sitools.user.component.datasets.overview.Overview', {
 
         var globalSettings = {};
         var formsTabPanel = view.down("tabpanel");
-        var datasetView = view.down("component [sitoolsType=datasetView]")
+        var datasetView = view.down("component [sitoolsType=datasetView]");
 
-        if (formsTabPanel.items.length > 0) {
+        if (!Ext.isEmpty(formsTabPanel) && formsTabPanel.items.length > 0) {
             globalSettings.formsActivePanel = formsTabPanel.getActiveTab().formId;
             globalSettings.formsPanelWidth = formsTabPanel.getWidth();
 

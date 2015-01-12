@@ -251,9 +251,7 @@ Ext.define('sitools.user.view.component.datasets.plot.DataPlotterView', {
 
         /** right panel is the plot place */
         this.rightPanel = Ext.create("Ext.Panel", {
-            //id : 'plot-right-panel',
             title: i18n.get('title.plot.panel'),
-            //region : 'center',
             border : false,
             scope: this,
             itemId : 'rightpanel',

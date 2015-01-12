@@ -346,7 +346,7 @@ Ext.define('sitools.public.forms.components.AbstractConeSearch', {
     checkTextFieldIsNotEmpty : function (field){
         var valid = true;
         if(this.isEmpty(field)){
-            field.markInvalid();
+            field.markInvalid(i18n.get('label.fieldRequired'));
             valid = false;
         }
         return valid;        

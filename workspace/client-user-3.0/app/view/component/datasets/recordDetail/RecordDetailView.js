@@ -135,13 +135,19 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
         	forceFit : true,
         	columns : [{
     			dataIndex: 'name',
-    			width : 250
+    			width : 250,
+				renderer : function (value, metaData) {
+					metaData.style += 'font-weight:bold;';
+					value += ' :';
+					return value;
+				}
 			}, {
     			dataIndex: 'value',
     			flex : 1,
     			resizable : true,
     			renderer : function (value, metaData) {
-    				metaData.tdAttr = 'data-qtip="' + value + '"';
+    				//metaData.tdAttr = 'data-qtip="' + value + '"';
+					metaData.tdCls += 'x-selectable x-custom-td-grid-inner';
     				return value;
     			}
 			}],
