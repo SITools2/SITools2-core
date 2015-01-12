@@ -117,12 +117,14 @@ Ext.define('sitools.user.view.header.ButtonTaskBarView', {
 				afterrender : function (btn) {
 					var label = (Desktop.getDesktopMaximized() == false) ? i18n.get('label.maximize') : i18n.get('label.minimize');
 					var tooltipCfg = {
-							html : label,
-							target : btn.getEl(),
-							anchor : 'bottom',
-							showDelay : 20,
-							hideDelay : 50,
-							dismissDelay : 0
+                        html : label,
+                        target : btn.getEl(),
+                        anchor : 'bottom',
+                        showDelay : 20,
+                        hideDelay : 50,
+                        dismissDelay : 0,
+                        itemId : 'maximizeButtonTip'
+
 					};
 					Ext.create('Ext.tip.ToolTip', tooltipCfg);
 				}
