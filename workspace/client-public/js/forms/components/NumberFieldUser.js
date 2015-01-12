@@ -151,6 +151,7 @@ Ext.define('sitools.common.forms.components.NumberField', {
     },
 
     //  *** Reset function for RESET button ***//
+    // Alessandro's contribution from IAS
     resetToDefault : function () {
 	this.field.reset();
     },

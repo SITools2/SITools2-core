@@ -361,6 +361,7 @@ Ext.define('sitools.common.forms.components.AbstractConeSearch', {
     },
     
 //  *** Reset function for RESET button ***//
+    // Alessandro's contribution from IAS
     resetToDefault : function () {
         this.raParam.reset();
         this.decParam.reset();

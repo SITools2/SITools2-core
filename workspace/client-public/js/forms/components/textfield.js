@@ -120,7 +120,6 @@ Ext.define('sitools.common.forms.components.TextField', {
     setSelectedValue : function (value) {
         this.tf.setValue(value);
     },
-
     getParameterValue : function () {
       var value = this.getSelectedValue();
       if (Ext.isEmpty(value)) {
@@ -133,10 +132,11 @@ Ext.define('sitools.common.forms.components.TextField', {
       };
     },
 
-//  *** Reset function for RESET button ***//
+    //  *** Reset function for RESET button ***//
+    // Alessandro's contribution from IAS
     resetToDefault : function () {
         this.tf.reset();
     }
-//  ***************************************//
+    //  ***************************************//
 
 });

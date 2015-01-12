@@ -179,6 +179,7 @@ Ext.define('sitools.common.forms.components.ListBox', {
     },
 
 //  *** Reset function for RESET button ***//
+    // Alessandro's contribution from IAS
     resetToDefault : function () {
 	this.multiSelect.reset();
         this.form.fireEvent('componentChanged', this.form, this); 
