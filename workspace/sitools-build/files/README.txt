@@ -3,7 +3,7 @@ ______________
 
 Identification                       : SITools2
 Date                                 : 2015-01-12
-Version                              : 3.0
+Version                              : 3.0-beta1
 Owner                                : CNES
 Developer                            : AKKA Technologies
 Type                                 : Complete
@@ -12,11 +12,11 @@ Project page                         : http://sitools2.github.io/
 Classification                       : Not Confidential - Opensource GPL V3
 Characteristics                      : Standalone, Java, ExtJS
 Role/Function                        : Adaptable web interface for scientific data exposition.
-Reference tag                        : (3.0)
+Reference tag                        : (3.0-beta1)
 
 2/ Changes
 _________________
--3.0 (2015-01-12)
+-3.0-beta1 (2015-01-12)
 
     This version implies a lot of modifications to the client and server code. 
     In order to migrate from 2.4.x to 3.0 follow the instruction in the file installation-notes.txt (English) or in the Developper Guide (French).
