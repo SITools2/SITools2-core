@@ -291,7 +291,7 @@ Ext.define('sitools.public.widget.imageChooser.ImageChooser', {
                    dataview.getStore().load();
                    dataview.refresh();
 
-                   this.setZIndex(22000);
+//                   this.setZIndex(22000);
                    Ext.WindowManager.bringToFront(this);
                }
            });

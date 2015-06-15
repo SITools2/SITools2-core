@@ -104,6 +104,7 @@ Ext.define('sitools.admin.datasets.PredicatsPanel', {
             typeAhead : false,
             triggerAction : 'all',
             queryMode : 'local',
+            editable : false,
             store : Ext.create('Ext.data.ArrayStore', {
 //                id : 0,
                 fields : [ 'myId', 'displayText' ],

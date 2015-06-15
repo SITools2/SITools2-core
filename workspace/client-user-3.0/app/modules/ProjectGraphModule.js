@@ -70,11 +70,11 @@ Ext.define('sitools.user.modules.ProjectGraphModule', {
                             label : i18n.get("label.image"),
                             columnName : 'image',
                             selected : true
-                        }, {
+                        }, /*{
                             label : i18n.get("label.records"),
                             columnName : 'description',
                             selected : true
-                        }, {
+                        }, */{
                             label : i18n.get("label.descriptionMini"),
                             columnName : 'description',
                             selected : true

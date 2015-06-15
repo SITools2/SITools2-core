@@ -201,7 +201,7 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
                     hidden = !item.visible;
                 }
                 if (Ext.isEmpty(item.columnRenderer) ||  ColumnRendererEnum.NO_CLIENT_ACCESS != item.columnRenderer.behavior) {
-                    columns.push({
+                	var column = {
                         columnAlias : item.columnAlias,
                         dataIndexSitools : item.dataIndex,
                         dataIndex : item.columnAlias,
@@ -222,7 +222,14 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
                         specificColumnType : item.specificColumnType,
                         menuDisabled : true,
                         format : item.format
-                    });
+                    };
+                	
+                	// fix bug #82, wrong thumbnail when choosing thumbnail from other column
+                	if (!Ext.isEmpty(item.columnRenderer) && item.columnRenderer.behavior == ColumnRendererEnum.IMAGE_FROM_SQL) {
+                		column.dataIndex = item.columnRenderer.columnAlias;
+                	}
+                	
+                	columns.push(column);
                 }
                 
             }, this);

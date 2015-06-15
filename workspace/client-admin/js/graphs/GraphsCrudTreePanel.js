@@ -185,7 +185,7 @@ Ext.define('sitools.admin.graphs.GraphsCrudTreePanel', {
             node = this.getSelectionModel().getSelection()[0];
 
             up = Ext.create("sitools.admin.graphs.GraphsNodeWin", {
-                graphTree : true,
+                graphTree : this,
                 node : node,
                 mode : 'create'
             });

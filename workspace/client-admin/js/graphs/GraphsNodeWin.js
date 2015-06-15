@@ -29,22 +29,45 @@ Ext.define('sitools.admin.graphs.GraphsNodeWin', {
     initComponent : function () {
         this.title = i18n.get('label.nodeDescription');
 
+        
+        var listenerEnter = {
+            scope: this,
+            specialkey: function (field, e) {
+                if (e.getKey() == e.ENTER) {
+                    this._onOK();
+                }
+            }
+        };
+        
         /* paramétres du formulaire */
         this.itemsForm = [{
             fieldLabel : i18n.get('label.name'),
             name : 'name',
             anchor : '100%',
-            allowBlank : false
+            allowBlank : false,
+            listeners : {
+            	scope: this,
+                specialkey: function (field, e) {
+                    if (e.getKey() == e.ENTER) {
+                        this._onOK();
+                    }
+                },
+                afterrender: function (textfield) {
+                    Ext.defer(textfield.focus, 500, textfield);
+                }
+            }
         }, {
             fieldLabel : i18n.get('label.description'),
             name : 'description',
-            anchor : '100%'
+            anchor : '100%',
+            listeners : listenerEnter
         }, {
             xtype : 'sitoolsSelectImage',
             name : 'image',
             fieldLabel : i18n.get('label.image'),
             anchor : '100%',
-            growMax : 400
+            growMax : 400,
+            listeners : listenerEnter
         } ];
 
         this.bbar = {
