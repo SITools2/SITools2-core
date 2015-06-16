@@ -217,7 +217,7 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
                 xtype : 'textfield',
                 vtype : "attachment",
                 name : 'sitoolsAttachementForUsers',
-                hidden : true,
+//                hidden : true,
                 fieldLabel : i18n.get('label.userAttach'),
                 anchor : '90%',
                 maxLength : 100

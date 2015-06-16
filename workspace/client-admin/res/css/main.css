@@ -327,3 +327,19 @@ pre {
 .x-custom-button-color .x-btn-inner {
 	color : #F0F0F0 !important;
 }
+
+.disabled {
+	background-color : #D5D5D5;
+}
+
+.disabled-cell td.x-grid-rowwrap .x-grid-cell {
+	background-color : #D5D5D5 !important;
+}
+
+.x-grid-group-title {
+	color: #FCFCFC;
+}
+
+.x-grid-group-hd {
+  background: #3892D3;
+}

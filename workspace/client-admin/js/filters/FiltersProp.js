@@ -155,20 +155,14 @@ Ext.define('sitools.admin.filters.FiltersProp', {
         
         this.gridFieldMapping = Ext.create('Ext.grid.Panel', {
             forceFit : true,
+            border : false,
+            padding : "10 5 10 5",
+            features: [Ext.create('Ext.grid.feature.Grouping', {
+            		depthToIndent : 35
+            	})
+    		],
             viewConfig : {
                 scope : this,
-//                getRowClass : function (record, index, rowParams, store) {
-//                    var cls = ''; 
-//                    var violation = record.get("violation");
-//                    if (!Ext.isEmpty(violation)) {
-//						if (violation.level == "CRITICAL") {
-//							cls = "red-row";
-//						} else if (violation.level == "WARNING") {
-//							cls = "orange-row";
-//						}
-//					}
-//                    return cls;
-//                }, 
                 listeners : {
                     scope : this,
                     refresh : function (view) {
@@ -210,6 +204,7 @@ Ext.define('sitools.admin.filters.FiltersProp', {
             region : 'center',
             store : Ext.create("Ext.data.JsonStore", {
                 remoteSort : false,
+                groupField : 'parameterType',
                 fields : [ {
                     name : 'name',
                     type : 'string'
@@ -247,7 +242,13 @@ Ext.define('sitools.admin.filters.FiltersProp', {
                 header : i18n.get('label.attachedColumn'),
                 dataIndex : 'attachedColumn',
                 width : 100,
-                sortable : false
+                sortable : false,
+                renderer : function (value, metadata, record, rowIndex, colIndex, store) {
+                	if (record.get('parameterType') == "PARAMETER_INTERN") {
+                		metadata.innerCls = "disabled";
+                	}
+                	return value;
+                }
             }, {
                 header : i18n.get('label.value') + '<img title="Editable" height=14 widht=14 src="/sitools' + loadUrl.get('APP_CLIENT_PUBLIC_URL') + '/res/images/icons/toolbar_edit.png"/>',
                 dataIndex : 'value',
@@ -256,6 +257,16 @@ Ext.define('sitools.admin.filters.FiltersProp', {
                 editable : true,
                 editor : {
                     xtype : 'textfield'
+                },
+                renderer : function (value, metadata, record, rowIndex, colIndex, store) {
+                	var paramType = record.get('parameterType');
+                	if (paramType == "PARAMETER_IN" 
+                		|| paramType == "PARAMETER_OUT"
+            			|| paramType == "PARAMETER_INOUT") {
+                		
+                		metadata.innerCls = "disabled";
+                	}
+                	return value;
                 }
             }],
             bbar : Ext.create("Ext.ux.StatusBar", {

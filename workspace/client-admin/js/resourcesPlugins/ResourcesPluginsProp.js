@@ -29,6 +29,8 @@ Ext.define('sitools.admin.resourcesPlugins.CustomCheckColumn', {
         if (toShow) {
             return this.callParent(arguments);
         } else {
+        	var metaBefore = meta.innerCls;
+        	meta.innerCls = "disabled";
             return "";
         }
     }
@@ -203,20 +205,12 @@ Ext.define('sitools.admin.resourcesPlugins.ResourcesPluginsProp', {
         this.gridFieldMapping = Ext.create('Ext.grid.Panel', {
             padding : 10,
             forceFit : true,
+            features: [Ext.create('Ext.grid.feature.Grouping', {
+	        		depthToIndent : 35
+	        	})
+			],
             viewConfig : {
                 scope : this,
-//                getRowClass : function (record, index, rowParams, store) {
-//                    var cls = ''; 
-//                    var violation = record.get("violation");
-//                    if (!Ext.isEmpty(violation)) {
-//                        if (violation.level == "CRITICAL") {
-//                            cls = "red-row";
-//                        } else if (violation.level == "WARNING") {
-//                            cls = "orange-row";
-//                        }
-//                    }
-//                    return cls;
-//                }, 
                 listeners : {
                     scope : this,
                     refresh : function (view) {
@@ -227,7 +221,6 @@ Ext.define('sitools.admin.resourcesPlugins.ResourcesPluginsProp', {
                             var violation = record.get("violation");
                             if (!Ext.isEmpty(violation)) {
                                 var index = store.indexOf(record);
-                                //var view = this.scope.gridFieldMapping.getView();
                                 var htmlLineEl = view.getNode(index);
                                 var el = Ext.get(htmlLineEl);
                                 
@@ -271,6 +264,7 @@ Ext.define('sitools.admin.resourcesPlugins.ResourcesPluginsProp', {
                         root : 'resourcePlugin.parameters'
                     }
                 },
+                groupField : 'type',
                 fields : [ {
                     name : 'name',
                     type : 'string'
@@ -327,7 +321,14 @@ Ext.define('sitools.admin.resourcesPlugins.ResourcesPluginsProp', {
             }, Ext.create("sitools.admin.resourcesPlugins.CustomCheckColumn", {
                 header : i18n.get('headers.userUpdatable'),
                 dataIndex : 'userUpdatable',
-                width : 60
+                width : 60,
+//                renderer : function (value, metadata, record, rowIndex, colIndex, store) {
+//                	var paramType = record.get('type');
+//                	if (paramType != "PARAMETER_USER_INPUT") {
+//                		metadata.style = " background-color : #D5D5D5;";
+//                	}
+////                	return value;
+//                }
             })],
             listeners : {
                 scope : this,
