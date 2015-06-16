@@ -19,6 +19,7 @@
 package fr.cnes.sitools.dataset;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.restlet.data.MediaType;
@@ -41,6 +42,8 @@ import fr.cnes.sitools.dataset.model.DictionaryMapping;
 import fr.cnes.sitools.datasource.jdbc.model.Structure;
 import fr.cnes.sitools.notification.business.NotificationManager;
 import fr.cnes.sitools.notification.model.RestletObserver;
+import fr.cnes.sitools.project.ProjectStoreInterface;
+import fr.cnes.sitools.project.model.Project;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
@@ -190,6 +193,66 @@ public abstract class AbstractDataSetResource extends SitoolsResource {
    */
   public String getDatasetId() {
     return datasetId;
+  }
+  
+  /**
+   * Get the store associated to the application
+   * 
+   * @return the store available for this resource
+   */
+  public final DataSetStoreInterface getStore() {
+    return this.store;
+  }
+  
+  /**
+   * Check that the dataset name and the sitoolsUserAttachment are unique over the dataset collection includeDatasetInput is
+   * used to specify whether or not to include datasetInput in the verification process ( for example when updating a
+   * project )
+   * 
+   * @param datasetInput
+   *          the dataset to check with the collection
+   * @param includeDatasetInput
+   *          true to include the dataset in the verification, false otherwise
+   * @return a Response with the error message if the checking fail, null otherwise
+   */
+  public final Response checkUnicity(DataSet datasetInput, boolean includeDatasetInput) {
+    Response response = null;
+    List<DataSet> storedDatasets = getStore().getList();
+    List<String> storedDatasetNames = new ArrayList<String>();
+    List<String> storedDatasetUrlAttach = new ArrayList<String>();
+
+    if (datasetInput.getName() == null || "".equals(datasetInput.getName())) {
+      response = new Response(false, datasetInput, DataSet.class, "dataset");
+      response.setMessage("dataset.name.mandatory");
+      return response;
+    }
+    
+    if (storedDatasets != null) {
+      for (DataSet dataset : storedDatasets) {
+        if (includeDatasetInput || (!includeDatasetInput && !datasetInput.getId().equals(dataset.getId()))) {
+          storedDatasetNames.add(dataset.getName());
+        }
+        
+        // if the attachment is empty it will be filled latter by a unique attachment
+        // empty attachment must not be checked for unicity
+        if (!dataset.getSitoolsAttachementForUsers().equals("")) {
+          storedDatasetUrlAttach.add(dataset.getSitoolsAttachementForUsers());
+        }
+      }
+      
+      if (storedDatasetNames.contains(datasetInput.getName())) {
+        response = new Response(false, datasetInput, DataSet.class, "dataset");
+        response.setMessage("dataset.name.already.assigned");
+        return response;
+      }
+      
+      if (storedDatasetUrlAttach.contains(datasetInput.getSitoolsAttachementForUsers())) {
+        response = new Response(false, datasetInput, DataSet.class, "dataset");
+        response.setMessage("dataset.attachment.already.assigned");
+        return response;
+      }
+    }
+    return response;
   }
 
 }

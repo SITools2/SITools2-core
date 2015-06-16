@@ -148,6 +148,7 @@ Ext.define('sitools.admin.datasets.DatasetForm', {
                 name : 'sitoolsAttachementForUsers',
                 id : 'sitoolsAttachementForUsers',
                 fieldLabel : i18n.get('label.userAttach'),
+                hidden : true,
                 anchor : '95%',
                 maxLength : 100
             }, {

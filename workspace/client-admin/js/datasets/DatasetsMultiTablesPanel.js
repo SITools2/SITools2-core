@@ -457,7 +457,7 @@ Ext.define('sitools.admin.datasets.DatasetsMultiTablesPanel', {
                 success : function (ret) {
                     var Json = Ext.decode(ret.responseText);
                     if (!Json.success) {
-                        Ext.Msg.alert(i18n.get('label.warning'), Json.message);
+                        Ext.Msg.alert(i18n.get('label.warning'), i18n.get(Json.message));
                         return;
                     }
                     this.close();
@@ -477,7 +477,7 @@ Ext.define('sitools.admin.datasets.DatasetsMultiTablesPanel', {
                 success : function (ret) {
                     var Json = Ext.decode(ret.responseText);
                     if (!Json.success) {
-                        Ext.Msg.alert(i18n.get('label.warning'), Json.message);
+                        Ext.Msg.alert(i18n.get('label.warning'), i18n.get(Json.message));
                         return;
                     }
                     this.close();

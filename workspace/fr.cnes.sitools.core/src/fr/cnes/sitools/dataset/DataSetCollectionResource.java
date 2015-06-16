@@ -78,6 +78,7 @@ public final class DataSetCollectionResource extends AbstractDataSetResource {
       throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "DATASET_REPRESENTATION_REQUIRED");
     }
     try {
+      Response response = null;
       DataSet datasetInput = getObject(representation);
       // to prevent illegal status like "ACTIVE"
       datasetInput.setStatus("NEW");
@@ -92,6 +93,16 @@ public final class DataSetCollectionResource extends AbstractDataSetResource {
         }
       }
 
+      // check for project unicity
+      response = checkUnicity(datasetInput, true);
+      if (response != null && !response.getSuccess()) {
+        trace(Level.INFO, "Cannot create the dataset " + datasetInput.getName());
+        return getRepresentation(response, variant);
+      }
+      
+      String sitoolsAttachment = "/" + datasetInput.getName().toLowerCase().replaceAll(" ", "_");
+      datasetInput.setSitoolsAttachementForUsers(sitoolsAttachment);
+      
       // Business service
       DataSet datasetOutput = store.create(datasetInput);
 
@@ -103,13 +114,14 @@ public final class DataSetCollectionResource extends AbstractDataSetResource {
       notification.setMessage("New dataset created.");
       getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
 
+      
       // Register DataSet as observer of Dictionary resources
       unregisterObserver(datasetOutput);
       registerObserver(datasetOutput);
 
       trace(Level.INFO, "Create the dataset " + datasetOutput.getName());
       // Response
-      Response response = new Response(true, datasetOutput, DataSet.class, "dataset");
+      response = new Response(true, datasetOutput, DataSet.class, "dataset");
       return getRepresentation(response, variant);
 
     }

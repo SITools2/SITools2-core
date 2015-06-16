@@ -205,32 +205,33 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
                 xtype : 'textfield',
                 name : 'name',
                 fieldLabel : i18n.get('label.name'),
-                anchor : '100%',
+                anchor : '90%',
                 maxLength : 30,
                 allowBlank : false
             }, {
                 xtype : 'textfield',
                 name : 'description',
                 fieldLabel : i18n.get('label.description'),
-                anchor : '100%'
+                anchor : '90%',
             }, {
                 xtype : 'textfield',
                 vtype : "attachment",
                 name : 'sitoolsAttachementForUsers',
+                hidden : true,
                 fieldLabel : i18n.get('label.userAttach'),
-                anchor : '100%',
+                anchor : '90%',
                 maxLength : 100
             }, {
                 xtype : 'sitoolsSelectImage',
                 name : 'image',
                 fieldLabel : i18n.get('label.image'),
-                anchor : '100%',
+                anchor : '90%',
                 growMax : 400
             }, {
                 xtype : 'checkbox',
                 name : 'visible',
                 fieldLabel : i18n.get('label.isVisible'),
-                anchor : '100%',
+                anchor : '90%',
                 maxLength : 100
             }, {
                 xtype : 'textarea',
@@ -238,7 +239,7 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
                 cls : 'ckeditor',
                 fieldLabel : i18n.get('label.descriptionHTML'),
                 height : 150,
-                anchor : '95%', 
+                anchor : '90%',
                 value : this.defaultDescription
             }, {
                 xtype : 'textarea',
@@ -246,7 +247,7 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
                 name : 'maintenanceText',
                 fieldLabel : i18n.get('label.maintenanceText'),
                 height : 150,
-                anchor : '95%'
+                anchor : '90%'
             } ], 
             listeners : {
                 "activate" : function () {

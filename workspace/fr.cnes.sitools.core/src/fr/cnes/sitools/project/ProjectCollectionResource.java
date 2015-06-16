@@ -86,6 +86,10 @@ public final class ProjectCollectionResource extends AbstractProjectResource {
         trace(Level.INFO, "Cannot create the project " + projectInput.getName());
         return getRepresentation(response, variant);
       }
+      
+      String sitoolsAttachment = "/" + projectInput.getName().toLowerCase().replaceAll(" ", "_");
+      projectInput.setSitoolsAttachementForUsers(sitoolsAttachment);
+      
       // Business service
       Project projectOutput = getStore().create(projectInput);
 
