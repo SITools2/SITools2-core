@@ -207,6 +207,7 @@ Ext.define('sitools.admin.usergroups.RoleCrud', {
             fn : function (btn, text) {
                 if (btn == 'yes') {
                     this.doDelete(rec);
+                    Ext.get('roleBoxId').mask(i18n.get('label.loading'), 'x-mask-msg');
                 }
             }
 
@@ -224,11 +225,70 @@ Ext.define('sitools.admin.usergroups.RoleCrud', {
             method : 'DELETE',
             scope : this,
             success : function (ret) {
-                if (showResponse(ret)) {
-                    this.store.reload();
-                }
+            	var json = Ext.decode(ret.responseText);
+            	if (!json.success) {
+            		if (!Ext.isEmpty(json.data)) {
+            			
+            			var fieldset = Ext.create("Ext.form.FieldSet", {
+            				xtype : 'fieldset',
+            				padding : 3,
+            				name : 'fieldsetRoleAuthorizations',
+            				autoScroll : true
+            			});
+            			
+            			fieldset.add({
+        	                xtype : 'label',
+        	                html : Ext.String.format(i18n.get('label.role.used'), rec.get('name'))
+        	            });
+            			
+            			fieldset.add({
+        	                xtype : 'label',
+        	                html : i18n.get('label.authorizationsConcerned')
+        	            });
+            			
+            			Ext.each(json.data, function (authorization, index) {
+            				fieldset.add({
+            	                xtype : 'label',
+            	                id : authorization.id,
+            	                html : '<img src="/sitools' + loadUrl.get('APP_CLIENT_PUBLIC_URL') + '/res/images/icons/unvalid.png"/> <b>' + authorization.name + "</b><br>"
+            	            })
+            			});
+            			
+            			Ext.create('Ext.window.Window', {
+            				title : i18n.get('role.delete.error'),
+            				width : 350,
+            				height : 260,
+            				maxHeight : 650,
+            				padding : 15,
+            				closable : false,
+            				resizable : false,
+            				border : false,
+            				items : fieldset,
+            				modal : true,
+            				autoScroll : true,
+            				buttons : {
+            					xtype : 'toolbar',
+            					style: 'background-color:white;',
+            					items : {
+	            					xtype : 'button',
+	            			    	text : i18n.get('label.ok'),
+	            			    	handler : function () {
+	            			    		this.up('window').close();
+	            			    	}
+            					}
+            			    }
+            			}).show();
+            		}
+            	} else {
+            		if (showResponse(ret)) {
+            			this.store.reload();
+            		}
+            	}
             },
-            failure : alertFailure
+            failure : alertFailure,
+            callback : function () {
+            	Ext.get('roleBoxId').unmask();
+            }
         });
     },
 

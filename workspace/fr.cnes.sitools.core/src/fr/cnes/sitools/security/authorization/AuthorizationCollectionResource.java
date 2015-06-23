@@ -49,6 +49,15 @@ public final class AuthorizationCollectionResource extends AbstractAuthorization
     setName("ResourceAuthorizationCollectionResource");
     setDescription("Resource for managing authorization collection");
   }
+  
+  /**
+   * Initiate the resource
+   */
+  @Override
+  public void doInit() {
+    super.doInit();
+    this.setNegotiated(false);
+  }
 
   /**
    * Update / Validate existing authorization

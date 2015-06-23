@@ -182,18 +182,26 @@ public final class RoleResource extends AbstractRoleResource {
       // Business service
       Role roleOutput = getStore().retrieve(getRoleId());
       Response response;
-      if (roleOutput != null) {
-        getStore().delete(getRoleId());
 
-        // Notify observers
-        Notification notification = new Notification();
-        notification.setEvent("ROLE_DELETED");
-        notification.setObservable(roleOutput.getId());
-        notification.setEventSource(roleOutput);
-        getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
-        // Response
-        response = new Response(true, "role.delete.success");
-        trace(Level.INFO, "Delete profile " + roleOutput.getName());
+      if (roleOutput != null) {
+
+        response = checkRoleUsed(roleOutput);
+
+        // role not used in authorizations
+        if (response == null) {
+          getStore().delete(getRoleId());
+
+          // Notify observers
+          Notification notification = new Notification();
+          notification.setEvent("ROLE_DELETED");
+          notification.setObservable(roleOutput.getId());
+          notification.setEventSource(roleOutput);
+          getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
+          
+          // Response
+          response = new Response(true, "role.delete.success");
+          trace(Level.INFO, "Delete profile " + roleOutput.getName());
+        }
       }
       else {
         trace(Level.INFO, "Cannot delete profile - id: " + getRoleId());
