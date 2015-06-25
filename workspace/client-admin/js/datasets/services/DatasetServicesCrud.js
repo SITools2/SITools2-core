@@ -107,7 +107,17 @@ Ext.define('sitools.admin.datasets.services.DatasetServicesCrud', {
                     root : "data"
                 }
             },
-            autoLoad : true
+            autoLoad : true,
+            listeners : {
+            	scope : this,
+            	load : function (store, records) {
+            		if (this.comboParents.rendered) {
+            			record = this.comboParents.getStore().getAt(0);
+            			this.comboParents.setValue(record.get(this.comboParents.valueField), true);
+            			this.comboParents.fireEvent('select', this.comboParents, [record]);
+            		}
+            	}
+            }
         });
         
         this.comboParents = Ext.create("Ext.form.ComboBox", {

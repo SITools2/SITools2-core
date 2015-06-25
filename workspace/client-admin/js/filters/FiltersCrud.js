@@ -67,7 +67,6 @@ Ext.define('sitools.admin.filters.FiltersCrud', {
         
         var storeDatasets = Ext.create("Ext.data.JsonStore", {
             fields : [ 'id', 'name' ],
-            autoLoad : true,
             proxy : {
                 type : 'ajax',
                 url : this.urlDatasets,
@@ -77,6 +76,17 @@ Ext.define('sitools.admin.filters.FiltersCrud', {
                     type : 'json',
                     root : "data"                    
                 }
+            },
+            autoLoad : true,
+            listeners : {
+            	scope : this,
+            	load : function (store, records) {
+            		if (this.comboDatasets.rendered) {
+            			record = this.comboDatasets.getStore().getAt(0);
+            			this.comboDatasets.setValue(record.get(this.comboDatasets.valueField), true);
+            			this.comboDatasets.fireEvent('select', this.comboDatasets, [record]);
+            		}
+            	}
             }
         });
         

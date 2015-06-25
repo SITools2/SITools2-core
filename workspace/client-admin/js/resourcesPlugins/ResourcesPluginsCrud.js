@@ -87,7 +87,17 @@ Ext.define('sitools.admin.resourcesPlugins.ResourcesPluginsCrud', {
                     idProperty : 'id'
                 }
             },
-            autoLoad : true
+            autoLoad : true,
+            listeners : {
+            	scope : this,
+            	load : function (store, records) {
+            		if (this.comboParents.rendered) {
+            			record = this.comboParents.getStore().getAt(0);
+            			this.comboParents.setValue(record.get(this.comboParents.valueField), true);
+            			this.comboParents.fireEvent('select', this.comboParents, [record]);
+            		}
+            	}
+            }
         });
         
         this.selModel = Ext.create('Ext.selection.RowModel',{

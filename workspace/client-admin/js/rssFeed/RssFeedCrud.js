@@ -90,6 +90,16 @@ Ext.define('sitools.admin.rssFeed.RssFeedCrud', {
                     type : 'json',
                     root : "data"
                 }
+            },
+            listeners : {
+            	scope : this,
+            	load : function (store, records) {
+            		if (this.combobox.rendered) {
+            			record = this.combobox.getStore().getAt(0);
+            			this.combobox.setValue(record.get(this.combobox.valueField), true);
+            			this.combobox.fireEvent('select', this.combobox, [record]);
+            		}
+            	}
             }
         });
 
@@ -107,7 +117,6 @@ Ext.define('sitools.admin.rssFeed.RssFeedCrud', {
                 scope : this,
                 select : function (combo, rec, index) {
                     this.dataId = rec[0].data.id;
-//                    this.getDockedItems('toolbar[dock="top"]').down("s-filter").enable();
                     this.loadRss();
                 }
             }

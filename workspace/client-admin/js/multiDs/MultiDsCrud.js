@@ -82,7 +82,17 @@ Ext.define('sitools.admin.multiDs.MultiDsCrud', {
                 }
             },
             fields : [ 'id', 'name'],
-            autoLoad : true
+            autoLoad : true,
+            listeners : {
+            	scope : this,
+            	load : function (store, records) {
+            		if (this.comboProjects.rendered) {
+            			record = this.comboProjects.getStore().getAt(0);
+            			this.comboProjects.setValue(record.get(this.comboProjects.valueField), true);
+            			this.comboProjects.fireEvent('select', this.comboProjects, [record]);
+            		}
+            	}
+            }
         });
         
         this.comboProjects = Ext.create("Ext.form.ComboBox", {
