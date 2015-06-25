@@ -35,10 +35,10 @@ sitools.user.modules.projectGraphTree = Ext.extend(Ext.ux.tree.TreeGrid, {
     expanded : true,
     lines : true,
     useArrows : false,
-    autoScroll : true,
     animate : true,
     columnResize : false,
     headerEllipsisSize : 12,
+    layout : 'fit',
     initComponent : function () {
         this.columns = [ {
             dataIndex : 'text',
