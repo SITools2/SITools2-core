@@ -410,6 +410,7 @@ Ext.define('sitools.admin.datasets.DatasetsMultiTablesPanel', {
                     columnAliasDetail : rec.columnAliasDetail, 
                     javaSqlColumnType : rec.javaSqlColumnType,
                     format : rec.format,
+                    category : rec.category,
                     image : rec.image,
                     dimensionId : rec.dimensionId, 
                     unit : rec.unit

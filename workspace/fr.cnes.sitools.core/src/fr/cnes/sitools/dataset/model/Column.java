@@ -135,6 +135,11 @@ public final class Column {
    * The format to render dates
    */
   private String format;
+  
+  /**
+   * The column category
+   */
+  private String category;
 
   /**
    * Complete constructor
@@ -570,6 +575,22 @@ public final class Column {
    */
   public void setFormat(String format) {
     this.format = format;
+  }
+  
+  /**
+   * Gets the category value
+   * @return the category
+   */
+  public String getCategory() {
+    return category;
+  }
+
+  /**
+   * Sets the value of category
+   * @param category the category to set
+   */
+  public void setCategory(String category) {
+    this.category = category;
   }
 
   /*

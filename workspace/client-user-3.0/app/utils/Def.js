@@ -169,7 +169,8 @@ function extColModelToJsonColModel(ExtColModel) {
                 columnRenderer : column.columnRenderer, 
                 specificColumnType : column.specificColumnType,
                 menuDisabled : true,
-                format : column.format
+                format : column.format,
+                category : column.category
             });
         }
 	});
@@ -230,7 +231,8 @@ function extColModelToStorage(ExtColModel) {
 				specificColumnType : column.specificColumnType, 
 				javaSqlColumnType : column.javaSqlColumnType,
                 unit : column.unit,
-                format : column.format
+                format : column.format,
+                category : column.category
 //                image : column.image,
 //                datasetDetailUrl : column.datasetDetailUrl
             });
@@ -489,7 +491,8 @@ function getColumnModel(listeColonnes, dictionnaryMappings, dataviewConfig, data
 //	                image : item.image,
 //	                datasetDetailUrl : item.datasetDetailUrl,
 					menuDisabled : true,
-	                format : item.format
+	                format : item.format,
+	                category : item.category
 	            }));
             }
             

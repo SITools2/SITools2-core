@@ -242,6 +242,17 @@ Ext.define('sitools.admin.datasets.GridFieldSetup', {
                 },
                 helpUrl : loadUrl.get('APP_URL') + "/client-admin/res/help/" + LOCALE + "/dataset/columnAlias.html"
             }, {
+                header : i18n.get('headers.category'),
+                dataIndex : 'category',
+                width : 80,
+                editor : {
+                    xtype : 'textfield',
+                    disabled : this.action == 'view' ? true : false, 
+                    allowBlank : true,
+                    maxLength : 50
+                },
+                helpUrl : loadUrl.get('APP_URL') + "/client-admin/res/help/" + LOCALE + "/dataset/format.html"
+            }, {
                 header : i18n.get('headers.format'),
                 dataIndex : 'format',
                 width : 80,
@@ -544,6 +555,7 @@ Ext.define('sitools.admin.datasets.GridFieldSetup', {
                 specificColumnType : columnModel[i].specificColumnType,
                 columnAlias : columnModel[i].columnAlias, 
                 javaSqlColumnType : columnModel[i].javaSqlColumnType, 
+                category : columnModel[i].category,
                 format : columnModel[i].format,
                 dimensionId : columnModel[i].dimensionId, 
                 unit : columnModel[i].unit

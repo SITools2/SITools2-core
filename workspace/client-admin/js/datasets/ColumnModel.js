@@ -95,5 +95,8 @@ Ext.define('sitools.admin.datasets.ColumnModel', {
     }, {
         name : 'orderBy', 
         type : 'string'
+    }, {
+        name : 'category', 
+        type : 'string'
     }]
 });

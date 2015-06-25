@@ -634,3 +634,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	background-image: url(/sitools/common/res/images/icons/general/user.png) !important;
 	background-size : 15px 15px;
 }
+
+.x-column-header-inner {
+	text-align: center;
+    padding: 3px 10px 3px 10px;
+}

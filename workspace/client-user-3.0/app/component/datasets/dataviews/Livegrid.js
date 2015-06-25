@@ -201,6 +201,7 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
                     hidden = !item.visible;
                 }
                 if (Ext.isEmpty(item.columnRenderer) ||  ColumnRendererEnum.NO_CLIENT_ACCESS != item.columnRenderer.behavior) {
+                	
                 	var column = {
                         columnAlias : item.columnAlias,
                         dataIndexSitools : item.dataIndex,
@@ -221,7 +222,9 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
                         columnRenderer : item.columnRenderer, 
                         specificColumnType : item.specificColumnType,
                         menuDisabled : true,
-                        format : item.format
+                        format : item.format,
+                        category : item.category,
+                        height : 45
                     };
                 	
                 	// fix bug #82, wrong thumbnail when choosing thumbnail from other column
@@ -229,7 +232,34 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
                 		column.dataIndex = item.columnRenderer.columnAlias;
                 	}
                 	
-                	columns.push(column);
+                	// regroup columns into category
+                	if (!Ext.isEmpty(item.category)) {
+                		var subColumnAdded = false;
+                		column.draggable = false;
+                		
+                		Ext.each(columns, function (currentColumn) {
+                			if (currentColumn.text == item.category) {
+                				currentColumn.columns.push(column);
+                				subColumnAdded = true;
+                			}
+                		});
+                		
+                		if (!subColumnAdded) {
+                			var gridcolumn = {
+                					xtype : 'gridcolumn',
+                					text : item.category,
+                					columns : [column],
+                					menuDisabled : true,
+                					height : 45
+                			};
+                			columns.push(gridcolumn);
+                		}
+                	} else {
+                		columns.push(column);
+                	}
+                	
+                	
+                	
                 }
                 
             }, this);
