@@ -343,3 +343,7 @@ pre {
 .x-grid-group-hd {
   background: #3892D3;
 }
+
+.advancedModeCls {
+	left : auto !important;
+}

@@ -148,13 +148,14 @@ Ext.define('sitools.admin.datasets.DatasetForm', {
                 name : 'sitoolsAttachementForUsers',
                 id : 'sitoolsAttachementForUsers',
                 fieldLabel : i18n.get('label.userAttach'),
-//                hidden : true,
+                hidden : true,
                 anchor : '95%',
                 maxLength : 100
             }, {
                 xtype : 'checkbox',
                 name : 'visible',
                 id : 'visible',
+                hidden : true,
                 fieldLabel : i18n.get('label.isVisible'),
                 anchor : '95%',
                 maxLength : 100
@@ -169,6 +170,7 @@ Ext.define('sitools.admin.datasets.DatasetForm', {
             }, {
                 xtype : 'textarea',
                 name : 'descriptionHTML',
+                hidden : true,
                 fieldLabel : i18n.get('label.descriptionHTML'),
                 height : 150,
                 anchor : '95%',

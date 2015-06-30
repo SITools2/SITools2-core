@@ -134,14 +134,23 @@ Ext.define('sitools.user.controller.DesktopController', {
                 bodyBorder : false,
                 hideMode : 'offsets',
                 layout : 'fit',
-                items : [ view ]
+                items : [ view ],
+                tools : [{
+                	type : 'prev',
+                	tooltip : i18n.get('label.alignLeftDesktop'),
+                	handler : this.alignWindow
+                }, {
+                	type : 'next',
+                	tooltip : i18n.get('label.alignRightDesktop'),
+                	handler : this.alignWindow
+                }]
             });
             
             if(!Ext.isEmpty(userLogin) && windowConfig.saveToolbar) {
-                windowConfig.tools = [{
+                windowConfig.tools.push({
                     type : 'gear',
                     itemId : 'save'
-                }];
+                });
             }
             
             win = desktopView.createWindow(windowConfig);
@@ -153,6 +162,26 @@ Ext.define('sitools.user.controller.DesktopController', {
         }, this);
         
         win.show();
+    },
+    
+    alignWindow : function (event, toolEl, header, tool) {
+    	var window = header.up('window');
+		var wallpaper = Ext.get('wallpaperId');
+		
+		var newWindowWidth = wallpaper.getWidth() / 2;
+		var newWindowHeight = wallpaper.getHeight();
+		window.setSize(newWindowWidth, newWindowHeight);
+		
+		var newWindowX, newWindowY;
+		if (tool.type == "prev") { // align left
+			newWindowX = 0;
+			newWindowY = wallpaper.getY();
+		} else { // align right
+			newWindowX = newWindowWidth;
+			newWindowY = wallpaper.getY();
+		}
+		
+		window.setXY([newWindowX, newWindowY], true);
     },
     
     createPanel : function (view, windowConfig) {

@@ -217,7 +217,7 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
                 xtype : 'textfield',
                 vtype : "attachment",
                 name : 'sitoolsAttachementForUsers',
-//                hidden : true,
+                hidden : true,
                 fieldLabel : i18n.get('label.userAttach'),
                 anchor : '90%',
                 maxLength : 100
@@ -230,6 +230,7 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
             }, {
                 xtype : 'checkbox',
                 name : 'visible',
+                hidden : true,
                 fieldLabel : i18n.get('label.isVisible'),
                 anchor : '90%',
                 maxLength : 100
@@ -237,6 +238,7 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
                 xtype : 'textarea',
                 name : 'htmlDescription',
                 cls : 'ckeditor',
+                hidden : true,
                 fieldLabel : i18n.get('label.descriptionHTML'),
                 height : 150,
                 anchor : '90%',
@@ -245,6 +247,7 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
                 xtype : 'textarea',
                 cls : 'ckeditor',
                 name : 'maintenanceText',
+                hidden : true,
                 fieldLabel : i18n.get('label.maintenanceText'),
                 height : 150,
                 anchor : '90%'
@@ -280,6 +283,7 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
                 name : 'css',
                 fieldLabel : i18n.get('label.css'),
                 anchor : '100%',
+                hidden : true,
                 maxLength : 100
             }, {
                 xtype : 'combo',
@@ -332,7 +336,8 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
                 cls : 'ckeditor',
                 fieldLabel : i18n.get('label.htmlHeader'),
                 height : 150,
-                anchor : '100%', 
+                anchor : '100%',
+                hidden : true,
                 value : this.defaultHeader
             } ], 
             listeners : {
@@ -695,7 +700,15 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
             activeTab : 0,
             items : [this.formProject, this.ihmProfile, this.gridDataSets, this.modulePanel, this.linksPanel ],
             deferredRender : false,
-            buttons : [ {
+            buttons : [{
+                xtype : 'checkbox',
+                labelWidth : 165,
+                componentCls : 'advancedModeCls',
+                fieldLabel : i18n.get('label.advancedParameters'),
+                enableToggle : true,
+                scope : this,
+                handler: this.advancedMode
+            }, '-', {
                 text : i18n.get('label.ok'),
                 scope : this,
                 handler : this.onValidate, 
@@ -1215,5 +1228,15 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
             }
             instance.updateElement();
         });
+    },
+    
+    advancedMode : function (btn, state) {
+		this.formProject.down('textfield[name=sitoolsAttachementForUsers]').setVisible(state);
+		this.formProject.down('checkbox[name=visible]').setVisible(state);
+		this.formProject.down('textarea[name=htmlDescription]').setVisible(state);
+		this.formProject.down('textarea[name=maintenanceText]').setVisible(state);
+		
+		this.ihmProfile.down('textfield[name=css]').setVisible(state);
+		this.ihmProfile.down('textarea[name=htmlHeader]').setVisible(state);
     }
 });

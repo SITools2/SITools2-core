@@ -42,6 +42,8 @@ Ext.define('sitools.admin.usergroups.BlacklistedUsers', {
     pageSize : ADMIN_PANEL_NB_ELEMENTS,
     height : 480,
     layout : 'fit',
+    border : false,
+    bodyBorder : false,
 
     initComponent : function () {
         this.title = i18n.get("title.blacklistedUsers");
@@ -79,10 +81,12 @@ Ext.define('sitools.admin.usergroups.BlacklistedUsers', {
         this.grid = Ext.create("Ext.grid.GridPanel", {
             forceFit : true,
             layout : 'fit',
+            border : false,
             sm : Ext.create('Ext.selection.RowModel', {
                 mode : 'SINGLE'
             }),
             store : this.store,
+            padding : 10,
             columns : [ {
                 header : i18n.get('label.login'),
                 dataIndex : 'username'
@@ -119,6 +123,7 @@ Ext.define('sitools.admin.usergroups.BlacklistedUsers', {
         this.items = [ this.grid ];
         this.tbar = {
                 xtype : 'toolbar',
+                border : false,
                 defaults : {
                     scope : this
                 },
