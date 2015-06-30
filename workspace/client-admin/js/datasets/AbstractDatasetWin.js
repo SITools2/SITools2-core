@@ -199,6 +199,7 @@ Ext.define('sitools.admin.datasets.AbstractDatasetWin', {
                     f.setValues(rec);
 
                     this.queryType = data.queryType;
+                    this.distinct = data.distinct;
                     Ext.getCmp('radioQueryType').setValue(this.queryType);
                     Ext.getCmp('sqlQuery').setValue(data.sqlQuery);
 

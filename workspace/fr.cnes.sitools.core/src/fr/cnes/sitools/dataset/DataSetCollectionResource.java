@@ -93,7 +93,7 @@ public final class DataSetCollectionResource extends AbstractDataSetResource {
         }
       }
 
-      // check for project unicity
+      // check for dataset unicity
       response = checkUnicity(datasetInput, true);
       if (response != null && !response.getSuccess()) {
         trace(Level.INFO, "Cannot create the dataset " + datasetInput.getName());

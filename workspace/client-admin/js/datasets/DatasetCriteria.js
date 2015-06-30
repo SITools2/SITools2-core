@@ -87,7 +87,7 @@ Ext.define('sitools.admin.datasets.DatasetCriteria', {
                 name : "sqlQuery", 
                 invalidText : i18n.get('label.invalidSQl'),
                 validator : function (value) {
-                    if (value.toLowerCase().match("where")) {
+                    if (value.toLowerCase().match("where") || value.toLowerCase().match("group by")) {
                         if (value.toLowerCase().match("from")) {
                             return true;
                         }
@@ -102,12 +102,16 @@ Ext.define('sitools.admin.datasets.DatasetCriteria', {
             }]
         });
         var selecteur = Ext.create('Ext.form.Panel', {
-            height : 30, 
-            flex : 0.1,
+//            height : 60, 
+//            flex : 0.1,
             padding : '7 7 7 7',
             id : "selecteurId",
             bodyBorder : false,
             border : false,
+            layout: {
+                type: 'hbox',
+                align: 'right'
+            },
             items : [{
                 xtype : 'radiogroup',
                 id : 'radioQueryType',
@@ -154,7 +158,18 @@ Ext.define('sitools.admin.datasets.DatasetCriteria', {
                         }
                     }
                 }
-            } ]
+            }, {
+                xtype: 'fieldcontainer',
+                itemId : 'containerDistinct',
+                labelWidth: 120,
+                fieldLabel: i18n.get('label.distinctRequest'),
+                defaultType: 'checkboxfield',
+                items: [{
+                    name : 'distinct',
+                    value : false,
+                    id : 'distinctId'
+                }]
+            }]
         });
         /**
          * A single container with a flex layout. 
@@ -195,6 +210,8 @@ Ext.define('sitools.admin.datasets.DatasetCriteria', {
                     selecteur.down('radiogroup').setValue({
                         queryType : this.scope.queryType
                     });
+                    
+                    this.down('fieldcontainer[itemId=containerDistinct] > checkboxfield').setValue(this.scope.distinct);
                 }
             }
         };
@@ -218,6 +235,10 @@ Ext.define('sitools.admin.datasets.DatasetCriteria', {
     
     getQueryType : function () {
         return this.scope.queryType;
+    },
+    
+    getDistinctRequest : function () {
+    	return this.down('fieldcontainer[itemId=containerDistinct] > checkboxfield').getValue();
     }
 	
 });

@@ -116,6 +116,7 @@ public class DataSetStoreXMLMap extends XmlSynchronizedMapStore<DataSet> impleme
       current.setProperties(dataset.getProperties());
       current.setDatasetViewConfig(dataset.getDatasetViewConfig());
       current.setLastStatusUpdate(dataset.getLastStatusUpdate());
+      current.setDistinct(dataset.isDistinct());
 
       if (result != null) {
 

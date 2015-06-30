@@ -511,6 +511,7 @@ public class SQLDatabaseRequest implements DatabaseRequest {
   @Override
   public final String getRequestAsString() throws SitoolsException {
     String sql;
+    String distinct;
 
     List<Column> columns = params.getDataset().getColumnModel();
     List<Predicat> predicats = params.getPredicats();
@@ -521,6 +522,8 @@ public class SQLDatabaseRequest implements DatabaseRequest {
 
     RequestSql request = RequestFactory.getRequest(params.getDb().getDsModel().getDriverClass());
     sql = "";
+    distinct = (params.getDataset().isDistinct() == true) ? "DISTINCT " : "";
+    
     if ("S".equals(params.getDataset().getQueryType())) {
       sql += " " + params.getDataset().getSqlQuery() + request.getWhereClause(predicats, columns);
     }
@@ -568,10 +571,10 @@ public class SQLDatabaseRequest implements DatabaseRequest {
 
     // JCM
     if (sql.contains("ORDER BY")) {
-      sql = "SELECT " + request.getAttributes(params.getSqlVisibleColumns()) + sql;
+      sql = "SELECT " + distinct + request.getAttributes(params.getSqlVisibleColumns()) + sql;
     }
     else {
-      sql = "SELECT " + request.getAttributes(params.getSqlVisibleColumns()) + sql + orderBy;
+      sql = "SELECT " + distinct + request.getAttributes(params.getSqlVisibleColumns()) + sql + orderBy;
     }
 
     return sql;

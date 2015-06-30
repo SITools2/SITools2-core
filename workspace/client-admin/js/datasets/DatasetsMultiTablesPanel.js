@@ -56,6 +56,9 @@ Ext.define('sitools.admin.datasets.DatasetsMultiTablesPanel', {
         this.urlDimension = loadUrl.get('APP_URL') + loadUrl.get('APP_DIMENSIONS_ADMIN_URL') + '/dimension';
         this.urlDatasetViews = loadUrl.get('APP_URL') + loadUrl.get('APP_DATASETS_VIEWS_URL');
         var action = this.action;
+        
+        Ext.suspendLayouts();
+        
         if (this.action === 'modify') {
             this.title = i18n.get('label.modifyDataset');
         }
@@ -180,7 +183,15 @@ Ext.define('sitools.admin.datasets.DatasetsMultiTablesPanel', {
             }, 
             activeTab : 0,
             items : [ this.formulairePrincipal, this.gridProperties, this.panelSelectTables, this.panelSelectFields, this.gridFields, this.panelWhere, this.viewConfigPanel ],
-            buttons : [ {
+            buttons : [{
+                xtype : 'checkbox',
+                labelWidth : 165,
+                componentCls : 'advancedModeCls',
+                fieldLabel : i18n.get('label.advancedParameters'),
+                enableToggle : true,
+                scope : this,
+                handler: this.advancedMode
+            }, '-', {
                 text : i18n.get('label.ok'),
                 scope : this,
                 handler : this.onValidate, 
@@ -195,7 +206,7 @@ Ext.define('sitools.admin.datasets.DatasetsMultiTablesPanel', {
                 }
             } ], 
             listeners : {
-				scope : this, 
+				scope : this,
 				beforetabchange : function (tabP, newTab, currentTab) {
 					var check = {
 						success : true
@@ -261,11 +272,10 @@ Ext.define('sitools.admin.datasets.DatasetsMultiTablesPanel', {
                         }
                         this.panelSelectTables.fireEvent("datasourceChanged");
                     }
-					
 				}
             }
-
         });
+        
         this.listeners = {
 			scope : this, 
 			resize : function (window, width, height) {
@@ -274,8 +284,12 @@ Ext.define('sitools.admin.datasets.DatasetsMultiTablesPanel', {
 			}
 
         };
+        
         this.items = [ this.tabPanel ];
+        
         this.callParent(arguments);
+        
+        Ext.resumeLayouts(true);
     },
 
     afterRender : function () {
@@ -352,6 +366,7 @@ Ext.define('sitools.admin.datasets.DatasetsMultiTablesPanel', {
         putObject.visible = visibleField.getValue();
         
         putObject.queryType = this.queryType;
+        putObject.distinct = this.panelWhere.getDistinctRequest();
 
         putObject.sqlQuery = Ext.getCmp('sqlQuery').getValue();
 
@@ -504,7 +519,11 @@ Ext.define('sitools.admin.datasets.DatasetsMultiTablesPanel', {
     datasetValidation : function () {
         var result = this.gridFields.gridFieldSetupValidation();
         
-        if (this.queryType === "S" && (Ext.getCmp('sqlQuery').getValue().substr(0, 4) !== "FROM" || !Ext.getCmp('sqlQuery').getValue().toLowerCase().match("where"))) {
+        var sqlQuery = Ext.getCmp('sqlQuery');
+        if (this.queryType === "S" && 
+        		(sqlQuery.getValue().substr(0, 4) !== "FROM" 
+        			&& (!sqlQuery.getValue().toLowerCase().match("where")
+    				&& !sqlQuery.getValue().toLowerCase().match("group by")))) {
 			result = {
                 success : false, 
                 message : i18n.get('label.invalidSQl')
@@ -525,6 +544,12 @@ Ext.define('sitools.admin.datasets.DatasetsMultiTablesPanel', {
             }
             instance.updateElement();
         });
+    },
+    
+    advancedMode : function (btn, state) {
+		this.formulairePrincipal.down('textfield[name=sitoolsAttachementForUsers]').setVisible(state);
+		this.formulairePrincipal.down('checkbox[name=visible]').setVisible(state);
+		this.formulairePrincipal.down('textarea[name=descriptionHTML]').setVisible(state);
     }
 });
 

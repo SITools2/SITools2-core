@@ -154,6 +154,9 @@ public final class DataSet implements IResource, Serializable {
   private List<Property> datasetViewConfig = new ArrayList<Property>();
   
   private Date lastStatusUpdate;
+  
+  /** Global Distinct parameter for all the dataset columns **/
+  private boolean distinct;
 
   /**
    * Constructor : return an initialized DataSet, depending of the Id
@@ -822,6 +825,22 @@ public final class DataSet implements IResource, Serializable {
    */
   public void setLastStatusUpdate(Date lastStatusUpdate) {
     this.lastStatusUpdate = lastStatusUpdate;
+  }
+
+  /**
+   * Gets the distinct value
+   * @return the distinct
+   */
+  public boolean isDistinct() {
+    return distinct;
+  }
+
+  /**
+   * Sets the value of distinct
+   * @param distinct the distinct to set
+   */
+  public void setDistinct(boolean distinct) {
+    this.distinct = distinct;
   }
 
 }

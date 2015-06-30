@@ -499,11 +499,12 @@ public final class ActivationDataSetResource extends AbstractDataSetResource {
     List<Predicat> predicats = ds.getPredicat();
     List<Structure> structures = ds.getStructures();
     SitoolsStructure structure = ds.getStructure();
+    String distinct = (ds.isDistinct()) ? "DISTINCT " : "";
     RequestSql request = RequestFactory.getRequest(datasource.getDsModel().getDriverClass());
     if (structures.size() == 0) {
       return null;
     }
-    String sql = "SELECT " + request.getAttributes(ds.getDefaultColumnVisible());
+    String sql = "SELECT " + distinct + request.getAttributes(ds.getDefaultColumnVisible());
     if ("S".equals(ds.getQueryType())) {
       sql += " " + ds.getSqlQuery();
     }
