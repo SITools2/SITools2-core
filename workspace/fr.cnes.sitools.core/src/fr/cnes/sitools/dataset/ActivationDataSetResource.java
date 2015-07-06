@@ -170,12 +170,11 @@ public final class ActivationDataSetResource extends AbstractDataSetResource {
         List<Predicat> predicats = ds.getPredicat();
         List<Structure> structures = ds.getStructures();
 
-        String sql = null;
         try {
           boolean ok = testRequest(ds);
           if (!ok) {
             trace(Level.INFO, "Cannot start the dataset " + ds.getName());
-            response = new Response(false, "dataset.sql.error : " + sql);
+            response = new Response(false, "Cannot start the dataset, please check the log for more details");
             break;
           }
 
@@ -185,7 +184,7 @@ public final class ActivationDataSetResource extends AbstractDataSetResource {
         catch (Exception e) {
           trace(Level.INFO, "Cannot start the dataset " + ds.getName());
           getLogger().warning(e.getMessage());
-          response = new Response(false, "dataset.sql.error : " + sql);
+          response = new Response(false, "Cannot start the dataset, please check the log for more details");
           break;
         }
 

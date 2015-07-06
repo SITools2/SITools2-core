@@ -136,6 +136,7 @@ sitools.user.component.forms.mainContainer = function (config) {
         border : false,
         iconCls : 'z-btn-search',
         items : [this.zonesPanel],
+        layout : "absolute",
         buttons : [ 
 
 //      ************************* Reset Form button ************************** //
