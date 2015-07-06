@@ -1,4 +1,4 @@
-     /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -28,7 +28,9 @@ import org.restlet.Context;
 
 import fr.cnes.sitools.dataset.model.Column;
 import fr.cnes.sitools.dataset.model.DataSet;
+import fr.cnes.sitools.dataset.model.Multisort;
 import fr.cnes.sitools.dataset.model.Predicat;
+import fr.cnes.sitools.dataset.model.Sort;
 import fr.cnes.sitools.dataset.model.SpecificColumnType;
 import fr.cnes.sitools.dataset.model.geometry.GeometryObject;
 import fr.cnes.sitools.dataset.model.geometry.GeometryType;
@@ -295,6 +297,36 @@ public final class RequestPostgres implements RequestSql {
       glue = ", ";
     }
     return orderBy;
+  }
+
+  @Override
+  public String getOrderBy(Multisort orders, List<Column> columns) {
+    String result = "";
+    // if the order list is empty, there are no order by to add
+    if (orders == null || orders.getOrdersList() == null || orders.getOrdersList().length == 0) {
+      return "";
+    }
+
+    result = " ORDER BY ";
+    String glue = "";
+    for (int i = 0; i < orders.getOrdersList().length; i++) {
+      Sort order = orders.getOrdersList()[i];
+      Column column = getColumnFromAlias(order.getField(), columns);
+      result += glue + " " + convertColumnToString(column) + " " + order.getDirection().name();
+      glue = ", ";
+    }
+    return result;
+  }
+
+  private Column getColumnFromAlias(String field, List<Column> columns) {
+    Column col = null;
+    for (Column column : columns) {
+      if (column.getColumnAlias().equals(field)) {
+        col = column;
+        break;
+      }
+    }
+    return col;
   }
 
   @Override

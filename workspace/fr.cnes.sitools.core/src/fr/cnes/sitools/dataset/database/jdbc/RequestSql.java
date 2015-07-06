@@ -22,6 +22,7 @@ import java.util.List;
 
 import fr.cnes.sitools.dataset.model.Column;
 import fr.cnes.sitools.dataset.model.DataSet;
+import fr.cnes.sitools.dataset.model.Multisort;
 import fr.cnes.sitools.dataset.model.Predicat;
 import fr.cnes.sitools.dataset.model.structure.SitoolsStructure;
 import fr.cnes.sitools.dataset.model.structure.StructureNodeComplete;
@@ -88,6 +89,14 @@ public interface RequestSql {
    * @return the ORDER BY clause
    */
   String getOrderBy(DataSet ds);
+
+  /**
+   * Get the order by string from the given {@link Multisort} object 
+   * @param orders the {@link Multisort} definition
+   * @param columns TODO
+   * @return the ORDER BY clause
+   */
+  String getOrderBy(Multisort orders, List<Column> columns);
 
   /**
    * Built the left part of the filter SQL

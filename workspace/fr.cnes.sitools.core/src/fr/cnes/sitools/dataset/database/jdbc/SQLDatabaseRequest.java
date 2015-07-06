@@ -92,29 +92,6 @@ public class SQLDatabaseRequest implements DatabaseRequest {
     datasource = (SitoolsSQLDataSource) this.params.getDb();
   }
 
-  /**
-   * Create the order by clause.
-   * 
-   * @return The order by clause
-   * 
-   */
-  protected String getOrderBy() {
-    Multisort orders = params.getOrderBy();
-    String result = "";
-    // if the order list is empty, there are no order by to add
-    if (orders == null || orders.getOrdersList() == null || orders.getOrdersList().length == 0) {
-      return "";
-    }
-
-    result = " ORDER BY ";
-    String glue = "";
-    for (int i = 0; i < orders.getOrdersList().length; i++) {
-      Sort order = orders.getOrdersList()[i];
-      result += glue + " " + order.getField() + " " + order.getDirection().name();
-      glue = ", ";
-    }
-    return result;
-  }
 
   @Override
   public List<String> getPrimaryKeys() {
@@ -501,7 +478,8 @@ public class SQLDatabaseRequest implements DatabaseRequest {
     this.logger.log(Level.INFO, "SQL = " + sql);
     // ORDER BY parameter is the first primary key by default
     String orderBy = "";
-    orderBy = getOrderBy();
+    Multisort orders = params.getOrderBy();
+    orderBy = request.getOrderBy(orders, columns);
     ArrayList<Column> columnsQuery = new ArrayList<Column>();
     columnsQuery.add(params.getColumnFromDistinctQuery());
     sql = "SELECT DISTINCT " + request.getAttributes(columnsQuery) + sql + orderBy;
@@ -561,12 +539,10 @@ public class SQLDatabaseRequest implements DatabaseRequest {
       throw new RuntimeException("Number of result to send invalid");
     }
     // ORDER BY parameter is the first primary key by default
-    String orderBy = "";
-    if ("".equals(getOrderBy()) || getOrderBy() == null) {
+    Multisort orders = params.getOrderBy();
+    String orderBy = request.getOrderBy(orders, columns);
+    if ("".equals(orderBy) || orderBy == null) {
       orderBy = request.getOrderBy(params.getDataset());
-    }
-    else {
-      orderBy = getOrderBy();
     }
 
     // JCM
