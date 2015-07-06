@@ -288,14 +288,14 @@ Ext.define('sitools.admin.datasets.datasourceUtils.JdbcUtils',  {
             editor : {
                 xtype : 'textfield',
 	            disabled : this.action === 'view' ? true : false
-            },
-            renderer : function (value, metadata, record, rowIndex, colIndex, store) {
-                if (!this.editable) {
-                    metadata.css = 'uneditable-cell';
-                    metadata.attr = 'ext:qtip="'+i18n.get("label.cannotChangeTableAlias")+'"';
-                }
-                return value;
             }
+//            renderer : function (value, metadata, record, rowIndex, colIndex, store) {
+//                if (!this.editable) {
+//                    metadata.css = 'uneditable-cell';
+//                    metadata.attr = 'ext:qtip="'+i18n.get("label.cannotChangeTableAlias")+'"';
+//                }
+//                return value;
+//            }
         }];
     }, 
     
@@ -306,12 +306,9 @@ Ext.define('sitools.admin.datasets.datasourceUtils.JdbcUtils',  {
     getCmFieldsDataset : function () {
         return [{
 //            id : 'tableAlias',
-            text : i18n.get('headers.tableAlias') + '<img title="Editable" height=14 widht=14 src="/sitools' + loadUrl.get('APP_CLIENT_PUBLIC_URL') + '/res/images/icons/toolbar_edit.png"/>',
+            text : i18n.get('headers.tableAlias'),
             sortable : true,
-            dataIndex : 'tableAlias',
-            editor : {
-                xtype : 'textfield'
-            }
+            dataIndex : 'tableAlias'
         }, {
 //            id : 'tableName',
             text : i18n.get('headers.tableName'),

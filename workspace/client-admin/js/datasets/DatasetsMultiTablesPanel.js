@@ -109,7 +109,7 @@ Ext.define('sitools.admin.datasets.DatasetsMultiTablesPanel', {
         this.panelSelectTables.addListener('activate', function (panel) {
             var indexAlias = -1;
             Ext.Array.findBy(this.datasourceUtils.getCmTablesDataset(), function (item, index) {
-                if (item.id == "alias") {
+            	if (item.dataIndex == "alias") {
                     indexAlias = index;
                 }
             });
@@ -117,9 +117,18 @@ Ext.define('sitools.admin.datasets.DatasetsMultiTablesPanel', {
 			if (indexAlias !== -1) {
 				if (this.gridFields.getStore().getCount() > 0) {
 				    panel.gridTablesDataset.columns[indexAlias].setDisabled(true);
+				    panel.gridTablesDataset.columns[indexAlias].setEditor({
+				    	xtype : 'textfield',
+			            disabled : true
+				    });
+				    
 				}
 				else {
 				    panel.gridTablesDataset.columns[indexAlias].setDisabled(false);
+				    panel.gridTablesDataset.columns[indexAlias].setEditor({
+				    	xtype : 'textfield',
+			            disabled : this.action === 'view' ? true : false
+				    });
 				}
 			}
 //			
