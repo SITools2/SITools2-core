@@ -510,7 +510,7 @@ public class DataSetExplorerUtil {
       for (Sort sort : orders.getOrdersList()) {
         Column col = application.getDataSet().findByColumnAlias(sort.getField());
         if (col != null) {
-          sort.setField(col.getDataIndex());
+          sort.setField(col.getColumnAlias());
         }
       }
       return orders;
