@@ -19,6 +19,7 @@ workspace/client-user/js/modules/igcsSmartQueriesModule/
 workspace/client-user/js/modules/cartoModule/
 .sencha/
 .idea/
+*.iml
 
 node_modules/
 
