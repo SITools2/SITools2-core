@@ -1055,6 +1055,9 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
                         rec.maintenance = data.maintenance;
                         rec.categoryProject = data.categoryProject;
                         rec.priority = data.priority;
+                        if (Ext.isEmpty(rec.priority)) {
+                            rec.priority = 0;
+                        }
                         
                         f.setValues(rec);
                         
