@@ -18,6 +18,9 @@ workspace/client-user/js/modules/metacatalog/
 workspace/client-user/js/modules/igcsSmartQueriesModule/
 workspace/client-user/js/modules/cartoModule/
 
+### JetBrains template
+*.iml
+.idea/
 
 # OS generated files #
 ######################
