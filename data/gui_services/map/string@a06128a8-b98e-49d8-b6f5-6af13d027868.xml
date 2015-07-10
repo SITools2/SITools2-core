@@ -1,0 +1,14 @@
+<guiService>
+  <id>a06128a8-b98e-49d8-b6f5-6af13d027868</id>
+  <name>Mizar Mapping Service</name>
+  <description>A service to link record between grid and map</description>
+  <label>label.mizarMapping</label>
+  <author>AKKA</author>
+  <version>1.0</version>
+  <icon></icon>
+  <xtype>sitools.extension.component.datasets.services.MizarMappingService</xtype>
+  <priority>10</priority>
+  <dataSetSelection>NONE</dataSetSelection>
+  <defaultGuiService>false</defaultGuiService>
+  <defaultVisibility>true</defaultVisibility>
+</guiService>
