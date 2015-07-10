@@ -1,3 +1,9 @@
-#mizarModule label {
+#mizarModule label, #selectedFeatureDiv, #selectedFeatureDiv div, .featureTitle  {
     color : white;
+}
+
+
+
+#selectedFeatureDiv {
+    z-index : 10000;
 }

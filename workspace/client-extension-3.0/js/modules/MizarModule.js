@@ -6,10 +6,10 @@ Ext.define('sitools.extension.modules.MizarModule', {
     // PRODUCTION MODE
     //js: ["/sitools/client-extension/js/controller/modules/mizarModule/src/mizar/MizarWidget.min.js"],
 
-    css: ["/sitools/client-extension/js/controller/modules/mizarModule/src/mizar/css/style.min.css",
+    css: ["/sitools/client-extension/resources/libs/mizar/src/mizar/css/style.min.css",
         "/sitools/client-extension/resources/css/mizarModule/mizarModule.css"],
 
-    controllers: [],
+    controllers: ['sitools.extension.controller.modules.mizarModule.MizarModuleController'],
 
     init: function () {
         var view = Ext.create('sitools.extension.view.modules.mizarModule.MizarModuleView', {

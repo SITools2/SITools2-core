@@ -53,51 +53,6 @@ Ext.define('sitools.extension.view.modules.mizarModule.MizarModuleView', {
 
     },
 
-    afterRender: function () {
-        this.callParent(arguments);
-
-        var options = {
-            "nameResolver": {
-                "zoomFov": 2
-            }
-            //"sitoolsBaseUrl": "http://localhost:8182/sitools"
-        };
-        mizarWidget = new MizarWidget("#mizarModule", options);
-
-        mizarWidget.setNameResolverGui(true);
-        mizarWidget.setReverseNameResolverGui(true);
-        mizarWidget.set2dMapGui(true);
-        mizarWidget.setCompassGui(true);
-        mizarWidget.setCategoryGui(true);
-        mizar.setShowCredits(false);
-
-        $('#toggleCompass').click(function () {
-            if ($(this).is(":checked")) {
-                mizarWidget.setCompassGui(true);
-            }
-            else {
-                mizarWidget.setCompassGui(false);
-            }
-        });
-
-        this.geoJsonLayer = mizarWidget.addLayer({
-            "category": "Other",
-            "type": "GeoJSON",
-            "name": "RESTO",
-            //"serviceUrl": "http://localhost:8182/proxy_resto",
-            //"serviceUrl": "http://localhost:8182/sitools/datastorage/user/storage",
-            "data": {
-                "type": "JSON",
-                "url": "http://localhost:8182/resto_features/geojson"
-            },
-            //"availableServices": [ "OpenSearch" ],
-            "visible": true,
-            "pickable": true,
-            "color": "purple"
-            //"minOrder": 3
-        });
-    },
-
     /**
      * method called when trying to save preference
      *
