@@ -23,10 +23,12 @@ workspace/client-user/js/modules/cartoModule/
 
 node_modules/
 
-
+cots/
 workspace/client-*/dist/
 cots/extjs4/ext-4.2.1.883/src/
 cots/geoext2-2.0.2/src
+
+workspace/client-extension-3.0/resources/libs/mizar/
 
 # OS generated files #
 ######################
