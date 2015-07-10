@@ -46,6 +46,7 @@
 	
 	<!-- Javascript sources  -->
 	<script type="text/javascript" src="${appUrl}/client-public/js/utils/prototyp.js"></script>
+
 	
 <!-- --------------------------------------------------------------------------------------------------
 						LISTE DES FICHIERS A INCLURE POUR LA VERSION DE DEV
@@ -99,6 +100,8 @@
 	<script type="text/javascript" src="app.js"></script>
 	<script type="text/javascript" src="dist/app.withPlugins.min.js"></script>	
 END PROD -->
+
+	<script type="text/javascript" data-main="${appUrl}/client-extension/js/controller/modules/mizarModule/sitoolsMizarMain" src="${appUrl}/client-extension/resources/libs/mizar/src/mizar/js/require.min.js"></script>
 
 	<!-- Opensearch list -->
 	<#list appDsOsDTOs as appDsOsDTO>
