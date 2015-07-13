@@ -11,3 +11,4 @@ startSitools.sh
 logs/
 documentation/
 build/javadoc/
+target/
