@@ -53,7 +53,7 @@ import fr.cnes.sitools.utils.GetResponseUtils;
 @Ignore
 public class AbstractDataSetConverterTestCase extends AbstractDataSetManagerTestCase {
 
-  private String converterClassName = "fr.cnes.sitools.converter.basic.LinearConverter";
+  private String converterClassName = "fr.cnes.sitools.mock.converter.LinearConverter";
 
   private String datasetId = "10000123654";
 
