@@ -94,7 +94,7 @@ ALTER TABLE sitools."USER_PROPERTIES" OWNER TO sitools;
 -- Data for Name: GROUPS; Type: TABLE DATA; Schema: sitools; Owner: sitools
 --
 
-INSERT INTO "GROUPS" (name, description) VALUES ('register', 'Group of registeredé persons');
+INSERT INTO "GROUPS" (name, description) VALUES ('register', 'Group of registered persons');
 INSERT INTO "GROUPS" (name, description) VALUES ('administrator', 'Group of persons managing the archive system');
 
 --
