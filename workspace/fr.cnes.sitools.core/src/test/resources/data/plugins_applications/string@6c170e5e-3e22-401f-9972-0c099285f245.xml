@@ -2,7 +2,7 @@
   <id>6c170e5e-3e22-401f-9972-0c099285f245</id>
   <name>APPLICATION TEST</name>
   <description>APPLICATION FOR TEST PURPOSE, DON&apos;T DO ANYTHING</description>
-  <className>fr.cnes.sitools.applications.tests.ApplicationTest</className>
+  <className>fr.cnes.sitools.mock.applications.ApplicationTest</className>
   <classVersion>0.1</classVersion>
   <classAuthor>AKKA Technologies</classAuthor>
   <classOwner>CNES</classOwner>
