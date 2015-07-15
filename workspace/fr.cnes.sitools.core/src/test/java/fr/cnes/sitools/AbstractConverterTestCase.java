@@ -84,7 +84,7 @@ public abstract class AbstractConverterTestCase extends AbstractSitoolsTestCase 
   /**
    * Converter classname
    */
-  private String classname = "fr.cnes.sitools.converter.tests.ConverterValidatorTest";
+  private String classname = "fr.cnes.sitools.mock.converter.ConverterValidatorTest";
 
   /**
    * Restlet Component for server

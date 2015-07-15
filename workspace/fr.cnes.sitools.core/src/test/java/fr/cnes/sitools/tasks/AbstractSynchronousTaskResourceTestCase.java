@@ -59,7 +59,7 @@ public abstract class AbstractSynchronousTaskResourceTestCase extends AbstractTa
   /**
    * The class name of the resourceModel
    */
-  private String resourceModelClassName = "fr.cnes.sitools.resources.tasks.test.MyTaskResourceFacadeModel";
+  private String resourceModelClassName = "fr.cnes.sitools.mock.resources.tasks.MyTaskResourceFacadeModel";
 
   /**
    * The url attachment for the resource model

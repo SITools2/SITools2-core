@@ -2,7 +2,7 @@
   <id>storage_test_with_security_filter</id>
   <name>DataStorageAuthorizer</name>
   <description>Customizable datastorage directory authorizer</description>
-  <className>fr.cnes.sitools.filter.authorizer.DataStorageAuthorizerModel</className>
+  <className>fr.cnes.sitools.mock.authorizer.DataStorageAuthorizerModel</className>
   <classVersion>0.1</classVersion>
   <classAuthor>AKKA Technologies</classAuthor>
   <classOwner>CNES</classOwner>
@@ -28,5 +28,5 @@
       </filterParameter>
     </entry>
   </parametersMap>
-  <filterClassName>fr.cnes.sitools.filter.authorizer.DataStorageAuthorizer</filterClassName>
+  <filterClassName>fr.cnes.sitools.mock.authorizer.DataStorageAuthorizer</filterClassName>
 </filterPlugin>

@@ -240,7 +240,7 @@ public abstract class AbstractConverterNotificationTestCase extends AbstractSito
   public ConverterModelDTO createConverterObject(String description, String id) {
     ConverterModelDTO conv = new ConverterModelDTO();
 
-    conv.setClassName("fr.cnes.sitools.converter.tests.ConverterValidatorTest");
+    conv.setClassName("fr.cnes.sitools.mock.converter.ConverterValidatorTest");
     conv.setDescriptionAction(description);
     conv.setName("TestConverter");
     conv.setClassAuthor("AKKA/CNES");

@@ -55,7 +55,7 @@ import fr.cnes.sitools.util.RIAPUtils;
 public abstract class AbstractDatastorageFilterPluginTestCase extends AbstractSitoolsServerTestCase {
 
   /** class name of a filter for test purpose. */
-  private String className = "fr.cnes.sitools.filter.authorizer.DataStorageAuthorizerModel";
+  private String className = "fr.cnes.sitools.mock.authorizer.DataStorageAuthorizerModel";
 
   /** number of parameters of the Filter by default */
   private int nbParamFilter = 2;

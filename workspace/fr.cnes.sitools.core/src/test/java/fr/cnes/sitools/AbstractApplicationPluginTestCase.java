@@ -69,7 +69,7 @@ public abstract class AbstractApplicationPluginTestCase extends AbstractSitoolsS
   /**
    * Classname for validation test
    */
-  private String classname = "fr.cnes.sitools.applications.tests.ApplicationTest";
+  private String classname = "fr.cnes.sitools.mock.applications.ApplicationTest";
 
   private static final String idApplication = "123456789";
 
@@ -587,7 +587,7 @@ public abstract class AbstractApplicationPluginTestCase extends AbstractSitoolsS
   private ApplicationPluginModelDTO createObject(String id) {
     ApplicationPluginModelDTO model = new ApplicationPluginModelDTO();
 
-    model.setClassName("fr.cnes.sitools.applications.basic.BasicApp");
+    model.setClassName("fr.cnes.sitools.mock.applications.BasicApp");
     model.setId(id);
     model.setLabel("new Application plugin");
     model.setUrlAttach("/testApp");

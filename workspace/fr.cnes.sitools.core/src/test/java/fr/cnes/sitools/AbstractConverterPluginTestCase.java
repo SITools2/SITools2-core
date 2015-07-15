@@ -54,7 +54,7 @@ import fr.cnes.sitools.util.RIAPUtils;
 public abstract class AbstractConverterPluginTestCase extends AbstractSitoolsServerTestCase {
 
   /** class name of a converter for test purpose. */
-  private String className = "fr.cnes.sitools.converter.tests.ConverterValidatorTest";
+  private String className = "fr.cnes.sitools.mock.converter.ConverterValidatorTest";
 
   /** dataset id for test purpose. */
   private String datasetId = "bf77955a-2cec-4fc3-b95d-7397025fb299";

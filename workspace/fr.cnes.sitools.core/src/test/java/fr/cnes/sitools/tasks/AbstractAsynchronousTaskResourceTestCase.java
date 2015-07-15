@@ -66,7 +66,7 @@ public abstract class AbstractAsynchronousTaskResourceTestCase extends AbstractT
   /**
    * The class name of the resourceModel
    */
-  private String resourceModelClassName = "fr.cnes.sitools.resources.tasks.test.MyTaskResourceFacadeModel";
+  private String resourceModelClassName = "fr.cnes.sitools.mock.resources.tasks.MyTaskResourceFacadeModel";
 
   /** user login */
   private String userLogin = "admin";

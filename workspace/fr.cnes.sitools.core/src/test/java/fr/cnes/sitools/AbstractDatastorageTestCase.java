@@ -75,9 +75,9 @@ public abstract class AbstractDatastorageTestCase extends SitoolsServerTestCase 
   /** The url of the file to query */
   private String fileToQuery = "/files_for_orders/file_for_orders.txt";
   /** The filter model class */
-  private String storageCustomModelFilterClass = "fr.cnes.sitools.filter.authorizer.DataStorageAuthorizerModel";
+  private String storageCustomModelFilterClass = "fr.cnes.sitools.mock.authorizer.DataStorageAuthorizerModel";
   /** The filter class */
-  private String storageCustomFilterClass = "fr.cnes.sitools.filter.authorizer.DataStorageAuthorizer";
+  private String storageCustomFilterClass = "fr.cnes.sitools.mock.authorizer.DataStorageAuthorizer";
   /** The attachment of the datastorage with a filter already attached */
   private String storageWithFilterId = "storage_test_with_security_filter";
 

@@ -80,7 +80,7 @@ public abstract class AbstractDatasetExplorerTestCase extends AbstractDataSetMan
   /**
    * Converter classname
    */
-  private String converterClassname = "fr.cnes.sitools.converter.tests.ConverterValidatorTest";
+  private String converterClassname = "fr.cnes.sitools.mock.converter.ConverterValidatorTest";
 
   /**
    * Get the base URL for the sql dataset

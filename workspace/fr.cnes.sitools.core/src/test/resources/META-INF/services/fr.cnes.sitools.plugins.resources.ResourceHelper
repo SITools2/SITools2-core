@@ -1,0 +1,3 @@
+fr.cnes.sitools.mock.resources.TestParameterizedResourceModel
+fr.cnes.sitools.mock.resources.BasicParameterizedResourceModel
+fr.cnes.sitools.mock.resources.tasks.MyTaskResourceFacadeModel

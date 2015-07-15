@@ -85,7 +85,7 @@ public abstract class AbstractFilterTestCase extends AbstractSitoolsTestCase {
   /**
    * Filter classname
    */
-  private String classname = "fr.cnes.sitools.filter.tests.FilterTest";
+  private String classname = "fr.cnes.sitools.mock.filter.FilterTest";
 
   /**
    * Restlet Component for server

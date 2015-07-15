@@ -258,7 +258,7 @@ public abstract class AbstractFilterNotificationTestCase extends AbstractSitools
   public FilterModelDTO createFilterObject(String description, String id) {
     FilterModelDTO filter = new FilterModelDTO();
 
-    filter.setClassName("fr.cnes.sitools.filter.tests.FilterTest");
+    filter.setClassName("fr.cnes.sitools.mock.filter.FilterTest");
     filter.setDescriptionAction(description);
     filter.setName("TestFilter");
     filter.setClassAuthor("AKKA/CNES");

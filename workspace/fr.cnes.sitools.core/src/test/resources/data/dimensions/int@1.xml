@@ -2,9 +2,9 @@
   <id>Lengths</id>
   <name>Lengths</name>
   <description>Lengths dimension</description>
-  <dimensionHelperName>fr.cnes.sitools.units.helper.SitoolsUnitConverterHelper</dimensionHelperName>
+  <dimensionHelperName>fr.cnes.sitools.mock.units.helper.SitoolsUnitConverterHelper</dimensionHelperName>
   <unitConverters>
-    <string>fr.cnes.sitools.units.converters.FrequencyWavelengthConverter</string>
+    <string>fr.cnes.sitools.mock.units.converters.FrequencyWavelengthConverter</string>
   </unitConverters>
   <units>
     <unit>

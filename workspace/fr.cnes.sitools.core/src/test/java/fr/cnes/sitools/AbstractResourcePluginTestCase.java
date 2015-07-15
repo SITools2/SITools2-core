@@ -86,7 +86,7 @@ public abstract class AbstractResourcePluginTestCase extends AbstractSitoolsServ
   /**
    * Resource plugin class name
    */
-  private String resourcePluginClassName = "fr.cnes.sitools.resources.basic.BasicParameterizedResourceModel";
+  private String resourcePluginClassName = "fr.cnes.sitools.mock.resources.BasicParameterizedResourceModel";
 
   /**
    * Resource DTO for asserts
@@ -95,7 +95,7 @@ public abstract class AbstractResourcePluginTestCase extends AbstractSitoolsServ
   /**
    * Classname for validation test
    */
-  private String classname = "fr.cnes.sitools.resources.test.TestParameterizedResourceModel";
+  private String classname = "fr.cnes.sitools.mock.resources.TestParameterizedResourceModel";
 
   /** number of columns of the dataset */
   private int nbColumnDataset = 7;
@@ -391,8 +391,8 @@ public abstract class AbstractResourcePluginTestCase extends AbstractSitoolsServ
     model.getParameters().add(new ResourceParameter("text", "textToSend", ResourceParameterType.PARAMETER_INTERN));
     getParameterByName("url", model).setValue(PLUGIN_ATTACH);
     getParameterByName("text", model).setValue("TEST");
-    model.setResourceClassName("fr.cnes.sitools.resources.basic.BasicParameterizedResource");
-    model.setClassName("fr.cnes.sitools.resources.basic.BasicParameterizedResourceModel");
+    model.setResourceClassName("fr.cnes.sitools.mock.resources.BasicParameterizedResource");
+    model.setClassName(resourcePluginClassName);
     model.setDescriptionAction("testAction");
     model.setBehavior(ResourceBehaviorType.DISPLAY_IN_DESKTOP);
     return model;
@@ -501,7 +501,7 @@ public abstract class AbstractResourcePluginTestCase extends AbstractSitoolsServ
 
     resModel.setClassName(classname);
     resModel.setName("TestResourcePlugin");
-    resModel.setResourceClassName("fr.cnes.sitools.resources.test.TestParameterizedResource");
+    resModel.setResourceClassName("fr.cnes.sitools.mock.resources.TestParameterizedResource");
 
     resModel.setClassAuthor("AKKA/CNES");
     resModel.setClassVersion("1.0");

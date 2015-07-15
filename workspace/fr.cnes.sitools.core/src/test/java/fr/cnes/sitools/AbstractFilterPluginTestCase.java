@@ -55,7 +55,7 @@ import fr.cnes.sitools.util.RIAPUtils;
 public abstract class AbstractFilterPluginTestCase extends AbstractSitoolsServerTestCase {
 
   /** class name of a filter for test purpose. */
-  private String className = "fr.cnes.sitools.filter.tests.FilterTest";
+  private String className = "fr.cnes.sitools.mock.filter.FilterTest";
 
   // /** class name of a filter for test purpose. */
   // private String classNameNoDsConstructor =
