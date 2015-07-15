@@ -25,6 +25,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.data.MediaType;
 import org.restlet.engine.Engine;
@@ -49,6 +50,7 @@ import fr.cnes.sitools.util.RIAPUtils;
  * @author AKKA Technologies
  * 
  */
+@Ignore
 public abstract class AbstractConverterPluginTestCase extends AbstractSitoolsServerTestCase {
 
   /** class name of a converter for test purpose. */

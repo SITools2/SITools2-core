@@ -30,6 +30,7 @@ import java.util.Map;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.data.ChallengeResponse;
 import org.restlet.data.ChallengeScheme;
@@ -60,6 +61,7 @@ import fr.cnes.sitools.util.RIAPUtils;
  * 
  * @author m.marseille (AKKA Technologies)
  */
+@Ignore
 public abstract class AbstractFilterNotificationTestCase extends AbstractSitoolsServerTestCase {
 
   /**

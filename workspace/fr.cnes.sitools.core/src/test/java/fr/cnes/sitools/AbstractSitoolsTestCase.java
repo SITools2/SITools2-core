@@ -29,6 +29,7 @@ import java.util.logging.Logger;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.Component;
 import org.restlet.Context;
@@ -57,6 +58,7 @@ import fr.cnes.sitools.util.FileUtils;
  * @author AKKA Technologies
  * @see org.restlet.test.RestletTestCase
  */
+@Ignore
 public abstract class AbstractSitoolsTestCase {
   /**
    * common logger for all tests

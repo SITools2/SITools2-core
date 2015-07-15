@@ -28,6 +28,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
@@ -55,6 +56,7 @@ import fr.cnes.sitools.util.RIAPUtils;
  * 
  * @author jp.boignard (AKKA Technologies)
  */
+@Ignore
 public abstract class AbstractMongoDBataSourceTestCase extends AbstractSitoolsServerInsecureTestCase {
 
   /**

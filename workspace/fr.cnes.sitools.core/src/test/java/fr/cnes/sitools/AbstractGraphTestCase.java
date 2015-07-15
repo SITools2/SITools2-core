@@ -31,6 +31,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.Component;
 import org.restlet.Context;
@@ -67,6 +68,7 @@ import fr.cnes.sitools.util.RIAPUtils;
  * 
  * @author jp.boignard (AKKA Technologies)
  */
+@Ignore
 public abstract class AbstractGraphTestCase extends AbstractSitoolsTestCase {
 
   /**

@@ -30,6 +30,7 @@ import java.util.Map;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.Component;
 import org.restlet.Context;
@@ -56,6 +57,7 @@ import fr.cnes.sitools.plugins.guiservices.declare.model.GuiServiceModel;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
+@Ignore
 public abstract class AbstractGuiServiceDeclareTestCase extends AbstractSitoolsTestCase {
 
   /**

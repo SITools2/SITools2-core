@@ -28,6 +28,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
@@ -63,6 +64,7 @@ import fr.cnes.sitools.utils.GetResponseUtils;
  * 
  * @author m.gond
  */
+@Ignore
 public abstract class AbstractDataSetDictionaryMappingTestCase extends AbstractDataSetManagerTestCase {
 
   /** DictionaryId 1 */

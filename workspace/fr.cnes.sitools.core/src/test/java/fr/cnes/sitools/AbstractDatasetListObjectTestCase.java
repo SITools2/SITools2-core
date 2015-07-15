@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.data.MediaType;
 import org.restlet.engine.Engine;
@@ -53,6 +54,7 @@ import fr.cnes.sitools.util.RIAPUtils;
  * @version
  * 
  */
+@Ignore
 public abstract class AbstractDatasetListObjectTestCase extends AbstractSitoolsServerTestCase {
 
   /** dataset attachment for user */

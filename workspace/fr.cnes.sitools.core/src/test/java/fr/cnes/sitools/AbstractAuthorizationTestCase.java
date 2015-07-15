@@ -30,6 +30,7 @@ import java.util.Map;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.Component;
 import org.restlet.Context;
@@ -57,6 +58,7 @@ import fr.cnes.sitools.utils.GetResponseUtils;
  * @author m.marseille (AKKA Technologies)
  * 
  */
+@Ignore
 public abstract class AbstractAuthorizationTestCase extends AbstractSitoolsTestCase {
 
   /** Title of the test */

@@ -21,6 +21,7 @@ package fr.cnes.sitools;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.data.MediaType;
 import org.restlet.engine.Engine;
@@ -38,6 +39,7 @@ import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.Property;
 import fr.cnes.sitools.util.RIAPUtils;
 
+@Ignore
 public abstract class AbstractJettyPropsTestCase extends AbstractSitoolsServerTestCase {
 
   

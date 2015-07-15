@@ -26,6 +26,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.data.MediaType;
 import org.restlet.engine.Engine;
@@ -50,6 +51,7 @@ import fr.cnes.sitools.util.RIAPUtils;
  * 
  * @author b.fiorito (AKKA Technologies)
  */
+@Ignore
 public class AbstractEditUserProfileTestCase extends AbstractSitoolsServerTestCase {
 
   /**

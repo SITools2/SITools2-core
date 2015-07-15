@@ -30,6 +30,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.data.ChallengeResponse;
 import org.restlet.data.ChallengeScheme;
@@ -49,6 +50,7 @@ import fr.cnes.sitools.security.model.UserRole;
 import fr.cnes.sitools.util.Property;
 import fr.cnes.sitools.util.RIAPUtils;
 
+ @Ignore
 public class AbstractUserRoleTestCase extends AbstractSitoolsServerTestCase {
 
   private String username = "admin";

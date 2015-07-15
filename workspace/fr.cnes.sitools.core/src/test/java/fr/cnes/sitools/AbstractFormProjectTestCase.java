@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.data.MediaType;
 import org.restlet.data.Reference;
@@ -58,6 +59,7 @@ import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
+@Ignore
 public class AbstractFormProjectTestCase extends AbstractSitoolsServerTestCase {
   /**
    * static xml store instance for the test

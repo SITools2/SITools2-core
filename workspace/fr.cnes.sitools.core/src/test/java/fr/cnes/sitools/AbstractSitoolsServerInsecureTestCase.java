@@ -19,6 +19,7 @@
 package fr.cnes.sitools;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 
 /**
  * 
@@ -26,6 +27,7 @@ import org.junit.BeforeClass;
  * 
  * @author jp.boignard
  */
+@Ignore
 public class AbstractSitoolsServerInsecureTestCase extends AbstractSitoolsServerTestCase {
 
   /**

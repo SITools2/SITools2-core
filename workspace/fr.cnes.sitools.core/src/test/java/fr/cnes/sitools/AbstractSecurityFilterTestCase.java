@@ -25,6 +25,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.Client;
 import org.restlet.Request;
@@ -45,6 +46,7 @@ import fr.cnes.sitools.util.RIAPUtils;
  * 
  * @author m.gond (AKKA Technologies)
  */
+@Ignore
 public abstract class AbstractSecurityFilterTestCase extends AbstractSitoolsServerTestCase {
 
   /** Dataset attach url */

@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.Client;
 import org.restlet.Request;
@@ -63,6 +64,7 @@ import fr.cnes.sitools.util.RIAPUtils;
  * @author AKKA Technologies
  * 
  */
+@Ignore
 public abstract class AbstractApplicationPluginTestCase extends AbstractSitoolsServerTestCase {
   /**
    * Classname for validation test

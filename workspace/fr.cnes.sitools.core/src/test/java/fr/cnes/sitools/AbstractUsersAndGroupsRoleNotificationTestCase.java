@@ -8,6 +8,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.representation.EmptyRepresentation;
 import org.restlet.representation.Representation;
@@ -29,6 +30,7 @@ import fr.cnes.sitools.utils.GetResponseUtils;
  * 
  * @author m.gond
  */
+@Ignore
 public abstract class AbstractUsersAndGroupsRoleNotificationTestCase extends AbstractSitoolsServerTestCase {
 
   protected String getBaseSecurityUrl() {

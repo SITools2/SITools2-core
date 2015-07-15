@@ -21,6 +21,7 @@ package fr.cnes.sitools;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.data.Method;
 import org.restlet.ext.jackson.JacksonRepresentation;
@@ -37,6 +38,7 @@ import fr.cnes.sitools.userstorage.model.UserStorage;
  * 
  * @author c.mozdzierz
  */
+@Ignore
 public abstract class AbstractUserStorageManagerServerTestCase extends AbstractSitoolsServerTestCase {
 
   /**

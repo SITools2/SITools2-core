@@ -27,6 +27,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.data.ChallengeResponse;
 import org.restlet.data.ChallengeScheme;
@@ -77,6 +78,7 @@ import fr.cnes.sitools.util.RIAPUtils;
  * @version
  * 
  */
+@Ignore
 public abstract class AbstractProjectListObjectTestCase extends AbstractSitoolsServerTestCase {
 
   /** project attachment for user */

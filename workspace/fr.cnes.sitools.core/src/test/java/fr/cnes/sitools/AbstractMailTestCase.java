@@ -24,6 +24,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.data.MediaType;
 import org.restlet.engine.Engine;
@@ -46,6 +47,7 @@ import fr.cnes.sitools.util.RIAPUtils;
  * 
  * @author m.marseille (AKKA Technologies)
  */
+@Ignore
 public abstract class AbstractMailTestCase extends AbstractSitoolsServerTestCase {
 
   /**

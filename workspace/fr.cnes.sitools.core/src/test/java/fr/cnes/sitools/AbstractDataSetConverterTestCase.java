@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
@@ -49,6 +50,7 @@ import fr.cnes.sitools.utils.CreateDatasetUtil;
 import fr.cnes.sitools.utils.GetRepresentationUtils;
 import fr.cnes.sitools.utils.GetResponseUtils;
 
+@Ignore
 public class AbstractDataSetConverterTestCase extends AbstractDataSetManagerTestCase {
 
   private String converterClassName = "fr.cnes.sitools.converter.basic.LinearConverter";

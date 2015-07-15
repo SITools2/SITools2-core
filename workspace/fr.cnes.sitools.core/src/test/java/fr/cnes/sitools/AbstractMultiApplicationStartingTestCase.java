@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.data.ChallengeResponse;
 import org.restlet.data.ChallengeScheme;
@@ -24,6 +25,7 @@ import fr.cnes.sitools.utils.GetResponseUtils;
 /**
  * The Class TestMultiProjectCreation.
  */
+@Ignore
 public abstract class AbstractMultiApplicationStartingTestCase extends AbstractSitoolsServerTestCase {
 
   /** The Constant DATASET_URL_ATTACH. */

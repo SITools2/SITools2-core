@@ -28,6 +28,7 @@ import java.util.HashMap;
 import org.hsqldb.lib.Storage;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.data.LocalReference;
 import org.restlet.data.MediaType;
@@ -55,6 +56,7 @@ import fr.cnes.sitools.util.RIAPUtils;
  * @author m.marseille (AKKA Technologies)
  * 
  */
+@Ignore
 public abstract class AbstractStorageDirectoryTestCase extends AbstractSitoolsServerTestCase {
 
   /** The initial number of directory before startup */

@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.data.MediaType;
 import org.restlet.engine.Engine;
@@ -53,6 +54,7 @@ import fr.cnes.sitools.util.RIAPUtils;
  * 
  * @author jp.boignard (AKKA Technologies)
  */
+@Ignore
 public abstract class AbstractApplicationManagerTestCase extends AbstractSitoolsServerTestCase {
 
   /** Test title */

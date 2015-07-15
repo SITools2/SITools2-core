@@ -27,6 +27,7 @@ import java.util.ArrayList;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.Component;
 import org.restlet.Context;
@@ -61,6 +62,7 @@ import fr.cnes.sitools.util.RIAPUtils;
  * @author AKKA Technologies
  * 
  */
+@Ignore
 public abstract class AbstractConceptTemplateTestCase extends AbstractSitoolsTestCase {
 
   /**

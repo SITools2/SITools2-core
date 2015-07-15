@@ -30,6 +30,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
@@ -61,6 +62,7 @@ import fr.cnes.sitools.util.RIAPUtils;
  * 
  * @author m.gond (AKKA Technologies)
  */
+@Ignore
 public abstract class AbstractFeedsPortalTestCase extends AbstractSitoolsServerTestCase {
 
   /**

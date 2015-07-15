@@ -28,6 +28,7 @@ import java.util.Map;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.Client;
 import org.restlet.Component;
@@ -72,6 +73,7 @@ import fr.cnes.sitools.util.RIAPUtils;
  * @author b.fiorito (AKKA Technologies)
  * 
  */
+@Ignore
 public abstract class AbstractResetPasswordTestCase extends AbstractSitoolsTestCase {
   /** Name of the token param */
   private static final String TOKEN_PARAM_NAME = "cdChallengeMail";

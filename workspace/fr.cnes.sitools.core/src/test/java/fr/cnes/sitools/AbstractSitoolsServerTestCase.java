@@ -25,11 +25,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 import org.restlet.data.ChallengeResponse;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
@@ -55,6 +51,7 @@ import fr.cnes.sitools.util.RIAPUtils;
  * @author AKKA Technologies
  * @see org.restlet.test.RestletTestCase
  */
+@Ignore
 public abstract class AbstractSitoolsServerTestCase {
 
   /**

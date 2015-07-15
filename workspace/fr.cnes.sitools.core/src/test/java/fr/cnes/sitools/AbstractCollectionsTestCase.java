@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.data.MediaType;
 import org.restlet.engine.Engine;
@@ -58,6 +59,7 @@ import fr.cnes.sitools.utils.CreateDatasetUtil;
 import fr.cnes.sitools.utils.GetRepresentationUtils;
 import fr.cnes.sitools.utils.GetResponseUtils;
 
+@Ignore
 public class AbstractCollectionsTestCase extends AbstractDataSetManagerTestCase {
 
   private String dictionaryId = "429c7ff8-960a-4a49-9565-59d5c189ad22";

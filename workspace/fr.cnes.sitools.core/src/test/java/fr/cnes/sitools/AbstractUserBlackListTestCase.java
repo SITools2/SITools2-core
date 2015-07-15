@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.Client;
 import org.restlet.Request;
@@ -44,6 +45,7 @@ import fr.cnes.sitools.utils.GetResponseUtils;
  * 
  * @author m.gond
  */
+@Ignore
 public abstract class AbstractUserBlackListTestCase extends AbstractSitoolsServerTestCase {
 
   /** Name of the token param. */

@@ -28,6 +28,7 @@ import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.data.ChallengeResponse;
 import org.restlet.data.ChallengeScheme;
@@ -58,6 +59,7 @@ import fr.cnes.sitools.tasks.model.TaskModel;
 import fr.cnes.sitools.util.Property;
 import fr.cnes.sitools.util.RIAPUtils;
 
+@Ignore
 public class AbstractMultidatasetTestCase extends AbstractTaskResourceTestCase {
   /** fuse dataset id */
   private String fuseDsId = "6a5a7a2a-f4c9-4c97-add6-eb60bd0b1c69";

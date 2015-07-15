@@ -26,6 +26,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.Client;
 import org.restlet.Request;
@@ -54,6 +55,7 @@ import fr.cnes.sitools.utils.GetResponseUtils;
  * 
  * @author m.marseille (AKKA Technologies)
  */
+@Ignore
 public abstract class AbstractResourcePluginTestCase extends AbstractSitoolsServerTestCase {
 
   /**

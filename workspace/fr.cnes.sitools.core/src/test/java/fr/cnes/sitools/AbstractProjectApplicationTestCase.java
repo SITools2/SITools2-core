@@ -29,6 +29,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.data.MediaType;
 import org.restlet.engine.Engine;
@@ -54,6 +55,7 @@ import fr.cnes.sitools.util.RIAPUtils;
  * 
  * @author AKKA Technologies
  */
+@Ignore
 public abstract class AbstractProjectApplicationTestCase extends AbstractSitoolsServerTestCase {
 
   /** projectId */

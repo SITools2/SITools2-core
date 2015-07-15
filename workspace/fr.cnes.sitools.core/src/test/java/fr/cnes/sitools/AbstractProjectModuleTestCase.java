@@ -31,6 +31,7 @@ import java.util.Map;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.Component;
 import org.restlet.Context;
@@ -58,6 +59,7 @@ import fr.cnes.sitools.role.model.Role;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
+@Ignore
 public abstract class AbstractProjectModuleTestCase extends AbstractSitoolsTestCase {
 
   /**

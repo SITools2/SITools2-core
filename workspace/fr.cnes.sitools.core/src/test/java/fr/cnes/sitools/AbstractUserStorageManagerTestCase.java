@@ -34,6 +34,7 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.Client;
 import org.restlet.Component;
@@ -76,6 +77,7 @@ import fr.cnes.sitools.util.RIAPUtils;
  * 
  * @author AKKA
  */
+@Ignore
 public abstract class AbstractUserStorageManagerTestCase extends AbstractSitoolsTestCase {
 
   /** The title */

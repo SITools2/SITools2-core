@@ -18,6 +18,7 @@
  ******************************************************************************/
 package fr.cnes.sitools;
 
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -26,6 +27,7 @@ import org.junit.runners.Suite;
  * 
  * @author m.marseille (AKKA technologies)
  */
+@Ignore
 @RunWith(Suite.class)
 @Suite.SuiteClasses({AuthorizationStoreXMLTestCase.class, ClientAdminTestCase.class, ClientUserTestCase.class,
     DataSetApplicationTestCase.class, DataSetCsvExportTestCase.class, DataSetFilterTestCase.class,

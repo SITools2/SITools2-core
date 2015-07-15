@@ -38,6 +38,7 @@ import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonToken;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.engine.Engine;
@@ -69,6 +70,7 @@ import fr.cnes.sitools.utils.GetResponseUtils;
  * 
  * @author jp.boignard (AKKA Technologies)
  */
+@Ignore
 public abstract class AbstractDataSetManagerTestCase extends AbstractSitoolsServerTestCase {
 
   /** Dataset identifier for postgres tests */

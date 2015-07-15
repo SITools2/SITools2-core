@@ -22,6 +22,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.Client;
 import org.restlet.Request;
@@ -41,6 +42,7 @@ import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.util.RIAPUtils;
 
+@Ignore
 public class AbstractDataSetPropertyTestCase extends SitoolsServerTestCase {
 
   public String datasetId = "6a5a7a2a-f4c9-4c97-add6-eb60bd0b1c69";

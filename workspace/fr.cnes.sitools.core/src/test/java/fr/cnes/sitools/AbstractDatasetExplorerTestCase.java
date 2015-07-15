@@ -30,6 +30,7 @@ import java.util.Map;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
@@ -58,6 +59,7 @@ import fr.cnes.sitools.util.RIAPUtils;
  * @author m.marseille (AKKA Technologies)
  * 
  */
+@Ignore
 public abstract class AbstractDatasetExplorerTestCase extends AbstractDataSetManagerTestCase {
 
   /** Dataset ID for test */

@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
@@ -61,6 +62,7 @@ import fr.cnes.sitools.datasource.jdbc.model.Record;
  *         11:01:50','2010-05-01',2010,'14:01:15','n',0);
  * 
  */
+@Ignore
 public abstract class AbstractDatabaseTypesTestCase extends AbstractDataSetManagerTestCase {
 
   /** url attachment of the dataset with MySQL datasource */

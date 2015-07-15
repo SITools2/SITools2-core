@@ -30,6 +30,7 @@ import java.util.Map;
 
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.data.MediaType;
 import org.restlet.engine.Engine;
@@ -58,6 +59,7 @@ import fr.cnes.sitools.util.RIAPUtils;
  *         En cas d'echec du test : Supprimer le fichier int@2.xml du repertoire TESTS\opensearch correspondant à l'osId
  *         ci-dessous
  */
+@Ignore
 public abstract class AbstractOpensearchSearchTestCase extends SitoolsServerTestCase {
 
   /** Opensearch id */

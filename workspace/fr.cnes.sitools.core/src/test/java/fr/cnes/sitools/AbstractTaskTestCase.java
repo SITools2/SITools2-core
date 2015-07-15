@@ -27,6 +27,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.logging.Level;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.Client;
 import org.restlet.Context;
@@ -61,6 +62,7 @@ import fr.cnes.sitools.tasks.model.TaskResourceModel;
 import fr.cnes.sitools.tasks.model.TaskStatus;
 import fr.cnes.sitools.util.RIAPUtils;
 
+@Ignore
 public class AbstractTaskTestCase extends AbstractSitoolsServerTestCase {
 
   private String userAdminId = "admin";

@@ -27,6 +27,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.Client;
 import org.restlet.Request;
@@ -61,6 +62,7 @@ import fr.cnes.sitools.util.RIAPUtils;
  * 
  * @author m.gond
  */
+@Ignore
 public abstract class AbstractDatastorageTestCase extends SitoolsServerTestCase {
   /** Initial number of datastorages at startup */
   private static final int NB_INITIAL_DATASTORAGE = 2;

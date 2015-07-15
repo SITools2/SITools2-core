@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.data.MediaType;
 import org.restlet.engine.Engine;
@@ -46,6 +47,7 @@ import fr.cnes.sitools.project.model.Project;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
+@Ignore
 public class AbstractPortalTestCase extends SitoolsServerTestCase {
   /** The name of a project on the server */
   private String projectName = "premier";

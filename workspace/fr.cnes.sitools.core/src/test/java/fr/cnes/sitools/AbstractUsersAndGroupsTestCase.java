@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.Component;
 import org.restlet.data.Form;
@@ -35,6 +36,7 @@ import fr.cnes.sitools.utils.GetResponseUtils;
  * 
  * @author m.gond
  */
+@Ignore
 public abstract class AbstractUsersAndGroupsTestCase extends AbstractSitoolsTestCase {
 
   /**
@@ -253,7 +255,6 @@ public abstract class AbstractUsersAndGroupsTestCase extends AbstractSitoolsTest
     List<User> usersNotSorted = getUserListFromServer(false);
 
     Collections.sort(usersNotSorted, new Comparator<User>() {
-      @Override
       public int compare(User u1, User u2) {
         return u1.getIdentifier().compareTo(u2.getIdentifier());
       }
@@ -328,7 +329,6 @@ public abstract class AbstractUsersAndGroupsTestCase extends AbstractSitoolsTest
     List<Group> groupNotSorted = getGroupListFromServer(false);
 
     Collections.sort(groupNotSorted, new Comparator<Group>() {
-      @Override
       public int compare(Group g1, Group g2) {
         return g1.getName().compareTo(g2.getName());
       }
