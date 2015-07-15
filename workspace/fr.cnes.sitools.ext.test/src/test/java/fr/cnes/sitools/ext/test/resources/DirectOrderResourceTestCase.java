@@ -16,18 +16,16 @@
  * You should have received a copy of the GNU General Public License
  * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package fr.cnes.sitools;
+package fr.cnes.sitools.ext.test.resources;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.io.File;
-import java.util.List;
-
+import fr.cnes.sitools.common.SitoolsSettings;
+import fr.cnes.sitools.common.model.Response;
+import fr.cnes.sitools.plugins.resources.dto.ResourceModelDTO;
+import fr.cnes.sitools.plugins.resources.model.ResourceModel;
+import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
+import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.tasks.AbstractTaskResourceTestCase;
+import fr.cnes.sitools.util.RIAPUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.restlet.Client;
@@ -40,14 +38,10 @@ import org.restlet.engine.util.DateUtils;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
 
-import fr.cnes.sitools.common.SitoolsSettings;
-import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.plugins.resources.dto.ResourceModelDTO;
-import fr.cnes.sitools.plugins.resources.model.ResourceModel;
-import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
-import fr.cnes.sitools.server.Consts;
-import fr.cnes.sitools.tasks.AbstractTaskResourceTestCase;
-import fr.cnes.sitools.util.RIAPUtils;
+import java.io.File;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * Test the DirectOrderResource Create a Resource on a dataset and try to get archives from multiple format known and
@@ -246,11 +240,11 @@ public class DirectOrderResourceTestCase extends AbstractTaskResourceTestCase {
   }
 
   /**
-   * Common test method with {@link MediaType} parameter, fileName and archiveType
-   * 
+   * Common test method with {@link org.restlet.data.MediaType} parameter, fileName and archiveType
+   *
    * @param mediaType
-   *          the {@link MediaType}
-   * 
+   *          the {@link org.restlet.data.MediaType}
+   *
    * @param archiveType
    *          the archiveType
    * @throws ClassNotFoundException
@@ -273,11 +267,11 @@ public class DirectOrderResourceTestCase extends AbstractTaskResourceTestCase {
 
   /**
    * test order with error expected because the archiveType needed is not available
-   * 
+   *
    * @param archiveType
    *          the archiveType needed
    * @param expectedErrorStatus
-   *          the Expected error {@link Status}
+   *          the Expected error {@link org.restlet.data.Status}
    */
   private void testOrderError(String archiveType, Status expectedErrorStatus) {
     String url = getHostUrl() + DATASET_URL + urlAttach + "?ranges=[[1,5]]&archiveType=" + archiveType;
@@ -300,10 +294,10 @@ public class DirectOrderResourceTestCase extends AbstractTaskResourceTestCase {
 
   /**
    * Fill the specific parameters for an OrderResource
-   * 
+   *
    * @param resourceModel
    *          the ResourceModel to fill
-   * 
+   *
    * @return the taskResource completed
    */
   protected ResourceModel fillOrderResourceParameters(ResourceModel resourceModel) {
@@ -324,15 +318,15 @@ public class DirectOrderResourceTestCase extends AbstractTaskResourceTestCase {
   }
 
   /**
-   * Invoke an order and assert that the it is successful, that the {@link MediaType} of the result is expectedMediaType
+   * Invoke an order and assert that the it is successful, that the {@link org.restlet.data.MediaType} of the result is expectedMediaType
    * and that its name if expectedFileName
-   * 
+   *
    * @param urlAttach2
    *          the url attachment of the resource
    * @param parameters
    *          the parameters to add to the request
    * @param expectedMediaType
-   *          the expected {@link MediaType} in return
+   *          the expected {@link org.restlet.data.MediaType} in return
    * @param expectedFileName
    *          the expected file name in return
    * 
