@@ -31,6 +31,7 @@ workspace/client-user/js/modules/cartoModule/
 .Trashes
 ehthumbs.db
 Thumbs.db
+RemoteSystemsTempFiles/
 
 ######  Uncomment to add data folder with default configuration (commented by default not to have those entries into git status)
 #!data/gui_services/
