@@ -109,21 +109,18 @@ public class DBResultSet implements ResultSet {
   public final void close() throws SQLException {
     try {
       statement.close();
-    }
-    catch (Exception e) {
-      getLogger().warning(e.getMessage());
-    }
-    try {
       localResultSet.close();
     }
     catch (Exception e) {
       getLogger().warning(e.getMessage());
     }
-    try {
-      conn.close();
-    }
-    catch (Exception e) {
-      getLogger().warning(e.getMessage());
+    finally {
+      try {
+        conn.close();
+      }
+      catch (Exception e) {
+        getLogger().warning(e.getMessage());
+      }
     }
   }
 
