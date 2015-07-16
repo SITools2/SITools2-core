@@ -104,6 +104,8 @@ INSERT INTO "GROUPS" (name, description) VALUES ('administrator', 'Group of pers
 --
 
 INSERT INTO "USERS" (identifier, firstname, lastname, email, secret) VALUES ('admin', 'firstname', 'lastname', 'admin-sitools@cnes.fr', 'admin');
+INSERT INTO "USERS" (identifier, firstname, lastname, email, secret) VALUES ('identifier', 'firstname', 'lastname', 'admin-sitools@cnes.fr', 'admin');
+
 
 --
 -- TOC entry 1897 (class 0 OID 16680)

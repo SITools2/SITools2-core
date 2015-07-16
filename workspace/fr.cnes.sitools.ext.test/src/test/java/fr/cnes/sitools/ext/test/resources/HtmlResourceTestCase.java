@@ -19,9 +19,9 @@
 package fr.cnes.sitools.ext.test.resources;
 
  import fr.cnes.sitools.common.SitoolsSettings;
+ import fr.cnes.sitools.ext.test.tasks.AbstractTaskResourceTestCase;
  import fr.cnes.sitools.plugins.resources.model.ResourceModel;
  import fr.cnes.sitools.server.Consts;
- import fr.cnes.sitools.tasks.AbstractTaskResourceTestCase;
  import fr.cnes.sitools.util.RIAPUtils;
  import org.junit.Test;
  import org.restlet.data.MediaType;

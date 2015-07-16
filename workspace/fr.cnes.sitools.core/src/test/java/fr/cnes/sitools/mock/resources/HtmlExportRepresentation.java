@@ -18,17 +18,6 @@
  ******************************************************************************/
 package fr.cnes.sitools.mock.resources;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-
-import org.restlet.Context;
-import org.restlet.data.MediaType;
-import org.restlet.representation.OutputRepresentation;
-
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.exception.SitoolsException;
@@ -42,6 +31,16 @@ import fr.cnes.sitools.dataset.model.ColumnRenderer;
 import fr.cnes.sitools.datasource.jdbc.model.AttributeValue;
 import fr.cnes.sitools.datasource.jdbc.model.Record;
 import fr.cnes.sitools.util.Util;
+import org.restlet.Context;
+import org.restlet.data.MediaType;
+import org.restlet.representation.OutputRepresentation;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Create a HTML representation of a list of records

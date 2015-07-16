@@ -24,6 +24,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.Client;
 import org.restlet.Request;
@@ -46,6 +47,7 @@ import fr.cnes.sitools.util.RIAPUtils;
  * 
  * @author m.gond
  */
+@Ignore
 public abstract class AbstractSynchronousTaskResourceTestCase extends AbstractTaskResourceTestCase {
   /**
    * The if of the dataset

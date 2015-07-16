@@ -18,20 +18,19 @@
  ******************************************************************************/
 package fr.cnes.sitools.mock.resources;
 
-import org.restlet.Context;
-import org.restlet.data.Disposition;
-import org.restlet.data.MediaType;
-import org.restlet.ext.wadl.MethodInfo;
-import org.restlet.representation.Representation;
-import org.restlet.representation.Variant;
-import org.restlet.resource.Get;
-
-import fr.cnes.sitools.common.resource.SitoolsParameterizedResource;
-import fr.cnes.sitools.dataset.DataSetApplication;
-import fr.cnes.sitools.dataset.database.DatabaseRequestParameters;
-import fr.cnes.sitools.dataset.database.common.DataSetExplorerUtil;
-import fr.cnes.sitools.dataset.model.DataSet;
-import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
+ import fr.cnes.sitools.common.resource.SitoolsParameterizedResource;
+ import fr.cnes.sitools.dataset.DataSetApplication;
+ import fr.cnes.sitools.dataset.database.DatabaseRequestParameters;
+ import fr.cnes.sitools.dataset.database.common.DataSetExplorerUtil;
+ import fr.cnes.sitools.dataset.model.DataSet;
+ import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
+ import org.restlet.Context;
+ import org.restlet.data.Disposition;
+ import org.restlet.data.MediaType;
+ import org.restlet.ext.wadl.MethodInfo;
+ import org.restlet.representation.Representation;
+ import org.restlet.representation.Variant;
+ import org.restlet.resource.Get;
 
  /**
   * HTML resource

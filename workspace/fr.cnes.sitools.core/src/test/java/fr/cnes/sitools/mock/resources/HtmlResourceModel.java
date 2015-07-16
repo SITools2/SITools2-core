@@ -18,18 +18,18 @@
  ******************************************************************************/
 package fr.cnes.sitools.mock.resources;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+ import fr.cnes.sitools.common.validator.ConstraintViolation;
+ import fr.cnes.sitools.common.validator.ConstraintViolationLevel;
+ import fr.cnes.sitools.common.validator.Validator;
+ import fr.cnes.sitools.dataset.DataSetApplication;
+ import fr.cnes.sitools.plugins.resources.model.DataSetSelectionType;
+ import fr.cnes.sitools.plugins.resources.model.ResourceModel;
+ import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
+ import fr.cnes.sitools.plugins.resources.model.ResourceParameterType;
 
-import fr.cnes.sitools.common.validator.ConstraintViolation;
-import fr.cnes.sitools.common.validator.ConstraintViolationLevel;
-import fr.cnes.sitools.common.validator.Validator;
-import fr.cnes.sitools.dataset.DataSetApplication;
-import fr.cnes.sitools.plugins.resources.model.DataSetSelectionType;
-import fr.cnes.sitools.plugins.resources.model.ResourceModel;
-import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
-import fr.cnes.sitools.plugins.resources.model.ResourceParameterType;
+ import java.util.HashSet;
+ import java.util.Map;
+ import java.util.Set;
 
  /**
   * The Model for Html export Resource
@@ -50,9 +50,9 @@ import fr.cnes.sitools.plugins.resources.model.ResourceParameterType;
      setClassVersion("0.2");
      setName("HtmlResourceModel");
      setDescription("HTML export of datasets");
-     setClassName("fr.cnes.sitools.resources.html.HtmlResourceModel");
+     setClassName("fr.cnes.sitools.mock.resources.HtmlResourceModel");
      /** Resource Facade */
-     setResourceClassName(fr.cnes.sitools.resources.html.HtmlResource.class.getName());
+     setResourceClassName(fr.cnes.sitools.mock.resources.HtmlResource.class.getName());
      /** Paramètres */
      ResourceParameter param1 = new ResourceParameter("title", "htmlTitle", ResourceParameterType.PARAMETER_INTERN);
      ResourceParameter param2 = new ResourceParameter("max_rows", "Set max_rows=-1 to export everything",
