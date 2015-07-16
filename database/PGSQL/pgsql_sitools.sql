@@ -105,6 +105,7 @@ INSERT INTO "GROUPS" (name, description) VALUES ('administrator', 'Group of pers
 
 INSERT INTO "USERS" (identifier, firstname, lastname, email, secret) VALUES ('admin', 'firstname', 'lastname', 'admin-sitools@cnes.fr', 'admin');
 INSERT INTO "USERS" (identifier, firstname, lastname, email, secret) VALUES ('identifier', 'firstname', 'lastname', 'admin-sitools@cnes.fr', 'admin');
+INSERT INTO "USER_PROPERTIES"(key, value, identifier, scope) VALUES ('Nice', 'Brice', 'identifier', 'ReadOnly');
 
 
 --
