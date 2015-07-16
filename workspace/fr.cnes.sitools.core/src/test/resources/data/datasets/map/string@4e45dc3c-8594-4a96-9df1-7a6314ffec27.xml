@@ -14,7 +14,7 @@
     <url>/datasourceCNES</url>
     <mediaType>datasource</mediaType>
   </datasource>
-  <status>ACTIVE</status>
+  <status>INACTIVE</status>
   <sitoolsAttachementForUsers>/myds</sitoolsAttachementForUsers>
   <columnModel>
     <column>
@@ -24,13 +24,14 @@
       <width>100</width>
       <sortable>true</sortable>
       <visible>true</visible>
-      <filter>true</filter>      
+      <filter>true</filter>
       <schema>sitools</schema>
       <tableName>GROUPS</tableName>
       <primaryKey>true</primaryKey>
       <sqlColumnType>varchar</sqlColumnType>
-	  <specificColumnType>DATABASE</specificColumnType>
-	  <columnAlias>name</columnAlias>
+      <specificColumnType>DATABASE</specificColumnType>
+      <columnAlias>name</columnAlias>
+      <javaSqlColumnType>0</javaSqlColumnType>
     </column>
     <column>
       <id>ed76e160-c010-4565-bc08-d00f32ff8c1f</id>
@@ -39,12 +40,14 @@
       <width>100</width>
       <sortable>true</sortable>
       <visible>true</visible>
-      <filter>true</filter>      
+      <filter>true</filter>
       <schema>sitools</schema>
       <tableName>USERS</tableName>
+      <primaryKey>false</primaryKey>
       <sqlColumnType>varchar</sqlColumnType>
-	  <specificColumnType>DATABASE</specificColumnType>
-	  <columnAlias>firstname</columnAlias>
+      <specificColumnType>DATABASE</specificColumnType>
+      <columnAlias>firstname</columnAlias>
+      <javaSqlColumnType>0</javaSqlColumnType>
     </column>
     <column>
       <id>2abf8798-5be1-4071-80a4-ba13a5314b8b</id>
@@ -53,12 +56,14 @@
       <width>100</width>
       <sortable>true</sortable>
       <visible>true</visible>
-      <filter>true</filter>      
+      <filter>true</filter>
       <schema>sitools</schema>
       <tableName>USERS</tableName>
+      <primaryKey>false</primaryKey>
       <sqlColumnType>varchar</sqlColumnType>
-	  <specificColumnType>DATABASE</specificColumnType>
-	  <columnAlias>lastname</columnAlias>
+      <specificColumnType>DATABASE</specificColumnType>
+      <columnAlias>lastname</columnAlias>
+      <javaSqlColumnType>0</javaSqlColumnType>
     </column>
   </columnModel>
   <structures>
@@ -73,6 +78,16 @@
       <name>USERS</name>
     </structure>
   </structures>
+  <expirationDate>2010-11-30 14:55:55.831 CET</expirationDate>
+  <visible>false</visible>
+  <authorized>false</authorized>
+  <datasetView>
+    <id>0d0f9ad1-2088-4f5e-a229-c89dd002d446</id>
+    <jsObject>sitools.user.component.dataviews.tplView.TplView</jsObject>
+    <fileUrl></fileUrl>
+    <name>Sitools DataView</name>
+    <description>Sitools DataView with Detail</description>
+  </datasetView>
   <structure>
     <mainTable>
       <name>GROUPS</name>
@@ -87,12 +102,10 @@
           <schema>sitools</schema>
         </table>
         <typeJointure>INNER_JOIN</typeJointure>
-        <children>
-        </children>
+        <children/>
       </StructureNodeComplete>
     </nodeList>
   </structure>
-  <expirationDate>2010-11-30 14:55:55.831 CET</expirationDate>
   <queryType>W</queryType>
   <sqlQuery></sqlQuery>
   <predicat>
@@ -100,28 +113,26 @@
       <indice>0</indice>
       <nbClosedParanthesis>0</nbClosedParanthesis>
       <closedParenthesis> </closedParenthesis>
-      <rightValue class="string">'uti%'</rightValue>
+      <rightValue class="string">&apos;uti%&apos;</rightValue>
       <nbOpenedParanthesis>0</nbOpenedParanthesis>
       <openParenthesis> </openParenthesis>
       <compareOperator>LIKE</compareOperator>
       <leftAttribute>
         <dataIndex>name</dataIndex>
-		<columnAlias>name</columnAlias>
-		<width>0</width>
+        <width>0</width>
         <sortable>false</sortable>
         <visible>false</visible>
         <tableName>GROUPS</tableName>
+        <primaryKey>false</primaryKey>
         <specificColumnType>DATABASE</specificColumnType>
+        <columnAlias>name</columnAlias>
+        <javaSqlColumnType>0</javaSqlColumnType>
       </leftAttribute>
     </predicat>
   </predicat>
   <descriptionHTML></descriptionHTML>
   <dirty>false</dirty>
-  <datasetView>
-    <id>0d0f9ad1-2088-4f5e-a229-c89dd002d446</id>
-    <jsObject>sitools.user.component.dataviews.tplView.TplView</jsObject>
-    <fileUrl></fileUrl>
-    <name>Sitools DataView</name>
-    <description>Sitools DataView with Detail</description>
-  </datasetView>
+  <properties/>
+  <datasetViewConfig/>
+  <lastStatusUpdate>2015-07-16 10:50:46.586 CEST</lastStatusUpdate>
 </dataset>

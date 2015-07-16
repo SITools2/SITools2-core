@@ -14,7 +14,7 @@
     <url>/databases/postgresql</url>
     <mediaType>datasource</mediaType>
   </datasource>
-  <status>ACTIVE</status>
+  <status>INACTIVE</status>
   <sitoolsAttachementForUsers>/test3m</sitoolsAttachementForUsers>
   <columnModel>
     <column>
@@ -26,6 +26,7 @@
       <visible>true</visible>
       <schema>test</schema>
       <tableName>table_tests_3m</tableName>
+      <primaryKey>false</primaryKey>
       <sqlColumnType>int4</sqlColumnType>
       <specificColumnType>DATABASE</specificColumnType>
       <columnAlias>int</columnAlias>
@@ -40,6 +41,7 @@
       <visible>true</visible>
       <schema>test</schema>
       <tableName>table_tests_3m</tableName>
+      <primaryKey>false</primaryKey>
       <sqlColumnType>float4</sqlColumnType>
       <specificColumnType>DATABASE</specificColumnType>
       <columnAlias>float</columnAlias>
@@ -54,6 +56,7 @@
       <visible>true</visible>
       <schema>test</schema>
       <tableName>table_tests_3m</tableName>
+      <primaryKey>false</primaryKey>
       <sqlColumnType>float8</sqlColumnType>
       <specificColumnType>DATABASE</specificColumnType>
       <columnAlias>double</columnAlias>
@@ -68,6 +71,7 @@
       <visible>true</visible>
       <schema>test</schema>
       <tableName>table_tests_3m</tableName>
+      <primaryKey>false</primaryKey>
       <sqlColumnType>varchar</sqlColumnType>
       <specificColumnType>DATABASE</specificColumnType>
       <columnAlias>varchar</columnAlias>
@@ -82,11 +86,11 @@
       <visible>true</visible>
       <schema>test</schema>
       <tableName>table_tests_3m</tableName>
+      <primaryKey>true</primaryKey>
       <sqlColumnType>varchar</sqlColumnType>
       <specificColumnType>DATABASE</specificColumnType>
       <columnAlias>varchar_id</columnAlias>
       <javaSqlColumnType>12</javaSqlColumnType>
-      <primaryKey>true</primaryKey>
     </column>
     <column>
       <id>ddb6ca6e-aff9-4bf3-9dfc-6875005696ff</id>
@@ -97,6 +101,7 @@
       <visible>true</visible>
       <schema>test</schema>
       <tableName>table_tests_3m</tableName>
+      <primaryKey>false</primaryKey>
       <sqlColumnType>text</sqlColumnType>
       <specificColumnType>DATABASE</specificColumnType>
       <columnAlias>text</columnAlias>
@@ -111,6 +116,7 @@
       <visible>true</visible>
       <schema>test</schema>
       <tableName>table_tests_3m</tableName>
+      <primaryKey>false</primaryKey>
       <sqlColumnType>timestamp</sqlColumnType>
       <specificColumnType>DATABASE</specificColumnType>
       <columnAlias>timestamp</columnAlias>
@@ -125,6 +131,7 @@
       <visible>true</visible>
       <schema>test</schema>
       <tableName>table_tests_3m</tableName>
+      <primaryKey>false</primaryKey>
       <sqlColumnType>timestamptz</sqlColumnType>
       <specificColumnType>DATABASE</specificColumnType>
       <columnAlias>timestamp_with_time_zone</columnAlias>
@@ -139,6 +146,7 @@
       <visible>true</visible>
       <schema>test</schema>
       <tableName>table_tests_3m</tableName>
+      <primaryKey>false</primaryKey>
       <sqlColumnType>date</sqlColumnType>
       <specificColumnType>DATABASE</specificColumnType>
       <columnAlias>date</columnAlias>
@@ -153,6 +161,7 @@
       <visible>true</visible>
       <schema>test</schema>
       <tableName>table_tests_3m</tableName>
+      <primaryKey>false</primaryKey>
       <sqlColumnType>timetz</sqlColumnType>
       <specificColumnType>DATABASE</specificColumnType>
       <columnAlias>time</columnAlias>
@@ -167,6 +176,7 @@
       <visible>true</visible>
       <schema>test</schema>
       <tableName>table_tests_3m</tableName>
+      <primaryKey>false</primaryKey>
       <sqlColumnType>int2</sqlColumnType>
       <specificColumnType>DATABASE</specificColumnType>
       <columnAlias>smallint</columnAlias>
@@ -181,6 +191,7 @@
       <visible>true</visible>
       <schema>test</schema>
       <tableName>table_tests_3m</tableName>
+      <primaryKey>false</primaryKey>
       <sqlColumnType>bpchar</sqlColumnType>
       <specificColumnType>DATABASE</specificColumnType>
       <columnAlias>char</columnAlias>
@@ -195,6 +206,7 @@
       <visible>true</visible>
       <schema>test</schema>
       <tableName>table_tests_3m</tableName>
+      <primaryKey>false</primaryKey>
       <sqlColumnType>bool</sqlColumnType>
       <specificColumnType>DATABASE</specificColumnType>
       <columnAlias>bool</columnAlias>
@@ -209,6 +221,7 @@
       <visible>true</visible>
       <schema>test</schema>
       <tableName>table_tests_3m</tableName>
+      <primaryKey>false</primaryKey>
       <sqlColumnType>int8</sqlColumnType>
       <specificColumnType>DATABASE</specificColumnType>
       <columnAlias>bigint</columnAlias>
@@ -223,6 +236,7 @@
       <visible>true</visible>
       <schema>test</schema>
       <tableName>table_tests_3m</tableName>
+      <primaryKey>false</primaryKey>
       <sqlColumnType>numeric</sqlColumnType>
       <specificColumnType>DATABASE</specificColumnType>
       <columnAlias>numeric</columnAlias>
@@ -237,6 +251,7 @@
       <visible>true</visible>
       <schema>test</schema>
       <tableName>table_tests_3m</tableName>
+      <primaryKey>false</primaryKey>
       <sqlColumnType>bpchar</sqlColumnType>
       <specificColumnType>DATABASE</specificColumnType>
       <columnAlias>char10</columnAlias>
@@ -251,6 +266,7 @@
       <visible>true</visible>
       <schema>test</schema>
       <tableName>table_tests_3m</tableName>
+      <primaryKey>false</primaryKey>
       <sqlColumnType>serial</sqlColumnType>
       <specificColumnType>DATABASE</specificColumnType>
       <columnAlias>serial</columnAlias>
@@ -265,6 +281,7 @@
       <visible>true</visible>
       <schema>test</schema>
       <tableName>table_tests_3m</tableName>
+      <primaryKey>false</primaryKey>
       <sqlColumnType>bigserial</sqlColumnType>
       <specificColumnType>DATABASE</specificColumnType>
       <columnAlias>bigserial</columnAlias>
@@ -279,6 +296,7 @@
       <visible>true</visible>
       <schema>test</schema>
       <tableName>table_tests_3m</tableName>
+      <primaryKey>false</primaryKey>
       <sqlColumnType>time</sqlColumnType>
       <specificColumnType>DATABASE</specificColumnType>
       <columnAlias>time_without_time_zone</columnAlias>
@@ -292,6 +310,9 @@
       <name>table_tests_3m</name>
     </structure>
   </structures>
+  <expirationDate>2011-05-12 17:02:57.287 CEST</expirationDate>
+  <visible>false</visible>
+  <authorized>false</authorized>
   <structure>
     <mainTable>
       <name>table_tests_3m</name>
@@ -299,11 +320,11 @@
     </mainTable>
     <nodeList/>
   </structure>
-  <expirationDate>2011-05-12 17:02:57.287 CEST</expirationDate>
-  <visible>false</visible>
-  <authorized>false</authorized>
   <queryType>W</queryType>
   <predicat/>
   <descriptionHTML></descriptionHTML>
   <dirty>false</dirty>
+  <properties/>
+  <datasetViewConfig/>
+  <lastStatusUpdate>2015-07-16 10:50:46.593 CEST</lastStatusUpdate>
 </dataset>

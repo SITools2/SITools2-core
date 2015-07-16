@@ -1,4 +1,3 @@
-<!-- Dataset used for multidataset search test case-->
 <dataset>
   <id>6cb316f7-a08f-4b69-a412-441e0e32a772</id>
   <name>HEADERS</name>
@@ -14,7 +13,7 @@
     <type>datasource</type>
     <mediaType>datasource</mediaType>
   </datasource>
-  <status>ACTIVE</status>
+  <status>INACTIVE</status>
   <sitoolsAttachementForUsers>/headers</sitoolsAttachementForUsers>
   <columnModel>
     <column>
@@ -632,4 +631,6 @@
       <type>Numeric</type>
     </fr.cnes.sitools.properties.model.SitoolsProperty>
   </properties>
+  <datasetViewConfig/>
+  <lastStatusUpdate>2015-07-16 10:50:46.625 CEST</lastStatusUpdate>
 </dataset>

@@ -8,7 +8,7 @@
       <id>fdcc7953-515d-4eee-b6fa-bccdbfb7fb20</id>
       <name>SecurityFilter</name>
       <description>Security Filter to watch request and throw exceptions</description>
-      <className>fr.cnes.sitools.filter.basic.SecurityFilter</className>
+      <className>fr.cnes.sitools.mock.filter.SecurityFilter</className>
       <descriptionAction>Security filter</descriptionAction>
       <parametersMap>
         <entry>

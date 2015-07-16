@@ -13,7 +13,7 @@
     <type>datasource</type>
     <mediaType>datasource</mediaType>
   </datasource>
-  <status>ACTIVE</status>
+  <status>INACTIVE</status>
   <sitoolsAttachementForUsers>/testmysql</sitoolsAttachementForUsers>
   <columnModel>
     <column>
@@ -23,7 +23,7 @@
       <width>100</width>
       <sortable>true</sortable>
       <visible>true</visible>
-      <filter>true</filter>      
+      <filter>true</filter>
       <schema></schema>
       <tableName>FUSE_PRG_ID</tableName>
       <primaryKey>true</primaryKey>
@@ -31,7 +31,7 @@
       <specificColumnType>DATABASE</specificColumnType>
       <columnAlias>prop_id</columnAlias>
       <javaSqlColumnType>0</javaSqlColumnType>
-       <orderBy>ASC</orderBy>
+      <orderBy>ASC</orderBy>
     </column>
     <column>
       <id>fab6fe49-0329-48cf-9167-1a938f872470</id>
@@ -40,9 +40,10 @@
       <width>100</width>
       <sortable>true</sortable>
       <visible>true</visible>
-      <filter>true</filter>      
+      <filter>true</filter>
       <schema></schema>
       <tableName>FUSE_PRG_ID</tableName>
+      <primaryKey>false</primaryKey>
       <sqlColumnType>INT</sqlColumnType>
       <specificColumnType>DATABASE</specificColumnType>
       <columnAlias>cycle</columnAlias>
@@ -55,9 +56,10 @@
       <width>100</width>
       <sortable>true</sortable>
       <visible>true</visible>
-      <filter>true</filter>      
+      <filter>true</filter>
       <schema></schema>
       <tableName>FUSE_PRG_ID</tableName>
+      <primaryKey>false</primaryKey>
       <sqlColumnType>VARCHAR</sqlColumnType>
       <specificColumnType>DATABASE</specificColumnType>
       <columnAlias>title</columnAlias>
@@ -70,9 +72,10 @@
       <width>100</width>
       <sortable>true</sortable>
       <visible>true</visible>
-      <filter>true</filter>      
+      <filter>true</filter>
       <schema></schema>
       <tableName>FUSE_PRG_ID</tableName>
+      <primaryKey>false</primaryKey>
       <sqlColumnType>VARCHAR</sqlColumnType>
       <specificColumnType>DATABASE</specificColumnType>
       <columnAlias>fname</columnAlias>
@@ -85,9 +88,10 @@
       <width>100</width>
       <sortable>true</sortable>
       <visible>true</visible>
-      <filter>true</filter>      
+      <filter>true</filter>
       <schema></schema>
       <tableName>FUSE_PRG_ID</tableName>
+      <primaryKey>false</primaryKey>
       <sqlColumnType>VARCHAR</sqlColumnType>
       <specificColumnType>DATABASE</specificColumnType>
       <columnAlias>lname</columnAlias>
@@ -100,9 +104,10 @@
       <width>100</width>
       <sortable>true</sortable>
       <visible>true</visible>
-      <filter>true</filter>      
+      <filter>true</filter>
       <schema></schema>
       <tableName>FUSE_PRG_ID</tableName>
+      <primaryKey>false</primaryKey>
       <sqlColumnType>VARCHAR</sqlColumnType>
       <specificColumnType>DATABASE</specificColumnType>
       <columnAlias>institution</columnAlias>
@@ -115,9 +120,10 @@
       <width>100</width>
       <sortable>true</sortable>
       <visible>true</visible>
-      <filter>true</filter>      
+      <filter>true</filter>
       <schema></schema>
       <tableName>FUSE_PRG_ID</tableName>
+      <primaryKey>false</primaryKey>
       <sqlColumnType>TEXT</sqlColumnType>
       <specificColumnType>DATABASE</specificColumnType>
       <columnAlias>abstract</columnAlias>
@@ -130,6 +136,7 @@
       <width>100</width>
       <sortable>true</sortable>
       <visible>true</visible>
+      <primaryKey>false</primaryKey>
       <specificColumnType>SQL</specificColumnType>
       <columnAlias>data_url</columnAlias>
       <javaSqlColumnType>0</javaSqlColumnType>
@@ -142,6 +149,9 @@
       <name>FUSE_PRG_ID</name>
     </structure>
   </structures>
+  <expirationDate>2011-05-11 12:19:41.230 CEST</expirationDate>
+  <visible>false</visible>
+  <authorized>false</authorized>
   <structure>
     <mainTable>
       <name>FUSE_PRG_ID</name>
@@ -149,12 +159,12 @@
     </mainTable>
     <nodeList/>
   </structure>
-  <expirationDate>2011-05-11 12:19:41.230 CEST</expirationDate>
-  <visible>false</visible>
-  <authorized>false</authorized>
   <queryType>W</queryType>
   <sqlQuery></sqlQuery>
   <predicat/>
   <descriptionHTML></descriptionHTML>
   <dirty>false</dirty>
+  <properties/>
+  <datasetViewConfig/>
+  <lastStatusUpdate>2015-07-16 10:50:46.647 CEST</lastStatusUpdate>
 </dataset>

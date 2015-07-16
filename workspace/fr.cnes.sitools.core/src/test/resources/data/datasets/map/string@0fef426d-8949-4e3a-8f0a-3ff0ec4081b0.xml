@@ -14,7 +14,7 @@
     <url>/sitools/users/resources/datasources/dbMysql</url>
     <mediaType>datasource</mediaType>
   </datasource>
-  <status>ACTIVE</status>
+  <status>INACTIVE</status>
   <sitoolsAttachementForUsers>/dataset/test/mysql</sitoolsAttachementForUsers>
   <columnModel>
     <column>
@@ -42,6 +42,7 @@
       <visible>true</visible>
       <schema></schema>
       <tableName>TABLE_TESTS</tableName>
+      <primaryKey>false</primaryKey>
       <sqlColumnType>TINYINT</sqlColumnType>
       <specificColumnType>DATABASE</specificColumnType>
       <columnAlias>field_tiny_int</columnAlias>
@@ -56,6 +57,7 @@
       <visible>true</visible>
       <schema></schema>
       <tableName>TABLE_TESTS</tableName>
+      <primaryKey>false</primaryKey>
       <sqlColumnType>SMALLINT</sqlColumnType>
       <specificColumnType>DATABASE</specificColumnType>
       <columnAlias>field_small_int</columnAlias>
@@ -70,6 +72,7 @@
       <visible>true</visible>
       <schema></schema>
       <tableName>TABLE_TESTS</tableName>
+      <primaryKey>false</primaryKey>
       <sqlColumnType>MEDIUMINT</sqlColumnType>
       <specificColumnType>DATABASE</specificColumnType>
       <columnAlias>field_medium_int</columnAlias>
@@ -84,6 +87,7 @@
       <visible>true</visible>
       <schema></schema>
       <tableName>TABLE_TESTS</tableName>
+      <primaryKey>false</primaryKey>
       <sqlColumnType>INT</sqlColumnType>
       <specificColumnType>DATABASE</specificColumnType>
       <columnAlias>field_int</columnAlias>
@@ -98,6 +102,7 @@
       <visible>true</visible>
       <schema></schema>
       <tableName>TABLE_TESTS</tableName>
+      <primaryKey>false</primaryKey>
       <sqlColumnType>BIGINT</sqlColumnType>
       <specificColumnType>DATABASE</specificColumnType>
       <columnAlias>field_big_int</columnAlias>
@@ -112,6 +117,7 @@
       <visible>true</visible>
       <schema></schema>
       <tableName>TABLE_TESTS</tableName>
+      <primaryKey>false</primaryKey>
       <sqlColumnType>FLOAT</sqlColumnType>
       <specificColumnType>DATABASE</specificColumnType>
       <columnAlias>field_float</columnAlias>
@@ -126,6 +132,7 @@
       <visible>true</visible>
       <schema></schema>
       <tableName>TABLE_TESTS</tableName>
+      <primaryKey>false</primaryKey>
       <sqlColumnType>DOUBLE</sqlColumnType>
       <specificColumnType>DATABASE</specificColumnType>
       <columnAlias>field_double</columnAlias>
@@ -140,6 +147,7 @@
       <visible>true</visible>
       <schema></schema>
       <tableName>TABLE_TESTS</tableName>
+      <primaryKey>false</primaryKey>
       <sqlColumnType>DECIMAL</sqlColumnType>
       <specificColumnType>DATABASE</specificColumnType>
       <columnAlias>field_decimal</columnAlias>
@@ -154,6 +162,7 @@
       <visible>true</visible>
       <schema></schema>
       <tableName>TABLE_TESTS</tableName>
+      <primaryKey>false</primaryKey>
       <sqlColumnType>VARCHAR</sqlColumnType>
       <specificColumnType>DATABASE</specificColumnType>
       <columnAlias>field_varchar</columnAlias>
@@ -168,6 +177,7 @@
       <visible>true</visible>
       <schema></schema>
       <tableName>TABLE_TESTS</tableName>
+      <primaryKey>false</primaryKey>
       <sqlColumnType>TEXT</sqlColumnType>
       <specificColumnType>DATABASE</specificColumnType>
       <columnAlias>field_text</columnAlias>
@@ -182,6 +192,7 @@
       <visible>true</visible>
       <schema></schema>
       <tableName>TABLE_TESTS</tableName>
+      <primaryKey>false</primaryKey>
       <sqlColumnType>TIMESTAMP</sqlColumnType>
       <specificColumnType>DATABASE</specificColumnType>
       <columnAlias>field_timestamp</columnAlias>
@@ -196,6 +207,7 @@
       <visible>true</visible>
       <schema></schema>
       <tableName>TABLE_TESTS</tableName>
+      <primaryKey>false</primaryKey>
       <sqlColumnType>DATETIME</sqlColumnType>
       <specificColumnType>DATABASE</specificColumnType>
       <columnAlias>field_datetime</columnAlias>
@@ -210,6 +222,7 @@
       <visible>true</visible>
       <schema></schema>
       <tableName>TABLE_TESTS</tableName>
+      <primaryKey>false</primaryKey>
       <sqlColumnType>DATE</sqlColumnType>
       <specificColumnType>DATABASE</specificColumnType>
       <columnAlias>field_date</columnAlias>
@@ -224,6 +237,7 @@
       <visible>true</visible>
       <schema></schema>
       <tableName>TABLE_TESTS</tableName>
+      <primaryKey>false</primaryKey>
       <sqlColumnType>YEAR</sqlColumnType>
       <specificColumnType>DATABASE</specificColumnType>
       <columnAlias>field_year</columnAlias>
@@ -238,6 +252,7 @@
       <visible>true</visible>
       <schema></schema>
       <tableName>TABLE_TESTS</tableName>
+      <primaryKey>false</primaryKey>
       <sqlColumnType>TIME</sqlColumnType>
       <specificColumnType>DATABASE</specificColumnType>
       <columnAlias>field_time</columnAlias>
@@ -252,6 +267,7 @@
       <visible>true</visible>
       <schema></schema>
       <tableName>TABLE_TESTS</tableName>
+      <primaryKey>false</primaryKey>
       <sqlColumnType>CHAR</sqlColumnType>
       <specificColumnType>DATABASE</specificColumnType>
       <columnAlias>field_char</columnAlias>
@@ -266,6 +282,7 @@
       <visible>true</visible>
       <schema></schema>
       <tableName>TABLE_TESTS</tableName>
+      <primaryKey>false</primaryKey>
       <sqlColumnType>BIT</sqlColumnType>
       <specificColumnType>DATABASE</specificColumnType>
       <columnAlias>field_bool</columnAlias>
@@ -279,6 +296,9 @@
       <name>TABLE_TESTS</name>
     </structure>
   </structures>
+  <expirationDate>2011-04-26 16:48:36.677 CEST</expirationDate>
+  <visible>false</visible>
+  <authorized>false</authorized>
   <structure>
     <mainTable>
       <name>TABLE_TESTS</name>
@@ -286,12 +306,12 @@
     </mainTable>
     <nodeList/>
   </structure>
-  <expirationDate>2011-04-26 16:48:36.677 CEST</expirationDate>
-  <visible>false</visible>
-  <authorized>false</authorized>
   <queryType>W</queryType>
   <sqlQuery></sqlQuery>
   <predicat/>
   <descriptionHTML></descriptionHTML>
   <dirty>false</dirty>
+  <properties/>
+  <datasetViewConfig/>
+  <lastStatusUpdate>2015-07-16 10:50:46.533 CEST</lastStatusUpdate>
 </dataset>
