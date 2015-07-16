@@ -82,7 +82,7 @@ public class AbstractDatasetServicesTestCase extends AbstractDataSetManagerTestC
   /**
    * The class name of the resourceModel
    */
-  private String resourceModelClass = "fr.cnes.sitools.resources.html.HtmlResourceModel";
+  private String resourceModelClass = "fr.cnes.sitools.mock.resources.HtmlResourceModel";
 
   /**
    * The url attachment for the resource model
