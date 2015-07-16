@@ -13,7 +13,7 @@
     <type>datasource</type>
     <mediaType>datasource</mediaType>
   </datasource>
-  <status>INACTIVE</status>
+  <status>ACTIVE</status>
   <sitoolsAttachementForUsers>/mondataset</sitoolsAttachementForUsers>
   <columnModel>
     <column>

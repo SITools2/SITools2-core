@@ -14,7 +14,7 @@
     <url>/databases/postgresql</url>
     <mediaType>datasource</mediaType>
   </datasource>
-  <status>INACTIVE</status>
+  <status>ACTIVE</status>
   <sitoolsAttachementForUsers>/dataset/test/filter</sitoolsAttachementForUsers>
   <columnModel>
     <column>

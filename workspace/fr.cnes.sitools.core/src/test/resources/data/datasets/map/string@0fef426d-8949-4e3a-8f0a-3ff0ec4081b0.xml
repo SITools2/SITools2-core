@@ -14,7 +14,7 @@
     <url>/sitools/users/resources/datasources/dbMysql</url>
     <mediaType>datasource</mediaType>
   </datasource>
-  <status>INACTIVE</status>
+  <status>ACTIVE</status>
   <sitoolsAttachementForUsers>/dataset/test/mysql</sitoolsAttachementForUsers>
   <columnModel>
     <column>

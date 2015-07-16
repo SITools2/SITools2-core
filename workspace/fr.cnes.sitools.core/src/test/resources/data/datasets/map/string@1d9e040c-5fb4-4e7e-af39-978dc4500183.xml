@@ -14,7 +14,7 @@
     <url>/datasourceCNES</url>
     <mediaType>datasource</mediaType>
   </datasource>
-  <status>INACTIVE</status>
+  <status>ACTIVE</status>
   <sitoolsAttachementForUsers>/fuse</sitoolsAttachementForUsers>
   <columnModel>
     <column>
