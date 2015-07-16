@@ -18,12 +18,10 @@
  ******************************************************************************/
 package fr.cnes.sitools;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.util.Iterator;
-
+import fr.cnes.sitools.common.SitoolsSettings;
+import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.util.RIAPUtils;
+import org.junit.Before;
 import org.junit.Test;
 import org.restlet.Client;
 import org.restlet.Request;
@@ -32,9 +30,7 @@ import org.restlet.data.Method;
 import org.restlet.data.Protocol;
 import org.restlet.data.Status;
 
-import fr.cnes.sitools.common.SitoolsSettings;
-import fr.cnes.sitools.server.Consts;
-import fr.cnes.sitools.util.RIAPUtils;
+import static org.junit.Assert.*;
 
 /**
  * Tests the security filter on an application It will test on 2 different applications -- Client-admin which is
@@ -62,13 +58,8 @@ public class ApplicationFilterSecurityTestCase extends SitoolsServerTestCase {
 
     // remove the loopback address, to simulate a call from extranet
     boolean found = false;
-    for (Iterator<String> iterator = settings.getIntranetAddresses().iterator(); iterator.hasNext() && !found;) {
-      String add = (String) iterator.next();
-      if ("127.0.0.0".equals(add)) {
-        iterator.remove();
-        found = true;
-      }
-    }
+    settings.getIntranetAddresses().clear();
+
     // test on Intranet application with a not Intranet Ip => FAILURE
     retrieveAndFail(getBaseUrl() + CLIENT_ADMIN);
     // test on Extranet application with not Intranet Ip => SUCCESS

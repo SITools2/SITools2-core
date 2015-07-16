@@ -67,10 +67,10 @@
 	<property name="audit.pmd.rules.dir"     	value="${audit.dir}/pmd"/>
 	<property name="audit.xsl.dir"           	value="${audit.dir}/xsl"/>
 	
-	<property name="conf.dir"                value="conf"/>
+	<property name="conf.dir"                value="src/main/resources/"/>
 	<property name="conf.bin.dir"            value="${conf.dir}/bin"/>
 	<property name="conf.jar.dir"            value="${conf.dir}/jar"/>
-	<property name="conf.properties.dir"     value="${conf.dir}/properties"/>
+	<property name="conf.properties.dir"     value="${conf.dir}"/>
 	<property name="conf.war.dir"            value="${conf.dir}/war"/>
 	<property name="conf.xml.dir"            value="${conf.dir}/xml"/>
 	<property name="lib.dir"                 value="lib"/>

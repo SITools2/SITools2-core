@@ -381,8 +381,8 @@
 	<fill_properties_for_test propertyName="Starter.org.restlet.engine.loggerFacadeClass"
 		propertyValue="${Tests.LOGGER_FACADE_CLASS}" />
 
-
-
+	<fill_properties_for_test propertyName="Security.Intranet.mask"
+		propertyValue="${Tests.Security.Intranet.mask}" />
 
 
 </target>
