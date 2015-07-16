@@ -291,6 +291,8 @@ public class AbstractDatasetServicesTestCase extends AbstractDataSetManagerTestC
     }
     finally {
       deleteDataset(datasetId);
+      guiServiceModel.setDefaultGuiService(false);
+      storeGuiService.update(guiServiceModel);
     }
 
   }
