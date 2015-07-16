@@ -1,9 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: 1
-Bundle-SymbolicName: apache-ant-1.8.1
-Bundle-Version: 1.0.0.qualifier
-Bundle-ClassPath: ant.jar
-Export-Package: org.apache.tools.tar,
- org.apache.tools.zip
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6

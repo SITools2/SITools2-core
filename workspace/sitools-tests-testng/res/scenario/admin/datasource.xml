@@ -1,9 +1,0 @@
-<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="ADMDatasourceSuite" >
-  <test name="ADMDatasourceTest" preserve-order="true">
-    <classes>
-      <class name="test.AdminLogin" />
-<!--      <class name="test.ADM321" />-->
-    </classes>
-  </test>
-</suite>
