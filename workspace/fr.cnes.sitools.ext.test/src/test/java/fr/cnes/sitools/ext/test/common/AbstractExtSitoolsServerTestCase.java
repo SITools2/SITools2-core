@@ -50,17 +50,17 @@ public abstract class AbstractExtSitoolsServerTestCase extends AbstractSitoolsSe
     setUpDataDirectory(source, cible);
 
     // Copy the test directory from the core project
-    source = settings.getRootDirectory() + "/workspace/fr.cnes.sitools.core/test/data";
+    source = settings.getRootDirectory() + "/workspace/fr.cnes.sitools.core/src/test/resources/data";
 
     FileCopyUtils.copyAFolderExclude(source, cible, ".svn");
     // Copy the test directory from the ext project
-    String sourceExtTest = settings.getRootDirectory() + "/workspace/fr.cnes.sitools.ext.test/test/data";
+    String sourceExtTest = settings.getRootDirectory() + "/workspace/fr.cnes.sitools.ext.test/src/test/resources/data";
     FileCopyUtils.copyAFolderExclude(sourceExtTest, cible, ".svn");
 
     settings.setStoreDIR(TEST_FILES_REPOSITORY + "_ext");
     settings.setTmpFolderUrl(settings.getStoreDIR(Consts.APP_TMP_FOLDER_DIR));
     
-    cleanMapDirectories(fileCible);
+//    cleanMapDirectories(fileCible);
 
     AbstractSitoolsServerTestCase.start();
   }
