@@ -27,7 +27,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import org.apache.commons.dbcp.BasicDataSource;
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.restlet.Context;
 
 import fr.cnes.sitools.datasource.jdbc.model.JDBCDataSource;
@@ -103,7 +103,7 @@ public final class SitoolsSQLDataSourceFactory {
       ds.setUsername(userName);
       ds.setPassword(password);
       ds.setUrl(connectURI);
-      ds.setMaxActive(10);
+      ds.setMaxTotal(10);
       ds.setInitialSize(1);
       // test that the connection is alive on each request. If not It will be dropped from the pool and another
       // connection will be created
@@ -139,7 +139,7 @@ public final class SitoolsSQLDataSourceFactory {
       ds.setUsername(dataSource.getUserLogin());
       ds.setPassword(dataSource.getUserPassword());
       ds.setUrl(dataSource.getUrl());
-      ds.setMaxActive(dataSource.getMaxActive());
+      ds.setMaxTotal(dataSource.getMaxActive());
       ds.setInitialSize(dataSource.getInitialSize());
       ds.setDefaultReadOnly(true);
       // test that the connection is alive on each request. If not It will be dropped from the pool and another

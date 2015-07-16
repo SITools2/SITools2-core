@@ -23,7 +23,7 @@ import java.util.logging.Level;
 
 import javax.sql.DataSource;
 
-import org.apache.commons.dbcp.BasicDataSource;
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.restlet.data.Status;
 import org.restlet.ext.wadl.MethodInfo;
 import org.restlet.ext.wadl.ParameterInfo;
@@ -127,7 +127,7 @@ public final class DataSourceMonitoringResource extends AbstractDataSourceResour
       messages.add("DefaultCatalog: " + bds.getDefaultCatalog());
       messages.add("InitialSize: " + bds.getInitialSize());
       messages.add("NumActive: " + bds.getNumActive());
-      messages.add("MaxActive: " + bds.getMaxActive());
+      messages.add("MaxTotal: " + bds.getMaxTotal());
       messages.add("MaxIdl: " + bds.getMaxIdle());
       messages.add("MinIdl: " + bds.getMinIdle());
       messages.add("NumIdle: " + bds.getNumIdle());

@@ -32,7 +32,7 @@ import java.util.logging.Logger;
 
 import javax.sql.DataSource;
 
-import org.apache.commons.dbcp.BasicDataSource;
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.restlet.Restlet;
 import org.restlet.engine.Engine;
 

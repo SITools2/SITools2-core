@@ -188,7 +188,6 @@ public class StoreHelper implements StoreHelperInterface {
   /* (non-Javadoc)
    * @see fr.cnes.sitools.server.StoreHelperInterface#initContext(org.restlet.Context)
    */
-  @Override
   public Map<String, Object> initContext(Context context) throws SitoolsException {
 
     // init the SitoolsEngine in order to register all plugins

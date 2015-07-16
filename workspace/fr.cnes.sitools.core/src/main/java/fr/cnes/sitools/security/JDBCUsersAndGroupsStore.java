@@ -105,8 +105,9 @@ public final class JDBCUsersAndGroupsStore implements UsersAndGroupsStore {
 
     settings = (SitoolsSettings) context.getAttributes().get(ContextAttributes.SETTINGS);
 
+    Connection cx = null;
     try {
-      ds.getConnection();
+      cx = ds.getConnection();
     }
     catch (SQLException e) {
       throw new SitoolsException("User database connection error", e);
@@ -123,6 +124,10 @@ public final class JDBCUsersAndGroupsStore implements UsersAndGroupsStore {
     }
     else {
       logger.severe("Incorrect JDBC Driver for JDBCUsersAndGroupsStore file");
+    }
+
+    if (cx != null) {
+      closeConnection(cx);
     }
   }
 
@@ -185,7 +190,7 @@ public final class JDBCUsersAndGroupsStore implements UsersAndGroupsStore {
    * 
    * @see fr.cnes.sitools.security.UsersAndGroupsStore#getUsers()
    */
-  @Override
+
   public List<User> getUsers() throws SitoolsException {
     return getUsers(null);
   }
@@ -200,7 +205,7 @@ public final class JDBCUsersAndGroupsStore implements UsersAndGroupsStore {
    * 
    * @see fr.cnes.sitools.security.UsersAndGroupsStore#getUsers(fr.cnes.sitools.common .model.ResourceCollectionFilter)
    */
-  @Override
+
   public List<User> getUsers(ResourceCollectionFilter filter) throws SitoolsException {
     Connection cx = null;
     ResultSet rsCount = null;
@@ -255,7 +260,7 @@ public final class JDBCUsersAndGroupsStore implements UsersAndGroupsStore {
    * 
    * @see fr.cnes.sitools.security.UsersAndGroupsStore#getUsers(int, int, java.lang.String)
    */
-  @Override
+
   public List<User> getUsers(int start, int limit, String query) throws SitoolsException {
     return getUsers(new ResourceCollectionFilter(start, limit, query));
   }
@@ -265,12 +270,12 @@ public final class JDBCUsersAndGroupsStore implements UsersAndGroupsStore {
    * 
    * @see fr.cnes.sitools.security.UsersAndGroupsStore#getGroups()
    */
-  @Override
+
   public List<Group> getGroups() throws SitoolsException {
     return getGroups(null);
   }
 
-  @Override
+
   public List<Group> getGroups(ResourceCollectionFilter filter) throws SitoolsException {
     Connection cx = null;
     ResultSet rsCount = null;
@@ -326,7 +331,7 @@ public final class JDBCUsersAndGroupsStore implements UsersAndGroupsStore {
    * 
    * @see fr.cnes.sitools.security.UsersAndGroupsStore#getGroups(int, int, java.lang.String)
    */
-  @Override
+
   public List<Group> getGroups(int start, int limit, String query) throws SitoolsException {
     return getGroups(new ResourceCollectionFilter(start, limit, query));
   }
@@ -336,7 +341,7 @@ public final class JDBCUsersAndGroupsStore implements UsersAndGroupsStore {
    * 
    * @see fr.cnes.sitools.security.UsersAndGroupsStore#getUsersByGroup(java.lang. String)
    */
-  @Override
+
   public List<User> getUsersByGroup(String name) throws SitoolsException {
     return getUsersByGroup(name, null);
   }
@@ -347,7 +352,7 @@ public final class JDBCUsersAndGroupsStore implements UsersAndGroupsStore {
    * @see fr.cnes.sitools.security.UsersAndGroupsStore#getUsersByGroup(java.lang. String,
    * fr.cnes.sitools.common.model.ResourceCollectionFilter)
    */
-  @Override
+
   public List<User> getUsersByGroup(String name, ResourceCollectionFilter filter) throws SitoolsException {
     Connection cx = null;
     ResultSet rsCount = null;
@@ -398,12 +403,12 @@ public final class JDBCUsersAndGroupsStore implements UsersAndGroupsStore {
    * 
    * @see fr.cnes.sitools.security.UsersAndGroupsStore#getGroupsByUser(java.lang. String)
    */
-  @Override
+
   public List<Group> getGroupsByUser(String identifier) throws SitoolsException {
     return getGroupsByUser(identifier, null);
   }
 
-  @Override
+
   public List<Group> getGroupsByUser(String identifier, ResourceCollectionFilter filter) throws SitoolsException {
     Connection cx = null;
     ResultSet rsCount = null;
@@ -450,22 +455,22 @@ public final class JDBCUsersAndGroupsStore implements UsersAndGroupsStore {
     }
   }
 
-  @Override
+
   public String getName() {
     return name;
   }
 
-  @Override
+
   public boolean isUserModifiable() {
     return true;
   }
 
-  @Override
+
   public boolean isGroupModifiable() {
     return true;
   }
 
-  @Override
+
   public User getUserById(String identifier) throws SitoolsException {
     Connection cx = null;
     ResultSet rs = null;
@@ -501,7 +506,7 @@ public final class JDBCUsersAndGroupsStore implements UsersAndGroupsStore {
     }
   }
 
-  @Override
+
   public Group getGroupById(String name) throws SitoolsException {
     Connection cx = null;
     ResultSet rs = null;
@@ -568,7 +573,7 @@ public final class JDBCUsersAndGroupsStore implements UsersAndGroupsStore {
     return new User(identifier, secret, fistname, lastname, email);
   }
 
-  @Override
+
   public User createUser(User bean) throws SitoolsException {
     if (!isUserModifiable()) {
       throw new SitoolsException("Operation refused");
@@ -698,7 +703,7 @@ public final class JDBCUsersAndGroupsStore implements UsersAndGroupsStore {
    *           when occurs
    * @see fr.cnes.sitools.security.UsersAndGroupsStore#updateUser(fr.cnes.sitools .security.model.User)
    */
-  @Override
+
   public User updateUser(User bean) throws SitoolsException {
     if (!isUserModifiable()) {
       throw new SitoolsException("Operation refused");
@@ -766,7 +771,7 @@ public final class JDBCUsersAndGroupsStore implements UsersAndGroupsStore {
    * 
    * @see fr.cnes.sitools.security.UsersAndGroupsStore#deleteUser(java.lang.String)
    */
-  @Override
+
   public boolean deleteUser(String identifier) throws SitoolsException {
     if (!isUserModifiable()) {
       throw new SitoolsException("Operation refused");
@@ -796,7 +801,7 @@ public final class JDBCUsersAndGroupsStore implements UsersAndGroupsStore {
     return true;
   }
 
-  @Override
+
   public Group createGroup(Group bean) throws SitoolsException {
     checkGroup();
     Connection cx = null;
@@ -824,7 +829,7 @@ public final class JDBCUsersAndGroupsStore implements UsersAndGroupsStore {
     return getGroupById(bean.getName());
   }
 
-  @Override
+
   public Group updateGroup(Group bean) throws SitoolsException {
     checkGroup();
     Connection cx = null;
@@ -851,7 +856,7 @@ public final class JDBCUsersAndGroupsStore implements UsersAndGroupsStore {
     return getGroupById(bean.getName());
   }
 
-  @Override
+
   public boolean deleteGroup(String name) throws SitoolsException {
     checkGroup();
     Connection cx = null;
@@ -876,7 +881,7 @@ public final class JDBCUsersAndGroupsStore implements UsersAndGroupsStore {
     return true;
   }
 
-  @Override
+
   public Group updateGroupUsers(Group bean) throws SitoolsException {
     checkGroup();
     Connection cx = null;
