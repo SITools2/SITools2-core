@@ -110,6 +110,9 @@ public final class JDBCUsersAndGroupsStore implements UsersAndGroupsStore {
       cx = ds.getConnection();
     }
     catch (SQLException e) {
+      if (cx != null) {
+        closeConnection(cx);
+      }
       throw new SitoolsException("User database connection error", e);
     }
 

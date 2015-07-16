@@ -363,21 +363,11 @@ public class SitoolsSQLDataSource implements DataSource, SitoolsDataSource {
       return new DBResultSet(rs, prep, conn);
 
     }
-    catch (SQLException ex) {
+    catch (Throwable ex) {
       LOG.log(Level.SEVERE, null, ex);
       closeConnection(conn);
       closeResultSet(rs);
       conn = null;
-    }
-    catch (RuntimeException ex) {
-      LOG.log(Level.SEVERE, null, ex);
-      closeConnection(conn);
-      closeResultSet(rs);
-    }
-    catch (Exception ex) {
-      LOG.log(Level.SEVERE, null, ex);
-      closeConnection(conn);
-      closeResultSet(rs);
     }
     return null;
   }
@@ -444,23 +434,13 @@ public class SitoolsSQLDataSource implements DataSource, SitoolsDataSource {
       return new DBResultSet(rs, prep, conn);
 
     }
-    catch (SQLException ex) {
+    catch (Throwable ex) {
       LOG.log(Level.SEVERE, null, ex);
       closeConnection(conn);
       closeResultSet(rs);
       conn = null;
     }
-    catch (RuntimeException ex) {
-      LOG.log(Level.SEVERE, null, ex);
-      closeConnection(conn);
-      closeResultSet(rs);
-    }
-    catch (Exception ex) {
-      LOG.log(Level.SEVERE, null, ex);
-      closeConnection(conn);
-      closeResultSet(rs);
-      conn = null;
-    }
+
     return null;
   }
 
