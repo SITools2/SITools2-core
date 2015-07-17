@@ -25,6 +25,7 @@ import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 import fr.cnes.sitools.util.Util;
 import fr.cnes.sitools.common.utils.GetResponseUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.data.MediaType;
 import org.restlet.representation.Representation;
@@ -34,6 +35,7 @@ import org.restlet.resource.ClientResource;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+@Ignore
 public class AnalogTestCase extends AbstractExtSitoolsServerTestCase {
   /** The settings */
   private SitoolsSettings settings = SitoolsSettings.getInstance();
