@@ -1,0 +1,17 @@
+<project>
+  <id>second</id>
+  <name>second</name>
+  <description></description>
+  <image>
+    <type>Image</type>
+    <url></url>
+    <mediaType>Image</mediaType>
+  </image>
+  <dataSets/>
+  <status>INACTIVE</status>
+  <sitoolsAttachementForUsers>/proj/second</sitoolsAttachementForUsers>
+  <visible>false</visible>
+  <authorized>false</authorized>
+  <maintenance>false</maintenance>
+  <lastStatusUpdate>2015-07-17 15:14:20.754 CEST</lastStatusUpdate>
+</project>

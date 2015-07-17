@@ -1,0 +1,15 @@
+<mongodbdatasource>
+  <id>ac5c5a8b-0edc-4e5d-83ac-d8476a5e69cb</id>
+  <name>mongodb</name>
+  <description></description>
+  <status>ACTIVE</status>
+  <url>odysseus2.akka.eu</url>
+  <userLogin>sitools</userLogin>
+  <userPassword>sitools</userPassword>
+  <sitoolsAttachementForUsers>/db/mongodb</sitoolsAttachementForUsers>
+  <maxActive>10</maxActive>
+  <driverClass>com.mongo.driver</driverClass>
+  <databaseName>Continuous_integration_tests</databaseName>
+  <portNumber>27017</portNumber>
+  <authentication>true</authentication>
+</mongodbdatasource>

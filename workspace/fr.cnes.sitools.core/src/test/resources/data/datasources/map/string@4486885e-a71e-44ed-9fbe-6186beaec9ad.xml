@@ -1,0 +1,15 @@
+<jdbcdatasource>
+  <id>4486885e-a71e-44ed-9fbe-6186beaec9ad</id>
+  <name>CNES_SIG</name>
+  <description></description>
+  <status>ACTIVE</status>
+  <url>jdbc:postgresql://odysseus2.akka.eu:5432/CNES_SIG</url>
+  <userLogin>postgres</userLogin>
+  <userPassword>postgres</userPassword>
+  <sitoolsAttachementForUsers>/cnes_sig</sitoolsAttachementForUsers>
+  <maxActive>10</maxActive>
+  <driverClass>org.postgresql.Driver</driverClass>
+  <initialSize>5</initialSize>
+  <schemaOnConnection></schemaOnConnection>
+  <lastStatusUpdate>2015-07-17 15:14:20.585 CEST</lastStatusUpdate>
+</jdbcdatasource>

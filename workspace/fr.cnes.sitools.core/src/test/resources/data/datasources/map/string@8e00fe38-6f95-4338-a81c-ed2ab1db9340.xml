@@ -1,0 +1,15 @@
+<jdbcdatasource>
+  <id>8e00fe38-6f95-4338-a81c-ed2ab1db9340</id>
+  <name>test</name>
+  <description></description>
+  <status>ACTIVE</status>
+  <url>jdbc:postgresql://odysseus2.akka.eu:5432/CNES-test</url>
+  <userLogin>sitools</userLogin>
+  <userPassword>sitools</userPassword>
+  <sitoolsAttachementForUsers>/datasourceCNES</sitoolsAttachementForUsers>
+  <maxActive>10</maxActive>
+  <driverClass>org.postgresql.Driver</driverClass>
+  <initialSize>1</initialSize>
+  <schemaOnConnection></schemaOnConnection>
+  <lastStatusUpdate>2015-07-17 15:14:20.589 CEST</lastStatusUpdate>
+</jdbcdatasource>

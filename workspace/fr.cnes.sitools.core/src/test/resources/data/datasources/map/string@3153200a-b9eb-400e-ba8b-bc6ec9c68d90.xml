@@ -1,0 +1,15 @@
+<jdbcdatasource>
+  <id>3153200a-b9eb-400e-ba8b-bc6ec9c68d90</id>
+  <name>dbMysql</name>
+  <description>base de test pour mysql</description>
+  <status>ACTIVE</status>
+  <url>jdbc:mysql://odysseus2.akka.eu:3306/cnes-test</url>
+  <userLogin>sitools</userLogin>
+  <userPassword>sitools</userPassword>
+  <sitoolsAttachementForUsers>/sitools/users/resources/datasources/dbMysql</sitoolsAttachementForUsers>
+  <maxActive>5</maxActive>
+  <driverClass>org.gjt.mm.mysql.Driver</driverClass>
+  <initialSize>5</initialSize>
+  <schemaOnConnection></schemaOnConnection>
+  <lastStatusUpdate>2015-07-17 15:14:20.580 CEST</lastStatusUpdate>
+</jdbcdatasource>

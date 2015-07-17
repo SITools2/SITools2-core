@@ -1,0 +1,73 @@
+<project>
+  <id>premier</id>
+  <name>premier</name>
+  <description></description>
+  <image>
+    <type>Image</type>
+    <url></url>
+    <mediaType>Image</mediaType>
+  </image>
+  <dataSets>
+    <resource>
+      <id>4e45dc3c-8594-4a96-9df1-7a6314ffec27</id>
+      <name>myDataset</name>
+      <description>dataset</description>
+      <type>DataSet</type>
+      <mediaType>DataSet</mediaType>
+    </resource>
+    <resource>
+      <id>bf77955a-2cec-4fc3-b95d-7397025fb299</id>
+      <name>DataSet de test</name>
+      <description></description>
+      <type>DataSet</type>
+      <mediaType>DataSet</mediaType>
+    </resource>
+  </dataSets>
+  <status>INACTIVE</status>
+  <sitoolsAttachementForUsers>/proj/premier</sitoolsAttachementForUsers>
+  <visible>false</visible>
+  <authorized>false</authorized>
+  <modules>
+    <fr.cnes.sitools.project.model.ProjectModule>
+      <id>DataSetExplorer</id>
+      <name>DataSetExplorer</name>
+      <description>Dataset Explorer</description>
+      <visible>true</visible>
+      <priority>8</priority>
+      <categoryModule></categoryModule>
+      <divIdToDisplay>news</divIdToDisplay>
+      <listRoles>
+        <role>
+          <name>Administrator</name>
+          <description>Administrator can create/access/modify/delete users and groups, associate them to roles, then authorizations, and globally manage informations.</description>
+        </role>
+      </listRoles>
+    </fr.cnes.sitools.project.model.ProjectModule>
+    <fr.cnes.sitools.project.model.ProjectModule>
+      <id>4570d4e4-e5d1-4e7b-8ff4-9c3b400320cf</id>
+      <name>projectDescription</name>
+      <description>Show a Project Description</description>
+      <visible>true</visible>
+      <priority>8</priority>
+      <categoryModule></categoryModule>
+      <divIdToDisplay>news</divIdToDisplay>
+      <listRoles>
+        <role>
+          <name>public</name>
+          <description>a description of a public role</description>
+        </role>
+      </listRoles>
+    </fr.cnes.sitools.project.model.ProjectModule>
+    <fr.cnes.sitools.project.model.ProjectModule>
+      <id>formsModule</id>
+      <name>Forms</name>
+      <description>Forms Project</description>
+      <visible>true</visible>
+      <priority>8</priority>
+      <categoryModule></categoryModule>
+      <divIdToDisplay>news</divIdToDisplay>
+    </fr.cnes.sitools.project.model.ProjectModule>
+  </modules>
+  <maintenance>false</maintenance>
+  <lastStatusUpdate>2015-07-17 15:14:20.749 CEST</lastStatusUpdate>
+</project>
