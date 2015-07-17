@@ -115,7 +115,7 @@ public class ResourcePluginStoreXMLMap extends XmlMapStore<ResourceModel> implem
     List<ResourceModel> result = new ArrayList<ResourceModel>();
     for (Iterator<ResourceModel> it = getList().iterator(); it.hasNext();) {
       ResourceModel current = it.next();
-      if (current.getParent().equals(id)) {
+      if (current != null && current.getParent() != null && current.getParent().equals(id)) {
         result.add(current);
       }
     }
