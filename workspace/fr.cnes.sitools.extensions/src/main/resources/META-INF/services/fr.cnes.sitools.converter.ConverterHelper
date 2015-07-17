@@ -3,4 +3,5 @@ fr.cnes.sitools.converter.basic.LinearInOutConverter
 fr.cnes.sitools.converter.basic.SimpleFilterConverter
 fr.cnes.sitools.converter.basic.RecordCleanupConverter
 fr.cnes.sitools.converter.basic.LoggingConverter
+fr.cnes.sitools.converter.basic.ExponentialConverter
 fr.cnes.sitools.converter.basic.DateConverter
