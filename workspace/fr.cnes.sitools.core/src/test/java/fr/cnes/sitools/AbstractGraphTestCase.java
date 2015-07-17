@@ -31,6 +31,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import fr.cnes.sitools.notification.business.NotificationManager;
 import fr.cnes.sitools.notification.store.NotificationStore;
+import fr.cnes.sitools.notification.store.NotificationStoreXML;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -166,8 +167,9 @@ public abstract class AbstractGraphTestCase extends AbstractSitoolsTestCase {
       // ==============================
       // RESOURCES NOTIFICATION MANAGER
 
-      // Store
-      NotificationStore storeNotification = (NotificationStore) SitoolsSettings.getInstance().getStores().get(Consts.APP_STORE_NOTIFICATION);
+      String notificationStoreDir = super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_STORE_NOTIFICATION);
+      NotificationStore storeNotification = new NotificationStoreXML(new File(notificationStoreDir), ctx);
+
       // Notification manager
       NotificationManager notificationManager = new NotificationManager(storeNotification);
 
