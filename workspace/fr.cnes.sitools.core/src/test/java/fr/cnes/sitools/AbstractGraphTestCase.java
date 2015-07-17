@@ -29,6 +29,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import fr.cnes.sitools.notification.business.NotificationManager;
+import fr.cnes.sitools.notification.store.NotificationStore;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -160,6 +162,17 @@ public abstract class AbstractGraphTestCase extends AbstractSitoolsTestCase {
 
       ctx.getAttributes().put(ContextAttributes.APP_STORE, storeProject);
       ctx.getAttributes().put(Consts.APP_STORE_GRAPH, store);
+
+      // ==============================
+      // RESOURCES NOTIFICATION MANAGER
+
+      // Store
+      NotificationStore storeNotification = (NotificationStore) SitoolsSettings.getInstance().getStores().get(Consts.APP_STORE_NOTIFICATION);
+      // Notification manager
+      NotificationManager notificationManager = new NotificationManager(storeNotification);
+
+      // Instance
+      SitoolsSettings.getInstance().setNotificationManager(notificationManager);
 
       this.component.getDefaultHost().attach(getAttachUrl(),
           new ProjectAdministration(this.component.getDefaultHost(), ctx));
