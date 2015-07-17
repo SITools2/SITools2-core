@@ -27,7 +27,7 @@ import org.junit.runners.Suite;
  * @author m.marseille (AKKA technologies)
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({fr.cnes.sitools.DataSetTestCase.class, fr.cnes.sitools.SolrDirectoryTestCase.class})
+@Suite.SuiteClasses({fr.cnes.sitools.DataSetTestCase.class, fr.cnes.sitools.UserStorageTestCase.class})
 public class AbstractAllTests {
 
 }
