@@ -25,6 +25,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.util.ArrayList;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
@@ -48,6 +49,7 @@ import fr.cnes.sitools.solr.model.SolRConfigDTO;
  * @author m.gond (AKKA Technologies)
  * 
  */
+@Ignore
 public class SolrDirectoryTestCase extends AbstractSitoolsServerTestCase {
 
   static {
@@ -74,7 +76,6 @@ public class SolrDirectoryTestCase extends AbstractSitoolsServerTestCase {
   public void setUp() throws Exception {
     // TODO Auto-generated method stub
     super.setUp();
-
   }
 
   /**

@@ -66,6 +66,8 @@ import fr.cnes.sitools.tasks.model.TaskStatus;
  */
 public class TaskManagerTestCase extends AbstractSitoolsTestCase {
 
+  public static final String RESOURCE_FACADE_NAME = "fr.cnes.sitools.mock.resources.tasks.MyTaskResourceFacade";
+  public static final String TASK_RESOURCE_IMPL_NAME = "fr.cnes.sitools.mock.resources.tasks.MyTaskResourceImpl";
   /**
    * static xml store instance for the test
    */
@@ -173,8 +175,8 @@ public class TaskManagerTestCase extends AbstractSitoolsTestCase {
 
     TaskResourceModel model = new TaskResourceModel();
     model.setName("taskResourceForTest");
-    model.setResourceClassName("fr.cnes.sitools.resources.tasks.test.MyTaskResourceFacade");
-    model.setResourceImplClassName("fr.cnes.sitools.resources.tasks.test.MyTaskResourceImpl");
+    model.setResourceClassName(RESOURCE_FACADE_NAME);
+    model.setResourceImplClassName(TASK_RESOURCE_IMPL_NAME);
     model.setId("10000");
 
     User user = new User("admin", "admin");
@@ -232,8 +234,8 @@ public class TaskManagerTestCase extends AbstractSitoolsTestCase {
     // create a resource model
     TaskResourceModel model = new TaskResourceModel();
     model.setName("taskResourceForTest");
-    model.setResourceClassName("fr.cnes.sitools.resources.tasks.test.MyTaskResourceFacade");
-    model.setResourceImplClassName("fr.cnes.sitools.resources.tasks.test.MyTaskResourceImpl");
+    model.setResourceClassName(RESOURCE_FACADE_NAME);
+    model.setResourceImplClassName(TASK_RESOURCE_IMPL_NAME);
     model = (TaskResourceModel) storeResource.create(model);
 
     // Create a task
