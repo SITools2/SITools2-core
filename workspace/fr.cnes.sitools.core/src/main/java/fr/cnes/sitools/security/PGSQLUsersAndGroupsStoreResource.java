@@ -59,6 +59,7 @@ public class PGSQLUsersAndGroupsStoreResource extends JDBCUsersAndGroupsStoreRes
     super();
 
     // check that the given schema exists
+    ResultSet rs = null;
     try {
       ds = datasource;
       String schema = ds.getSchemaOnConnection();
@@ -66,7 +67,7 @@ public class PGSQLUsersAndGroupsStoreResource extends JDBCUsersAndGroupsStoreRes
         throw new SitoolsException("No schema defined");
       }
       String sql = "select exists (select * from pg_catalog.pg_namespace where nspname = '" + schema + "');";
-      ResultSet rs = ds.basicQuery(sql, 1, 1);
+      rs = ds.basicQuery(sql, 1, 1);
       rs.next();
       boolean exists = rs.getBoolean(1);
       if (!exists) {
@@ -75,6 +76,15 @@ public class PGSQLUsersAndGroupsStoreResource extends JDBCUsersAndGroupsStoreRes
     }
     catch (SQLException e) {
       throw new SitoolsException("User database connection error", e);
+    }
+    finally {
+      if (rs != null) {
+        try {
+          rs.close();
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+      }
     }
     initializeMessages(PGSQLUsersAndGroupsStoreResource.class.getName(), this);
   }
