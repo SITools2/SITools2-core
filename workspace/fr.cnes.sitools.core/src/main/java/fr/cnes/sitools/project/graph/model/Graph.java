@@ -161,6 +161,10 @@ public final class Graph implements IResource {
   public List<GraphNodeComplete> getAllDatasets(List<GraphNodeComplete> nodes) {
     List<GraphNodeComplete> result = new ArrayList<GraphNodeComplete>();
 
+    if (nodes == null) {
+      return result;
+    }
+
     for (Iterator<GraphNodeComplete> iterator = nodes.iterator(); iterator.hasNext();) {
       GraphNodeComplete node = iterator.next();
       if (GraphNodeComplete.NODE_TYPE_DATASET.equals(node.getType())) {
