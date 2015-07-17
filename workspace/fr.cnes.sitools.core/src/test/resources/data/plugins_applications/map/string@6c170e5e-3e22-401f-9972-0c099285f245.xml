@@ -28,7 +28,7 @@
   </parametersMap>
   <label>application_test_security</label>
   <urlAttach>/application_test_security</urlAttach>
-  <status>INACTIVE</status>
+  <status>ACTIVE</status>
   <category>USER_DYNAMIC</category>
   <lastStatusUpdate>2015-07-17 15:14:20.594 CEST</lastStatusUpdate>
 </ApplicationPluginModel>
