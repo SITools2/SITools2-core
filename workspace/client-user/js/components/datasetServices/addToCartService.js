@@ -148,6 +148,7 @@ sitools.user.component.dataviews.services.addToCartService = {
 		globalOrder.orderDate = orderDateStr;
 
 		globalOrder.colModel = colModel;
+		globalOrder.primaryKey = primaryKey;
 
 		this.createFilters(globalOrder, this.dataview);
 
