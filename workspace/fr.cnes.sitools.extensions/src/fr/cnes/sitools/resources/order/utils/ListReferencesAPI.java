@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.restlet.Context;
@@ -40,8 +41,9 @@ import fr.cnes.sitools.util.RIAPUtils;
 /**
  * Util class to manage Reference Lists for Order Resource.
  * <p>
- * It manages 2 lists, one for source file to order the other for the destination Reference. It can also generate index
- * files into the admin storage for source list or into any storage for destination list
+ * It manages 2 lists, one for source file to order the other for the
+ * destination Reference. It can also generate index files into the admin
+ * storage for source list or into any storage for destination list
  * 
  * 
  * 
@@ -51,18 +53,20 @@ import fr.cnes.sitools.util.RIAPUtils;
 public class ListReferencesAPI {
 
   /**
-   * The list to store references of source files (used to create admin index) TODO store it in a File to avoid memory
-   * problem
+   * The list to store references of source files (used to create admin index)
+   * TODO store it in a File to avoid memory problem
    */
   private List<Reference> refSource;
 
   /**
-   * The list to store reference of destination files ( used to create user index)
+   * The list to store reference of destination files ( used to create user
+   * index)
    * */
   private List<Reference> refDest;
 
   /**
-   * The rootPath of the server to add to have absolute uri instead of relative. If the url are absolute, set it to null
+   * The rootPath of the server to add to have absolute uri instead of relative.
+   * If the url are absolute, set it to null
    */
   private String rootPath;
 
@@ -75,7 +79,8 @@ public class ListReferencesAPI {
    * Default constructor
    * 
    * @param rootPath
-   *          the root URL String added before each Reference in the index file. If the URLs are absolute set it to null
+   *          the root URL String added before each Reference in the index file.
+   *          If the URLs are absolute set it to null
    * 
    */
   public ListReferencesAPI(String rootPath) {
@@ -155,7 +160,8 @@ public class ListReferencesAPI {
   }
 
   /**
-   * Copy the list of Reference destination to the given rootRef {@link Reference}
+   * Copy the list of Reference destination to the given rootRef
+   * {@link Reference}
    * 
    * @param rootRef
    *          the destination {@link Reference}
@@ -182,9 +188,10 @@ public class ListReferencesAPI {
   }
 
   /**
-   * Copy the list of Reference Source to the admin storage ( root url is given by the function
-   * OrderResourceUtils.getResourceOrderStorageUrl(context)) with the specified. The name of file will be fileName and
-   * it will be located in the folder folderName.
+   * Copy the list of Reference Source to the admin storage ( root url is given
+   * by the function OrderResourceUtils.getResourceOrderStorageUrl(context))
+   * with the specified. The name of file will be fileName and it will be
+   * located in the folder folderName.
    * 
    * @param context
    *          the Context
@@ -213,15 +220,16 @@ public class ListReferencesAPI {
   }
 
   /**
-   * Create the an index file from the given {@link List} of {@link Reference}. The file is created at the given
-   * absolute {@link Reference}. removeRIAP is used to specify whether or not to remove the RIAP base in the list of
+   * Create the an index file from the given {@link List} of {@link Reference}.
+   * The file is created at the given absolute {@link Reference}. removeRIAP is
+   * used to specify whether or not to remove the RIAP base in the list of
    * Reference
    * 
    * @param references
    *          the list of {@link Reference}
    * @param removeRIAP
-   *          true to remove the RIAP base in the index, false otherwise ( if true, the parameter rootPath will be added
-   *          at the beginning)
+   *          true to remove the RIAP base in the index, false otherwise ( if
+   *          true, the parameter rootPath will be added at the beginning)
    * @param context
    *          the Context
    * @param destReference
@@ -289,11 +297,13 @@ public class ListReferencesAPI {
    * @param noDuplicateUrlSet
    * @param selectionId
    */
-  public void addNoDuplicateSourceRef(Set<String> noDuplicateUrlSet, String selectionId) {
-    for (String strUrl : noDuplicateUrlSet) {
+  public void addNoDuplicateSourceRef(Map<String, String> noDuplicateUrlMap, String selectionId) {
+    for (Entry<String, String> entry : noDuplicateUrlMap.entrySet()) {
+      String strUrl = entry.getValue();
+      String recordId = entry.getKey();
       Reference ref = new Reference(strUrl);
       this.addReferenceSource(ref);
-      this.refSourceTarget.put(ref, "data/" + selectionId);
+      this.refSourceTarget.put(ref, "data/" + selectionId + "/" + recordId);
     }
   }
 
