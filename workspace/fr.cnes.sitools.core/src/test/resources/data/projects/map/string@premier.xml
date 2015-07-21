@@ -23,7 +23,7 @@
       <mediaType>DataSet</mediaType>
     </resource>
   </dataSets>
-  <status>INACTIVE</status>
+  <status>ACTIVE</status>
   <sitoolsAttachementForUsers>/proj/premier</sitoolsAttachementForUsers>
   <visible>false</visible>
   <authorized>false</authorized>

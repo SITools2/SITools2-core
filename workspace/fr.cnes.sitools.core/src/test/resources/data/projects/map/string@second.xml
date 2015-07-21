@@ -8,7 +8,7 @@
     <mediaType>Image</mediaType>
   </image>
   <dataSets/>
-  <status>INACTIVE</status>
+  <status>ACTIVE</status>
   <sitoolsAttachementForUsers>/proj/second</sitoolsAttachementForUsers>
   <visible>false</visible>
   <authorized>false</authorized>
