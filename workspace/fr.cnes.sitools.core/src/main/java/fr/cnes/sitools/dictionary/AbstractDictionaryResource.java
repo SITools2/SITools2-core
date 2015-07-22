@@ -49,9 +49,6 @@ public abstract class AbstractDictionaryResource extends SitoolsResource {
   /** Dictionary id in the request */
   private String dictionaryId = null;
 
-  /** Notion id in the request */
-  private String notionId = null;
-
   /** Concept id in the request */
   private String conceptId = null;
 
@@ -67,7 +64,6 @@ public abstract class AbstractDictionaryResource extends SitoolsResource {
     store = ((DictionaryAdministration) getApplication()).getStore();
 
     dictionaryId = (String) this.getRequest().getAttributes().get("dictionaryId");
-    notionId = (String) this.getRequest().getAttributes().get("notionId");
     conceptId = (String) this.getRequest().getAttributes().get("conceptId");
   }
 
@@ -144,15 +140,6 @@ public abstract class AbstractDictionaryResource extends SitoolsResource {
     XstreamRepresentation<Response> rep = new XstreamRepresentation<Response>(media, response);
     rep.setXstream(xstream);
     return rep;
-  }
-
-  /**
-   * Gets the notionId value
-   * 
-   * @return the notionId
-   */
-  public final String getNotionId() {
-    return notionId;
   }
 
   /**

@@ -58,17 +58,14 @@ public class ConceptTemplate implements IResource, Serializable {
     super();
   }
 
-  @Override
   public String getId() {
     return id;
   }
 
-  @Override
   public void setId(String id) {
     this.id = id;
   }
 
-  @Override
   public String getName() {
     return name;
   }
@@ -83,7 +80,6 @@ public class ConceptTemplate implements IResource, Serializable {
     this.name = name;
   }
 
-  @Override
   public String getDescription() {
     return description;
   }
