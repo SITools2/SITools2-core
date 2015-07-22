@@ -34,20 +34,17 @@ import fr.cnes.sitools.datasource.jdbc.model.AttributeValue;
 
 public class AttributeValueConverter implements Converter {
 
-  @Override
   public boolean canConvert(Class clazz) {
     // TODO Auto-generated method stub
     return clazz.equals(AttributeValue.class);
 
   }
 
-  @Override
   public void marshal(Object arg0, HierarchicalStreamWriter arg1, MarshallingContext arg2) {
     // TODO Auto-generated method stub
 
   }
 
-  @Override
   public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
     // create a new attribute value
     AttributeValue attr = new AttributeValue();
