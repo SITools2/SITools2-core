@@ -19,6 +19,7 @@
 package fr.cnes.sitools.dictionary;
 
 import java.io.IOException;
+import java.util.Map;
 
 import org.restlet.data.MediaType;
 import org.restlet.ext.jackson.JacksonRepresentation;
@@ -63,8 +64,11 @@ public abstract class AbstractDictionaryResource extends SitoolsResource {
 
     store = ((DictionaryAdministration) getApplication()).getStore();
 
-    dictionaryId = (String) this.getRequest().getAttributes().get("dictionaryId");
-    conceptId = (String) this.getRequest().getAttributes().get("conceptId");
+    Map<String, Object> requestAttributes = this.getRequestAttributes();
+    if (requestAttributes != null) {
+      dictionaryId = (String) requestAttributes.get("dictionaryId");
+      conceptId = (String) requestAttributes.get("conceptId");
+    }
   }
 
   /**
