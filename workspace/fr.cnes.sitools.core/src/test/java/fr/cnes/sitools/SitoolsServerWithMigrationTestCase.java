@@ -22,6 +22,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import fr.cnes.sitools.util.FileUtils;
+import junit.framework.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.restlet.data.MediaType;
@@ -40,7 +42,10 @@ import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.FileCopyUtils;
 import fr.cnes.sitools.util.RIAPUtils;
 
-public class SitoolsServerWithMigrationTestCase extends AbstractSitoolsServerTestCase {
+import java.io.File;
+import java.io.IOException;
+
+ public class SitoolsServerWithMigrationTestCase extends AbstractSitoolsServerTestCase {
 
   private String dataviewId = "0d0f9ad1-2088-4f5e-a229-c89dd002d446";
 
@@ -58,6 +63,12 @@ public class SitoolsServerWithMigrationTestCase extends AbstractSitoolsServerTes
     AbstractSitoolsServerTestCase.setup();
     settings.setStartWithMigration(true);
     String filePath = settings.getRootDirectory() + settings.getStoreDIR() + "/bad_datasets_views_for_test/int@0.xml";
+    //clear dataset_views directory to simulate migration
+    try {
+      FileUtils.cleanDirectory(new File(settings.getStoreDIR(Consts.APP_DATASETS_VIEWS_STORE_DIR) + "/map"), true);
+    } catch (IOException e) {
+      Assert.fail("Cannot clear dataset_views directory exception: " + e.getMessage());
+    }
     FileCopyUtils.copyAFile(filePath, settings.getStoreDIR(Consts.APP_DATASETS_VIEWS_STORE_DIR) + "/int@0.xml");
 
   }
