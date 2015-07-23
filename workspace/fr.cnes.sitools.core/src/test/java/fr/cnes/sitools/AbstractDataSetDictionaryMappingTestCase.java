@@ -34,7 +34,6 @@ import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.engine.Engine;
 import org.restlet.ext.jackson.JacksonRepresentation;
-import org.restlet.ext.xstream.XstreamRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
 
@@ -655,15 +654,8 @@ public abstract class AbstractDataSetDictionaryMappingTestCase extends AbstractD
    * @return XML or JSON Representation
    */
   public static Representation getRepresentationDictionary(Dictionary item, MediaType media) {
-    if (media.equals(MediaType.APPLICATION_JSON)) {
+    if (media.equals(MediaType.APPLICATION_JSON) || media.equals(MediaType.APPLICATION_XML)) {
       return new JacksonRepresentation<Dictionary>(item);
-    }
-    else if (media.equals(MediaType.APPLICATION_XML)) {
-      XStream xstream = XStreamFactory.getInstance().getXStream(media, false);
-      XstreamRepresentation<Dictionary> rep = new XstreamRepresentation<Dictionary>(media, item);
-      configureDictionary(xstream);
-      rep.setXstream(xstream);
-      return rep;
     }
     else {
       Engine.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
@@ -673,7 +665,7 @@ public abstract class AbstractDataSetDictionaryMappingTestCase extends AbstractD
 
   /**
    * Configures XStream mapping of Response object with Dictionary content.
-   * 
+   *
    * @param xstream
    *          XStream
    */
