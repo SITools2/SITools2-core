@@ -18,10 +18,10 @@
  ******************************************************************************/
 package fr.cnes.sitools.dictionary;
 
-import fr.cnes.sitools.dictionary.Store.DictionaryStoreInterface;
 import fr.cnes.sitools.dictionary.resource.ConceptResource;
 import fr.cnes.sitools.dictionary.resource.DictionaryCollectionResource;
 import fr.cnes.sitools.dictionary.resource.DictionaryResource;
+import fr.cnes.sitools.dictionary.store.DictionaryStoreInterface;
 import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.Response;

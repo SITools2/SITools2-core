@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.util.Map;
 
 import fr.cnes.sitools.dictionary.DictionaryAdministration;
-import fr.cnes.sitools.dictionary.Store.DictionaryStoreInterface;
+import fr.cnes.sitools.dictionary.store.DictionaryStoreInterface;
 import org.restlet.data.MediaType;
 import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.ext.xstream.XstreamRepresentation;

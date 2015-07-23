@@ -19,7 +19,7 @@
 package fr.cnes.sitools.dictionary.resource;
 
 import fr.cnes.sitools.dictionary.ConceptTemplateAdministration;
-import fr.cnes.sitools.dictionary.Store.ConceptTemplateStoreInterface;
+import fr.cnes.sitools.dictionary.store.ConceptTemplateStoreInterface;
 import org.restlet.data.MediaType;
 import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.representation.Representation;
