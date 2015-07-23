@@ -28,7 +28,7 @@ import org.restlet.resource.Get;
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.plugins.guiservices.declare.model.GuiServiceModel;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**

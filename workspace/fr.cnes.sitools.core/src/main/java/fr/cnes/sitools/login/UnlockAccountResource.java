@@ -33,7 +33,7 @@ import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.security.challenge.ChallengeToken;
 import fr.cnes.sitools.security.model.User;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**

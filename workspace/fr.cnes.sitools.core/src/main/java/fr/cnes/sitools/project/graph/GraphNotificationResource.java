@@ -33,7 +33,7 @@ import fr.cnes.sitools.dataset.model.DataSet;
 import fr.cnes.sitools.notification.model.Notification;
 import fr.cnes.sitools.project.graph.model.Graph;
 import fr.cnes.sitools.project.graph.model.GraphNodeComplete;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**

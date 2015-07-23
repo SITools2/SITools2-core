@@ -28,7 +28,7 @@ import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.dataset.AbstractDataSetResource;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 
 /**
  * Resource to check that the given properties are compatible with the current dataset properties

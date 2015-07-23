@@ -45,7 +45,7 @@ import fr.cnes.sitools.plugins.resources.dto.ResourcePluginDescriptionDTO;
 import fr.cnes.sitools.plugins.resources.model.ResourceBehaviorType;
 import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
 import fr.cnes.sitools.plugins.resources.model.ResourceParameterType;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 import fr.cnes.sitools.utils.GetRepresentationUtils;
 import fr.cnes.sitools.utils.GetResponseUtils;

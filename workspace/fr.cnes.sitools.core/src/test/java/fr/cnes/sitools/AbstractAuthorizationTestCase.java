@@ -47,7 +47,7 @@ import fr.cnes.sitools.security.authorization.AuthorizationStoreInterface;
 import fr.cnes.sitools.security.authorization.AuthorizationStoreXMLMap;
 import fr.cnes.sitools.security.authorization.client.ResourceAuthorization;
 import fr.cnes.sitools.security.authorization.client.RoleAndMethodsAuthorization;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 import fr.cnes.sitools.utils.GetRepresentationUtils;
 import fr.cnes.sitools.utils.GetResponseUtils;

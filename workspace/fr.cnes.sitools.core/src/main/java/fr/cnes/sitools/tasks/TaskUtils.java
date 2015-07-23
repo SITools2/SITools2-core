@@ -34,7 +34,7 @@ import fr.cnes.sitools.common.resource.SitoolsParameterizedResource;
 import fr.cnes.sitools.plugins.resources.model.ResourceModel;
 import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
 import fr.cnes.sitools.security.SecurityUtil;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.tasks.business.Task;
 import fr.cnes.sitools.tasks.business.TaskManager;
 import fr.cnes.sitools.tasks.model.TaskModel;

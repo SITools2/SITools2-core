@@ -44,7 +44,7 @@ import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.mail.model.Mail;
 import fr.cnes.sitools.security.model.User;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.userstorage.business.UserStorageManager;
 import fr.cnes.sitools.userstorage.model.Action;
 import fr.cnes.sitools.userstorage.model.UserStorage;

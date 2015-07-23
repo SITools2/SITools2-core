@@ -18,7 +18,7 @@
  ******************************************************************************/
 package fr.cnes.sitools;
 
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.FileCopyUtils;
 import fr.cnes.sitools.util.FileUtils;
 import fr.cnes.sitools.util.RIAPUtils;

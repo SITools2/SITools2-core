@@ -35,7 +35,7 @@ import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.role.model.Role;
 import fr.cnes.sitools.security.model.User;
 import fr.cnes.sitools.security.model.UserRole;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**

@@ -27,7 +27,7 @@ import fr.cnes.sitools.api.DocAPI;
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.dataset.model.DataSet;
 import fr.cnes.sitools.json.GraphTestCase;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.utils.CreateDatasetUtil;
 
 /**

@@ -35,7 +35,7 @@ import fr.cnes.sitools.security.captcha.CaptchaContainer;
 import fr.cnes.sitools.security.filter.RequestCounter;
 import fr.cnes.sitools.security.model.User;
 import fr.cnes.sitools.security.userblacklist.UserBlackListModel;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 import fr.cnes.sitools.utils.GetRepresentationUtils;
 import fr.cnes.sitools.utils.GetResponseUtils;

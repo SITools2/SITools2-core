@@ -36,7 +36,7 @@ import fr.cnes.sitools.common.model.ResourceCollectionFilter;
 import fr.cnes.sitools.dataset.opensearch.OpenSearchStoreInterface;
 import fr.cnes.sitools.dataset.opensearch.OpenSearchStoreXMLMap;
 import fr.cnes.sitools.dataset.opensearch.model.Opensearch;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 
 /**
  * Test CRUD OpenSearch with XML OpenSearchStore persistence

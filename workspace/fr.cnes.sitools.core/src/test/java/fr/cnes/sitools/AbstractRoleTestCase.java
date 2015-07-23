@@ -44,7 +44,7 @@ import fr.cnes.sitools.role.RoleApplication;
 import fr.cnes.sitools.role.RoleStoreInterface;
 import fr.cnes.sitools.role.RoleStoreXMLMap;
 import fr.cnes.sitools.role.model.Role;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 import fr.cnes.sitools.utils.GetRepresentationUtils;
 import fr.cnes.sitools.utils.GetResponseUtils;

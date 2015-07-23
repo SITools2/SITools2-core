@@ -37,7 +37,7 @@ import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.form.project.model.FormProject;
 import fr.cnes.sitools.plugins.resources.dto.ResourceModelDTO;
 import fr.cnes.sitools.plugins.resources.model.ResourceModel;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**

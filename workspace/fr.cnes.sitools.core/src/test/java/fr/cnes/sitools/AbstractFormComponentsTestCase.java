@@ -50,7 +50,7 @@ import fr.cnes.sitools.form.components.FormComponentsApplication;
 import fr.cnes.sitools.form.components.FormComponentsStoreInterface;
 import fr.cnes.sitools.form.components.FormComponentsStoreXMLMap;
 import fr.cnes.sitools.form.components.model.FormComponent;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**

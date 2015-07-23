@@ -33,7 +33,7 @@ import org.restlet.resource.Get;
 import fr.cnes.sitools.applications.ClientAdminApplication;
 import fr.cnes.sitools.client.model.AdminIndexDTO;
 import fr.cnes.sitools.common.SitoolsResource;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 
 /**
  * Resource providing an index.html file for admin interface.

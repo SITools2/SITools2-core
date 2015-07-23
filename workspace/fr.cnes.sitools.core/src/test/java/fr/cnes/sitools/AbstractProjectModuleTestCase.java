@@ -56,7 +56,7 @@ import fr.cnes.sitools.project.modules.ProjectModuleApplication;
 import fr.cnes.sitools.project.modules.ProjectModuleStoreXMLMap;
 import fr.cnes.sitools.project.modules.model.ProjectModuleModel;
 import fr.cnes.sitools.role.model.Role;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 @Ignore

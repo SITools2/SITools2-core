@@ -53,7 +53,7 @@ import fr.cnes.sitools.form.project.services.dto.DatasetQueryStatus;
 import fr.cnes.sitools.plugins.resources.dto.ResourceModelDTO;
 import fr.cnes.sitools.plugins.resources.model.ResourceModel;
 import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.tasks.AbstractTaskResourceTestCase;
 import fr.cnes.sitools.tasks.model.TaskModel;
 import fr.cnes.sitools.util.Property;

@@ -33,7 +33,7 @@ import fr.cnes.sitools.client.ClientSiteMapResource;
 import fr.cnes.sitools.common.application.StaticWebApplication;
 import fr.cnes.sitools.common.model.Category;
 import fr.cnes.sitools.proxy.DirectoryProxy;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 
 /**
  * Application Web Client Administration.

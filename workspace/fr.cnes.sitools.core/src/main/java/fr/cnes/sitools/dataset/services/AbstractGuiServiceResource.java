@@ -34,7 +34,7 @@ import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.dataset.services.model.ServiceEnum;
 import fr.cnes.sitools.dataset.services.model.ServiceModel;
 import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 
 /**
  * Abstract class to manage GuiServices

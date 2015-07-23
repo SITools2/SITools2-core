@@ -25,7 +25,7 @@ import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
 import fr.cnes.sitools.plugins.resources.model.ResourceParameterType;
 import fr.cnes.sitools.project.ProjectApplication;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.tasks.model.TaskResourceModel;
 import fr.cnes.sitools.tasks.model.TaskRunTypeAdministration;
 

@@ -34,7 +34,7 @@ import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.plugins.filters.dto.FilterModelDTO;
 import fr.cnes.sitools.plugins.filters.model.FilterModel;
 import fr.cnes.sitools.project.model.Project;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**

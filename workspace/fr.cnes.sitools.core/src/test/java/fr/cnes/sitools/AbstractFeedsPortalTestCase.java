@@ -51,7 +51,7 @@ import fr.cnes.sitools.feeds.model.FeedCollectionModel;
 import fr.cnes.sitools.feeds.model.FeedEntryModel;
 import fr.cnes.sitools.feeds.model.FeedModel;
 import fr.cnes.sitools.feeds.model.SitoolsFeedDateConverter;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.DateUtils;
 import fr.cnes.sitools.util.RIAPUtils;
 

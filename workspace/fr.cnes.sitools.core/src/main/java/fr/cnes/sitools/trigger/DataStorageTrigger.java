@@ -32,7 +32,7 @@ import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.notification.TriggerResource;
 import fr.cnes.sitools.notification.business.NotificationManager;
 import fr.cnes.sitools.notification.model.Notification;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**

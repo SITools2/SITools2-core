@@ -36,7 +36,7 @@ import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.security.userblacklist.UserBlackListModel;
 import fr.cnes.sitools.security.userblacklist.UserBlackListStoreInterface;
 import fr.cnes.sitools.security.userblacklist.UserBlackListStoreXMLMap;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 
 /**
  * Test UserBlacklistStoreXML

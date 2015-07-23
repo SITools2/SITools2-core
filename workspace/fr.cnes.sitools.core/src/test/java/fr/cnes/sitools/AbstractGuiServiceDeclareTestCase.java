@@ -54,7 +54,7 @@ import fr.cnes.sitools.plugins.guiservices.declare.GuiServiceApplication;
 import fr.cnes.sitools.plugins.guiservices.declare.GuiServiceStoreInterface;
 import fr.cnes.sitools.plugins.guiservices.declare.GuiServiceStoreXMLMap;
 import fr.cnes.sitools.plugins.guiservices.declare.model.GuiServiceModel;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 @Ignore

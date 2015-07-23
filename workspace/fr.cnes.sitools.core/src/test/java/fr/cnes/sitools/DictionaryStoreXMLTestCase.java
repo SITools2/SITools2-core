@@ -37,7 +37,7 @@ import fr.cnes.sitools.common.model.ResourceCollectionFilter;
 import fr.cnes.sitools.dictionary.store.DictionaryStoreInterface;
 import fr.cnes.sitools.dictionary.store.DictionaryStoreXMLMap;
 import fr.cnes.sitools.dictionary.model.Dictionary;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 
 /**
  * Test DictionaryStoreXML

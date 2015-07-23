@@ -36,7 +36,7 @@ import fr.cnes.sitools.common.model.ResourceCollectionFilter;
 import fr.cnes.sitools.project.ProjectStoreInterface;
 import fr.cnes.sitools.project.ProjectStoreXMLMap;
 import fr.cnes.sitools.project.model.Project;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 
 /**
  * Test ProjectStoreXML

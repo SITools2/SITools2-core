@@ -43,7 +43,7 @@ import fr.cnes.sitools.feeds.model.FeedModel;
 import fr.cnes.sitools.feeds.model.SitoolsFeedDateConverter;
 import fr.cnes.sitools.notification.business.NotificationManager;
 import fr.cnes.sitools.notification.model.RestletObserver;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**

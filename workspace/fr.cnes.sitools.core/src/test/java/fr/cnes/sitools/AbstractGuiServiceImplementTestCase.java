@@ -49,7 +49,7 @@ import fr.cnes.sitools.plugins.guiservices.implement.GuiServicePluginApplication
 import fr.cnes.sitools.plugins.guiservices.implement.GuiServicePluginStoreInterface;
 import fr.cnes.sitools.plugins.guiservices.implement.GuiServicePluginStoreXMLMap;
 import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 import fr.cnes.sitools.utils.GetRepresentationUtils;
 import fr.cnes.sitools.utils.GetResponseUtils;

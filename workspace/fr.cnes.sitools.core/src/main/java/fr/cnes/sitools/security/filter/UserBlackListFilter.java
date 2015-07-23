@@ -21,7 +21,7 @@ import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.mail.model.Mail;
 import fr.cnes.sitools.security.userblacklist.UserBlackListModel;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.MailUtils;
 import fr.cnes.sitools.util.RIAPUtils;
 import fr.cnes.sitools.util.TemplateUtils;

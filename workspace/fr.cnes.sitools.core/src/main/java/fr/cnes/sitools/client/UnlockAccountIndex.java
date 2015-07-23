@@ -19,7 +19,7 @@ import org.restlet.resource.ResourceException;
 import fr.cnes.sitools.applications.PublicApplication;
 import fr.cnes.sitools.common.SitoolsResource;
 import fr.cnes.sitools.security.challenge.ChallengeToken;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 
 /**
  * Gets the Unlock account index page

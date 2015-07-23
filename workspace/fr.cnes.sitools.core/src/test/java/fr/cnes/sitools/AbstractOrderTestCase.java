@@ -52,11 +52,10 @@ import fr.cnes.sitools.common.model.Event;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.feeds.model.SitoolsFeedDateConverter;
 import fr.cnes.sitools.order.OrderAdministration;
-import fr.cnes.sitools.order.OrderStoreXML;
 import fr.cnes.sitools.order.OrderStoreXMLMap;
 import fr.cnes.sitools.order.UserOrderApplication;
 import fr.cnes.sitools.order.model.Order;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**

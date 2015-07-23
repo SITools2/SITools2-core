@@ -27,7 +27,7 @@ import fr.cnes.sitools.datasource.jdbc.business.SitoolsSQLDataSourceFactory;
 import fr.cnes.sitools.mail.MailAdministration;
 import fr.cnes.sitools.security.JDBCUsersAndGroupsStore;
 import fr.cnes.sitools.security.UsersAndGroupsAdministration;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 
 /**
  * Test CRUD Users and Groups Rest API

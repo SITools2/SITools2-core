@@ -45,7 +45,7 @@ import fr.cnes.sitools.form.dataset.model.Form;
 import fr.cnes.sitools.project.model.Project;
 import fr.cnes.sitools.registry.AppRegistryApplication;
 import fr.cnes.sitools.security.SecurityUtil;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**

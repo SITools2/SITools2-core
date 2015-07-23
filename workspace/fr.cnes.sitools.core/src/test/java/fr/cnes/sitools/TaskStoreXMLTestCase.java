@@ -24,7 +24,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.util.Date;
 
 import org.junit.After;
 import org.junit.Before;
@@ -33,7 +32,7 @@ import org.restlet.Context;
 
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.application.ContextAttributes;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.tasks.TaskStoreInterface;
 import fr.cnes.sitools.tasks.TaskStoreXMLMap;
 import fr.cnes.sitools.tasks.model.TaskModel;

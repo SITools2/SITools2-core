@@ -28,7 +28,7 @@ import org.restlet.resource.Get;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.feeds.model.FeedModel;
 import fr.cnes.sitools.project.model.Project;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**

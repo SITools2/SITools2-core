@@ -37,7 +37,7 @@ import fr.cnes.sitools.plugins.resources.ResourcePluginStoreInterface;
 import fr.cnes.sitools.plugins.resources.model.ResourceModel;
 import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
 import fr.cnes.sitools.plugins.resources.model.ResourceParameterType;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 
 /**
  * Base class for Application that gets parameterized resources

@@ -41,7 +41,7 @@ import fr.cnes.sitools.dataset.model.DictionaryMapping;
 import fr.cnes.sitools.datasource.jdbc.model.Structure;
 import fr.cnes.sitools.notification.business.NotificationManager;
 import fr.cnes.sitools.notification.model.RestletObserver;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**

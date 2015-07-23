@@ -42,7 +42,7 @@ import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.inscription.model.Inscription;
 import fr.cnes.sitools.mail.model.Mail;
 import fr.cnes.sitools.security.SecurityUtil;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.MailUtils;
 import fr.cnes.sitools.util.RIAPUtils;
 import fr.cnes.sitools.util.TemplateUtils;

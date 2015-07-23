@@ -48,7 +48,7 @@ import fr.cnes.sitools.form.dataset.FormStoreInterface;
 import fr.cnes.sitools.form.dataset.FormStoreXMLMap;
 import fr.cnes.sitools.form.dataset.dto.FormDTO;
 import fr.cnes.sitools.form.dataset.dto.ParameterDTO;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**

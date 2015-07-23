@@ -56,7 +56,7 @@ import fr.cnes.sitools.project.model.ProjectPriorityDTO;
 import fr.cnes.sitools.registry.AppRegistryApplication;
 import fr.cnes.sitools.registry.ApplicationStoreInterface;
 import fr.cnes.sitools.registry.ApplicationStoreXMLMap;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 import fr.cnes.sitools.utils.GetRepresentationUtils;
 import fr.cnes.sitools.utils.GetResponseUtils;

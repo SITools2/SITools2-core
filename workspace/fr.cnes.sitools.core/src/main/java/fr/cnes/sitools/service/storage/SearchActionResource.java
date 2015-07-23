@@ -36,7 +36,7 @@ import org.restlet.resource.ResourceException;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.feeds.model.FeedModel;
 import fr.cnes.sitools.feeds.model.FeedSource;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.service.storage.model.StorageDirectory;
 import fr.cnes.sitools.service.storage.runnables.IndexRefreshRunnable;
 import fr.cnes.sitools.solr.directory.DirectoryConfigDTO;

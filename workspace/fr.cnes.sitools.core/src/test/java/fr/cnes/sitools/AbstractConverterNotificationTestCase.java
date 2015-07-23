@@ -53,7 +53,7 @@ import fr.cnes.sitools.dataset.converter.dto.ConverterModelDTO;
 import fr.cnes.sitools.dataset.converter.model.ConverterChainedModel;
 import fr.cnes.sitools.dataset.converter.model.ConverterParameter;
 import fr.cnes.sitools.dataset.converter.model.ConverterParameterType;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**

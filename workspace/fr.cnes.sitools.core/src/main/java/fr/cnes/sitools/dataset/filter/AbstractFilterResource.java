@@ -52,7 +52,7 @@ import fr.cnes.sitools.dataset.filter.model.FilterModel;
 import fr.cnes.sitools.dataset.filter.model.FilterParameter;
 import fr.cnes.sitools.notification.business.NotificationManager;
 import fr.cnes.sitools.notification.model.RestletObserver;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**

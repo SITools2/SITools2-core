@@ -23,7 +23,7 @@ import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.model.Category;
 import fr.cnes.sitools.plugins.applications.business.AbstractApplicationPlugin;
 import fr.cnes.sitools.plugins.applications.model.ApplicationPluginModel;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 import org.restlet.Context;
 import org.restlet.Request;

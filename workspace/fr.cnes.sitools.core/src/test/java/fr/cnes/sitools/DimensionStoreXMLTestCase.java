@@ -24,7 +24,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
@@ -33,8 +32,7 @@ import org.restlet.Context;
 
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.application.ContextAttributes;
-import fr.cnes.sitools.common.model.ResourceCollectionFilter;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.units.dimension.DimensionStoreInterface;
 import fr.cnes.sitools.units.dimension.DimensionStoreXMLMap;
 import fr.cnes.sitools.units.dimension.model.SitoolsDimension;

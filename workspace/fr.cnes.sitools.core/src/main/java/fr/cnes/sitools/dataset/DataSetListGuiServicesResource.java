@@ -29,7 +29,7 @@ import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.dataset.model.DataSet;
 import fr.cnes.sitools.plugins.guiservices.declare.model.GuiServiceModel;
 import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**

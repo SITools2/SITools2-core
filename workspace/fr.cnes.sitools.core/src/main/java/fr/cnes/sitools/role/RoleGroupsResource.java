@@ -47,7 +47,7 @@ import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.notification.model.Notification;
 import fr.cnes.sitools.role.model.Role;
 import fr.cnes.sitools.security.model.Group;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**

@@ -38,7 +38,7 @@ import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.common.model.Url;
 import fr.cnes.sitools.dataset.view.model.DatasetView;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.FileCopyUtils;
 import fr.cnes.sitools.util.RIAPUtils;
 

@@ -56,7 +56,7 @@ import fr.cnes.sitools.mail.model.Mail;
 import fr.cnes.sitools.notification.model.Notification;
 import fr.cnes.sitools.security.model.Group;
 import fr.cnes.sitools.security.model.User;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.MailUtils;
 import fr.cnes.sitools.util.PasswordGenerator;
 import fr.cnes.sitools.util.RIAPUtils;

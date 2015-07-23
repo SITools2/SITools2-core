@@ -40,7 +40,7 @@ import org.restlet.resource.ResourceException;
 import fr.cnes.sitools.api.DocAPI;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.datasource.jdbc.model.JDBCDataSource;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.solr.model.DBConfigDTO;
 import fr.cnes.sitools.solr.model.EntityDTO;
 import fr.cnes.sitools.solr.model.FieldDTO;

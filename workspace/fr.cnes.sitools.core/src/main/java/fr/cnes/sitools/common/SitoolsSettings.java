@@ -32,7 +32,6 @@ import fr.cnes.sitools.common.model.Category;
 import fr.cnes.sitools.notification.business.NotificationManager;
 import fr.cnes.sitools.registry.AppRegistryApplication;
 import fr.cnes.sitools.security.authentication.SitoolsRealm;
-import fr.cnes.sitools.server.Consts;
 
 /**
  * Class for managing global settings

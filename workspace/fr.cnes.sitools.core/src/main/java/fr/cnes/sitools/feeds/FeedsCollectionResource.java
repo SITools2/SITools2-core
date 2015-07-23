@@ -41,7 +41,7 @@ import fr.cnes.sitools.common.model.ResourceCollectionFilter;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.feeds.model.FeedCollectionModel;
 import fr.cnes.sitools.feeds.model.FeedModel;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 
 /**
  * Class Resource for managing Project Collection (GET, POST)

@@ -51,7 +51,7 @@ import fr.cnes.sitools.security.JDBCUsersAndGroupsStore;
 import fr.cnes.sitools.security.UsersAndGroupsAdministration;
 import fr.cnes.sitools.security.model.Group;
 import fr.cnes.sitools.security.model.User;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**

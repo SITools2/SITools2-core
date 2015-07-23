@@ -50,7 +50,7 @@ import fr.cnes.sitools.dataset.view.DatasetViewApplication;
 import fr.cnes.sitools.dataset.view.DatasetViewStoreInterface;
 import fr.cnes.sitools.dataset.view.DatasetViewStoreXMLMap;
 import fr.cnes.sitools.dataset.view.model.DatasetView;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**

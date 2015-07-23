@@ -41,7 +41,7 @@ import fr.cnes.sitools.form.project.services.dto.DataSetQueryStatusDTO;
 import fr.cnes.sitools.form.project.services.dto.DatasetQueryStatus;
 import fr.cnes.sitools.registry.AppRegistryApplication;
 import fr.cnes.sitools.security.SecurityUtil;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**

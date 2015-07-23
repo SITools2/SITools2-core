@@ -50,7 +50,7 @@ import fr.cnes.sitools.dataset.converter.model.ConverterParameterType;
 import fr.cnes.sitools.dataset.model.DataSet;
 import fr.cnes.sitools.datasource.jdbc.model.AttributeValue;
 import fr.cnes.sitools.datasource.jdbc.model.Record;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**

@@ -28,7 +28,7 @@ import org.restlet.resource.Put;
 
 import fr.cnes.sitools.common.SitoolsResource;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.service.storage.model.StorageDirectory;
 import fr.cnes.sitools.util.RIAPUtils;
 

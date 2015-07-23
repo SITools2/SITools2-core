@@ -19,7 +19,7 @@ import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.role.model.Role;
 import fr.cnes.sitools.security.model.Group;
 import fr.cnes.sitools.security.model.User;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.utils.GetRepresentationUtils;
 import fr.cnes.sitools.utils.GetResponseUtils;
 

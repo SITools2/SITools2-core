@@ -17,7 +17,7 @@ import org.restlet.resource.ClientResource;
 
 import fr.cnes.sitools.common.model.Resource;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 import fr.cnes.sitools.utils.GetResponseUtils;
 

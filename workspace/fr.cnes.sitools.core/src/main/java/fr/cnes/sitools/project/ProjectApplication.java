@@ -33,7 +33,7 @@ import fr.cnes.sitools.common.model.Category;
 import fr.cnes.sitools.feeds.FeedsClientResource;
 import fr.cnes.sitools.plugins.resources.ListPluginExpositionResource;
 import fr.cnes.sitools.project.model.Project;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**

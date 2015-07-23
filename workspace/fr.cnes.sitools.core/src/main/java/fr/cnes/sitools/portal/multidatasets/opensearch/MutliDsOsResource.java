@@ -44,7 +44,7 @@ import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.dataset.opensearch.model.Opensearch;
 import fr.cnes.sitools.portal.model.Portal;
 import fr.cnes.sitools.portal.multidatasets.opensearch.dto.OpensearchDescriptionDTO;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**

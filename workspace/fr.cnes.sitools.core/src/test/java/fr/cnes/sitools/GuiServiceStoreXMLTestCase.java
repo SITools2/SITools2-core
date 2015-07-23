@@ -36,7 +36,7 @@ import fr.cnes.sitools.common.model.ResourceCollectionFilter;
 import fr.cnes.sitools.plugins.guiservices.declare.GuiServiceStoreInterface;
 import fr.cnes.sitools.plugins.guiservices.declare.GuiServiceStoreXMLMap;
 import fr.cnes.sitools.plugins.guiservices.declare.model.GuiServiceModel;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 
 /**
  * Test ProjectStoreXML

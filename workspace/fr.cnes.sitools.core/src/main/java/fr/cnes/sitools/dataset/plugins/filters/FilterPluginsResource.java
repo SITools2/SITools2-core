@@ -42,7 +42,7 @@ import fr.cnes.sitools.dataset.filter.business.AbstractFilter;
 import fr.cnes.sitools.dataset.filter.dto.FilterModelDTO;
 import fr.cnes.sitools.dataset.filter.model.FilterParameter;
 import fr.cnes.sitools.dataset.model.DataSet;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**

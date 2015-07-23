@@ -38,7 +38,7 @@ import fr.cnes.sitools.form.dataset.dto.ZoneDTO;
 import fr.cnes.sitools.form.dataset.model.Form;
 import fr.cnes.sitools.notification.business.NotificationManager;
 import fr.cnes.sitools.notification.model.RestletObserver;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**

@@ -43,7 +43,7 @@ import fr.cnes.sitools.common.model.Category;
 import fr.cnes.sitools.plugins.filters.business.FilterFactory;
 import fr.cnes.sitools.plugins.filters.model.FilterModel;
 import fr.cnes.sitools.proxy.DirectoryProxy;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.service.storage.model.StorageDirectory;
 import fr.cnes.sitools.util.RIAPUtils;
 

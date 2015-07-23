@@ -35,7 +35,7 @@ import fr.cnes.sitools.dataset.converter.AbstractConverterResource;
 import fr.cnes.sitools.dataset.converter.business.AbstractConverter;
 import fr.cnes.sitools.dataset.converter.dto.ConverterModelDTO;
 import fr.cnes.sitools.dataset.model.DataSet;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**

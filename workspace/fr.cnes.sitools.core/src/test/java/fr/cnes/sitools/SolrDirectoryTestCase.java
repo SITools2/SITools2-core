@@ -36,7 +36,7 @@ import org.restlet.resource.ClientResource;
 
 import fr.cnes.sitools.api.DocAPI;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.solr.directory.DirectoryConfigDTO;
 import fr.cnes.sitools.solr.model.RssXSLTDTO;
 import fr.cnes.sitools.solr.model.SchemaConfigDTO;

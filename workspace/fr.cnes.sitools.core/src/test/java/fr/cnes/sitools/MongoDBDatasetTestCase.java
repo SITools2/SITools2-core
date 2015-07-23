@@ -46,7 +46,7 @@ import fr.cnes.sitools.datasource.jdbc.model.Structure;
 import fr.cnes.sitools.datasource.jdbc.model.Table;
 import fr.cnes.sitools.properties.model.SitoolsProperty;
 import fr.cnes.sitools.properties.model.SitoolsPropertyType;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 import fr.cnes.sitools.utils.GetResponseUtils;
 

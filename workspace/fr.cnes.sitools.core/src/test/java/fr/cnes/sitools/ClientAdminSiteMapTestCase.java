@@ -34,7 +34,7 @@ import org.restlet.resource.ClientResource;
 import fr.cnes.sitools.applications.ClientAdminApplication;
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.application.ContextAttributes;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 
 /**
  * Test CRUD Authorization with XML AUthorizationStore persistence

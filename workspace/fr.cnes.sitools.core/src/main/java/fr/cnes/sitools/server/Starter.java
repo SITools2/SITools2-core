@@ -26,6 +26,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 
+import fr.cnes.sitools.common.Consts;
 import org.restlet.Application;
 import org.restlet.Client;
 import org.restlet.Component;

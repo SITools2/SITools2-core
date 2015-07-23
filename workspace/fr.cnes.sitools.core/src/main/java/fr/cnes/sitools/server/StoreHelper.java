@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import fr.cnes.sitools.common.Consts;
 import org.restlet.Context;
 
 import fr.cnes.sitools.collections.CollectionStoreInterface;

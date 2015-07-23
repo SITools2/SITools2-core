@@ -41,7 +41,7 @@ import fr.cnes.sitools.dataset.converter.business.AbstractConverter;
 import fr.cnes.sitools.dataset.converter.business.ConverterChained;
 import fr.cnes.sitools.dataset.converter.model.ConverterChainedModel;
 import fr.cnes.sitools.dataset.converter.model.ConverterModel;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**

@@ -37,8 +37,7 @@ import org.restlet.resource.ClientResource;
 
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.plugins.resources.model.ResourceModel;
-import fr.cnes.sitools.server.Consts;
-import fr.cnes.sitools.tasks.model.TaskResourceModel;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**

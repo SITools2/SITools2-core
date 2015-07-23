@@ -50,7 +50,7 @@ import fr.cnes.sitools.security.FindRoleResource;
 import fr.cnes.sitools.security.captcha.CaptchaFilter;
 import fr.cnes.sitools.security.captcha.CaptchaResource;
 import fr.cnes.sitools.security.challenge.ChallengeToken;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 
 /**
  * PublicApplication to expose commons files and cots.

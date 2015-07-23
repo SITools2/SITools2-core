@@ -29,7 +29,7 @@ import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
 
 import fr.cnes.sitools.common.SitoolsSettings;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.userstorage.model.DiskStorage;
 import fr.cnes.sitools.userstorage.model.UserStorage;
 

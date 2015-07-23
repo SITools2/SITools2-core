@@ -26,7 +26,7 @@ package fr.cnes.sitools.mock.resources;
  import fr.cnes.sitools.plugins.resources.model.ResourceModel;
  import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
  import fr.cnes.sitools.plugins.resources.model.ResourceParameterType;
- import fr.cnes.sitools.server.Consts;
+ import fr.cnes.sitools.common.Consts;
  import fr.cnes.sitools.util.RIAPUtils;
  import org.restlet.Context;
 

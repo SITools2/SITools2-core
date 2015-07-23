@@ -25,7 +25,7 @@ import fr.cnes.sitools.common.application.SitoolsParameterizedApplication;
 import fr.cnes.sitools.common.model.Category;
 import fr.cnes.sitools.project.graph.GraphStoreInterface;
 import fr.cnes.sitools.project.model.Project;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 
 /**
  * Abstract Class for ProjectApplications

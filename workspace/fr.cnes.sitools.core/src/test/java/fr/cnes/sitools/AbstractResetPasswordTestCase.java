@@ -44,7 +44,6 @@ import org.restlet.engine.Engine;
 import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.ext.xstream.XstreamRepresentation;
 import org.restlet.representation.Representation;
-import org.restlet.resource.ClientResource;
 
 import com.thoughtworks.xstream.XStream;
 
@@ -62,7 +61,7 @@ import fr.cnes.sitools.security.UsersAndGroupsAdministration;
 import fr.cnes.sitools.security.challenge.ChallengeToken;
 import fr.cnes.sitools.security.challenge.ChallengeTokenContainer;
 import fr.cnes.sitools.security.model.User;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**

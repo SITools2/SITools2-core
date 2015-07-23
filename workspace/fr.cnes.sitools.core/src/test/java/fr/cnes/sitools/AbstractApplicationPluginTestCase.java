@@ -53,7 +53,7 @@ import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.common.validator.ConstraintViolation;
 import fr.cnes.sitools.plugins.applications.dto.ApplicationPluginModelDTO;
 import fr.cnes.sitools.plugins.applications.model.ApplicationPluginParameter;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 // TODO test GET sur /admin/{applicationPluginId}

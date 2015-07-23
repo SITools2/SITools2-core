@@ -31,7 +31,7 @@ import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.role.RoleApplication;
 import fr.cnes.sitools.role.RoleStoreInterface;
 import fr.cnes.sitools.role.RoleStoreXMLMap;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 
 /**
  * TODO Should be implemented

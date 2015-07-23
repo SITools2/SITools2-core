@@ -50,7 +50,7 @@ import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.dataset.opensearch.model.Opensearch;
 import fr.cnes.sitools.feeds.model.FeedEntryModel;
 import fr.cnes.sitools.feeds.model.FeedModel;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**

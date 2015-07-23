@@ -39,7 +39,7 @@ import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.mail.model.Mail;
 import fr.cnes.sitools.notification.business.NotificationManager;
 import fr.cnes.sitools.notification.store.NotificationStore;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 import fr.cnes.sitools.util.TemplateUtils;
 import fr.cnes.sitools.util.Util;

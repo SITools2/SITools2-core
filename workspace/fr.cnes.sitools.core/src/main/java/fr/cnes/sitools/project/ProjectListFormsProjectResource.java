@@ -36,7 +36,7 @@ import fr.cnes.sitools.dictionary.model.Dictionary;
 import fr.cnes.sitools.form.project.dto.FormProjectDTO;
 import fr.cnes.sitools.form.project.model.FormProject;
 import fr.cnes.sitools.project.model.Project;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**

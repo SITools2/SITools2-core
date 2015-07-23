@@ -50,7 +50,7 @@ import fr.cnes.sitools.dictionary.ConceptTemplateAdministration;
 import fr.cnes.sitools.dictionary.store.ConceptTemplateStoreInterface;
 import fr.cnes.sitools.dictionary.store.ConceptTemplateStoreXMLMap;
 import fr.cnes.sitools.dictionary.model.ConceptTemplate;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.Property;
 import fr.cnes.sitools.util.RIAPUtils;
 

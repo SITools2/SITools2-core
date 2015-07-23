@@ -36,7 +36,7 @@ import fr.cnes.sitools.common.model.ResourceCollectionFilter;
 import fr.cnes.sitools.datasource.jdbc.JDBCDataSourceStoreInterface;
 import fr.cnes.sitools.datasource.jdbc.JDBCDataSourceStoreXMLMap;
 import fr.cnes.sitools.datasource.jdbc.model.JDBCDataSource;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 
 /**
  * Test CRUD DataSet with XML DataSetStore persistence

@@ -49,7 +49,7 @@ import fr.cnes.sitools.notification.model.RestletObservable;
 import fr.cnes.sitools.notification.model.RestletObserver;
 import fr.cnes.sitools.notification.store.NotificationStore;
 import fr.cnes.sitools.notification.store.NotificationStoreXML;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**

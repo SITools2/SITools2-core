@@ -42,7 +42,7 @@ import fr.cnes.sitools.form.project.services.business.DataSetCounterJobStatus;
 import fr.cnes.sitools.form.project.services.dto.DataSetQueryStatusDTO;
 import fr.cnes.sitools.form.project.services.dto.DatasetQueryStatus;
 import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.tasks.TaskUtils;
 import fr.cnes.sitools.tasks.business.Task;
 import fr.cnes.sitools.util.RIAPUtils;

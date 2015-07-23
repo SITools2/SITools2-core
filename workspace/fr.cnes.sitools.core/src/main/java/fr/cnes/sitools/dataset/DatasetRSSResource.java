@@ -34,7 +34,7 @@ import org.restlet.resource.ResourceException;
 import fr.cnes.sitools.common.SitoolsResource;
 import fr.cnes.sitools.dataset.model.DataSet;
 import fr.cnes.sitools.dataset.opensearch.model.Opensearch;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**

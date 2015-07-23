@@ -19,9 +19,8 @@
 package fr.cnes.sitools;
 
 import fr.cnes.sitools.common.SitoolsSettings;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
-import org.junit.Before;
 import org.junit.Test;
 import org.restlet.Client;
 import org.restlet.Request;

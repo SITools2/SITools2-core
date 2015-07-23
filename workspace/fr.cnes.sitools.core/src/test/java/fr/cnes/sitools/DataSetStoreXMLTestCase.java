@@ -39,7 +39,7 @@ import fr.cnes.sitools.dataset.DataSetStoreXMLMap;
 import fr.cnes.sitools.dataset.model.Column;
 import fr.cnes.sitools.dataset.model.DataSet;
 import fr.cnes.sitools.datasource.jdbc.model.Structure;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 
 /**
  * Test CRUD DataSet with XML DataSetStore persistence

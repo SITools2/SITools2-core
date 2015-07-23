@@ -42,7 +42,7 @@ import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.application.SitoolsParameterizedApplication;
 import fr.cnes.sitools.plugins.resources.ResourcePluginStoreInterface;
 import fr.cnes.sitools.plugins.resources.ResourcePluginStoreXMLMap;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.tasks.business.Task;
 import fr.cnes.sitools.tasks.business.TaskManager;
 import fr.cnes.sitools.tasks.model.TaskModel;

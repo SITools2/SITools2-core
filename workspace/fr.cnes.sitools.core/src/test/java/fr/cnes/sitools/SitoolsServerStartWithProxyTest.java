@@ -36,7 +36,7 @@ import org.restlet.engine.Engine;
 import fr.cnes.sitools.api.DocAPI;
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.proxy.ProxySettings;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.server.Starter;
 import fr.cnes.sitools.util.FileCopyUtils;
 import fr.cnes.sitools.util.FileUtils;

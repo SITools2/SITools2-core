@@ -26,7 +26,7 @@ import fr.cnes.sitools.datasource.jdbc.business.SitoolsSQLDataSource;
 import fr.cnes.sitools.security.JDBCUsersAndGroupsStore;
 import fr.cnes.sitools.security.model.Group;
 import fr.cnes.sitools.security.model.User;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.utils.GetResponseUtils;
 
 /**

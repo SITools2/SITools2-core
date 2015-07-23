@@ -32,7 +32,7 @@ import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.dataset.DataSetApplication;
 import fr.cnes.sitools.dataset.model.DataSet;
 import fr.cnes.sitools.dataset.opensearch.model.Opensearch;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**

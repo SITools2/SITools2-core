@@ -62,7 +62,7 @@ import fr.cnes.sitools.dataset.filter.dto.FilterChainedOrderDTO;
 import fr.cnes.sitools.dataset.filter.dto.FilterModelDTO;
 import fr.cnes.sitools.dataset.filter.model.FilterParameter;
 import fr.cnes.sitools.dataset.filter.model.FilterParameterType;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**

@@ -50,7 +50,7 @@ import fr.cnes.sitools.dataset.opensearch.runnables.OpensearchRefreshRunnable;
 import fr.cnes.sitools.datasource.jdbc.model.JDBCDataSource;
 import fr.cnes.sitools.feeds.model.FeedModel;
 import fr.cnes.sitools.feeds.model.FeedSource;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.solr.model.DBConfigDTO;
 import fr.cnes.sitools.solr.model.EntityDTO;
 import fr.cnes.sitools.solr.model.FieldDTO;

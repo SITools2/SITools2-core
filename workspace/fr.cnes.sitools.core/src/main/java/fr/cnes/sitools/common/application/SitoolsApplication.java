@@ -60,7 +60,7 @@ import fr.cnes.sitools.security.authorization.business.SitoolsUserAuthorizer;
 import fr.cnes.sitools.security.authorization.client.ResourceAuthorization;
 import fr.cnes.sitools.security.filter.NotAuthenticatedFilter;
 import fr.cnes.sitools.security.filter.UserBlackListFilter;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**

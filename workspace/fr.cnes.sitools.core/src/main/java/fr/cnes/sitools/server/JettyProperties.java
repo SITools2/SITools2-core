@@ -18,6 +18,7 @@
  ******************************************************************************/
 package fr.cnes.sitools.server;
 
+import fr.cnes.sitools.common.Consts;
 import org.restlet.Server;
 import org.restlet.data.Parameter;
 

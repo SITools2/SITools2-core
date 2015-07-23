@@ -25,7 +25,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.hsqldb.lib.Storage;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -46,7 +45,7 @@ import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.SitoolsXStreamRepresentation;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.service.storage.model.StorageDirectory;
 import fr.cnes.sitools.util.RIAPUtils;
 

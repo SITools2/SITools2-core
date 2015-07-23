@@ -48,7 +48,7 @@ import fr.cnes.sitools.api.DocAPI;
 import fr.cnes.sitools.api.DocWadl;
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.logging.SitoolsLogFilter;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.FileUtils;
 
 /**

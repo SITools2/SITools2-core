@@ -41,7 +41,7 @@ import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.dataset.converter.dto.ConverterModelDTO;
 import fr.cnes.sitools.dataset.converter.model.ConverterParameter;
 import fr.cnes.sitools.dataset.plugins.converters.model.ConverterPluginsDescriptionDTO;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**

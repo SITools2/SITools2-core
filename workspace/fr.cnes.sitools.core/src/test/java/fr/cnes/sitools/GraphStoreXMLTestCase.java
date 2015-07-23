@@ -36,7 +36,7 @@ import fr.cnes.sitools.common.model.ResourceCollectionFilter;
 import fr.cnes.sitools.project.graph.GraphStoreInterface;
 import fr.cnes.sitools.project.graph.GraphStoreXMLMap;
 import fr.cnes.sitools.project.graph.model.Graph;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 
 ;
 

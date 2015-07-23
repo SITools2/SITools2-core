@@ -51,7 +51,7 @@ import fr.cnes.sitools.dataset.converter.model.ConverterModel;
 import fr.cnes.sitools.dataset.converter.model.ConverterParameter;
 import fr.cnes.sitools.notification.business.NotificationManager;
 import fr.cnes.sitools.notification.model.RestletObserver;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**

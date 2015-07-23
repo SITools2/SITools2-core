@@ -25,7 +25,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
@@ -39,7 +38,7 @@ import fr.cnes.sitools.security.authorization.AuthorizationStoreInterface;
 import fr.cnes.sitools.security.authorization.AuthorizationStoreXMLMap;
 import fr.cnes.sitools.security.authorization.client.ResourceAuthorization;
 import fr.cnes.sitools.security.authorization.client.RoleAndMethodsAuthorization;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 
 /**
  * Test CRUD Authorization with XML AUthorizationStore persistence

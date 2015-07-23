@@ -33,7 +33,7 @@ import org.restlet.resource.Get;
 import fr.cnes.sitools.client.model.Url;
 import fr.cnes.sitools.common.SitoolsResource;
 import fr.cnes.sitools.common.SitoolsSettings;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.server.Starter;
 import fr.cnes.sitools.util.TemplateUtils;
 

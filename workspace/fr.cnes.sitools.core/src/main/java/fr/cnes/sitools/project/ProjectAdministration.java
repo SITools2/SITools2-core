@@ -33,7 +33,7 @@ import fr.cnes.sitools.notification.business.NotifierFilter;
 import fr.cnes.sitools.project.graph.GraphNotificationResource;
 import fr.cnes.sitools.project.graph.GraphResource;
 import fr.cnes.sitools.project.model.Project;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 
 /**
  * Application for managing projects Dependencies : Projects

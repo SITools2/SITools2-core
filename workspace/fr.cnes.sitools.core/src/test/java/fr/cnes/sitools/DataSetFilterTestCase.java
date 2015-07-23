@@ -55,7 +55,7 @@ import fr.cnes.sitools.dataset.model.Predicat;
 import fr.cnes.sitools.datasource.jdbc.model.Record;
 import fr.cnes.sitools.datasource.jdbc.model.Structure;
 import fr.cnes.sitools.json.GraphTestCase;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 import fr.cnes.sitools.utils.CreateDatasetUtil;
 

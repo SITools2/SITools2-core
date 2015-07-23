@@ -52,7 +52,7 @@ import fr.cnes.sitools.dataset.opensearch.OpenSearchStoreInterface;
 import fr.cnes.sitools.dataset.opensearch.OpenSearchStoreXMLMap;
 import fr.cnes.sitools.dataset.opensearch.model.Opensearch;
 import fr.cnes.sitools.dataset.opensearch.model.OpensearchColumn;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**

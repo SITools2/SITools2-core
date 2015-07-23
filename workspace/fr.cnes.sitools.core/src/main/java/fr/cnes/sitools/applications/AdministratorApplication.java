@@ -36,7 +36,7 @@ import fr.cnes.sitools.common.resource.SitoolsSettingsResource;
 import fr.cnes.sitools.notification.business.NotifierFilter;
 import fr.cnes.sitools.proxy.DirectoryLogFilter;
 import fr.cnes.sitools.proxy.DirectoryProxy;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 
 /**
  * Application for managing several settings and plugin resources for administrators.

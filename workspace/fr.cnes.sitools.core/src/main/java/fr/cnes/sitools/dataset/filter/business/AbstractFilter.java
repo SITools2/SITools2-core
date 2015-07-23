@@ -40,7 +40,7 @@ import fr.cnes.sitools.dataset.filter.model.FilterParameter;
 import fr.cnes.sitools.dataset.filter.model.FilterParameterType;
 import fr.cnes.sitools.dataset.model.Predicat;
 import fr.cnes.sitools.dictionary.model.Dictionary;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.units.dimension.model.SitoolsDimension;
 import fr.cnes.sitools.units.dimension.model.SitoolsUnit;
 import fr.cnes.sitools.util.RIAPUtils;

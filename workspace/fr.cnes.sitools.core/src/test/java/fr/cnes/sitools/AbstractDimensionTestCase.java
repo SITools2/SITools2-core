@@ -40,7 +40,7 @@ import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.SitoolsXStreamRepresentation;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.units.dimension.helper.DimensionHelper;
 import fr.cnes.sitools.units.dimension.model.SitoolsDimension;
 import fr.cnes.sitools.units.dimension.model.SitoolsUnit;

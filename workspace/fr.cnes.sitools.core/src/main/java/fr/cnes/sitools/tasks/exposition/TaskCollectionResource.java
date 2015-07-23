@@ -39,7 +39,7 @@ import org.restlet.security.User;
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.tasks.TaskUtils;
 import fr.cnes.sitools.tasks.business.Task;
 import fr.cnes.sitools.tasks.business.TaskManager;

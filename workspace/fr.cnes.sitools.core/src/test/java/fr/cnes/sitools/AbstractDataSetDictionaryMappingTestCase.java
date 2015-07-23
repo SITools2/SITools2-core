@@ -52,7 +52,7 @@ import fr.cnes.sitools.dictionary.store.DictionaryStoreInterface;
 import fr.cnes.sitools.dictionary.model.Concept;
 import fr.cnes.sitools.dictionary.model.ConceptTemplate;
 import fr.cnes.sitools.dictionary.model.Dictionary;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.Property;
 import fr.cnes.sitools.util.RIAPUtils;
 import fr.cnes.sitools.utils.CreateDatasetUtil;

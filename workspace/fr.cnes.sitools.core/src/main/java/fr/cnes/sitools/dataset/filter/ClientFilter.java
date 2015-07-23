@@ -41,7 +41,7 @@ import fr.cnes.sitools.dataset.filter.business.AbstractFilter;
 import fr.cnes.sitools.dataset.filter.business.FilterChained;
 import fr.cnes.sitools.dataset.filter.model.FilterChainedModel;
 import fr.cnes.sitools.dataset.filter.model.FilterModel;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**

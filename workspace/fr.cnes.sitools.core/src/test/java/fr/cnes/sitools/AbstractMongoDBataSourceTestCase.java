@@ -45,7 +45,7 @@ import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.datasource.common.SitoolsDataSourceModel;
 import fr.cnes.sitools.datasource.mongodb.model.MongoDBDataSource;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**

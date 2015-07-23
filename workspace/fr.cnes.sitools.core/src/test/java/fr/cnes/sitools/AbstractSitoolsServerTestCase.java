@@ -37,7 +37,7 @@ import org.restlet.resource.ResourceException;
 import fr.cnes.sitools.api.DocAPI;
 import fr.cnes.sitools.api.DocWadl;
 import fr.cnes.sitools.common.SitoolsSettings;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.server.Starter;
 import fr.cnes.sitools.util.FileCopyUtils;
 import fr.cnes.sitools.util.FileUtils;

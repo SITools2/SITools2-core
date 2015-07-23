@@ -41,7 +41,7 @@ import org.restlet.resource.ClientResource;
 import fr.cnes.sitools.applications.UploadApplication;
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.application.ContextAttributes;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 
 /**
  * TestCase of Upload function

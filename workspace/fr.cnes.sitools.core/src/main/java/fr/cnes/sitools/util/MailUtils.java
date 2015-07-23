@@ -4,7 +4,7 @@ import java.util.Map;
 
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.mail.model.Mail;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 
 /**
  * The Class MailUtils.

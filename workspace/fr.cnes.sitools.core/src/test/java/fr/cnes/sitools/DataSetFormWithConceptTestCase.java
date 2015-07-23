@@ -39,7 +39,7 @@ import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.dataset.model.ColumnConceptMapping;
 import fr.cnes.sitools.dataset.model.DataSet;
 import fr.cnes.sitools.dataset.model.DictionaryMapping;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 import fr.cnes.sitools.utils.CreateDatasetUtil;
 import fr.cnes.sitools.utils.GetRepresentationUtils;

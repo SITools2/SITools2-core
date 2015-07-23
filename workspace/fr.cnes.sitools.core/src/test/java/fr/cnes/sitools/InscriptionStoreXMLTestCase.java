@@ -36,7 +36,7 @@ import fr.cnes.sitools.common.model.ResourceCollectionFilter;
 import fr.cnes.sitools.inscription.InscriptionStoreInterface;
 import fr.cnes.sitools.inscription.InscriptionStoreXMLMap;
 import fr.cnes.sitools.inscription.model.Inscription;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 
 /**
  * Test InscriptionStoreXML

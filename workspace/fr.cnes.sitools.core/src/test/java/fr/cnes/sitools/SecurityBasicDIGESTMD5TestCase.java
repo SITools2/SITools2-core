@@ -43,7 +43,7 @@ import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.login.SitoolsAuthenticationInfo;
 import fr.cnes.sitools.security.UsersAndGroupsStore;
 import fr.cnes.sitools.security.model.User;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.server.Starter;
 import fr.cnes.sitools.util.RIAPUtils;
 
