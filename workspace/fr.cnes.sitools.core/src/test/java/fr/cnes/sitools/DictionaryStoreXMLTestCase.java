@@ -34,8 +34,8 @@ import org.restlet.Context;
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
-import fr.cnes.sitools.dictionary.DictionaryStoreInterface;
-import fr.cnes.sitools.dictionary.DictionaryStoreXMLMap;
+import fr.cnes.sitools.dictionary.Store.DictionaryStoreInterface;
+import fr.cnes.sitools.dictionary.Store.DictionaryStoreXMLMap;
 import fr.cnes.sitools.dictionary.model.Dictionary;
 import fr.cnes.sitools.server.Consts;
 

@@ -18,6 +18,10 @@
  ******************************************************************************/
 package fr.cnes.sitools.dictionary;
 
+import fr.cnes.sitools.dictionary.Store.ConceptTemplateStoreInterface;
+import fr.cnes.sitools.dictionary.resource.ConceptTemplateCollectionResource;
+import fr.cnes.sitools.dictionary.resource.ConceptTemplateResource;
+import fr.cnes.sitools.dictionary.resource.PropertyResource;
 import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.Response;

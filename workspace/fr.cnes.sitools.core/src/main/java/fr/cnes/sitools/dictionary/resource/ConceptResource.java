@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package fr.cnes.sitools.dictionary;
+package fr.cnes.sitools.dictionary.resource;
 
 import java.util.Iterator;
 import java.util.List;
@@ -32,26 +32,26 @@ import org.restlet.resource.Get;
 import org.restlet.resource.ResourceException;
 
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.dictionary.model.ConceptTemplate;
-import fr.cnes.sitools.util.Property;
+import fr.cnes.sitools.dictionary.model.Concept;
+import fr.cnes.sitools.dictionary.model.Dictionary;
 
 /**
- * Notion. parent object is fully returned with its table of items.
- * No pagination service, to be managed on client side.
+ * Concept. parent object is fully returned with its table of items. No pagination service, to be managed on client
+ * side.
  * 
- * @author jp.boignard (AKKA Technologies)
+ * @author m.gond (AKKA Technologies)
  * 
  */
-public final class PropertyResource extends AbstractConceptTemplateResource {
+public class ConceptResource extends AbstractDictionaryResource {
 
   @Override
   public void sitoolsDescribe() {
-    setName("PropertyResource");
-    setDescription("Resource for managing properties defining a template of concept");
+    setName("ConceptResource");
+    setDescription("Resource for managing concepts in a dictionary");
   }
 
   /**
-   * Gets the required Property representation
+   * Gets the required Concept representation
    * 
    * @param variant
    *          client preference for Response media type
@@ -60,29 +60,29 @@ public final class PropertyResource extends AbstractConceptTemplateResource {
   @Get
   public Representation getRepresentation(Variant variant) {
     try {
-      ConceptTemplate template = getStore().retrieve(getConceptTemplateId());
-      Property propertyFound = null;
-      
+      Dictionary dictionary = getStore().retrieve(getDictionaryId());
+      Concept conceptFound = null;
+
       Response response = null;
-      if (template == null) {
-        response = new Response(false, "TEMPLATE_NOT_FOUND");
+      if (dictionary == null) {
+        response = new Response(false, "DICTIONARY_NOT_FOUND");
       }
       else {
-        List<Property> properties = template.getProperties();
-        for (Iterator<Property> iterator = properties.iterator(); iterator.hasNext();) {
-          Property property = iterator.next();
-          if (property.getName().equals(getPropertyId())) {
-            propertyFound = property;
+        List<Concept> concepts = dictionary.getConcepts();
+        for (Iterator<Concept> iterator = concepts.iterator(); iterator.hasNext();) {
+          Concept concept = iterator.next();
+          if (concept.getId().equals(getConceptId())) {
+            conceptFound = concept;
             break;
           }
         }
-        
-        if (propertyFound == null) {
-          response = new Response(false, "PROPERTY_NOT_FOUND");
+
+        if (conceptFound == null) {
+          response = new Response(false, "NOTION_NOT_FOUND");
         }
         else {
-          response = new Response(true, propertyFound, Property.class, "property");
-  
+          response = new Response(true, conceptFound, Concept.class, "concept");
+
         }
       }
       return getRepresentation(response, variant);
@@ -97,20 +97,22 @@ public final class PropertyResource extends AbstractConceptTemplateResource {
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
-  
+
   @Override
   protected void describeGet(MethodInfo info) {
 
     // -> Global method info
-    info.setIdentifier("get_property");
-    info.setDocumentation("Get a single property from its ID");
+    info.setIdentifier("get_dictionary");
+    info.setDocumentation("Get a single dictionary from its ID");
 
     this.addStandardGetRequestInfo(info);
-    ParameterInfo param = new ParameterInfo("templateId", true, "xs:string", ParameterStyle.TEMPLATE, "Identifier of the template to work with.");
+    ParameterInfo param = new ParameterInfo("dictionaryId", true, "xs:string", ParameterStyle.TEMPLATE,
+        "Identifier of the dictionary to work with.");
     info.getRequest().getParameters().add(param);
-    ParameterInfo paramProperty = new ParameterInfo("propertyId", true, "xs:string", ParameterStyle.TEMPLATE, "Identifier of the property to get.");
+    ParameterInfo paramConcept = new ParameterInfo("conceptId", true, "xs:string", ParameterStyle.TEMPLATE,
+        "Identifier of the concept to get.");
     info.getRequest().getParameters().add(param);
-    info.getRequest().getParameters().add(paramProperty);
+    info.getRequest().getParameters().add(paramConcept);
     this.addStandardResponseInfo(info);
     this.addStandardInternalServerErrorInfo(info);
 

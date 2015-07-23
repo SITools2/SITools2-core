@@ -48,7 +48,7 @@ import fr.cnes.sitools.dataset.dto.DataSetExpositionDTO;
 import fr.cnes.sitools.dataset.model.ColumnConceptMapping;
 import fr.cnes.sitools.dataset.model.DataSet;
 import fr.cnes.sitools.dataset.model.DictionaryMapping;
-import fr.cnes.sitools.dictionary.DictionaryStoreInterface;
+import fr.cnes.sitools.dictionary.Store.DictionaryStoreInterface;
 import fr.cnes.sitools.dictionary.model.Concept;
 import fr.cnes.sitools.dictionary.model.ConceptTemplate;
 import fr.cnes.sitools.dictionary.model.Dictionary;

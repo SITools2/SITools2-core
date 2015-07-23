@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package fr.cnes.sitools.dictionary;
+package fr.cnes.sitools.dictionary.resource;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -32,26 +32,23 @@ import org.restlet.resource.ResourceException;
 
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.dictionary.model.Dictionary;
-import fr.cnes.sitools.notification.model.Notification;
+import fr.cnes.sitools.dictionary.model.ConceptTemplate;
 
 /**
- * Class for dictionary collection management
+ * Resource for concept template collection
  * 
- * @author jp.boignard (AKKA Technologies)
- * 
+ * @author jp.boignard (AKKA technologies)
  */
-public final class DictionaryCollectionResource extends AbstractDictionaryResource {
+public class ConceptTemplateCollectionResource extends AbstractConceptTemplateResource {
 
   @Override
   public void sitoolsDescribe() {
-    setName("DictionaryCollectionResource");
-    setDescription("Resource for managing a dictionary collection");
-    this.setNegotiated(false);
+    setName("ConceptTemplateCollectionResource");
+    setDescription("Resource for managing the collection of templates of concepts");
   }
 
   /**
-   * Create a new dictionary
+   * Create a new template
    * 
    * @param representation
    *          input
@@ -60,36 +57,30 @@ public final class DictionaryCollectionResource extends AbstractDictionaryResour
    * @return Representation
    */
   @Post
-  public Representation newDictionary(Representation representation, Variant variant) {
+  public Representation newTemplate(Representation representation, Variant variant) {
     if (representation == null) {
-      throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "DICTIONARY_REPRESENTATION_REQUIRED");
+      throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "template_REPRESENTATION_REQUIRED");
     }
     try {
       // Parse object representation
-      Dictionary dictionaryInput = getObject(representation, variant);
+      ConceptTemplate input = getObject(representation, variant);
 
       // Business service
-      Dictionary dictionaryOutput = getStore().create(dictionaryInput);
+      ConceptTemplate output = getStore().create(input);
 
-      // Notify observers
-      Notification notification = new Notification();
-      notification.setObservable(dictionaryOutput.getId());
-      notification.setEvent("DICTIONARY_CREATED");
-      notification.setMessage("New dictionary created.");
-      getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
-
-      trace(Level.INFO, "Create the dictionary " + dictionaryOutput.getName());
       // Response
-      Response response = new Response(true, dictionaryOutput, Dictionary.class, "dictionary");
+      trace(Level.INFO, "Create the dictionary structure " + output.getName());
+      Response response = new Response(true, output, ConceptTemplate.class, "template");
       return getRepresentation(response, variant);
+
     }
     catch (ResourceException e) {
-      trace(Level.INFO, "Cannot create the dictionary");
+      trace(Level.INFO, "Cannot create the dictionary structure");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      trace(Level.INFO, "Cannot create the dictionary");
+      trace(Level.INFO, "Cannot create the dictionary structure");
       getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
@@ -99,8 +90,8 @@ public final class DictionaryCollectionResource extends AbstractDictionaryResour
   protected void describePost(MethodInfo info) {
 
     // -> Global method info
-    info.setIdentifier("create_dictionary");
-    info.setDocumentation("To create a new dictionary.");
+    info.setIdentifier("create_template");
+    info.setDocumentation("To create a new template.");
 
     // -> Response info
 
@@ -113,7 +104,7 @@ public final class DictionaryCollectionResource extends AbstractDictionaryResour
     // Failures
     ResponseInfo responseInfo = new ResponseInfo();
     responseInfo.getStatuses().add(Status.CLIENT_ERROR_BAD_REQUEST);
-    responseInfo.setDocumentation("Dictionary representation required");
+    responseInfo.setDocumentation("template representation required");
     info.getResponses().add(responseInfo);
 
     responseInfo = new ResponseInfo();
@@ -124,46 +115,46 @@ public final class DictionaryCollectionResource extends AbstractDictionaryResour
   }
 
   /**
-   * get all dictionary
+   * get all template
    * 
    * @param variant
    *          client preferred media type
    * @return Representation
    */
   @Get
-  public Representation retrieveDictionary(Variant variant) {
+  public Representation retrieveTemplate(Variant variant) {
     try {
-      if (getDictionaryId() != null) {
-        Dictionary dictionary = getStore().retrieve(getDictionaryId());
+      if (getConceptTemplateId() != null) {
+        ConceptTemplate template = getStore().retrieve(getConceptTemplateId());
         Response response;
-        if (dictionary != null) {
-          trace(Level.FINE, "Edit information for the dictionary " + dictionary.getName());
-          response = new Response(true, dictionary, Dictionary.class, "dictionary");
+        if (template != null) {
+          trace(Level.FINE, "Edit information for the dictionary structure " + template.getName());
+          response = new Response(true, template, ConceptTemplate.class, "template");
         }
         else {
-          trace(Level.FINE, "Edit information for the dictionary " + getDictionaryId());
-          response = new Response(false, "cannot find dictionary");
+          trace(Level.INFO, "Cannot edit information for the dictionary structure " + getConceptTemplateId());
+          response = new Response(false, "cannot find dictionary stucture");
         }
         return getRepresentation(response, variant);
       }
       else {
         ResourceCollectionFilter filter = new ResourceCollectionFilter(this.getRequest());
-        List<Dictionary> dictionaries = getStore().getList(filter);
-        int total = dictionaries.size();
-        dictionaries = getStore().getPage(filter, dictionaries);
-        trace(Level.FINE, "View available dictionaries");
-        Response response = new Response(true, dictionaries, Dictionary.class, "dictionaries");
+        List<ConceptTemplate> templates = getStore().getList(filter);
+        int total = templates.size();
+        templates = getStore().getPage(filter, templates);
+        trace(Level.FINE, "View available dictionary structures");
+        Response response = new Response(true, templates, ConceptTemplate.class, "templates");
         response.setTotal(total);
         return getRepresentation(response, variant);
       }
     }
     catch (ResourceException e) {
-      trace(Level.INFO, "Cannot view available dictionaries");
+      trace(Level.INFO, "Cannot view available dictionary structures");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      trace(Level.INFO, "Cannot view available dictionaries");
+      trace(Level.INFO, "Cannot view available dictionary structures");
       getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
@@ -173,8 +164,8 @@ public final class DictionaryCollectionResource extends AbstractDictionaryResour
   protected void describeGet(MethodInfo info) {
 
     // -> Global method info
-    info.setIdentifier("get_dictionaries");
-    info.setDocumentation("Get the list of dictionaries.");
+    info.setIdentifier("get_templates");
+    info.setDocumentation("Get the list of templates.");
 
     this.addStandardGetRequestInfo(info);
     this.addStandardResponseInfo(info);

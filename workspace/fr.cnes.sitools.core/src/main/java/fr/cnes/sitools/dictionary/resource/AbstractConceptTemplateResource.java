@@ -16,8 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package fr.cnes.sitools.dictionary;
+package fr.cnes.sitools.dictionary.resource;
 
+import fr.cnes.sitools.dictionary.ConceptTemplateAdministration;
+import fr.cnes.sitools.dictionary.Store.ConceptTemplateStoreInterface;
 import org.restlet.data.MediaType;
 import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.representation.Representation;
