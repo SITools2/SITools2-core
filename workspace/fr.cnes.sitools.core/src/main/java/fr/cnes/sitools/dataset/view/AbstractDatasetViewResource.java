@@ -32,7 +32,9 @@ import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.dataset.view.model.DatasetView;
 
-/**
+import java.io.IOException;
+
+     /**
  * Base class for resource of management of DatasetView
  * 
  * @author jp.boignard (AKKA Technologies)
@@ -94,18 +96,13 @@ public abstract class AbstractDatasetViewResource extends SitoolsResource {
    */
   public final DatasetView getObject(Representation representation, Variant variant) {
     DatasetView datasetViewInput = null;
-    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-      // Parse the XML representation to get the DatasetView bean
-      XstreamRepresentation<DatasetView> repXML = new XstreamRepresentation<DatasetView>(representation);
-      XStream xstream = XStreamFactory.getInstance().getXStreamReader(MediaType.APPLICATION_XML);
-      xstream.autodetectAnnotations(false);
-      xstream.alias("datasetView", DatasetView.class);
-      repXML.setXstream(xstream);
-      datasetViewInput = repXML.getObject();
-    }
-    else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+    if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
       // Parse the JSON representation to get the bean
-      datasetViewInput = new JacksonRepresentation<DatasetView>(representation, DatasetView.class).getObject();
+      try {
+        datasetViewInput = new JacksonRepresentation<DatasetView>(representation, DatasetView.class).getObject();
+      } catch (IOException e) {
+        getContext().getLogger().severe(e.getMessage());
+      }
     }
     return datasetViewInput;
   }

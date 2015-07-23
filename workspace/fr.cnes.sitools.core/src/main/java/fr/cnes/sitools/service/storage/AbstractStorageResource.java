@@ -18,6 +18,7 @@
  ******************************************************************************/
 package fr.cnes.sitools.service.storage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.restlet.Request;
@@ -126,11 +127,12 @@ public abstract class AbstractStorageResource extends SitoolsResource {
 
     StorageDirectory outDirectory = null;
 
-    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-      outDirectory = new XstreamRepresentation<StorageDirectory>(representation).getObject();
-    }
     if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
-      outDirectory = new JacksonRepresentation<StorageDirectory>(representation, StorageDirectory.class).getObject();
+      try {
+        outDirectory = new JacksonRepresentation<StorageDirectory>(representation, StorageDirectory.class).getObject();
+      } catch (IOException e) {
+        getContext().getLogger().severe(e.getMessage());
+      }
     }
     return outDirectory;
   }
@@ -179,7 +181,7 @@ public abstract class AbstractStorageResource extends SitoolsResource {
    * @return A response
    */
   protected Response stopSDIndex(StorageDirectory sd) {
-    Response response;
+    Response response = null;
     Request reqPOST = new Request(Method.POST, RIAPUtils.getRiapBase() + getSitoolsSetting(Consts.APP_SOLR_URL) + "/"
         + sd.getId() + "/delete");
     ArrayList<Preference<MediaType>> objectMediaType = new ArrayList<Preference<MediaType>>();
@@ -205,6 +207,9 @@ public abstract class AbstractStorageResource extends SitoolsResource {
           response = new Response(false, resp.getMessage());
         }
       }
+    }
+    catch(IOException e) {
+      getContext().getLogger().severe(e.getMessage());
     }
     finally {
       RIAPUtils.exhaust(responseSolr);

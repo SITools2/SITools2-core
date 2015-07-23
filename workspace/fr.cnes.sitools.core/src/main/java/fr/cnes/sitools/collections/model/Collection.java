@@ -61,7 +61,7 @@ public final class Collection implements IResource {
    */
   public Collection() {
     super();
-    // TODO Auto-generated constructor stub
+
   }
 
   /**

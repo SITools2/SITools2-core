@@ -151,7 +151,6 @@ public final class ResourcePluginResource extends AbstractResourcePluginResource
    * @param path
    *          url attachment of the resource
    */
-  @Override
   public void describePost(MethodInfo info, String path) {
 
     info.setDocumentation("Creates a new resource attached to an object");

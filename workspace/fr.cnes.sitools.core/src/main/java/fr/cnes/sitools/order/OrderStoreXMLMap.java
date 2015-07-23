@@ -58,7 +58,7 @@ public class OrderStoreXMLMap extends XmlMapStore<Order> implements OrderStoreIn
   }
 
   public List<Order> retrieveByParent(String id) {
-    // TODO Auto-generated method stub
+
     return null;
   }
 

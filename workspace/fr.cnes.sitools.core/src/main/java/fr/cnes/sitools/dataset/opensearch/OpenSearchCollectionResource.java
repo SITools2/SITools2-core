@@ -64,12 +64,7 @@ public class OpenSearchCollectionResource extends AbstractSearchResource {
     }
     try {
       Opensearch osearchInput = null;
-      if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-        // Parse the XML representation to get the bean
-        osearchInput = new XstreamRepresentation<Opensearch>(representation).getObject();
-
-      }
-      else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+      if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
         // Parse the JSON representation to get the bean
         osearchInput = new JacksonRepresentation<Opensearch>(representation, Opensearch.class).getObject();
       }

@@ -18,6 +18,7 @@
  ******************************************************************************/
 package fr.cnes.sitools.dataset.opensearch;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -178,6 +179,7 @@ public final class OpenSearchActionResource extends AbstractSearchResource {
     reqPOST.getClientInfo().setAcceptedMediaTypes(objectMediaType);
 
     org.restlet.Response responseSolr = null;
+    Response resp = null;
     try {
       responseSolr = getContext().getClientDispatcher().handle(reqPOST);
 
@@ -187,7 +189,7 @@ public final class OpenSearchActionResource extends AbstractSearchResource {
       else {
         @SuppressWarnings("unchecked")
         XstreamRepresentation<Response> repr = (XstreamRepresentation<Response>) responseSolr.getEntity();
-        Response resp = (Response) repr.getObject();
+        resp = (Response) repr.getObject();
         if (resp.getSuccess()) {
           this.getOpenSearchApplication().setCancelled(true);
           response = new Response(true, "opensearch.cancel.successfull");
@@ -196,14 +198,15 @@ public final class OpenSearchActionResource extends AbstractSearchResource {
           response = new Response(false, resp.getMessage());
         }
       }
-      return response;
-    }
-    finally {
+
+    } catch (IOException e) {
+      getContext().getLogger().severe(e.getMessage());
+    } finally {
       RIAPUtils.exhaust(responseSolr);
     }
+    return response;
   }
 
-  @Override
   public void describePut(MethodInfo info, String path) {
     if (path.endsWith("start")) {
       info.setDocumentation(" PUT /"
@@ -287,6 +290,7 @@ public final class OpenSearchActionResource extends AbstractSearchResource {
     reqPOST.getClientInfo().setAcceptedMediaTypes(objectMediaType);
 
     org.restlet.Response r = null;
+    Response resp = null;
     try {
       r = getContext().getClientDispatcher().handle(reqPOST);
 
@@ -295,7 +299,7 @@ public final class OpenSearchActionResource extends AbstractSearchResource {
       }
 
       XstreamRepresentation<Response> repr = (XstreamRepresentation<Response>) r.getEntity();
-      Response resp = (Response) repr.getObject();
+      resp = (Response) repr.getObject();
 
       if (resp.isSuccess()) {
         // create a runnable task to index asynchronously
@@ -305,12 +309,13 @@ public final class OpenSearchActionResource extends AbstractSearchResource {
         getOpenSearchApplication().getTaskService().execute(osRunnable);
 
       }
-      return resp;
-    }
-    finally {
+
+    } catch (IOException e) {
+      getContext().getLogger().severe(e.getMessage());
+    } finally {
       RIAPUtils.exhaust(r);
     }
-
+    return resp;
   }
 
   /**

@@ -84,7 +84,6 @@ public final class ObserverResource extends NotificationAbstractResource {
     }
   }
 
-  @Override
   public void describePost(MethodInfo info, String path) {
     if (path.endsWith("{observerUUID}")) {
       info.setDocumentation("POST " + path + " : references a new observer with the given unique ID.");
@@ -129,7 +128,6 @@ public final class ObserverResource extends NotificationAbstractResource {
     }
   }
 
-  @Override
   public void describeDelete(MethodInfo info, String path) {
     if (path.endsWith("{observerUUID}")) {
       info.setDocumentation("DELETE " + path + " : deletes an observer. No events will be sent.");
@@ -162,17 +160,6 @@ public final class ObserverResource extends NotificationAbstractResource {
       // ObjectRepresentation
       if (representation instanceof ObjectRepresentation<?>) {
         observer = ((ObjectRepresentation<RestletObserver>) representation).getObject();
-        return observer;
-      }
-
-      if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-        // Parse the XML representation to get the bean
-        XstreamRepresentation<RestletObserver> repXML = new XstreamRepresentation<RestletObserver>(representation);
-        XStream xstream = XStreamFactory.getInstance().getXStreamReader(MediaType.APPLICATION_XML);
-        xstream.autodetectAnnotations(false);
-        xstream.alias("observer", RestletObserver.class);
-        repXML.setXstream(xstream);
-        observer = repXML.getObject();
         return observer;
       }
 

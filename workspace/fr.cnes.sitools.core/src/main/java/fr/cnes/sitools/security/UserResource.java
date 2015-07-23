@@ -72,21 +72,18 @@ public final class UserResource extends UsersAndGroupsResource implements fr.cne
     setNegotiated(false);
   }
 
-  @Override
   public Representation getJSON() {
     getLogger().info("UserResource.getJSON");
     Response response = getUserResponse();
     return getRepresentation(response, MediaType.APPLICATION_JSON);
   }
 
-  @Override
   public Representation getXML() {
     getLogger().info("UserResource.getXML");
     Response response = getUserResponse();
     return getRepresentation(response, MediaType.APPLICATION_XML);
   }
 
-  @Override
   public Representation getObject() {
     getLogger().info("UserResource.getObject");
     Response response = getUserResponse();
@@ -142,7 +139,6 @@ public final class UserResource extends UsersAndGroupsResource implements fr.cne
     return response;
   }
 
-  @Override
   @Put
   public Representation update(Representation representation, Variant variant) {
     try {
@@ -152,12 +148,7 @@ public final class UserResource extends UsersAndGroupsResource implements fr.cne
       User input = null;
       String password = "";
 
-      if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-        // Parse the XML representation to get the bean
-        input = new XstreamRepresentation<User>(representation).getObject();
-
-      }
-      else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+      if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
         // Parse the JSON representation to get the bean
         input = new JacksonRepresentation<User>(representation, User.class).getObject();
       }

@@ -140,12 +140,6 @@ public class AbstractResourcePluginResource extends AbstractPluginResource {
       ObjectRepresentation<ResourceModelDTO> obj = (ObjectRepresentation<ResourceModelDTO>) representation;
       resourceInputDTO = obj.getObject();
     }
-    else if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-      // Parse the XML representation to get the bean
-      XstreamRepresentation<ResourceModelDTO> xst = new XstreamRepresentation<ResourceModelDTO>(representation);
-      xst.getXstream().alias("resourcePlugin", ResourceModelDTO.class);
-      resourceInputDTO = xst.getObject();
-    }
     else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
       // Parse the JSON representation to get the bean
       JacksonRepresentation<ResourceModelDTO> json = new JacksonRepresentation<ResourceModelDTO>(representation,

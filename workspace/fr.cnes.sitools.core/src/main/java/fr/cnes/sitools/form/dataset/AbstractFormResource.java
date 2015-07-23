@@ -41,7 +41,9 @@ import fr.cnes.sitools.notification.model.RestletObserver;
 import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
-/**
+import java.io.IOException;
+
+    /**
  * Abstract Resource class for Forms management
  * 
  * @author jp.boignard (AKKA Technologies)
@@ -157,12 +159,12 @@ public abstract class AbstractFormResource extends SitoolsResource {
    */
   public final FormDTO getObject(Representation representation, Variant variant) {
     FormDTO formDTOInput = null;
-    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-      // Parse the XML representation to get the bean
-      formDTOInput = new XstreamRepresentation<FormDTO>(representation).getObject();
-    }
-    else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
-      formDTOInput = new JacksonRepresentation<FormDTO>(representation, FormDTO.class).getObject();
+    if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+      try {
+        formDTOInput = new JacksonRepresentation<FormDTO>(representation, FormDTO.class).getObject();
+      } catch (IOException e) {
+        getContext().getLogger().severe(e.getMessage());
+      }
     }
     return formDTOInput;
   }

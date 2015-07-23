@@ -18,6 +18,7 @@
  ******************************************************************************/
 package fr.cnes.sitools.plugins.applications;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -94,22 +95,13 @@ public abstract class AbstractApplicationPluginCommonResource extends AbstractPl
    */
   protected ApplicationPluginModelDTO getObject(Representation representation) {
     ApplicationPluginModelDTO appModel = null;
-    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-      // Parse the XML representation to get the bean
-      XstreamRepresentation<ApplicationPluginModelDTO> repXML = new XstreamRepresentation<ApplicationPluginModelDTO>(
-          representation);
-      XStream xstream = XStreamFactory.getInstance().getXStreamReader(MediaType.APPLICATION_XML);
-      xstream.autodetectAnnotations(false);
-      xstream.alias("ApplicationPluginModel", ApplicationPluginModelDTO.class);
-      xstream.alias("parameters", ApplicationPluginParameter.class);
-      repXML.setXstream(xstream);
-      appModel = repXML.getObject();
-
-    }
-    else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+    if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
       // Parse the JSON representation to get the bean
-      appModel = new JacksonRepresentation<ApplicationPluginModelDTO>(representation, ApplicationPluginModelDTO.class)
-          .getObject();
+      try {
+        appModel = new JacksonRepresentation<ApplicationPluginModelDTO>(representation, ApplicationPluginModelDTO.class).getObject();
+      } catch (IOException e) {
+        getContext().getLogger().severe(e.getMessage());
+      }
     }
     return appModel;
   }

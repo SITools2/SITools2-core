@@ -161,7 +161,6 @@ public final class OrderCollectionResource extends AbstractOrderResource {
     }
   }
 
-  @Override
   public void describeGet(MethodInfo info, String path) {
     if (path.contains("{userId}")) {
       info.setDocumentation("GET : " + path + " : returns orders for a specific user.");

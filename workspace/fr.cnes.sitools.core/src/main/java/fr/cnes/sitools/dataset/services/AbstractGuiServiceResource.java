@@ -60,17 +60,7 @@ public abstract class AbstractGuiServiceResource extends AbstractServiceResource
       ObjectRepresentation<GuiServicePluginModel> obj = (ObjectRepresentation<GuiServicePluginModel>) representation;
       projectModuleInput = obj.getObject();
     }
-    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-      // Parse the XML representation to get the GuiService bean
-      XstreamRepresentation<GuiServicePluginModel> repXML = new XstreamRepresentation<GuiServicePluginModel>(
-          representation);
-      XStream xstream = XStreamFactory.getInstance().getXStreamReader(MediaType.APPLICATION_XML);
-      xstream.autodetectAnnotations(false);
-      xstream.alias("guiServicePlugin", GuiServicePluginModel.class);
-      repXML.setXstream(xstream);
-      projectModuleInput = repXML.getObject();
-    }
-    else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+    if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
       // Parse the JSON representation to get the bean
       projectModuleInput = new JacksonRepresentation<GuiServicePluginModel>(representation, GuiServicePluginModel.class)
           .getObject();

@@ -71,11 +71,6 @@ public final class NotificationResource extends NotificationAbstractResource {
         input = new ObjectRepresentation<Notification>(representation).getObject();
 
       }
-      else if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-        // Parse the XML representation to get the bean
-        input = new XstreamRepresentation<Notification>(representation).getObject();
-
-      }
       else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
         // Parse the JSON representation to get the bean
         input = new JacksonRepresentation<Notification>(representation, Notification.class).getObject();
@@ -100,7 +95,6 @@ public final class NotificationResource extends NotificationAbstractResource {
     }
   }
 
-  @Override
   public void describePost(MethodInfo info, String path) {
     if (path.contains("{observerUUID}")) {
       info.setDocumentation("POST " + path + " : notify a specific observer.");

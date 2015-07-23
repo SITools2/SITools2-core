@@ -178,12 +178,7 @@ public final class UserOrderResource extends AbstractOrderResource {
     }
     try {
       Order orderInput = null;
-      if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-        // Parse the XML representation to get the bean
-        orderInput = new XstreamRepresentation<Order>(representation).getObject();
-
-      }
-      else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+      if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
         // Parse the JSON representation to get the bean
         orderInput = new JacksonRepresentation<Order>(representation, Order.class).getObject();
       }

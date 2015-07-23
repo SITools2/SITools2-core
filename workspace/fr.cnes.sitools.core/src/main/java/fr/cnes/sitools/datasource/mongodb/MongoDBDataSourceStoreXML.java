@@ -112,7 +112,7 @@ public final class MongoDBDataSourceStoreXML extends SitoolsStoreXML<MongoDBData
   }
 
   public List<MongoDBDataSource> retrieveByParent(String id) {
-    // TODO Auto-generated method stub
+
     return null;
   }
 

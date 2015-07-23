@@ -28,7 +28,9 @@ import org.restlet.representation.Variant;
 import fr.cnes.sitools.common.SitoolsResource;
 import fr.cnes.sitools.dictionary.model.ConceptTemplate;
 
-/**
+import java.io.IOException;
+
+    /**
  * Base resource for concept template management
  * 
  * @author c
@@ -74,7 +76,11 @@ public abstract class AbstractConceptTemplateResource extends SitoolsResource {
     if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType()) ||
             MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
       // Parse the JSON representation to get the bean
-      templateInput = new JacksonRepresentation<ConceptTemplate>(representation, ConceptTemplate.class).getObject();
+      try {
+        templateInput = new JacksonRepresentation<ConceptTemplate>(representation, ConceptTemplate.class).getObject();
+      } catch (IOException e) {
+        getContext().getLogger().severe(e.getMessage());
+      }
     }
 
     return templateInput;

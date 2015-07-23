@@ -60,7 +60,7 @@ public class MongoDBDataSourceStoreXMLMap extends XmlMapStore<MongoDBDataSource>
   }
 
   public List<MongoDBDataSource> retrieveByParent(String id) {
-    // TODO Auto-generated method stub
+
     return null;
   }
 

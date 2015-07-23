@@ -78,7 +78,7 @@ public class DateFieldRFC822 extends TrieDateField {
    */
   @Override
   public String toExternal(Date d) {
-    // TODO Auto-generated method stub
+
     return FMT_THREAD_LOCAL.get().format(d);
   }
 

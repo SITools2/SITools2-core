@@ -160,7 +160,7 @@ public final class FilterPluginsResource extends AbstractFilterResource {
     return getRepresentation(response, variant);
   }
 
-  @Override
+
   public void describeGet(MethodInfo info, String path) {
     if (path.endsWith("{datasetId}")) {
       // Instance

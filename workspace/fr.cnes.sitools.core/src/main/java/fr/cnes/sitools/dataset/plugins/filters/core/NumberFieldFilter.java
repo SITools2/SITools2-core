@@ -89,7 +89,7 @@ public class NumberFieldFilter extends AbstractFormFilter {
   }
 
   public Validator<?> getValidator() {
-    // TODO Auto-generated method stub
+
     return null;
   }
 

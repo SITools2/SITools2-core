@@ -18,6 +18,7 @@
  ******************************************************************************/
 package fr.cnes.sitools.plugins.filters;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -128,17 +129,15 @@ public class AbstractFilterPluginResource extends AbstractPluginResource {
    */
   public FilterModelDTO getObject(Representation representation) {
     FilterModelDTO resourceInput = null;
-    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-      // Parse the XML representation to get the bean
-      XstreamRepresentation<FilterModelDTO> xst = new XstreamRepresentation<FilterModelDTO>(representation);
-      xst.getXstream().alias("filterPlugin", FilterModelDTO.class);
-      resourceInput = xst.getObject();
-    }
-    else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+    if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
       // Parse the JSON representation to get the bean
       JacksonRepresentation<FilterModelDTO> json = new JacksonRepresentation<FilterModelDTO>(representation,
           FilterModelDTO.class);
-      resourceInput = json.getObject();
+      try {
+        resourceInput = json.getObject();
+      } catch (IOException e) {
+        getContext().getLogger().severe(e.getMessage());
+      }
     }
     return resourceInput;
   }

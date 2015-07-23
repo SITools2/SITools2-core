@@ -123,7 +123,7 @@ public final class FilterPluginsCollectionResource extends SitoolsResource {
         }
       }
       if ((defaultMediaType == null) && (getVariants() != null) && (!getVariants().isEmpty())) {
-        Variant preferredVariant = getClientInfo().getPreferredVariant(getVariants(), getMetadataService());
+        Variant preferredVariant = getConnegService().getPreferredVariant(getVariants(), getRequest(), getMetadataService());
         defaultMediaType = preferredVariant.getMediaType();
       }
     }

@@ -44,7 +44,7 @@ public final class NumericBetweenSelection extends SimpleParameter {
    */
   public NumericBetweenSelection() {
     super();
-    // TODO Auto-generated constructor stub
+
   }
 
   /**

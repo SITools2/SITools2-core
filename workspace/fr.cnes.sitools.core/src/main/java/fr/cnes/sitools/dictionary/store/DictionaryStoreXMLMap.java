@@ -59,7 +59,7 @@ public class DictionaryStoreXMLMap extends XmlMapStore<Dictionary> implements Di
     }
 
     public List<Dictionary> retrieveByParent(String id) {
-        // TODO Auto-generated method stub
+
         return null;
     }
 

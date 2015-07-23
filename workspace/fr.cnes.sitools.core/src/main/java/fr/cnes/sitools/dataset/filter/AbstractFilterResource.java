@@ -194,11 +194,7 @@ public abstract class AbstractFilterResource extends AbstractPluginResource {
    */
   protected FilterModelDTO getObject(Representation representation) throws IOException {
     FilterModelDTO filterInputDTO = null;
-    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-      // Parse the XML representation to get the osearch bean
-      filterInputDTO = new XstreamRepresentation<FilterModelDTO>(representation).getObject();
-    }
-    else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+    if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
       // Parse the JSON representation to get the bean
       filterInputDTO = new JacksonRepresentation<FilterModelDTO>(representation, FilterModelDTO.class).getObject();
     }

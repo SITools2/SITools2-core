@@ -55,7 +55,7 @@ public class ResourcePluginDescriptionDTO extends AbstractPluginsDescriptionDTO 
    */
   public ResourcePluginDescriptionDTO() {
     super();
-    // TODO Auto-generated constructor stub
+
   }
 
   /**

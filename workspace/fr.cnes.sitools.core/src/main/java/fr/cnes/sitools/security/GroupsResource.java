@@ -65,7 +65,6 @@ public final class GroupsResource extends UsersAndGroupsResource {
     return getRepresentation(response, MediaType.APPLICATION_XML);
   }
 
-  @Override
   public void describeGet(MethodInfo info, String path) {
     this.addStandardGetRequestInfo(info);
     if (path.endsWith("users/{user}/groups")) {
@@ -149,12 +148,7 @@ public final class GroupsResource extends UsersAndGroupsResource {
     }
     try {
       Group input = null;
-      if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-        // Parse the XML representation to get the bean
-        input = new XstreamRepresentation<Group>(representation).getObject();
-
-      }
-      else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+      if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
         // Parse the JSON representation to get the bean
         input = new JacksonRepresentation<Group>(representation, Group.class).getObject();
       }

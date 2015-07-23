@@ -18,6 +18,7 @@
  ******************************************************************************/
 package fr.cnes.sitools.project.graph;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.restlet.data.MediaType;
@@ -134,19 +135,13 @@ public abstract class AbstractGraphResource extends SitoolsResource {
    */
   public final Graph getObject(Representation representation, Variant variant) {
     Graph projectInput = null;
-    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-      // Parse the XML representation to get the bean
-      XstreamRepresentation<Graph> repXML = new XstreamRepresentation<Graph>(representation);
-      XStream xstream = XStreamFactory.getInstance().getXStreamReader(MediaType.APPLICATION_XML);
-      xstream.autodetectAnnotations(false);
-      xstream.alias("graph", Graph.class);
-      xstream.alias("graphNodeComplete", GraphNodeComplete.class);
-      repXML.setXstream(xstream);
-      projectInput = repXML.getObject();
-    }
-    else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+    if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
       // Parse the JSON representation to get the bean
-      projectInput = new JacksonRepresentation<Graph>(representation, Graph.class).getObject();
+      try {
+        projectInput = new JacksonRepresentation<Graph>(representation, Graph.class).getObject();
+      } catch (IOException e) {
+        getContext().getLogger().severe(e.getMessage());
+      }
     }
     return projectInput;
   }

@@ -29,10 +29,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.data.CharacterSet;
@@ -137,7 +137,7 @@ public class DataSetExplorerUtil {
    *          the {@link Context}
    */
   public DataSetExplorerUtil(DataSetApplication application, Request request, Context context) {
-    // TODO Auto-generated constructor stub
+
     this.application = application;
     this.request = request;
     this.setContext(context);
@@ -696,7 +696,7 @@ public class DataSetExplorerUtil {
             List<String> idList = new ArrayList<String>();
 
             for (JsonNode record : records) {
-              idList.add(record.get(primaryKey.getColumnAlias()).getTextValue());
+              idList.add(record.get(primaryKey.getColumnAlias()).textValue());
             }
             return (String[]) idList.toArray(new String[idList.size()]);
           }
@@ -804,7 +804,7 @@ public class DataSetExplorerUtil {
         JsonNode rootNode = mapper.readValue(ranges, JsonNode.class);
         for (JsonNode rangeArray : rootNode) {
           if (rangeArray.size() == 2) {
-            Range range = new Range(rangeArray.get(0).getIntValue(), rangeArray.get(1).getIntValue());
+            Range range = new Range(rangeArray.get(0).intValue(), rangeArray.get(1).intValue());
             listRanges.add(range);
           }
         }

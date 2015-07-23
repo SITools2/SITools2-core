@@ -137,7 +137,6 @@ public class ApplicationPluginActionResource extends AbstractApplicationPluginRe
         return getRepresentation(response, variant);
     }
 
-    @Override
     protected void describePut(MethodInfo info, String path) {
         info.setIdentifier("PUT /" + path);
         if (path.endsWith("start")) {

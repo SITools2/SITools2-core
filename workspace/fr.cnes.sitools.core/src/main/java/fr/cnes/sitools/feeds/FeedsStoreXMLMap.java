@@ -64,7 +64,7 @@ public class FeedsStoreXMLMap extends XmlMapStore<FeedModel> implements FeedsSto
     }
 
     public List<FeedModel> retrieveByParent(String id) {
-        // TODO Auto-generated method stub
+
         return null;
     }
 

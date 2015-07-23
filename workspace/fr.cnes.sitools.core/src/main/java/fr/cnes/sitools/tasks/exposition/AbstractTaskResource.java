@@ -75,16 +75,7 @@ public abstract class AbstractTaskResource extends SitoolsResource {
       ObjectRepresentation<TaskModel> obj = (ObjectRepresentation<TaskModel>) representation;
       task = obj.getObject();
     }
-    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-      XstreamRepresentation<TaskModel> repXML = new XstreamRepresentation<TaskModel>(representation);
-      XStream xstream = XStreamFactory.getInstance().getXStreamReader(MediaType.APPLICATION_XML);
-      xstream.autodetectAnnotations(false);
-      xstream.alias("TaskModel", TaskModel.class);
-
-      repXML.setXstream(xstream);
-      task = repXML.getObject();
-    }
-    else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+    if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
       // Parse the JSON representation to get the bean
       task = new JacksonRepresentation<TaskModel>(representation, TaskModel.class).getObject();
     }

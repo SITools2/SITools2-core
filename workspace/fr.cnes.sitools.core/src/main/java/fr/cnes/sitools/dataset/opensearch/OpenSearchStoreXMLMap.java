@@ -66,7 +66,7 @@ public class OpenSearchStoreXMLMap extends XmlMapStore<Opensearch> implements Op
   }
 
   public List<Opensearch> retrieveByParent(String id) {
-    // TODO Auto-generated method stub
+
     return null;
   }
 

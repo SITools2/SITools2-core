@@ -212,7 +212,6 @@ public final class ActivationProjectResource extends AbstractProjectResource {
     return rep;
   }
 
-  @Override
   public void describePut(MethodInfo info, String path) {
     if (path.endsWith("start")) {
       info.setDocumentation(" PUT /" + path + " : starts the project application linked to the project object.");

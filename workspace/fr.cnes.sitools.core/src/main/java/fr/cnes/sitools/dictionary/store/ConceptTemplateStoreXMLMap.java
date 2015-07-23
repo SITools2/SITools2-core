@@ -59,7 +59,7 @@ public class ConceptTemplateStoreXMLMap extends XmlMapStore<ConceptTemplate> imp
   }
 
   public List<ConceptTemplate> retrieveByParent(String id) {
-    // TODO Auto-generated method stub
+
     return null;
   }
 

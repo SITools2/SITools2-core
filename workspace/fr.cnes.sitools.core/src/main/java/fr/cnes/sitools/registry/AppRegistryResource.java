@@ -212,11 +212,6 @@ public final class AppRegistryResource extends AppRegistryAbstractResource {
           }
         }
       }
-      else if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-        // Parse the XML representation to get the bean
-        resourceInput = new XstreamRepresentation<Resource>(representation).getObject();
-
-      }
       else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
         // Parse the JSON representation to get the bean
         resourceInput = new JacksonRepresentation<Resource>(representation, Resource.class).getObject();

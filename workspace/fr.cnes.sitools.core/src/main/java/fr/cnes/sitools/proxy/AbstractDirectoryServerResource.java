@@ -34,6 +34,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.restlet.Client;
 import org.restlet.Request;
 import org.restlet.Response;
+import org.restlet.Restlet;
 import org.restlet.data.CacheDirective;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
@@ -240,7 +241,7 @@ public abstract class AbstractDirectoryServerResource extends ServerResource {
    * 
    * @return A client dispatcher.
    */
-  public final Client getClientDispatcher() {
+  public final Restlet getClientDispatcher() {
     return getDirectory().getContext() == null ? null : getDirectory().getContext().getClientDispatcher();
   }
 

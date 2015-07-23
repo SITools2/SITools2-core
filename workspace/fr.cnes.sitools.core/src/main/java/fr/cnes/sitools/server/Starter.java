@@ -39,7 +39,6 @@ import org.restlet.data.Method;
 import org.restlet.data.Protocol;
 import org.restlet.data.Reference;
 import org.restlet.engine.Engine;
-import org.restlet.ext.solr.SolrClientHelper;
 import org.restlet.resource.ResourceException;
 import org.restlet.routing.Filter;
 import org.restlet.routing.VirtualHost;
@@ -285,11 +284,8 @@ public final class Starter {
     if (loggerFacade != null && !loggerFacade.isEmpty()) {
       System.setProperty("org.restlet.engine.loggerFacadeClass", loggerFacade);
       // redirect standard Error and standard Out to a specific logger
-      System.setErr(new PrintStream(new LoggingOutputStream(Engine.getLogger("fr.cnes.sitools.stderr"), Level.WARNING),
-          true));
-      System.setOut(new PrintStream(new LoggingOutputStream(Engine.getLogger("fr.cnes.sitools.stdout"), Level.INFO),
-          true));
-
+      System.setErr(new PrintStream(new LoggingOutputStream(Engine.getLogger("fr.cnes.sitools.stderr"), Level.WARNING), true));
+      System.setOut(new PrintStream(new LoggingOutputStream(Engine.getLogger("fr.cnes.sitools.stdout"), Level.INFO), true));
     }
 
     String logConfigFile = settings.getRootDirectory() + settings.getString("Starter.Logging.configFile");
@@ -524,6 +520,7 @@ public final class Starter {
     appContext.getAttributes().put(ContextAttributes.APP_STORE, storeApp);
 
     // Application
+    System.out.println("tests");
     appManager = new AppRegistryApplication(appContext);
     appManager.setHost(host);
 
@@ -1531,10 +1528,11 @@ public final class Starter {
 
     String directoryTemplate = settings.getStoreDIR(Consts.APP_SOLR_STORE_DIR) + "/template";
 
-    Client solrClient = component.getClients().add(SolrClientHelper.SOLR_PROTOCOL);
-
-    solrClient.getContext().getParameters().add("directory", directory);
-    solrClient.getContext().getParameters().add("configFile", new File(directory, configFile).getAbsolutePath());
+// FIXME: LBA
+//    Client solrClient = component.getClients().add(SolrClientHelper.SOLR_PROTOCOL);
+//
+//    solrClient.getContext().getParameters().add("directory", directory);
+//    solrClient.getContext().getParameters().add("configFile", new File(directory, configFile).getAbsolutePath());
 
     // -----------------------------------------------------------
     // Solr HTTP via SolrApplication

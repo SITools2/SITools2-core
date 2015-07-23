@@ -69,7 +69,7 @@ public class FilterStoreXMLMap extends XmlMapStore<FilterChainedModel> implement
 
   @Override
   public List<FilterChainedModel> retrieveByParent(String id) {
-    // TODO Auto-generated method stub
+
     return null;
   }
 

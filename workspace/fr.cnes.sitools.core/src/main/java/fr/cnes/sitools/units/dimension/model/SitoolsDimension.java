@@ -27,8 +27,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.measure.unit.Unit;
 import javax.measure.unit.UnitConverter;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
 

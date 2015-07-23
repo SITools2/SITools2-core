@@ -25,9 +25,9 @@ import java.io.InputStreamReader;
 import java.io.Writer;
 import java.util.logging.Level;
 
-import org.codehaus.jackson.JsonFactory;
-import org.codehaus.jackson.JsonGenerator.Feature;
-import org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.restlet.Context;
 import org.restlet.data.MediaType;
 import org.restlet.representation.Representation;
@@ -106,7 +106,7 @@ public final class SitoolsJacksonRepresentation<T> extends WriterRepresentation 
    */
   protected ObjectMapper createObjectMapper() {
     JsonFactory jsonFactory = new JsonFactory();
-    jsonFactory.configure(Feature.AUTO_CLOSE_TARGET, false);
+    jsonFactory.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
     ObjectMapper mapper = new ObjectMapper(jsonFactory);
 // CONFIGURATION avec la 1.6 de Jackson  ? ...
     return mapper;

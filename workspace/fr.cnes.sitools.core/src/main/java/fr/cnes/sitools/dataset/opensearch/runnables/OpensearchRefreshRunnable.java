@@ -18,6 +18,7 @@
  ******************************************************************************/
 package fr.cnes.sitools.dataset.opensearch.runnables;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -25,6 +26,7 @@ import java.util.GregorianCalendar;
 import org.restlet.Client;
 import org.restlet.Context;
 import org.restlet.Request;
+import org.restlet.Restlet;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.data.Preference;
@@ -70,14 +72,13 @@ public class OpensearchRefreshRunnable extends OpensearchRunnable {
   }
 
   public void run() {
-    // TODO Auto-generated method stub
+
     Request reqPOST = new Request(Method.POST, RIAPUtils.getRiapBase() + solrUrl + "/" + os.getId() + "/refresh");
 
     ArrayList<Preference<MediaType>> objectMediaType = new ArrayList<Preference<MediaType>>();
     objectMediaType.add(new Preference<MediaType>(MediaType.APPLICATION_ALL_XML));
     reqPOST.getClientInfo().setAcceptedMediaTypes(objectMediaType);
-    Client client = this.context.getClientDispatcher();
-    client.getConnectTimeout();
+    Restlet client = this.context.getClientDispatcher();
     org.restlet.Response r = null;
     try {
       r = this.context.getClientDispatcher().handle(reqPOST);
@@ -108,6 +109,9 @@ public class OpensearchRefreshRunnable extends OpensearchRunnable {
         this.os.setErrorMsg(resp.getMessage());
         store.update(os);
       }
+    }
+    catch (IOException e) {
+      context.getLogger().severe(e.getMessage());
     }
     finally {
       RIAPUtils.exhaust(r);

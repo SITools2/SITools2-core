@@ -61,7 +61,7 @@ public class JDBCDataSourceStoreXMLMap extends XmlMapStore<JDBCDataSource> imple
   }
 
   public List<JDBCDataSource> retrieveByParent(String id) {
-    // TODO Auto-generated method stub
+
     return null;
   }
 

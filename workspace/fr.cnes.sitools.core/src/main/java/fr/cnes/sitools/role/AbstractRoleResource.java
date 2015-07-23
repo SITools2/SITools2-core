@@ -36,7 +36,9 @@ import fr.cnes.sitools.role.model.Role;
 import fr.cnes.sitools.security.model.Group;
 import fr.cnes.sitools.security.model.User;
 
-/**
+import java.io.IOException;
+
+    /**
  * Base class for role resource management
  * 
  * @author jp.boignard (AKKA Technologies)
@@ -104,19 +106,13 @@ public abstract class AbstractRoleResource extends SitoolsResource {
   public final Role getObject(Representation representation, Variant variant) {
     Role roleInput = null;
 
-    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-      XstreamRepresentation<Role> repXML = new XstreamRepresentation<Role>(representation);
-      XStream xstream = XStreamFactory.getInstance().getXStreamReader(MediaType.APPLICATION_XML);
-      xstream.autodetectAnnotations(false);
-      xstream.alias("role", Role.class);
-      xstream.alias("users", User.class);
-      xstream.alias("groups", Group.class);
-      repXML.setXstream(xstream);
-      roleInput = repXML.getObject();
-    }
-    else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+    if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
       // Parse the JSON representation to get the bean
-      roleInput = new JacksonRepresentation<Role>(representation, Role.class).getObject();
+      try {
+        roleInput = new JacksonRepresentation<Role>(representation, Role.class).getObject();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
     }
     return roleInput;
   }

@@ -30,6 +30,8 @@ import org.restlet.representation.ObjectRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 
+import java.io.IOException;
+
 /**
  * Base class for portal management resources.
  *
@@ -82,7 +84,7 @@ public abstract class AbstractPortalResource extends SitoolsResource {
             }
             // negociation de contenu (@see classe ServerResource.doNegotiatedHandle)
             if ((defaultMediaType == null) && (getVariants() != null) && (!getVariants().isEmpty())) {
-                Variant preferredVariant = getClientInfo().getPreferredVariant(getVariants(), getMetadataService());
+                Variant preferredVariant = getConnegService().getPreferredVariant(getVariants(), getRequest(), getMetadataService());
                 defaultMediaType = preferredVariant.getMediaType();
             }
         } else {
@@ -153,15 +155,12 @@ public abstract class AbstractPortalResource extends SitoolsResource {
     public final Portal getObject(Representation representation, Variant variant) {
         Portal portalInput = null;
 
-        if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-            XstreamRepresentation<Portal> repXML = new XstreamRepresentation<Portal>(representation);
-            XStream xstream = XStreamFactory.getInstance().getXStreamReader(MediaType.APPLICATION_XML);
-            xstream.autodetectAnnotations(false);
-            xstream.alias("portal", Portal.class);
-            repXML.setXstream(xstream);
-            portalInput = repXML.getObject();
-        } else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
-            portalInput = new JacksonRepresentation<Portal>(representation, Portal.class).getObject();
+        if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+            try {
+                portalInput = new JacksonRepresentation<Portal>(representation, Portal.class).getObject();
+            } catch (IOException e) {
+                getContext().getLogger().severe(e.getMessage());
+            }
         }
         return portalInput;
     }

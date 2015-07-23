@@ -159,7 +159,7 @@ public final class FormStoreXML extends SitoolsStoreXML<Form> {
   }
 
   public List<Form> retrieveByParent(String id) {
-    // TODO Auto-generated method stub
+
     return null;
   }
 

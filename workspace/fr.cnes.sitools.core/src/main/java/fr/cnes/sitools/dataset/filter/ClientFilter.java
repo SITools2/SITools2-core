@@ -119,7 +119,7 @@ public final class ClientFilter {
    * @return a converterChained object with the parameterized converters
    */
   public static FilterChained getFilterChained(Context context, FilterChainedModel filterChainedModel) {
-    // TODO Auto-generated method stub
+
 
     FilterChained filter = new FilterChained();
     filter.setName(filterChainedModel.getName());

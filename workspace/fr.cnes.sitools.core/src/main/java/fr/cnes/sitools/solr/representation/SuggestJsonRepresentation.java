@@ -9,9 +9,9 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import org.codehaus.jackson.JsonFactory;
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.JsonGenerator;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonGenerator;
 import org.restlet.data.MediaType;
 import org.restlet.engine.Engine;
 import org.restlet.representation.OutputRepresentation;
@@ -111,7 +111,7 @@ public class SuggestJsonRepresentation extends OutputRepresentation {
    *           Signals that an I/O exception has occurred.
    */
   private void writeSuggest(XMLStreamReader reader, JsonGenerator jGenerator) throws XMLStreamException,
-      JsonGenerationException, IOException {
+          JsonGenerationException, IOException {
 
     jGenerator.writeStartArray();
 

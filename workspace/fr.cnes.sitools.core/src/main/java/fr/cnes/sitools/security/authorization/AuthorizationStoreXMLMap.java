@@ -70,7 +70,7 @@ public class AuthorizationStoreXMLMap extends XmlMapStore<ResourceAuthorization>
 
   @Override
   public List<ResourceAuthorization> retrieveByParent(String id) {
-    // TODO Auto-generated method stub
+
     return null;
   }
 

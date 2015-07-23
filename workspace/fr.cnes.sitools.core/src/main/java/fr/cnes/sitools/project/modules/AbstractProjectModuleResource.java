@@ -32,6 +32,8 @@ import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.project.modules.model.ProjectModuleModel;
 
+import java.io.IOException;
+
 /**
  * Base class for resource of management of ProjectModule
  * 
@@ -98,19 +100,13 @@ public abstract class AbstractProjectModuleResource extends SitoolsResource {
    */
   public final ProjectModuleModel getObject(Representation representation, Variant variant) {
     ProjectModuleModel projectModuleInput = null;
-    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-      // Parse the XML representation to get the ProjectModule bean
-      XstreamRepresentation<ProjectModuleModel> repXML = new XstreamRepresentation<ProjectModuleModel>(representation);
-      XStream xstream = XStreamFactory.getInstance().getXStreamReader(MediaType.APPLICATION_XML);
-      xstream.autodetectAnnotations(false);
-      xstream.alias("projectModule", ProjectModuleModel.class);
-      repXML.setXstream(xstream);
-      projectModuleInput = repXML.getObject();
-    }
-    else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+    if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
       // Parse the JSON representation to get the bean
-      projectModuleInput = new JacksonRepresentation<ProjectModuleModel>(representation, ProjectModuleModel.class)
-          .getObject();
+      try {
+        projectModuleInput = new JacksonRepresentation<ProjectModuleModel>(representation, ProjectModuleModel.class).getObject();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
     }
     return projectModuleInput;
   }

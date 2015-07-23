@@ -18,6 +18,7 @@
  ******************************************************************************/
 package fr.cnes.sitools.feeds;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -145,25 +146,13 @@ public abstract class AbstractFeedsResource extends SitoolsResource {
    */
   public final FeedModel getObject(Representation representation, Variant variant) {
     FeedModel feedsInput = null;
-    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-      // Parse the XML representation to get the bean
-      XstreamRepresentation<FeedModel> repXML = new XstreamRepresentation<FeedModel>(representation);
-      XStream xstream = XStreamFactory.getInstance().getXStreamReader(MediaType.APPLICATION_XML);
-      xstream.autodetectAnnotations(false);
-      xstream.alias("FeedModel", FeedModel.class);
-      xstream.alias("FeedEntryModel", FeedEntryModel.class);
-      xstream.alias("author", FeedAuthorModel.class);
-
-      // Convertisseur String / date ( de DateUtils.FORMAT_RFC_3339 à EEE MMM dd
-      // HH:mm:ss zzz yyyy )
-      xstream.registerConverter(new SitoolsFeedDateConverter());
-
-      repXML.setXstream(xstream);
-      feedsInput = repXML.getObject();
-    }
-    else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+    if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
       // Parse the JSON representation to get the bean
-      feedsInput = new JacksonRepresentation<FeedModel>(representation, FeedModel.class).getObject();
+      try {
+        feedsInput = new JacksonRepresentation<FeedModel>(representation, FeedModel.class).getObject();
+      } catch (IOException e) {
+        getContext().getLogger().severe(e.getMessage());
+      }
     }
     return feedsInput;
   }
@@ -179,27 +168,13 @@ public abstract class AbstractFeedsResource extends SitoolsResource {
    */
   public final FeedCollectionModel getFeedCollectionModel(Representation representation, Variant variant) {
     FeedCollectionModel feedsInput = null;
-    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-      // Parse the XML representation to get the bean
-      XstreamRepresentation<FeedCollectionModel> repXML = new XstreamRepresentation<FeedCollectionModel>(representation);
-      XStream xstream = XStreamFactory.getInstance().getXStreamReader(MediaType.APPLICATION_XML);
-      xstream.autodetectAnnotations(false);
-      xstream.alias("FeedCollectionModel", FeedCollectionModel.class);
-      xstream.alias("FeedModel", FeedModel.class);
-      xstream.alias("FeedEntryModel", FeedEntryModel.class);
-      xstream.alias("author", FeedAuthorModel.class);
-
-      // Convertisseur String / date ( de DateUtils.FORMAT_RFC_3339 à EEE MMM dd
-      // HH:mm:ss zzz yyyy )
-      xstream.registerConverter(new SitoolsFeedDateConverter());
-
-      repXML.setXstream(xstream);
-      feedsInput = repXML.getObject();
-    }
-    else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+    if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
       // Parse the JSON representation to get the bean
-      feedsInput = new JacksonRepresentation<FeedCollectionModel>(representation, FeedCollectionModel.class)
-          .getObject();
+      try {
+        feedsInput = new JacksonRepresentation<FeedCollectionModel>(representation, FeedCollectionModel.class).getObject();
+      } catch (IOException e) {
+        getContext().getLogger().severe(e.getMessage());
+      }
     }
     return feedsInput;
   }

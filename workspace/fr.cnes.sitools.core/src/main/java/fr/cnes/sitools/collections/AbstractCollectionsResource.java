@@ -37,7 +37,9 @@ import fr.cnes.sitools.dataset.model.DataSet;
 import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
-/**
+import java.io.IOException;
+
+     /**
  * Base class for resource of management of collections
  * 
  * @author jp.boignard (AKKA Technologies)
@@ -102,17 +104,14 @@ public abstract class AbstractCollectionsResource extends SitoolsResource {
    */
   public final Collection getObject(Representation representation, Variant variant) {
     Collection collectionInput = null;
-    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-      // Parse the XML representation to get the Collection bean
-      XstreamRepresentation<Collection> repXML = new XstreamRepresentation<Collection>(representation);
-      XStream xstream = XStreamFactory.getInstance().getXStreamReader(MediaType.APPLICATION_XML);
-      xstream.autodetectAnnotations(false);
-      repXML.setXstream(xstream);
-      collectionInput = repXML.getObject();
-    }
-    else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+    if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
       // Parse the JSON representation to get the bean
-      collectionInput = new JacksonRepresentation<Collection>(representation, Collection.class).getObject();
+      JacksonRepresentation<Collection> rep = new JacksonRepresentation<Collection>(representation, Collection.class);
+      try {
+        collectionInput = rep.getObject();
+      } catch (IOException e) {
+        getContext().getLogger().severe(e.getMessage());
+      }
     }
     return collectionInput;
   }

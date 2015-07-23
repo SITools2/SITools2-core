@@ -58,7 +58,7 @@ public class InscriptionStoreXMLMap extends XmlMapStore<Inscription> implements 
   }
 
   public List<Inscription> retrieveByParent(String id) {
-    // TODO Auto-generated method stub
+
     return null;
   }
 

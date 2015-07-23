@@ -32,7 +32,9 @@ import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.datasource.jdbc.model.JDBCDataSource;
 
-/**
+import java.io.IOException;
+
+     /**
  * Abstract resource for DataSource Objects management
  * 
  * @author jp.boignard (AKKA Technologies)
@@ -94,21 +96,13 @@ public abstract class AbstractDataSourceResource extends SitoolsResource {
   public final JDBCDataSource getObject(Representation representation) {
     JDBCDataSource object = null;
 
-    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-      // Parse the XML representation to get the bean
-      // Default parsing :
-      // object = new XstreamRepresentation<JDBCDataSource>(representation).getObject();
-      XstreamRepresentation<JDBCDataSource> repXML = new XstreamRepresentation<JDBCDataSource>(representation);
-      XStream xstream = XStreamFactory.getInstance().getXStreamReader(MediaType.APPLICATION_XML);
-      xstream.autodetectAnnotations(false);
-      xstream.alias("jdbcdatasource", JDBCDataSource.class);
-      
-      repXML.setXstream(xstream);
-      object = repXML.getObject();
-    }
-    else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+    if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
       // Parse the JSON representation to get the bean
-      object = new JacksonRepresentation<JDBCDataSource>(representation, JDBCDataSource.class).getObject();
+      try {
+        object = new JacksonRepresentation<JDBCDataSource>(representation, JDBCDataSource.class).getObject();
+      } catch (IOException e) {
+        getContext().getLogger().severe(e.getMessage());
+      }
     }
 
     return object;

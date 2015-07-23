@@ -158,7 +158,6 @@ public final class FilterChainResource extends AbstractFilterResource {
    * @param path
    *          url attachment of the resource
    */
-  @Override
   public void describePost(MethodInfo info, String path) {
     if (path.endsWith("{filterChainedId}")) {
       info.setDocumentation("POST " + path + " : Creates a new single filter object attached to a dataset");
@@ -220,9 +219,8 @@ public final class FilterChainResource extends AbstractFilterResource {
    * @see org.restlet.ext.wadl.ExtendedWadlServerResource#describe(org.restlet.ext.wadl.ApplicationInfo,
    * java.lang.String)
    */
-  @Override
   protected void describe(ApplicationInfo applicationInfo, String path) {
-    // TODO Auto-generated method stub
+
     // super.describe(applicationInfo, path);
     if (path.endsWith("{filterChainedId}")) {
       applicationInfo.setDocumentation("Resource on a single filter object");
@@ -240,7 +238,6 @@ public final class FilterChainResource extends AbstractFilterResource {
    * @param path
    *          url attachment of the resource
    */
-  @Override
   public void describeGet(MethodInfo info, String path) {
     // Method
     info.setDocumentation("This method permits to retrieve a chain of filters");
@@ -269,11 +266,7 @@ public final class FilterChainResource extends AbstractFilterResource {
     try {
       FilterChainedOrderDTO orderDTO = null;
       if (representation != null) {
-        if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-          // Parse the XML representation to get the filterChainedOrderDTO bean
-          orderDTO = new XstreamRepresentation<FilterChainedOrderDTO>(representation).getObject();
-        }
-        else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+        if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
           // Parse the JSON representation to get the bean
           orderDTO = new JacksonRepresentation<FilterChainedOrderDTO>(representation, FilterChainedOrderDTO.class)
               .getObject();
@@ -365,7 +358,6 @@ public final class FilterChainResource extends AbstractFilterResource {
    * @param path
    *          url attachment of the resource
    */
-  @Override
   public void describePut(MethodInfo info, String path) {
     // Method
     info.setDocumentation("This method permits to modify the order of the filter in the chain of filters");
@@ -432,7 +424,6 @@ public final class FilterChainResource extends AbstractFilterResource {
    * @param path
    *          url attachment of the resource
    */
-  @Override
   public void describeDelete(MethodInfo info, String path) {
     if (path.endsWith("{filterChainedId}")) {
       // FIXME Erreur

@@ -36,7 +36,7 @@ public final class ApplicationPluginParameter extends ExtensionParameter {
    */
   public ApplicationPluginParameter() {
     super();
-    // TODO Auto-generated constructor stub
+
   }
 
   /**
@@ -49,7 +49,7 @@ public final class ApplicationPluginParameter extends ExtensionParameter {
    */
   public ApplicationPluginParameter(String name, String description) {
     super(name, description);
-    // TODO Auto-generated constructor stub
+
   }
 
 }

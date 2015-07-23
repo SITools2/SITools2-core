@@ -229,7 +229,7 @@ public abstract class AbstractApplicationPlugin extends SitoolsParameterizedAppl
    * @see fr.cnes.sitools.common.validator.Validable#getValidator()
    */
   public Validator<AbstractApplicationPlugin> getValidator() {
-    // TODO Auto-generated method stub
+
     return null;
   }
 

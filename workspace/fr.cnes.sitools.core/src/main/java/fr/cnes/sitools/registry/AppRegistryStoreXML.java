@@ -156,7 +156,7 @@ public final class AppRegistryStoreXML extends SitoolsStoreXML<AppRegistry> {
   }
 
   public List<AppRegistry> retrieveByParent(String id) {
-    // TODO Auto-generated method stub
+
     return null;
   }
 

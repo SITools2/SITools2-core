@@ -30,12 +30,7 @@ import org.restlet.data.ClientInfo;
 import org.restlet.engine.Engine;
 import org.restlet.engine.security.RoleMapping;
 import org.restlet.ext.crypto.DigestUtils;
-import org.restlet.security.Enroler;
-import org.restlet.security.Group;
-import org.restlet.security.LocalVerifier;
-import org.restlet.security.Realm;
-import org.restlet.security.Role;
-import org.restlet.security.User;
+import org.restlet.security.*;
 
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.store.SitoolsStore;
@@ -140,8 +135,8 @@ public abstract class SitoolsRealm extends Realm {
     }
 
     @Override
-    public boolean verify(String identifier, char[] secret) {
-      return (findUser(identifier) != null);
+    public int verify(String identifier, char[] secret) {
+      return (findUser(identifier) != null) ? Verifier.RESULT_VALID : Verifier.RESULT_UNKNOWN;
     }
 
   }
@@ -173,14 +168,14 @@ public abstract class SitoolsRealm extends Realm {
      * @return true if check is OK
      */
     @Override
-    public boolean verify(String identifier, char[] secret) {
+    public int verify(String identifier, char[] secret) {
       if ((identifier == null) || identifier.equals("null")) {
         Engine.getLogger(this.getClass().getName()).info("Authentication with NO identifier failed");
-        return false;
+        return Verifier.RESULT_UNKNOWN;
       }
       char[] localSecret = getLocalSecret(identifier);
       if (localSecret == null) {
-        return false;
+        return Verifier.RESULT_UNSUPPORTED;
       }
       String localSecretString = String.copyValueOf(localSecret);
 
@@ -206,26 +201,25 @@ public abstract class SitoolsRealm extends Realm {
 
         // sinon il est suppose en clair (sitools v0.1 et +)
 
-        return compare(requestSecret, localSecret);
+        return compare(requestSecret, localSecret) ? Verifier.RESULT_VALID : Verifier.RESULT_INVALID;
       }
 
       if (scheme.equalsIgnoreCase(ChallengeScheme.HTTP_DIGEST.toString())) {
         // localsecret doit etre NON crypte ou MD5://
         // la clé est digest MD5 cad md5(username:realm:password) (sitools v0.3)
         if (localSecretString.startsWith(SecurityUtil.DIGEST_MD5_PREFIX)) {
-          return compare((SecurityUtil.DIGEST_MD5_PREFIX + String.copyValueOf(requestSecret)).toCharArray(),
-              localSecret);
+          return compare((SecurityUtil.DIGEST_MD5_PREFIX + String.copyValueOf(requestSecret)).toCharArray(),localSecret) ? Verifier.RESULT_VALID : Verifier.RESULT_INVALID;
         }
         else {
           // on tente qd meme avec le mot de passe local suppose en clair que l'on crypte
           localSecretString = SecurityUtil.digestMd5(identifier, localSecret, realm);
-          return compare(requestSecret, localSecretString.toCharArray());
+          return compare(requestSecret, localSecretString.toCharArray()) ? Verifier.RESULT_VALID : Verifier.RESULT_INVALID;
         }
       }
 
       // scheme inconnu ...
       Engine.getLogger(this.getClass().getName()).warning("AUTHENTIFICATION SCHEME UNKNOWN : " + scheme);
-      return false;
+      return Verifier.RESULT_UNSUPPORTED;
     }
 
   }

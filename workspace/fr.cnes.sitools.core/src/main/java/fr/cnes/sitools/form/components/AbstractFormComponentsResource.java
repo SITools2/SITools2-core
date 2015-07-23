@@ -32,7 +32,9 @@ import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.form.components.model.FormComponent;
 
-/**
+import java.io.IOException;
+
+    /**
  * Base class for resource of management of form components
  * 
  * @author jp.boignard (AKKA Technologies)
@@ -94,18 +96,13 @@ public abstract class AbstractFormComponentsResource extends SitoolsResource {
    */
   public final FormComponent getObject(Representation representation, Variant variant) {
     FormComponent formComponentInput = null;
-    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-      // Parse the XML representation to get the FormComponent bean
-      XstreamRepresentation<FormComponent> repXML = new XstreamRepresentation<FormComponent>(representation);
-      XStream xstream = XStreamFactory.getInstance().getXStreamReader(MediaType.APPLICATION_XML);
-      xstream.autodetectAnnotations(false);
-      xstream.alias("formComponent", FormComponent.class);
-      repXML.setXstream(xstream);
-      formComponentInput = repXML.getObject();
-    }
-    else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+    if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
       // Parse the JSON representation to get the bean
-      formComponentInput = new JacksonRepresentation<FormComponent>(representation, FormComponent.class).getObject();
+      try {
+        formComponentInput = new JacksonRepresentation<FormComponent>(representation, FormComponent.class).getObject();
+      } catch (IOException e) {
+        getContext().getLogger().severe(e.getMessage());
+      }
     }
     return formComponentInput;
   }

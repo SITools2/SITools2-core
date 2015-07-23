@@ -20,7 +20,7 @@ package fr.cnes.sitools.plugins.resources.model;
 
 import java.util.HashMap;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.restlet.Context;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;

@@ -173,7 +173,7 @@ public final class FilterStoreXML extends SitoolsStoreXML<FilterChainedModel> {
 
   @Override
   public List<FilterChainedModel> retrieveByParent(String id) {
-    // TODO Auto-generated method stub
+
     return null;
   }
 

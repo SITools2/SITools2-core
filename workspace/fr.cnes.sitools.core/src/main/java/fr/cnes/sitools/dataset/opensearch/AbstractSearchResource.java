@@ -18,6 +18,7 @@
  ******************************************************************************/
 package fr.cnes.sitools.dataset.opensearch;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -222,7 +223,7 @@ public abstract class AbstractSearchResource extends SitoolsResource {
    * Delete the feed associated to that OpenSearch
    */
   protected void deleteFeedOpensearch() {
-    // TODO Auto-generated method stub
+
     this.storeFeed.delete(datasetId);
   }
 
@@ -234,7 +235,7 @@ public abstract class AbstractSearchResource extends SitoolsResource {
    * @return A response
    */
   protected Response stopOsIndex(Opensearch os) {
-    Response response;
+    Response response = null;
     if (!"ACTIVE".equals(os.getStatus())) {
       response = new Response(false, "OPENSEARCH_INACTIVE");
     }
@@ -264,6 +265,9 @@ public abstract class AbstractSearchResource extends SitoolsResource {
             response = new Response(false, resp.getMessage());
           }
         }
+      }
+      catch (IOException e) {
+        getContext().getLogger().severe(e.getMessage());
       }
       finally {
         RIAPUtils.exhaust(responseSolr);

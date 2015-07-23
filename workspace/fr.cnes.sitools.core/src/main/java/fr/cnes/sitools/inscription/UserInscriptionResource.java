@@ -78,12 +78,7 @@ public final class UserInscriptionResource extends InscriptionResource {
     }
     try {
       Inscription inscriptionInput = null;
-      if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-        // Parse the XML representation to get the inscription bean
-        inscriptionInput = new XstreamRepresentation<Inscription>(representation).getObject();
-
-      }
-      else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+      if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
         // Parse the JSON representation to get the bean
         inscriptionInput = new JacksonRepresentation<Inscription>(representation, Inscription.class).getObject();
       }

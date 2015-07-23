@@ -192,7 +192,7 @@ public class DataSetCounterCallable implements Callable<DataSetCounterJobStatus>
 
     if (response == null || Status.isError(response.getStatus().getCode())) {
       RIAPUtils.exhaust(response);
-      throw new SitoolsException(response.getStatus().getName() + " // " + response.getStatus().getDescription());
+      throw new SitoolsException(response.getStatus().getReasonPhrase() + " // " + response.getStatus().getDescription());
     }
 
     ObjectRepresentation<Response> or = (ObjectRepresentation<Response>) response.getEntity();

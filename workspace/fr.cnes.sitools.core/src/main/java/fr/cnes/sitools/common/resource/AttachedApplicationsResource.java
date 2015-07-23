@@ -9,6 +9,7 @@ import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.Get;
 import org.restlet.routing.Filter;
+import org.restlet.routing.Route;
 import org.restlet.routing.TemplateRoute;
 import org.restlet.routing.VirtualHost;
 import org.restlet.util.RouteList;
@@ -53,32 +54,33 @@ public class AttachedApplicationsResource extends SitoolsResource {
     if (host != null) {
       List<Resource> apps = new ArrayList<Resource>();
       RouteList routes = host.getRoutes();
-      for (TemplateRoute route : routes) {
-        Restlet next = route.getNext();
-        int nbAttachment = 0;
-        while (nbAttachment < nbTestMax) {
-          if (next instanceof Filter) {
-            next = ((Filter) next).getNext();
+      for (Route route : routes) {
+        if (route instanceof TemplateRoute) {
+          Restlet next = route.getNext();
+          int nbAttachment = 0;
+          while (nbAttachment < nbTestMax) {
+            if (next instanceof Filter) {
+              next = ((Filter) next).getNext();
+            } else {
+              break;
+            }
+            nbAttachment++;
           }
-          else {
-            break;
+
+          Resource res = new Resource();
+          res.setUrl(((TemplateRoute) route).getTemplate().getPattern());
+
+          String className;
+          if (this.getClass().isAnonymousClass()) {
+            className = next.getClass().getSuperclass().getName();
+          } else {
+            className = next.getClass().getName();
           }
-          nbAttachment++;
+          res.setType(className);
+          apps.add(res);
         }
-
-        Resource res = new Resource();
-        res.setUrl(route.getTemplate().getPattern());
-
-        String className;
-        if (this.getClass().isAnonymousClass()) {
-          className = next.getClass().getSuperclass().getName();
-        }
-        else {
-          className = next.getClass().getName();
-        }
-        res.setType(className);
-        apps.add(res);
       }
+
       response = new Response(true, apps, Resource.class, "applications");
       response.setTotal(apps.size());
     }

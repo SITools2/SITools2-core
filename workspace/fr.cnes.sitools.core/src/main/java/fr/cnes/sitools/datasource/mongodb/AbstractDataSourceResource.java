@@ -32,7 +32,9 @@ import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.datasource.mongodb.model.MongoDBDataSource;
 
-/**
+import java.io.IOException;
+
+    /**
  * Abstract resource for DataSource Objects management
  * 
  * @author jp.boignard (AKKA Technologies)
@@ -94,21 +96,13 @@ public abstract class AbstractDataSourceResource extends SitoolsResource {
   public final MongoDBDataSource getObject(Representation representation) {
     MongoDBDataSource object = null;
 
-    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-      // Parse the XML representation to get the bean
-      // Default parsing :
-      // object = new XstreamRepresentation<MongoDBDataSource>(representation).getObject();
-      XstreamRepresentation<MongoDBDataSource> repXML = new XstreamRepresentation<MongoDBDataSource>(representation);
-      XStream xstream = XStreamFactory.getInstance().getXStreamReader(MediaType.APPLICATION_XML);
-      xstream.autodetectAnnotations(false);
-      xstream.alias("mongodatasource", MongoDBDataSource.class);
-      
-      repXML.setXstream(xstream);
-      object = repXML.getObject();
-    }
-    else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+    if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
       // Parse the JSON representation to get the bean
-      object = new JacksonRepresentation<MongoDBDataSource>(representation, MongoDBDataSource.class).getObject();
+      try {
+        object = new JacksonRepresentation<MongoDBDataSource>(representation, MongoDBDataSource.class).getObject();
+      } catch (IOException e) {
+        getContext().getLogger().severe(e.getMessage());
+      }
     }
 
     return object;

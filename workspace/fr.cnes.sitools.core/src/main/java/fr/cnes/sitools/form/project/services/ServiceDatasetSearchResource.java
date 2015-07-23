@@ -78,7 +78,7 @@ public class ServiceDatasetSearchResource extends ServiceDatasetSearchResourceFa
    */
   @Override
   public void doInit() {
-    // TODO Auto-generated method stub
+
     super.doInit();
 
     datasetList = getRequest().getResourceRef().getQueryAsForm().getFirstValue("datasetsList");

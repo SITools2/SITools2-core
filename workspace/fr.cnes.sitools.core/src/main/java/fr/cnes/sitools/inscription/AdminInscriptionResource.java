@@ -146,14 +146,13 @@ public final class AdminInscriptionResource extends InscriptionResource {
       validating = true;
     }
     else {
-      if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-        // Parse the XML representation to get the inscription bean
-        inscriptionInput = new XstreamRepresentation<Inscription>(representation).getObject();
-
-      }
-      else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+      if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
         // Parse the JSON representation to get the bean
-        inscriptionInput = new JacksonRepresentation<Inscription>(representation, Inscription.class).getObject();
+        try {
+          inscriptionInput = new JacksonRepresentation<Inscription>(representation, Inscription.class).getObject();
+        } catch (IOException e) {
+          getContext().getLogger().severe(e.getMessage());
+        }
       }
 
       if (inscriptionInput == null) {

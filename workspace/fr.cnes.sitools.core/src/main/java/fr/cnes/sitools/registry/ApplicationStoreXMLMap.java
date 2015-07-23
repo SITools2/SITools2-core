@@ -52,7 +52,7 @@ public class ApplicationStoreXMLMap extends XmlMapStore<AppRegistry> implements 
   }
 
   public List<AppRegistry> retrieveByParent(String id) {
-    // TODO Auto-generated method stub
+
     return null;
   }
 

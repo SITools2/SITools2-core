@@ -74,7 +74,6 @@ public final class ObservableResource extends NotificationAbstractResource {
     return getRepresentation(new Response(true, "observable.added"), var);
   }
 
-  @Override
   public void describePost(MethodInfo info, String path) {
     if (path.endsWith("{observableUUID}")) {
       info.setDocumentation("POST " + path + " : references a new observable with the given unique ID.");
@@ -111,7 +110,6 @@ public final class ObservableResource extends NotificationAbstractResource {
     }
   }
 
-  @Override
   public void describeDelete(MethodInfo info, String path) {
     if (path.endsWith("{observableUUID}")) {
       info.setDocumentation("DELETE " + path
@@ -140,17 +138,6 @@ public final class ObservableResource extends NotificationAbstractResource {
     try {
       if (representation instanceof ObjectRepresentation<?>) {
         observable = ((ObjectRepresentation<RestletObservable>) representation).getObject();
-        return observable;
-      }
-
-      if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-        // Parse the XML representation to get the bean
-        XstreamRepresentation<RestletObservable> repXML = new XstreamRepresentation<RestletObservable>(representation);
-        XStream xstream = XStreamFactory.getInstance().getXStreamReader(MediaType.APPLICATION_XML);
-        xstream.autodetectAnnotations(false);
-        xstream.alias("observable", RestletObservable.class);
-        repXML.setXstream(xstream);
-        observable = repXML.getObject();
         return observable;
       }
 

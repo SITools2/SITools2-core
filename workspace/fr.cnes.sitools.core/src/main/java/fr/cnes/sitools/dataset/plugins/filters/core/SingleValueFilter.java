@@ -191,7 +191,7 @@ public final class SingleValueFilter extends AbstractFormFilter {
     return new Validator<AbstractFilter>() {
       @Override
       public Set<ConstraintViolation> validate(AbstractFilter item) {
-        // TODO Auto-generated method stub
+
         return null;
       }
     };

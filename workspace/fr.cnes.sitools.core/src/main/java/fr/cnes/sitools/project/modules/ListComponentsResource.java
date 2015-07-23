@@ -82,7 +82,7 @@ public class ListComponentsResource extends AbstractProjectModuleResource {
     // g.writeEndArray(); // for field 'name'
     // g.close(); // important: will force flushing of output, close underlying output stream
     //
-    // // TODO Auto-generated method stub
+    //
     // // super.write(writer);
     // }
     //

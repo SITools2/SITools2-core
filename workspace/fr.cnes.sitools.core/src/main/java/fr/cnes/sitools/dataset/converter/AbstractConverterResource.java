@@ -18,6 +18,7 @@
  ******************************************************************************/
 package fr.cnes.sitools.dataset.converter;
 
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -242,14 +243,13 @@ public abstract class AbstractConverterResource extends AbstractPluginResource {
    */
   protected ConverterModelDTO getObject(Representation representation) {
     ConverterModelDTO converterInputDTO = null;
-    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-      // Parse the XML representation to get the osearch bean
-      converterInputDTO = new XstreamRepresentation<ConverterModelDTO>(representation).getObject();
-    }
-    else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+    if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
       // Parse the JSON representation to get the bean
-      converterInputDTO = new JacksonRepresentation<ConverterModelDTO>(representation, ConverterModelDTO.class)
-          .getObject();
+      try {
+        converterInputDTO = new JacksonRepresentation<ConverterModelDTO>(representation, ConverterModelDTO.class).getObject();
+      } catch (IOException e) {
+        getContext().getLogger().severe(e.getMessage());
+      }
     }
     return converterInputDTO;
   }

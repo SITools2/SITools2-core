@@ -67,7 +67,7 @@ public class ConverterStoreXMLMap extends XmlMapStore<ConverterChainedModel> imp
   }
 
   public List<ConverterChainedModel> retrieveByParent(String id) {
-    // TODO Auto-generated method stub
+
     return null;
   }
 

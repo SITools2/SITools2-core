@@ -71,12 +71,7 @@ public final class UserStorageCollectionResource extends AbstractUserStorageReso
     }
     try {
       UserStorage userStorageInput = null;
-      if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-        // Parse the XML representation to get the bean
-        userStorageInput = new XstreamRepresentation<UserStorage>(representation).getObject();
-
-      }
-      else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+      if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
         // Parse the JSON representation to get the bean
         userStorageInput = new JacksonRepresentation<UserStorage>(representation, UserStorage.class).getObject();
       }

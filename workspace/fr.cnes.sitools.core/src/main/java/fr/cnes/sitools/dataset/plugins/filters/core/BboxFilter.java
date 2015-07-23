@@ -178,7 +178,7 @@ public class BboxFilter extends AbstractFormFilter {
   }
 
   public Validator<?> getValidator() {
-    // TODO Auto-generated method stub
+
     return null;
   }
 

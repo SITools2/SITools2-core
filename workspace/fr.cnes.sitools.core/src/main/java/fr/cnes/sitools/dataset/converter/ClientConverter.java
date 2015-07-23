@@ -117,7 +117,7 @@ public final class ClientConverter {
    * @return a converterChained object with the parameterized converters
    */
   public static ConverterChained getConverterChained(Context context, ConverterChainedModel converterChainedModel) {
-    // TODO Auto-generated method stub
+
 
     ConverterChained conv = new ConverterChained();
     conv.setName(converterChainedModel.getName());

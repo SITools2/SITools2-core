@@ -25,10 +25,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
-import org.codehaus.jackson.JsonFactory;
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.restlet.data.MediaType;
 import org.restlet.representation.OutputRepresentation;
 
@@ -109,10 +109,10 @@ public final class MultiDsOsSuggestRepresentation extends OutputRepresentation {
         JsonNode data = rootNode.get("data");
         for (JsonNode jsonNode : data) {
           jGenerator.writeStartObject();
-          Iterator<Entry<String, JsonNode>> values = jsonNode.getFields();
+          Iterator<Entry<String, JsonNode>> values = jsonNode.fields();
           while (values.hasNext()) {
             Entry<String, JsonNode> value = values.next();
-            jGenerator.writeStringField(value.getKey(), value.getValue().getTextValue());
+            jGenerator.writeStringField(value.getKey(), value.getValue().textValue());
           }
           jGenerator.writeEndObject();
         }

@@ -58,7 +58,7 @@ public class GuiServiceStoreXMLMap extends XmlMapStore<GuiServiceModel> implemen
   }
 
   public List<GuiServiceModel> retrieveByParent(String id) {
-    // TODO Auto-generated method stub
+
     return null;
   }
 

@@ -39,7 +39,7 @@ public class CaptchaResource extends SitoolsResource {
 
   @Override
   protected void doInit() {
-    // TODO Auto-generated method stub
+
     super.doInit();
 
     getVariants().clear();

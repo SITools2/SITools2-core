@@ -202,7 +202,7 @@ public final class TaskStoreXML extends SitoolsSynchronizedStoreXML<TaskModel> {
 
   @Override
   public List<TaskModel> retrieveByParent(String id) {
-    // TODO Auto-generated method stub
+
     return null;
   }
 

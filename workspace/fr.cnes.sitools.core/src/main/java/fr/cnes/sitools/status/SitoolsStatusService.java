@@ -27,7 +27,7 @@ import org.restlet.data.Status;
 import org.restlet.ext.freemarker.TemplateRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
-import org.restlet.resource.UniformResource;
+import org.restlet.resource.Resource;
 import org.restlet.service.StatusService;
 
 import fr.cnes.sitools.common.application.ContextAttributes;
@@ -105,15 +105,15 @@ public final class SitoolsStatusService extends StatusService {
    */
   @Override
   public Status getStatus(Throwable arg0, Request arg1, Response arg2) {
-    // TODO Auto-generated method stub
+
     return super.getStatus(arg0, arg1, arg2);
   }
 
   /* (non-Javadoc)
    * @see org.restlet.service.StatusService#getStatus(java.lang.Throwable, org.restlet.resource.UniformResource)
    */
-  public Status getStatus(Throwable throwable, UniformResource resource) {
-    // TODO Auto-generated method stub
+  public Status getStatus(Throwable throwable, Resource resource) {
+
     return super.getStatus(throwable, resource);
   }
   

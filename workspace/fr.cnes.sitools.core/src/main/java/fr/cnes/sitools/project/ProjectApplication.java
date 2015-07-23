@@ -140,37 +140,37 @@ public final class ProjectApplication extends AbstractProjectApplication {
 
   @Override
   public void attachProject(Project ds) {
-    // TODO Auto-generated method stub
+
     // NE PAS IMPLEMENTER >> uniquement via l'administration
   }
 
   @Override
   public void detachProject(Project ds) {
-    // TODO Auto-generated method stub
+
     // NE PAS IMPLEMENTER >> uniquement via l'administration
   }
 
   @Override
   public void attachProject(Project ds, boolean synchro) {
-    // TODO Auto-generated method stub
+
     // NE PAS IMPLEMENTER >> uniquement via l'administration
   }
 
   @Override
   public void detachProject(Project ds, boolean synchro) {
-    // TODO Auto-generated method stub
+
     // NE PAS IMPLEMENTER >> uniquement via l'administration
   }
 
   @Override
   public void detachProjectDefinitif(Project ds) {
-    // TODO Auto-generated method stub
+
     // NE PAS IMPLEMENTER >> uniquement via l'administration
   }
 
   @Override
   public void detachProjectDefinitif(Project ds, boolean synchro) {
-    // TODO Auto-generated method stub
+
     // NE PAS IMPLEMENTER >> uniquement via l'administration
   }
 

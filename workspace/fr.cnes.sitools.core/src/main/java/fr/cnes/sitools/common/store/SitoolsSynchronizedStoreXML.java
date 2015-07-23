@@ -35,11 +35,11 @@ import fr.cnes.sitools.persistence.Paginable;
 
 /**
  * Base class for XML stores
- * 
+ *
  * @param <T>
  *          object class to be stored
  * @author m.marseille (AKKA technologies)
- * 
+ *
  * @deprecated use XmlSynchronized<List or Map>Store instead
  */
 public abstract class SitoolsSynchronizedStoreXML<T extends IResource> extends Paginable<T> implements SitoolsStore<T> {
@@ -51,7 +51,7 @@ public abstract class SitoolsSynchronizedStoreXML<T extends IResource> extends P
 
   /**
    * Constructor with object class
-   * 
+   *
    * @param cl
    *          the class to keep
    * @param context
@@ -64,7 +64,7 @@ public abstract class SitoolsSynchronizedStoreXML<T extends IResource> extends P
 
   /**
    * Constructor with file location
-   * 
+   *
    * @param cl
    *          the class to keep
    * @param location
@@ -78,7 +78,6 @@ public abstract class SitoolsSynchronizedStoreXML<T extends IResource> extends P
   }
 
   @SuppressWarnings("unchecked")
-  @Override
   public final T[] getArray() {
     T[] result = null;
     List<T> rawList = getRawList();
@@ -96,7 +95,6 @@ public abstract class SitoolsSynchronizedStoreXML<T extends IResource> extends P
   }
 
   @SuppressWarnings("unchecked")
-  @Override
   public final T[] getArray(ResourceCollectionFilter filter) {
     List<T> resultList = getList(filter);
 
@@ -110,7 +108,6 @@ public abstract class SitoolsSynchronizedStoreXML<T extends IResource> extends P
     return result;
   }
 
-  @Override
   public List<T> getList(ResourceCollectionFilter filter) {
     List<T> result = new ArrayList<T>();
     List<T> rawList = getRawList();
@@ -153,7 +150,6 @@ public abstract class SitoolsSynchronizedStoreXML<T extends IResource> extends P
     return result;
   }
 
-  @Override
   public T create(T resource) {
     T result = null;
     if (resource.getId() == null || "".equals(resource.getId())) {
@@ -179,7 +175,6 @@ public abstract class SitoolsSynchronizedStoreXML<T extends IResource> extends P
     return result;
   }
 
-  @Override
   public final T retrieve(String id) {
     T result = null;
     List<T> rawList = getRawList();
@@ -199,7 +194,6 @@ public abstract class SitoolsSynchronizedStoreXML<T extends IResource> extends P
     return result;
   }
 
-  @Override
   public final boolean delete(String id) {
     boolean result = false;
     List<T> rawList = getRawList();
@@ -226,17 +220,16 @@ public abstract class SitoolsSynchronizedStoreXML<T extends IResource> extends P
 
   /**
    * Method to implement for collection name
-   * 
+   *
    * @return the collection name
    */
   public abstract String getCollectionName();
 
-  
-  @Override
+
   public List<T> saveList(List<T> resources) {
     getRawList().clear();
     getRawList().addAll(resources);
     return getRawList();
   }
-  
+
 }

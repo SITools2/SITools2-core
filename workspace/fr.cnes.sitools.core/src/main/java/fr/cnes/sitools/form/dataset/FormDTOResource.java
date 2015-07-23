@@ -133,12 +133,7 @@ public final class FormDTOResource extends AbstractFormResource {
   public Representation update(Representation representation, Variant variant) {
     try {
       FormDTO formDTOInput = null;
-      if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-        // Parse the XML representation to get the bean
-        formDTOInput = new XstreamRepresentation<FormDTO>(representation).getObject();
-
-      }
-      else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+      if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
         // Parse the JSON representation to get the bean
         formDTOInput = new JacksonRepresentation<FormDTO>(representation, FormDTO.class).getObject();
       }

@@ -121,20 +121,13 @@ public abstract class AbstractOrderResource extends SitoolsResource {
   @SuppressWarnings("unchecked")
   public final Order getObject(Representation representation, Variant variant) {
     Order orderInput = null;
-    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-      // Parse the XML representation to get the order bean
-      // Default parsing
-      XstreamRepresentation<Order> repXML = new XstreamRepresentation<Order>(representation);
-      XStream xstream = XStreamFactory.getInstance().getXStreamReader(MediaType.APPLICATION_XML);
-      xstream.autodetectAnnotations(false);
-      xstream.alias("order", Order.class);
-      xstream.alias("event", Event.class);
-      repXML.setXstream(xstream);
-      orderInput = repXML.getObject();
-    }
-    else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+    if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
       // Parse the JSON representation to get the mail bean
-      orderInput = new JacksonRepresentation<Order>(representation, Order.class).getObject();
+      try {
+        orderInput = new JacksonRepresentation<Order>(representation, Order.class).getObject();
+      } catch (IOException e) {
+        getContext().getLogger().severe(e.getMessage());
+      }
     }
     else if (representation.getMediaType().isCompatible(MediaType.APPLICATION_JAVA_OBJECT)) {
       ObjectRepresentation<Order> obj = (ObjectRepresentation<Order>) representation;
@@ -161,17 +154,7 @@ public abstract class AbstractOrderResource extends SitoolsResource {
   public final Event getEvent(Representation representation, Variant variant) {
     Event event = null;
     try {
-      if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-        // Parse the XML representation to get the bean
-        // Default parsing
-        XstreamRepresentation<Event> repXML = new XstreamRepresentation<Event>(representation);
-        XStream xstream = XStreamFactory.getInstance().getXStreamReader(MediaType.APPLICATION_XML);
-        xstream.autodetectAnnotations(false);
-        xstream.alias("event", Event.class);
-        repXML.setXstream(xstream);
-        event = repXML.getObject();
-      }
-      else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+      if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
         // Parse the JSON representation to get the bean
         event = new JacksonRepresentation<Event>(representation, Event.class).getObject();
       }
@@ -238,12 +221,7 @@ public abstract class AbstractOrderResource extends SitoolsResource {
    */
   protected final Order getObject(Representation representation) throws IOException {
     Order orderInput = null;
-    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-      // Parse the XML representation to get the bean
-      orderInput = new XstreamRepresentation<Order>(representation).getObject();
-  
-    }
-    else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+    if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
       // Parse the JSON representation to get the bean
       orderInput = new JacksonRepresentation<Order>(representation, Order.class).getObject();
     }

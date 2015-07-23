@@ -26,8 +26,9 @@ import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.engine.Engine;
-import org.restlet.engine.component.ChildContext;
 import org.restlet.engine.log.LogFilter;
+import org.restlet.engine.log.LogUtils;
+import org.restlet.routing.Template;
 import org.restlet.service.LogService;
 
 import fr.cnes.sitools.common.application.ContextAttributes;
@@ -58,10 +59,10 @@ public class SitoolsApplicationLogFilter extends LogFilter {
       }
       else if ((context != null) && (context.getLogger().getParent() != null)) {
         this.logger = Engine.getLogger(context.getLogger().getParent().getName() + "."
-            + ChildContext.getBestClassName(logService.getClass()));
+            + LogUtils.getBestClassName(logService.getClass()));
       }
       else {
-        this.logger = Engine.getLogger(ChildContext.getBestClassName(logService.getClass()));
+        this.logger = Engine.getLogger(LogUtils.getBestClassName(logService.getClass()));
       }
     }
   }
@@ -75,13 +76,9 @@ public class SitoolsApplicationLogFilter extends LogFilter {
           && (Boolean) appContext.getAttributes().get(ContextAttributes.LOG_TO_APP_LOGGER)) {
         if (logger.isLoggable(Level.INFO)) {
           // Format the call into a log entry
-          if (this.logTemplate != null) {
-            logger.log(Level.INFO, format(request, response));
-          }
-          else {
-            long startTime = (Long) request.getAttributes().get("org.restlet.startTime");
-            int duration = (int) (System.currentTimeMillis() - startTime);
-            logger.log(Level.INFO, formatDefault(request, response, duration));
+          if (logService != null && logService.getLoggableTemplate() != null) {
+            Template logTemplate = logService.getLoggableTemplate();
+            logger.log(Level.INFO, logTemplate.format(request, response));
           }
         }
       }

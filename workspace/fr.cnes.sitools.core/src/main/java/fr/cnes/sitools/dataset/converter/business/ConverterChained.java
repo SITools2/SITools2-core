@@ -60,7 +60,7 @@ public class ConverterChained extends AbstractConverter {
    * Constructor
    */
   public ConverterChained() {
-    // TODO Auto-generated constructor stub
+
     this.converters = new ArrayList<AbstractConverter>();
   }
 
@@ -144,11 +144,11 @@ public class ConverterChained extends AbstractConverter {
   }
 
   public Validator<AbstractConverter> getValidator() {
-    // TODO Auto-generated method stub
+
     return new Validator<AbstractConverter>() {
       @Override
       public Set<ConstraintViolation> validate(AbstractConverter item) {
-        // TODO Auto-generated method stub
+
         return null;
       }
     };

@@ -33,7 +33,9 @@ import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.form.project.dto.FormProjectAdminDTO;
 import fr.cnes.sitools.form.project.model.FormProject;
 
-/**
+import java.io.IOException;
+
+    /**
  * Base class for resource of management of form components
  * 
  * @author jp.boignard (AKKA Technologies)
@@ -115,27 +117,18 @@ public abstract class AbstractFormProjectResource extends SitoolsResource {
     
     FormProjectAdminDTO formProjectDTOInput = null;
     
-    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-      // Parse the XML representation to get the FormProject bean
-      XstreamRepresentation<FormProjectAdminDTO> repXML = new XstreamRepresentation<FormProjectAdminDTO>(representation);
-      XStream xstream = XStreamFactory.getInstance().getXStreamReader(MediaType.APPLICATION_XML);
-      xstream.autodetectAnnotations(false);
-      xstream.alias("formComponent", FormProjectAdminDTO.class);
-      repXML.setXstream(xstream);
-      formProjectDTOInput = repXML.getObject();
-    }
-    else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+    if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
       // Parse the JSON representation to get the bean
       //formComponentInput = new JacksonRepresentation<FormProject>(representation, FormProject.class).getObject();
-      formProjectDTOInput = new JacksonRepresentation<FormProjectAdminDTO>(representation, FormProjectAdminDTO.class).getObject();
+      try {
+        formProjectDTOInput = new JacksonRepresentation<FormProjectAdminDTO>(representation, FormProjectAdminDTO.class).getObject();
+      } catch (IOException e) {
+        getContext().getLogger().severe(e.getMessage());
+      }
     }
     
     formProjectInput = FormProjectAdminDTO.dtoToFormProject(formProjectDTOInput);
-//    if (formProjectInput.getParent() == null) {
-//      formProjectInput.setParent(getDatasetId());
-//    }
 
-    
     return formProjectInput;
   }
 

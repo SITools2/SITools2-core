@@ -18,8 +18,7 @@
  ******************************************************************************/
 package fr.cnes.sitools.form.components.model;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
@@ -99,7 +98,7 @@ public final class FormComponent implements IResource {
    */
   public FormComponent() {
     super();
-    // TODO Auto-generated constructor stub
+
   }
 
   /**

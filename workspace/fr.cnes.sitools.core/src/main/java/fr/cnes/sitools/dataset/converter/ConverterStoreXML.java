@@ -234,7 +234,7 @@ public final class ConverterStoreXML extends SitoolsStoreXML<ConverterChainedMod
   }
 
   public List<ConverterChainedModel> retrieveByParent(String id) {
-    // TODO Auto-generated method stub
+
     return null;
   }
 

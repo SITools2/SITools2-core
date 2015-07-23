@@ -119,11 +119,6 @@ public abstract class AbstractDataSetResource extends SitoolsResource {
       ObjectRepresentation<DataSet> obj = (ObjectRepresentation<DataSet>) representation;
       object = obj.getObject();
     }
-    else if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-      // Parse the XML representation to get the dataset bean
-      object = new XstreamRepresentation<DataSet>(representation).getObject();
-
-    }
     else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
       // Parse the JSON representation to get the bean
       object = new JacksonRepresentation<DataSet>(representation, DataSet.class).getObject();

@@ -137,12 +137,7 @@ public abstract class AbstractAuthorizationResource extends SitoolsResource {
    */
   protected ResourceAuthorization getObject(Representation representation) throws IOException {
     ResourceAuthorization authorizationInput = null;
-    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-      // Parse the XML representation to get the bean
-      authorizationInput = new XstreamRepresentation<ResourceAuthorization>(representation).getObject();
-
-    }
-    else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+    if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
       // Parse the JSON representation to get the bean
       authorizationInput = new JacksonRepresentation<ResourceAuthorization>(representation, ResourceAuthorization.class)
           .getObject();

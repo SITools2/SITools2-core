@@ -18,6 +18,7 @@
  ******************************************************************************/
 package fr.cnes.sitools.plugins.guiservices.declare;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -102,19 +103,13 @@ public abstract class AbstractGuiServiceResource extends SitoolsResource {
    */
   public final GuiServiceModel getObject(Representation representation) {
     GuiServiceModel projectModuleInput = null;
-    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-      // Parse the XML representation to get the GuiService bean
-      XstreamRepresentation<GuiServiceModel> repXML = new XstreamRepresentation<GuiServiceModel>(representation);
-      XStream xstream = XStreamFactory.getInstance().getXStreamReader(MediaType.APPLICATION_XML);
-      xstream.autodetectAnnotations(false);
-      xstream.alias("guiService", GuiServiceModel.class);
-      repXML.setXstream(xstream);
-      projectModuleInput = repXML.getObject();
-    }
-    else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+    if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
       // Parse the JSON representation to get the bean
-      projectModuleInput = new JacksonRepresentation<GuiServiceModel>(representation, GuiServiceModel.class)
-          .getObject();
+      try {
+        projectModuleInput = new JacksonRepresentation<GuiServiceModel>(representation, GuiServiceModel.class).getObject();
+      } catch (IOException e) {
+        getContext().getLogger().severe(e.getMessage());
+      }
     }
     return projectModuleInput;
   }

@@ -155,7 +155,7 @@ public final class Task implements Runnable {
       }
     }
     catch (SecurityException e) {
-      // TODO Auto-generated catch block
+
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
 

@@ -36,6 +36,8 @@ import fr.cnes.sitools.security.model.User;
 import fr.cnes.sitools.common.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
+import java.io.IOException;
+
 /**
  * Resource to reset and generate an new user password with a sent email
  * 
@@ -156,14 +158,13 @@ public class UnlockAccountResource extends ResetPasswordResource {
   private User getObject(Representation representation) {
     User object = null;
 
-    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-      // Parse the XML representation to get the dataset bean
-      object = new XstreamRepresentation<User>(representation).getObject();
-
-    }
-    else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+    if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
       // Parse the JSON representation to get the bean
-      object = new JacksonRepresentation<User>(representation, User.class).getObject();
+      try {
+        object = new JacksonRepresentation<User>(representation, User.class).getObject();
+      } catch (IOException e) {
+        getContext().getLogger().severe(e.getMessage());
+      }
     }
 
     return object;

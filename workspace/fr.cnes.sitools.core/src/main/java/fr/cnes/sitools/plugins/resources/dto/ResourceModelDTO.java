@@ -23,8 +23,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import fr.cnes.sitools.common.dto.ExtensionModelDTO;
 import fr.cnes.sitools.plugins.resources.model.DataSetSelectionType;
 import fr.cnes.sitools.plugins.resources.model.ResourceBehaviorType;

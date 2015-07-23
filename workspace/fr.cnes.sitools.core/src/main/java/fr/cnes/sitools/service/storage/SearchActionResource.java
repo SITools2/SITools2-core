@@ -18,6 +18,7 @@
  ******************************************************************************/
 package fr.cnes.sitools.service.storage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.restlet.Request;
@@ -159,6 +160,7 @@ public final class SearchActionResource extends AbstractStorageResource {
     reqPOST.getClientInfo().setAcceptedMediaTypes(objectMediaType);
 
     org.restlet.Response responseSolr = null;
+    Response resp = null;
     try {
       responseSolr = getContext().getClientDispatcher().handle(reqPOST);
 
@@ -168,23 +170,24 @@ public final class SearchActionResource extends AbstractStorageResource {
       else {
         @SuppressWarnings("unchecked")
         XstreamRepresentation<Response> repr = (XstreamRepresentation<Response>) responseSolr.getEntity();
-        Response resp = (Response) repr.getObject();
+        resp = (Response) repr.getObject();
         if (resp.getSuccess()) {
-//          this.getOpenSearchApplication().setCancelled(true);
           response = new Response(true, "opensearch.cancel.successfull");
         }
         else {
           response = new Response(false, resp.getMessage());
         }
       }
-      return response;
+    }
+    catch (IOException e) {
+      getContext().getLogger().severe(e.getMessage());
     }
     finally {
       RIAPUtils.exhaust(responseSolr);
     }
+    return response;
   }
 
-  @Override
   public void describePut(MethodInfo info, String path) {
     if (path.endsWith("start")) {
       info.setDocumentation(" PUT /"
@@ -242,23 +245,8 @@ public final class SearchActionResource extends AbstractStorageResource {
   @SuppressWarnings("unchecked")
   private Response createSolRIndex(final StorageDirectory sd) {
     // ... Activer => Creer l'index
-
-//    List<Column> columns = this.getIndexedColumns(sd, os);
-
     SolRConfigDTO solRcDTO = new SolRConfigDTO();
-
     DirectoryConfigDTO dataConf = createSolRdirectoryConfig(sd);
-
-    //    SchemaConfigDTO scDTO = createSolRSchema(sd, columns, solRcDTO, os);
-    // set the rssXSLTDTO
-    
-//    RssXSLTDTO rssConfig = getRssXSLTDTO(sd);
-//    
-//    solRcDTO.setRssXSLTDTO(rssConfig);
-
-    // solRcDTO.setIndexName(this.getIndexName());
-    // solRcDTO.setSchemaConfigDTO(scDTO);
-
     solRcDTO.setDataConfigDTO(dataConf);
 
     // create the core
@@ -270,6 +258,7 @@ public final class SearchActionResource extends AbstractStorageResource {
     reqPOST.getClientInfo().setAcceptedMediaTypes(objectMediaType);
 
     org.restlet.Response r = null;
+    Response resp = null;
     try {
       r = getContext().getClientDispatcher().handle(reqPOST);
 
@@ -278,7 +267,7 @@ public final class SearchActionResource extends AbstractStorageResource {
       }
 
       XstreamRepresentation<Response> repr = (XstreamRepresentation<Response>) r.getEntity();
-      Response resp = (Response) repr.getObject();
+      resp = (Response) repr.getObject();
 
       if (resp.isSuccess()) {
         // create a runnable task to index asynchronously
@@ -288,12 +277,12 @@ public final class SearchActionResource extends AbstractStorageResource {
         getApplication().getTaskService().execute(sdRunnable);
 
       }
-      return resp;
-    }
-    finally {
+    } catch (IOException e) {
+      getContext().getLogger().severe(e.getMessage());
+    } finally {
       RIAPUtils.exhaust(r);
     }
-
+    return resp;
   }
 
 //  /**

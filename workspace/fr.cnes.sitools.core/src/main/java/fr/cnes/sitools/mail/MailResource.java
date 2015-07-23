@@ -170,18 +170,13 @@ public final class MailResource extends SitoolsResource {
    */
   public Mail getObject(Representation representation, Variant variant) {
     Mail input = null;
-    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-      // Parse the XML representation to get the input bean
-      XstreamRepresentation<Mail> repXML = new XstreamRepresentation<Mail>(representation);
-      XStream xstream = XStreamFactory.getInstance().getXStreamReader(MediaType.APPLICATION_XML);
-      xstream.autodetectAnnotations(false);
-      xstream.alias("mail", Mail.class);
-      repXML.setXstream(xstream);
-      input = repXML.getObject();
-    }
-    else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+    if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
       // Parse the JSON representation to get the mail bean
-      input = new JacksonRepresentation<Mail>(representation, Mail.class).getObject();
+      try {
+        input = new JacksonRepresentation<Mail>(representation, Mail.class).getObject();
+      } catch (IOException e) {
+        getContext().getLogger().severe(e.getMessage());
+      }
     }
     else if (representation instanceof ObjectRepresentation<?>) {
       try {

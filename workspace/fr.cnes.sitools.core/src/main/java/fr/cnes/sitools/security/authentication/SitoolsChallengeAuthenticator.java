@@ -21,12 +21,8 @@ package fr.cnes.sitools.security.authentication;
 import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.Response;
-import org.restlet.data.ChallengeResponse;
-import org.restlet.data.ChallengeScheme;
-import org.restlet.data.ClientInfo;
-import org.restlet.data.Cookie;
-import org.restlet.data.Form;
-import org.restlet.data.MediaType;
+import org.restlet.data.*;
+import org.restlet.engine.header.HeaderConstants;
 import org.restlet.engine.security.AuthenticatorUtils;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
@@ -41,7 +37,7 @@ import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.util.RESTUtils;
 
-/**
+    /**
  * To enrole with public role.
  * 
  * @author jp.boignard (AKKA Technologies)
@@ -146,9 +142,6 @@ public final class SitoolsChallengeAuthenticator extends DelegatedChallengeAuthe
   @Override
   public void forbid(Response response) {
 
-    // if (response.getRequest().getClientInfo().getAgent() != null
-    // && response.getRequest().getClientInfo().getAgent().equals(authenticationAgent)) {
-
     String xUserAgent = (String) response.getRequest().getAttributes().get("X-User-Agent");
     if ((null != xUserAgent) && authenticationAgent.equals(xUserAgent)) {
 
@@ -212,7 +205,11 @@ public final class SitoolsChallengeAuthenticator extends DelegatedChallengeAuthe
         return false;
       }
       String decoded = RESTUtils.decode(credentials.getValue());
-      ChallengeResponse cr = AuthenticatorUtils.parseResponse(request, decoded, new Form());
+      Series<Header> headers = new Series<Header>(Header.class);
+      headers.add(HeaderConstants.HEADER_AUTHORIZATION, decoded);
+//FIXME: LBA : A tester !!!
+
+      ChallengeResponse cr = AuthenticatorUtils.parseResponse(request, HeaderConstants.HEADER_AUTHORIZATION, headers);
       request.setChallengeResponse(cr);
       return super.authenticate(request, response);
     }

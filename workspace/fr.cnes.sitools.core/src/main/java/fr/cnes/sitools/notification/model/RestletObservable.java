@@ -26,7 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.restlet.Context;
 import org.restlet.data.MediaType;
 import org.restlet.representation.ObjectRepresentation;

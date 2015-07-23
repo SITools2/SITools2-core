@@ -112,7 +112,7 @@ public final class JDBCDataSourceStoreXML extends SitoolsStoreXML<JDBCDataSource
   }
 
   public List<JDBCDataSource> retrieveByParent(String id) {
-    // TODO Auto-generated method stub
+
     return null;
   }
 

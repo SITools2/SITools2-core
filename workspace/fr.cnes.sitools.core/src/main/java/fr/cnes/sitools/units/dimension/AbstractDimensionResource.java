@@ -135,13 +135,7 @@ public abstract class AbstractDimensionResource extends SitoolsResource {
       ObjectRepresentation<SitoolsDimension> obj = (ObjectRepresentation<SitoolsDimension>) representation;
       input = obj.getObject();
     }
-    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-      // Parse the XML representation to get the bean
-      XstreamRepresentation<SitoolsDimension> xst = new XstreamRepresentation<SitoolsDimension>(representation);
-      xst.getXstream().alias("dimension", SitoolsDimension.class);
-      input = xst.getObject();
-    }
-    else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+    if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
       // Parse the JSON representation to get the bean
       JacksonRepresentation<SitoolsDimension> json = new JacksonRepresentation<SitoolsDimension>(representation,
           SitoolsDimension.class);

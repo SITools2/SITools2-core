@@ -153,7 +153,6 @@ public final class FilterPluginResource extends AbstractFilterPluginResource {
    * @param path
    *          url attachment of the resource
    */
-  @Override
   public void describePost(MethodInfo info, String path) {
     info.setDocumentation("Creates a new filter attached to an application");
 

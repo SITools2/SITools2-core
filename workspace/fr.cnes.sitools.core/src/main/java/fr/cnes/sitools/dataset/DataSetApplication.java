@@ -214,37 +214,37 @@ public final class DataSetApplication extends AbstractDataSetApplication {
 
   @Override
   public void attachDataSet(DataSet ds) {
-    // TODO Auto-generated method stub
+
     // NE PAS IMPLEMENTER >> uniquement via l'administration
   }
 
   @Override
   public void detachDataSet(DataSet ds) {
-    // TODO Auto-generated method stub
+
     // NE PAS IMPLEMENTER >> uniquement via l'administration
   }
 
   @Override
   public void detachDataSetDefinitif(DataSet ds) {
-    // TODO Auto-generated method stub
+
     // NE PAS IMPLEMENTER >> uniquement via l'administration
   }
 
   @Override
   public void detachDataSetDefinitif(DataSet ds, boolean isSynchro) {
-    // TODO Auto-generated method stub
+
     // NE PAS IMPLEMENTER >> uniquement via l'administration
   }
 
   @Override
   public void attachDataSet(DataSet ds, boolean isSynchro) {
-    // TODO Auto-generated method stub
+
     // NE PAS IMPLEMENTER >> uniquement via l'administration
   }
 
   @Override
   public void detachDataSet(DataSet ds, boolean isSynchro) {
-    // TODO Auto-generated method stub
+
     // NE PAS IMPLEMENTER >> uniquement via l'administration
   }
 

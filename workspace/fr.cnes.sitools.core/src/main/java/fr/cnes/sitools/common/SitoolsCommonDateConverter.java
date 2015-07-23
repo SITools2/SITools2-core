@@ -40,7 +40,7 @@ public final class SitoolsCommonDateConverter extends DateConverter {
       dateFormat = DateUtils.parse(arg0, DateUtils.SITOOLS_DATE_FORMAT);
     }
     catch (ParseException e) {
-      // TODO Auto-generated catch block
+
       e.printStackTrace();
     }
     return dateFormat;

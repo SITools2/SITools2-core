@@ -313,7 +313,7 @@ public final class SolrDirectoryActionResource extends AbstractSolrResource {
         }
       }
       catch (IOException e) {
-        // TODO Auto-generated catch block
+
         response = new Response(false, "SERVER_ERROR");
       }
 
@@ -373,12 +373,12 @@ public final class SolrDirectoryActionResource extends AbstractSolrResource {
 
     }
     catch (FileNotFoundException e) {
-      // TODO Auto-generated catch block
+
       e.printStackTrace();
       return false;
     }
     catch (IOException e) {
-      // TODO Auto-generated catch block
+
       e.printStackTrace();
       return false;
     }
@@ -464,12 +464,12 @@ public final class SolrDirectoryActionResource extends AbstractSolrResource {
 
     }
     catch (FileNotFoundException e) {
-      // TODO Auto-generated catch block
+
       e.printStackTrace();
       return false;
     }
     catch (IOException e) {
-      // TODO Auto-generated catch block
+
       e.printStackTrace();
       return false;
     }
@@ -504,13 +504,13 @@ public final class SolrDirectoryActionResource extends AbstractSolrResource {
       return true;
     }
     catch (FileNotFoundException e) {
-      // TODO Auto-generated catch block
+
       e.printStackTrace();
       return false;
     }
     catch (IOException e) {
       e.printStackTrace();
-      // TODO Auto-generated catch block
+
       return false;
     }
   }

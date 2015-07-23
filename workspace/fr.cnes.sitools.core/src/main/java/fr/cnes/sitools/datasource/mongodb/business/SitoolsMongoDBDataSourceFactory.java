@@ -163,7 +163,7 @@ public final class SitoolsMongoDBDataSourceFactory {
   //
   // }
   // catch (NamingException e) {
-  // // TODO Auto-generated catch block
+  //
   // e.printStackTrace();
   // }
   // return ds;

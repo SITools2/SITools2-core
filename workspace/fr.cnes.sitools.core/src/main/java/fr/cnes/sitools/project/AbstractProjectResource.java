@@ -125,20 +125,13 @@ public abstract class AbstractProjectResource extends SitoolsResource {
    */
   public final Project getObject(Representation representation, Variant variant) {
     Project projectInput = null;
-    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-      // Parse the XML representation to get the bean
-      XstreamRepresentation<Project> repXML = new XstreamRepresentation<Project>(representation);
-      XStream xstream = XStreamFactory.getInstance().getXStreamReader(MediaType.APPLICATION_XML);
-      xstream.autodetectAnnotations(false);
-      xstream.alias("project", Project.class);
-      xstream.alias("dataset", Resource.class);
-
-      repXML.setXstream(xstream);
-      projectInput = repXML.getObject();
-    }
-    else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+    if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
       // Parse the JSON representation to get the bean
-      projectInput = new JacksonRepresentation<Project>(representation, Project.class).getObject();
+      try {
+        projectInput = new JacksonRepresentation<Project>(representation, Project.class).getObject();
+      } catch (IOException e) {
+        getContext().getLogger().severe(e.getMessage());
+      }
     }
     return projectInput;
   }
@@ -154,19 +147,13 @@ public abstract class AbstractProjectResource extends SitoolsResource {
    */
   public final ProjectPriorityDTO getListObject(Representation representation, Variant variant) {
     ProjectPriorityDTO projectInput = null;
-    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-      // Parse the XML representation to get the bean
-      XstreamRepresentation<ProjectPriorityDTO> repXML = new XstreamRepresentation<ProjectPriorityDTO>(representation);
-      XStream xstream = XStreamFactory.getInstance().getXStreamReader(MediaType.APPLICATION_XML);
-      xstream.autodetectAnnotations(false);
-      xstream.alias("minimalProjectPriorityList", MinimalProjectPriorityDTO.class);
-
-      repXML.setXstream(xstream);
-      projectInput = repXML.getObject();
-    }
-    else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+    if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
       // Parse the JSON representation to get the bean
-      projectInput = new JacksonRepresentation<ProjectPriorityDTO>(representation, ProjectPriorityDTO.class).getObject();
+      try {
+        projectInput = new JacksonRepresentation<ProjectPriorityDTO>(representation, ProjectPriorityDTO.class).getObject();
+      } catch (IOException e) {
+        getContext().getLogger().severe(e.getMessage());
+      }
     }
     return projectInput;
   }
@@ -184,17 +171,7 @@ public abstract class AbstractProjectResource extends SitoolsResource {
    */
   public final Resource getObjectResource(Representation representation, Variant variant) throws IOException {
     Resource resourceInput = null;
-    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-      // Parse the XML representation to get the bean
-      XstreamRepresentation<Resource> repXML = new XstreamRepresentation<Resource>(representation);
-      XStream xstream = XStreamFactory.getInstance().getXStreamReader(MediaType.APPLICATION_XML);
-      xstream.autodetectAnnotations(false);
-      xstream.alias("resource", Resource.class);
-
-      repXML.setXstream(xstream);
-      resourceInput = repXML.getObject();
-    }
-    else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+    if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
       // Parse the JSON representation to get the bean
       resourceInput = new JacksonRepresentation<Resource>(representation, Resource.class).getObject();
     }

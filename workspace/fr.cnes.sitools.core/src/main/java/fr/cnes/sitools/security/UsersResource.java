@@ -96,7 +96,6 @@ public final class UsersResource extends UsersAndGroupsResource {
     return getRepresentation(response, variant);
   }
 
-  @Override
   public void describeGet(MethodInfo info, String path) {
     this.addStandardGetRequestInfo(info);
     if (path.endsWith("groups/{group}/users")) {
@@ -235,12 +234,7 @@ public final class UsersResource extends UsersAndGroupsResource {
     }
     try {
       User input = null;
-      if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-        // Parse the XML representation to get the bean
-        input = new XstreamRepresentation<User>(representation).getObject();
-
-      }
-      else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+      if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
         // Parse the JSON representation to get the bean
         input = new JacksonRepresentation<User>(representation, User.class).getObject();
 

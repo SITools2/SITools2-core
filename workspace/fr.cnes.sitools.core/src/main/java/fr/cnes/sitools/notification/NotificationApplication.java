@@ -27,6 +27,7 @@ import org.restlet.Response;
 import org.restlet.Restlet;
 import org.restlet.ext.wadl.ApplicationInfo;
 import org.restlet.ext.wadl.DocumentationInfo;
+import org.restlet.resource.ServerResource;
 import org.restlet.routing.Router;
 
 import fr.cnes.sitools.common.application.ContextAttributes;
@@ -137,7 +138,7 @@ public final class NotificationApplication extends SitoolsApplication {
   public void attachTrigger(String eventName, Class<?> targetClass) {
     Class<?> existingTargetClass = triggerTable.get(eventName);
     if (existingTargetClass == null) {
-      ((Router) getInboundRoot()).attach("/triggers/" + eventName, targetClass);
+      ((Router) getInboundRoot()).attach("/triggers/" + eventName, (Class<? extends ServerResource>) targetClass);
       triggerTable.put(eventName, targetClass);
     }
     else {

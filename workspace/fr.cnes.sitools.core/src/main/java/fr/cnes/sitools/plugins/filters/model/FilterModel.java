@@ -20,8 +20,7 @@ package fr.cnes.sitools.plugins.filters.model;
 
 import java.io.Serializable;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 import fr.cnes.sitools.common.model.ExtensionModel;

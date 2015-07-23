@@ -18,11 +18,13 @@
  ******************************************************************************/
 package fr.cnes.sitools.service.storage.runnables;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.restlet.Client;
 import org.restlet.Context;
 import org.restlet.Request;
+import org.restlet.Restlet;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.data.Preference;
@@ -67,15 +69,12 @@ public class IndexRefreshRunnable extends StorageRunnable {
     this.application = application;
   }
 
-  @Override
   public void run() {
     Request reqPOST = new Request(Method.POST, RIAPUtils.getRiapBase() + solrUrl + "/" + sd.getId() + "/refresh");
 
     ArrayList<Preference<MediaType>> objectMediaType = new ArrayList<Preference<MediaType>>();
     objectMediaType.add(new Preference<MediaType>(MediaType.APPLICATION_ALL_XML));
     reqPOST.getClientInfo().setAcceptedMediaTypes(objectMediaType);
-    Client client = this.context.getClientDispatcher();
-    client.getConnectTimeout();
     org.restlet.Response r = null;
     try {
       r = this.context.getClientDispatcher().handle(reqPOST);
@@ -91,27 +90,16 @@ public class IndexRefreshRunnable extends StorageRunnable {
       Response resp = (Response) repr.getObject();
 
       if (resp.getSuccess()) {
-//        // check if it was canceled or not
-//        if (this.application.isCancelled()) {
-//          this.sd.setStatus("INACTIVE");
-//        }
-//        else {
-//          this.sd.setStatus("ACTIVE");
-//          sd.setLastImportDate(new Date(new GregorianCalendar().getTime().getTime()));
-//        }
-//        store.update(sd);
         this.sd.setIndexed(true);
         store.update(sd);
-        
       }
       else {
-//        this.sd.setStatus("INACTIVE");
-//        this.sd.setErrorMsg(resp.getMessage());
-//        store.update(sd);
         this.sd.setIndexed(false);
         store.update(sd);
-        
       }
+    }
+    catch (IOException e) {
+      context.getLogger().severe(e.getMessage());
     }
     finally {
       RIAPUtils.exhaust(r);

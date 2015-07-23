@@ -86,7 +86,6 @@ public abstract class SitoolsParameterizedApplication extends SitoolsApplication
     super(context, wadl);
   }
 
-  @Override
   protected Context getContext(String path, ServerResource sr) {
     if (modelMap.get("/" + path) != null) {
       Context ctx = getContext().createChildContext();
@@ -140,7 +139,7 @@ public abstract class SitoolsParameterizedApplication extends SitoolsApplication
             if (parameter.getType().equals(ResourceParameterType.PARAMETER_ATTACHMENT)) {
               try {
                 modelMap.put(parameter.getValue(), resDto);
-                TemplateRoute route = router.attach(parameter.getValue(), Class.forName(resDto.getResourceClassName()));
+                TemplateRoute route = router.attach(parameter.getValue(), (Class<? extends ServerResource>) Class.forName(resDto.getResourceClassName()));
                 Context ctx = route.getContext().createChildContext();
                 ctx.setAttributes(route.getContext().getAttributes());
                 ctx.getAttributes().put(ContextAttributes.RESOURCE_ATTACHMENT, parameter.getValue());

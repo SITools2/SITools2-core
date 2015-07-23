@@ -20,7 +20,7 @@ package fr.cnes.sitools.units.dimension.model;
 
 import javax.measure.unit.Unit;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.restlet.engine.Engine;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;

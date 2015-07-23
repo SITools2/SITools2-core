@@ -230,11 +230,7 @@ public final class ConverterChainedResource extends AbstractConverterResource {
     try {
       ConverterChainedOrderDTO orderDTO = null;
       if (representation != null) {
-        if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-          // Parse the XML representation to get the osearch bean
-          orderDTO = new XstreamRepresentation<ConverterChainedOrderDTO>(representation).getObject();
-        }
-        else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+        if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
           // Parse the JSON representation to get the bean
           orderDTO = new JacksonRepresentation<ConverterChainedOrderDTO>(representation, ConverterChainedOrderDTO.class)
               .getObject();

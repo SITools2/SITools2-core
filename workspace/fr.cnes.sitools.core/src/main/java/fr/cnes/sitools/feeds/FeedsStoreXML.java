@@ -163,7 +163,7 @@ public final class FeedsStoreXML extends SitoolsStoreXML<FeedModel> {
   }
 
   public List<FeedModel> retrieveByParent(String id) {
-    // TODO Auto-generated method stub
+
     return null;
   }
 

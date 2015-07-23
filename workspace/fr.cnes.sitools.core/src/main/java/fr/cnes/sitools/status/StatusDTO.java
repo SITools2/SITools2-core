@@ -87,7 +87,7 @@ public class StatusDTO {
    * @return String
    */
   public String getStatusInfo() {
-    return (status.getName() != null) ? status.getName() : "No information available for this result status";
+    return (status.getReasonPhrase() != null) ? status.getReasonPhrase() : "No information available for this result status";
   }
 
 }

@@ -169,11 +169,6 @@ public class ResetPasswordResource extends SitoolsResource {
       ObjectRepresentation<User> obj = (ObjectRepresentation<User>) representation;
       object = obj.getObject();
     }
-    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-      // Parse the XML representation to get the dataset bean
-      object = new XstreamRepresentation<User>(representation).getObject();
-
-    }
     else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
       // Parse the JSON representation to get the bean
       object = new JacksonRepresentation<User>(representation, User.class).getObject();

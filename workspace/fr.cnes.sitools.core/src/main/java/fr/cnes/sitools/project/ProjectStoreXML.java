@@ -127,7 +127,7 @@ public final class ProjectStoreXML extends SitoolsSynchronizedStoreXML<Project> 
   }
 
   public List<Project> retrieveByParent(String id) {
-    // TODO Auto-generated method stub
+
     return null;
   }
 
