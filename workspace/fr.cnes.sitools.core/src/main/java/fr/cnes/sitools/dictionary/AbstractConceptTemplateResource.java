@@ -20,17 +20,11 @@ package fr.cnes.sitools.dictionary;
 
 import org.restlet.data.MediaType;
 import org.restlet.ext.jackson.JacksonRepresentation;
-import org.restlet.ext.xstream.XstreamRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 
-import com.thoughtworks.xstream.XStream;
-
 import fr.cnes.sitools.common.SitoolsResource;
-import fr.cnes.sitools.common.XStreamFactory;
-import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.dictionary.model.ConceptTemplate;
-import fr.cnes.sitools.util.Property;
 
 /**
  * Base resource for concept template management
@@ -65,24 +59,6 @@ public abstract class AbstractConceptTemplateResource extends SitoolsResource {
   }
 
   /**
-   * Configure XStream mapping for xml and json serialization
-   * 
-   * TODO Optimisation possible au lieu de créer à chaque fois une instance de XStream conserver 4 instances d'XStream
-   * correspondant aux 4 combinaisons possibles : classe retournée (ConceptTemplate, Property) et type (data / item)
-   * 
-   * @param xstream
-   *          XStream
-   * @param response
-   *          Response
-   */
-  @Override
-  public void configure(XStream xstream, Response response) {
-    super.configure(xstream, response);
-    xstream.alias("template", ConceptTemplate.class);
-    xstream.alias("property", Property.class);
-  }
-
-  /**
    * Decodes a representation to a ConceptTemplate object.
    * 
    * @param representation
@@ -93,18 +69,8 @@ public abstract class AbstractConceptTemplateResource extends SitoolsResource {
    */
   public final ConceptTemplate getObject(Representation representation, Variant variant) {
     ConceptTemplate templateInput = null;
-    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-      // Parse the XML representation to get the template bean
-      // Default parsing
-      XstreamRepresentation<ConceptTemplate> repXML = new XstreamRepresentation<ConceptTemplate>(representation);
-      XStream xstream = XStreamFactory.getInstance().getXStreamReader(MediaType.APPLICATION_XML);
-      xstream.autodetectAnnotations(false);
-      xstream.alias("template", ConceptTemplate.class);
-      xstream.alias("property", Property.class);
-      repXML.setXstream(xstream);
-      templateInput = repXML.getObject();
-    }
-    else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType()) ||
+            MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
       // Parse the JSON representation to get the bean
       templateInput = new JacksonRepresentation<ConceptTemplate>(representation, ConceptTemplate.class).getObject();
     }

@@ -33,7 +33,6 @@ import com.thoughtworks.xstream.XStream;
 import fr.cnes.sitools.common.SitoolsResource;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.dictionary.model.Concept;
 import fr.cnes.sitools.dictionary.model.Dictionary;
 
 /**
@@ -72,23 +71,6 @@ public abstract class AbstractDictionaryResource extends SitoolsResource {
   }
 
   /**
-   * Configure XStream mapping for xml and json serialization
-   * 
-   * TODO Optimisation possible au lieu de créer à chaque fois une instance de XStream conserver 4 instances d'XStream
-   * correspondant aux 4 combinaisons possibles : classe retournée (Dictionary, Notion) et type (data / item)
-   * 
-   * @param xstream
-   *          XStream
-   * @param response
-   *          Response
-   */
-  @Override
-  public void configure(XStream xstream, Response response) {
-    super.configure(xstream, response);
-    xstream.alias("dictionary", Dictionary.class);
-  }
-
-  /**
    * Decodes a representation to a Dictionary object.
    * 
    * @param representation
@@ -106,19 +88,9 @@ public abstract class AbstractDictionaryResource extends SitoolsResource {
       ObjectRepresentation<Dictionary> obj = (ObjectRepresentation<Dictionary>) representation;
       dictionaryInput = obj.getObject();
     }
-    else if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-      // Parse the XML representation to get the dictionary bean
-      // Default parsing
-      XstreamRepresentation<Dictionary> repXML = new XstreamRepresentation<Dictionary>(representation);
-      XStream xstream = XStreamFactory.getInstance().getXStreamReader(MediaType.APPLICATION_XML);
-      xstream.autodetectAnnotations(false);
-      xstream.alias("dictionary", Dictionary.class);
-      xstream.alias("concept", Concept.class);
-      repXML.setXstream(xstream);
-      dictionaryInput = repXML.getObject();
-    }
-    else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
-      // Parse the JSON representation to get the bean
+    else if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType()) ||
+             MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+      // Parse the XML/JSON representation to get the bean
       dictionaryInput = new JacksonRepresentation<Dictionary>(representation, Dictionary.class).getObject();
     }
 
