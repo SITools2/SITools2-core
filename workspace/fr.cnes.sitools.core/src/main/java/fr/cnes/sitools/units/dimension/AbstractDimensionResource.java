@@ -55,9 +55,9 @@ public abstract class AbstractDimensionResource extends SitoolsResource {
     super.doInit();
     
     // Declares the variants supported
-    getVariants().add(new Variant(MediaType.APPLICATION_XML));
-    getVariants().add(new Variant(MediaType.APPLICATION_JSON));
-    getVariants().add(new Variant(MediaType.APPLICATION_JAVA));
+    addVariant(new Variant(MediaType.APPLICATION_XML));
+    addVariant(new Variant(MediaType.APPLICATION_JSON));
+    addVariant(new Variant(MediaType.APPLICATION_JAVA));
     
     dimApp = (AbstractDimensionApplication) getApplication();
     store = dimApp.getStore();

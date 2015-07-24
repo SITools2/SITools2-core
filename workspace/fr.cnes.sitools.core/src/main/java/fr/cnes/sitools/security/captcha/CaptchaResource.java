@@ -43,8 +43,8 @@ public class CaptchaResource extends SitoolsResource {
     super.doInit();
 
     getVariants().clear();
-    getVariants().add(new Variant(MediaType.IMAGE_PNG));
-    getVariants().add(new Variant(MediaType.IMAGE_JPEG));
+    addVariant(new Variant(MediaType.IMAGE_PNG));
+    addVariant(new Variant(MediaType.IMAGE_JPEG));
   }
 
   /**

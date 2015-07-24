@@ -75,8 +75,8 @@ public abstract class AbstractOrderResource extends SitoolsResource {
     super.doInit();
 
     // Declares the two variants supported
-    getVariants().add(new Variant(MediaType.APPLICATION_XML));
-    getVariants().add(new Variant(MediaType.APPLICATION_JSON));
+    addVariant(new Variant(MediaType.APPLICATION_XML));
+    addVariant(new Variant(MediaType.APPLICATION_JSON));
 
     application = (AbstractOrderApplication) getApplication();
     store = application.getStore();

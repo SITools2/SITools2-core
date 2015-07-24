@@ -1033,8 +1033,7 @@ public final class Starter {
     // Dictionary management
 
     // Store
-    DictionaryStoreInterface storeDictionary = (DictionaryStoreInterface) settings.getStores().get(
-        Consts.APP_STORE_DICTIONARY);
+    DictionaryStoreInterface storeDictionary = (DictionaryStoreInterface) settings.getStores().get(Consts.APP_STORE_DICTIONARY);
 
     // Reference
     appReference = baseUrl + settings.getString(Consts.APP_DICTIONARIES_URL);
@@ -1081,8 +1080,7 @@ public final class Starter {
     // ConceptTemplate management
 
     // Store
-    ConceptTemplateStoreInterface storeConceptTemplate = (ConceptTemplateStoreInterface) settings.getStores().get(
-        Consts.APP_STORE_TEMPLATE);
+    ConceptTemplateStoreInterface storeConceptTemplate = (ConceptTemplateStoreInterface) settings.getStores().get(Consts.APP_STORE_TEMPLATE);
 
     // Reference
     appReference = baseUrl + settings.getString(Consts.APP_DICTIONARIES_TEMPLATES_URL);

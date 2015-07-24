@@ -83,8 +83,8 @@ public final class ProjectIndex extends SitoolsResource {
     super.doInit();
     this.projectName = (String) this.getRequest().getAttributes().get("projectName");
     setNegotiated(false);
-    getVariants().add(new Variant(MediaType.TEXT_HTML));
-    getVariants().add(new Variant(MediaType.ALL));
+    addVariant(new Variant(MediaType.TEXT_HTML));
+    addVariant(new Variant(MediaType.ALL));
     application = (ClientUserApplication) this.getApplication();
   }
 

@@ -62,7 +62,7 @@ public final class ConverterChainedResource extends AbstractConverterResource {
   @Override
   public void doInit() {
     super.doInit();
-    getVariants().add(new Variant(SitoolsMediaType.APPLICATION_JAVA_OBJECT_SITOOLS_MODEL));
+    addVariant(new Variant(SitoolsMediaType.APPLICATION_JAVA_OBJECT_SITOOLS_MODEL));
 
     store = ((ConverterApplication) getApplication()).getStore();
   }

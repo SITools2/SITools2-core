@@ -65,8 +65,8 @@ public abstract class AbstractStorageResource extends SitoolsResource {
   @Override
   protected void doInit() {
     super.doInit();
-    getVariants().add(new Variant(MediaType.APPLICATION_XML));
-    getVariants().add(new Variant(MediaType.APPLICATION_JSON));
+    addVariant(new Variant(MediaType.APPLICATION_XML));
+    addVariant(new Variant(MediaType.APPLICATION_JSON));
     app = (StorageAdministration) this.getApplication();
     store = app.getStore();
     directoryId = (String) this.getRequest().getAttributes().get("directoryId");

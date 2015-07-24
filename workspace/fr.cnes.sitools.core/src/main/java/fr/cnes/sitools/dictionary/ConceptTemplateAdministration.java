@@ -99,6 +99,5 @@ public final class ConceptTemplateAdministration extends SitoolsApplication {
     result.getDocumentations().add(docInfo);
     return result;
   }
-  
-  
+
 }

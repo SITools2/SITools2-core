@@ -20,6 +20,7 @@ package fr.cnes.sitools.common;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
@@ -61,6 +62,14 @@ public abstract class SitoolsResource extends AbstractSitoolsResource {
   protected void doInit() {
     super.doInit();
     this.setAutoDescribing(false);
+  }
+
+
+  protected void addVariant(Variant variant) {
+    List<Variant> variants = getVariants();
+    if (!variants.contains(variant)) {
+      variants.add(variant);
+    }
   }
 
   /**

@@ -74,9 +74,9 @@ public abstract class AbstractConverterResource extends AbstractPluginResource {
     super.doInit();
 
     // // Declares the variants supported
-    getVariants().add(new Variant(MediaType.APPLICATION_XML));
-    getVariants().add(new Variant(MediaType.APPLICATION_JSON));
-    getVariants().add(new Variant(MediaType.APPLICATION_JAVA_OBJECT));
+    addVariant(new Variant(MediaType.APPLICATION_XML));
+    addVariant(new Variant(MediaType.APPLICATION_JSON));
+    addVariant(new Variant(MediaType.APPLICATION_JAVA_OBJECT));
 
     application = (SitoolsApplication) getApplication();
 
