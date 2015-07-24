@@ -39,6 +39,7 @@ import org.restlet.data.Method;
 import org.restlet.data.Protocol;
 import org.restlet.data.Reference;
 import org.restlet.engine.Engine;
+import org.restlet.representation.ObjectRepresentation;
 import org.restlet.resource.ResourceException;
 import org.restlet.routing.Filter;
 import org.restlet.routing.VirtualHost;
@@ -277,6 +278,10 @@ public final class Starter {
 
     String hostPort = (port != 0) ? String.valueOf(port) : settings.getString("Starter.HOST_PORT");
     hostPort = ((hostPort != null) && !hostPort.equals("")) ? hostPort : SitoolsSettings.DEFAULT_HOST_PORT;
+
+    //FIXME: MGO Activate Java code support => Voir si possibilité de retirer cette propriété
+    // Caused by: java.lang.IllegalArgumentException: SECURITY WARNING: The usage of ObjectInputStream when deserializing binary representations from unstrusted sources can lead to malicious attacks. As pointed here (https://github.com/restlet/restlet-framework-java/issues/778), the ObjectInputStream class is able to force the JVM to execute unwanted Java code. Thus, the support of such format has been disactivated by default. You can activate this support by turning on the following system property: org.restlet.representation.ObjectRepresentation.VARIANT_OBJECT_BINARY_SUPPORTED.
+    System.setProperty("org.restlet.representation.ObjectRepresentation.VARIANT_OBJECT_BINARY_SUPPORTED", "true");
 
     // ============================
     // Logging configuration

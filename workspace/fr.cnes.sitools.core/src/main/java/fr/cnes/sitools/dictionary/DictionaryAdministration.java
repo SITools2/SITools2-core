@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -26,6 +26,7 @@ import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.Restlet;
+import org.restlet.data.MediaType;
 import org.restlet.ext.wadl.ApplicationInfo;
 import org.restlet.ext.wadl.DocumentationInfo;
 import org.restlet.routing.Filter;
@@ -38,66 +39,66 @@ import fr.cnes.sitools.notification.business.NotifierFilter;
 
 /**
  * Application for managing dictionary
- * 
+ *
  * Dependencies : DataSets columns references Dictionary notions.
- * 
+ *
  * @author AKKA
- * 
+ *
  */
 public final class DictionaryAdministration extends SitoolsApplication {
 
-  /** Store */
-  private DictionaryStoreInterface store = null;
+    /** Store */
+    private DictionaryStoreInterface store = null;
 
-  /**
-   * Constructor
-   * 
-   * @param context
-   *          Restlet Host context
-   */
-  @SuppressWarnings("unchecked")
-  public DictionaryAdministration(Context context) {
-    super(context);
-    this.store = (DictionaryStoreInterface) context.getAttributes().get(ContextAttributes.APP_STORE);
-  }
+    /**
+     * Constructor
+     *
+     * @param context
+     *          Restlet Host context
+     */
+    @SuppressWarnings("unchecked")
+    public DictionaryAdministration(Context context) {
+        super(context);
+        this.store = (DictionaryStoreInterface) context.getAttributes().get(ContextAttributes.APP_STORE);
+    }
 
-  @Override
-  public void sitoolsDescribe() {
-    setCategory(Category.ADMIN);
-    setName("DictionaryApplication");
-    setDescription("Dictionary management");
-  }
+    @Override
+    public void sitoolsDescribe() {
+        setCategory(Category.ADMIN);
+        setName("DictionaryApplication");
+        setDescription("Dictionary management");
+    }
 
-  @Override
-  public Restlet createInboundRoot() {
+    @Override
+    public Restlet createInboundRoot() {
+//        getMetadataService().addExtension(MediaType.APPLICATION_JAVA_OBJECT.getMainType(), MediaType.APPLICATION_JAVA_OBJECT);
+        Router router = new Router(getContext());
 
-    Router router = new Router(getContext());
+        router.attachDefault(DictionaryCollectionResource.class);
+        router.attach("/{dictionaryId}", DictionaryResource.class);
+        router.attach("/{dictionaryId}/concepts/{conceptId}", ConceptResource.class);
 
-    router.attachDefault(DictionaryCollectionResource.class);
-    router.attach("/{dictionaryId}", DictionaryResource.class);
-    router.attach("/{dictionaryId}/concepts/{conceptId}", ConceptResource.class);
+        Filter filter = new NotifierFilter(getContext());
+        filter.setNext(router);
+        return filter;
+    }
 
-    Filter filter = new NotifierFilter(getContext());
-    filter.setNext(router);
-    return filter;
-  }
+    /**
+     * Gets the store value
+     *
+     * @return the store
+     */
+    public DictionaryStoreInterface getStore() {
+        return store;
+    }
 
-  /**
-   * Gets the store value
-   * 
-   * @return the store
-   */
-  public DictionaryStoreInterface getStore() {
-    return store;
-  }
-
-  @Override
-  public ApplicationInfo getApplicationInfo(Request request, Response response) {
-    ApplicationInfo result = super.getApplicationInfo(request, response);
-    DocumentationInfo docInfo = new DocumentationInfo("Dictionary application documentation in SITools2.");
-    docInfo.setTitle("API documentation.");
-    result.getDocumentations().add(docInfo);
-    return result;
-  }
+    @Override
+    public ApplicationInfo getApplicationInfo(Request request, Response response) {
+        ApplicationInfo result = super.getApplicationInfo(request, response);
+        DocumentationInfo docInfo = new DocumentationInfo("Dictionary application documentation in SITools2.");
+        docInfo.setTitle("API documentation.");
+        result.getDocumentations().add(docInfo);
+        return result;
+    }
 
 }
