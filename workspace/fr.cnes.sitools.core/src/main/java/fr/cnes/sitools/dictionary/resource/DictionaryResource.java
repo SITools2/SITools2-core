@@ -1,49 +1,53 @@
 /*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
- *
+ * <p/>
  * This file is part of SITools2.
- *
+ * <p/>
  * SITools2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p/>
  * SITools2 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p/>
  * You should have received a copy of the GNU General Public License
  * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package fr.cnes.sitools.dictionary.resource;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Level;
-
+import fr.cnes.sitools.dictionary.model.Dictionary;
+import fr.cnes.sitools.notification.model.Notification;
 import org.restlet.data.Status;
 import org.restlet.ext.wadl.MethodInfo;
 import org.restlet.ext.wadl.ParameterInfo;
 import org.restlet.ext.wadl.ParameterStyle;
-import org.restlet.representation.Representation;
-import org.restlet.representation.Variant;
 import org.restlet.resource.Delete;
 import org.restlet.resource.Get;
 import org.restlet.resource.Put;
 import org.restlet.resource.ResourceException;
 
-import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.dictionary.model.Dictionary;
-import fr.cnes.sitools.notification.model.Notification;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
 
 /**
  * Class for dictionary management (GET, UPDATE, DELETE)
  *
  * @author jp.boignard (AKKA Technologies)
- *
  */
 public final class DictionaryResource extends AbstractDictionaryResource {
+
+    /** Dictionary id in the request */
+    private String dictionaryId = null;
+
+    @Override
+    public void doInit() {
+        super.doInit();
+        dictionaryId = getAttribute("dictionaryId");
+    }
 
     @Override
     public void sitoolsDescribe() {
@@ -53,20 +57,16 @@ public final class DictionaryResource extends AbstractDictionaryResource {
 
     /**
      * get dictionary
-     *
-     * @param variant
-     *          client preferred media type
-     * @return Representation
      */
     @Get
-    public Dictionary retrieveDictionary(Variant variant) {
+    public Dictionary retrieveDictionary() throws ResourceException {
         try {
-            Dictionary dictionary = getStore().retrieve(getDictionaryId());
-            Response response;
+            Dictionary dictionary = getStore().retrieve(dictionaryId);
             if (dictionary != null) {
-                trace(Level.FINE, "Edit information for the dictionary " + dictionary.getName());
+                trace(Level.FINE, "Get information for the dictionary " + dictionary.getName());
             } else {
-                trace(Level.FINE, "Edit information for the dictionary " + getDictionaryId());
+                trace(Level.FINE, "Get information for the dictionary " + dictionaryId);
+                throw new ResourceException(Status.CLIENT_ERROR_NOT_FOUND, "Dictionary not found :" + dictionaryId);
             }
             return dictionary;
         } catch (ResourceException e) {
@@ -98,31 +98,24 @@ public final class DictionaryResource extends AbstractDictionaryResource {
 
     /**
      * Update existing dictionary
-     *
-     * @param representation
-     *          input
-     * @param variant
-     *          client preferred media type
-     * @return Representation
      */
     @Put
-    public Representation updateDictionary(Representation representation, Variant variant) {
+    public Dictionary updateDictionary(Dictionary dictionary) throws ResourceException {
         Dictionary dictionaryOutput = null;
         try {
-            if (representation != null) {
+            if (dictionary != null) {
                 // Parse object representation
-                Dictionary dictionaryInput = getObject(representation, variant);
-                Dictionary oldDictionary = getStore().retrieve(dictionaryInput.getId());
+                Dictionary oldDictionary = getStore().retrieve(dictionary.getId());
 
                 // Business service
-                dictionaryOutput = getStore().update(dictionaryInput);
+                dictionaryOutput = getStore().update(dictionary);
 
                 Map<String, Dictionary> map = new HashMap<String, Dictionary>();
                 map.put("oldDictionary", oldDictionary);
-                map.put("newDictionary", dictionaryInput);
+                map.put("newDictionary", dictionary);
 
                 Notification notification = new Notification();
-                notification.setObservable(getDictionaryId());
+                notification.setObservable(dictionaryId);
                 notification.setEvent("DICTIONARY_UPDATED");
                 notification.setMessage("dictionary.delete.success");
                 notification.setEventSource(map);
@@ -132,24 +125,19 @@ public final class DictionaryResource extends AbstractDictionaryResource {
 
             if (dictionaryOutput != null) {
                 trace(Level.INFO, "Update information for the dictionary " + dictionaryOutput.getName());
-                // Response
-                Response response = new Response(true, dictionaryOutput, Dictionary.class, "dictionary");
-                return getRepresentation(response, variant);
+                return dictionaryOutput;
 
             } else {
-                trace(Level.INFO, "Cannot update information for the dictionary - id: " + getDictionaryId());
-                // Response
-                Response response = new Response(false, "Can not validate dictionary");
-                return getRepresentation(response, variant);
-
+                trace(Level.INFO, "Cannot update information for the dictionary - id: " + dictionaryId);
+                throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
             }
 
         } catch (ResourceException e) {
-            trace(Level.INFO, "Cannot update information for the dictionary - id: " + getDictionaryId());
+            trace(Level.INFO, "Cannot update information for the dictionary - id: " + dictionaryId);
             getLogger().log(Level.INFO, null, e);
             throw e;
         } catch (Exception e) {
-            trace(Level.INFO, "Cannot update information for the dictionary - id: " + getDictionaryId());
+            trace(Level.INFO, "Cannot update information for the dictionary - id: " + dictionaryId);
             getLogger().log(Level.SEVERE, null, e);
             throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
         }
@@ -177,26 +165,18 @@ public final class DictionaryResource extends AbstractDictionaryResource {
 
     /**
      * Delete dictionary
-     *
-     * @param variant
-     *          client preferred media type
-     * @return Representation
      */
     @Delete
-    public Representation deleteDictionary(Variant variant) {
+    public void deleteDictionary() throws ResourceException {
         try {
-            Response response;
-            Dictionary dictionaryToDelete = getStore().retrieve(getDictionaryId());
+            Dictionary dictionaryToDelete = getStore().retrieve(dictionaryId);
             if (dictionaryToDelete != null) {
                 // Business service
-                getStore().delete(getDictionaryId());
-
-                // Response
-                response = new Response(true, "dictionary.delete.success");
+                getStore().delete(dictionaryId);
 
                 // Notify observers
                 Notification notification = new Notification();
-                notification.setObservable(getDictionaryId());
+                notification.setObservable(dictionaryId);
                 notification.setEvent("DICTIONARY_DELETED");
                 notification.setMessage("dictionary.delete.success");
                 notification.setStatus("DELETED");
@@ -204,20 +184,20 @@ public final class DictionaryResource extends AbstractDictionaryResource {
                 getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
 
                 trace(Level.INFO, "Delete the dictionary " + dictionaryToDelete.getName());
+                getResponse().setStatus(Status.SUCCESS_NO_CONTENT);
 
             } else {
-                // Response
-                response = new Response(false, "dictionary.delete.failure");
-                trace(Level.INFO, "Delete the dictionary - id:" + getDictionaryId());
+                String msg = "Error Delete the dictionary - not found id:" + dictionaryId;
+                trace(Level.INFO, msg);
+                throw new ResourceException(Status.CLIENT_ERROR_NOT_FOUND, msg);
             }
-            return getRepresentation(response, variant);
 
         } catch (ResourceException e) {
-            trace(Level.INFO, "Delete the dictionary - id:" + getDictionaryId());
+            trace(Level.INFO, "Delete the dictionary - id:" + dictionaryId);
             getLogger().log(Level.INFO, null, e);
             throw e;
         } catch (Exception e) {
-            trace(Level.INFO, "Delete the dictionary - id:" + getDictionaryId());
+            trace(Level.INFO, "Delete the dictionary - id:" + dictionaryId);
             getLogger().log(Level.SEVERE, null, e);
             throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
         }

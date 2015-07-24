@@ -45,7 +45,7 @@ import fr.cnes.sitools.common.resource.AbstractSitoolsResource;
 import fr.cnes.sitools.notification.model.Notification;
 
 /**
- * Standard representation of a response (XML / JSON) TODO standard HTML response with a FreeMarker template ...
+ * Standard representation of a response (XML / JSON)
  * 
  * @author AKKA Technologies
  * 
@@ -53,7 +53,7 @@ import fr.cnes.sitools.notification.model.Notification;
 public abstract class SitoolsResource extends AbstractSitoolsResource {
 
   /** Default Mediatype in representations */
-  public static final String DEFAULT_MEDIATYPE = "application/xml";
+  public static final String DEFAULT_MEDIATYPE = "application/json";
 
   /**
    * Initiate the resource

@@ -1,41 +1,39 @@
 /*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
- *
+ * <p/>
  * This file is part of SITools2.
- *
+ * <p/>
  * SITools2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p/>
  * SITools2 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p/>
  * You should have received a copy of the GNU General Public License
  * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package fr.cnes.sitools.dictionary;
 
+import fr.cnes.sitools.common.application.ContextAttributes;
+import fr.cnes.sitools.common.application.SitoolsApplication;
+import fr.cnes.sitools.common.model.Category;
 import fr.cnes.sitools.dictionary.resource.ConceptResource;
 import fr.cnes.sitools.dictionary.resource.DictionaryCollectionResource;
 import fr.cnes.sitools.dictionary.resource.DictionaryResource;
 import fr.cnes.sitools.dictionary.store.DictionaryStoreInterface;
+import fr.cnes.sitools.notification.business.NotifierFilter;
 import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.Restlet;
-import org.restlet.data.MediaType;
 import org.restlet.ext.wadl.ApplicationInfo;
 import org.restlet.ext.wadl.DocumentationInfo;
 import org.restlet.routing.Filter;
 import org.restlet.routing.Router;
-
-import fr.cnes.sitools.common.application.ContextAttributes;
-import fr.cnes.sitools.common.application.SitoolsApplication;
-import fr.cnes.sitools.common.model.Category;
-import fr.cnes.sitools.notification.business.NotifierFilter;
 
 /**
  * Application for managing dictionary
@@ -71,7 +69,6 @@ public final class DictionaryAdministration extends SitoolsApplication {
 
     @Override
     public Restlet createInboundRoot() {
-//        getMetadataService().addExtension(MediaType.APPLICATION_JAVA_OBJECT.getMainType(), MediaType.APPLICATION_JAVA_OBJECT);
         Router router = new Router(getContext());
 
         router.attachDefault(DictionaryCollectionResource.class);

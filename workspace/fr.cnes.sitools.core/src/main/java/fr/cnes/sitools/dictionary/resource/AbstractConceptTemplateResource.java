@@ -41,65 +41,12 @@ public abstract class AbstractConceptTemplateResource extends SitoolsResource {
   /** Store */
   private ConceptTemplateStoreInterface store = null;
   
-  /** Template id in the request */
-  private String templateId = null;
-  
-  /** Property id in the request */
-  private String propertyId = null;
 
   @Override
   public void doInit() {
     super.doInit();
 
-    // Declares the two variants supported
-    addVariant(new Variant(MediaType.APPLICATION_XML));
-    addVariant(new Variant(MediaType.APPLICATION_JSON));
-    addVariant(new Variant(MediaType.APPLICATION_JAVA_OBJECT));
-
     store = ((ConceptTemplateAdministration) getApplication()).getStore();
-
-    templateId = (String) this.getRequest().getAttributes().get("templateId");
-    propertyId = (String) this.getRequest().getAttributes().get("propertyId");
-  }
-
-  /**
-   * Decodes a representation to a ConceptTemplate object.
-   * 
-   * @param representation
-   *          Representation
-   * @param variant
-   *          Variant
-   * @return ConceptTemplate
-   */
-  public final ConceptTemplate getObject(Representation representation, Variant variant) {
-    ConceptTemplate templateInput = null;
-    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType()) ||
-            MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
-      // Parse the JSON representation to get the bean
-      try {
-        templateInput = new JacksonRepresentation<ConceptTemplate>(representation, ConceptTemplate.class).getObject();
-      } catch (IOException e) {
-        getContext().getLogger().severe(e.getMessage());
-      }
-    }
-
-    return templateInput;
-  }
-
-  /**
-   * Gets the propertyId value
-   * @return the propertyId
-   */
-  public final String getPropertyId() {
-    return propertyId;
-  }
-
-  /**
-   * Gets the templateId value
-   * @return the templateId
-   */
-  public final String getConceptTemplateId() {
-    return templateId;
   }
 
   /**

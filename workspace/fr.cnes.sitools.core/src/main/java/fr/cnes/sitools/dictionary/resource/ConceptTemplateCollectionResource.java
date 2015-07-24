@@ -21,22 +21,20 @@ package fr.cnes.sitools.dictionary.resource;
 import java.util.List;
 import java.util.logging.Level;
 
+import fr.cnes.sitools.common.resource.ListCollection;
 import org.restlet.data.Status;
 import org.restlet.ext.wadl.MethodInfo;
 import org.restlet.ext.wadl.ResponseInfo;
-import org.restlet.representation.Representation;
-import org.restlet.representation.Variant;
 import org.restlet.resource.Get;
 import org.restlet.resource.Post;
 import org.restlet.resource.ResourceException;
 
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
-import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.dictionary.model.ConceptTemplate;
 
 /**
  * Resource for concept template collection
- * 
+ *
  * @author jp.boignard (AKKA technologies)
  */
 public class ConceptTemplateCollectionResource extends AbstractConceptTemplateResource {
@@ -49,30 +47,19 @@ public class ConceptTemplateCollectionResource extends AbstractConceptTemplateRe
 
   /**
    * Create a new template
-   * 
-   * @param representation
-   *          input
-   * @param variant
-   *          client preferred media type
-   * @return Representation
    */
   @Post
-  public Representation newTemplate(Representation representation, Variant variant) {
-    if (representation == null) {
+  public ConceptTemplate newTemplate(ConceptTemplate input) throws ResourceException {
+    if (input == null) {
       throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "template_REPRESENTATION_REQUIRED");
     }
     try {
-      // Parse object representation
-      ConceptTemplate input = getObject(representation, variant);
-
       // Business service
       ConceptTemplate output = getStore().create(input);
 
       // Response
       trace(Level.INFO, "Create the dictionary structure " + output.getName());
-      Response response = new Response(true, output, ConceptTemplate.class, "template");
-      return getRepresentation(response, variant);
-
+      return output;
     }
     catch (ResourceException e) {
       trace(Level.INFO, "Cannot create the dictionary structure");
@@ -116,37 +103,16 @@ public class ConceptTemplateCollectionResource extends AbstractConceptTemplateRe
 
   /**
    * get all template
-   * 
-   * @param variant
-   *          client preferred media type
-   * @return Representation
    */
   @Get
-  public Representation retrieveTemplate(Variant variant) {
+  public ListCollection<ConceptTemplate> retrieveTemplate() throws ResourceException {
     try {
-      if (getConceptTemplateId() != null) {
-        ConceptTemplate template = getStore().retrieve(getConceptTemplateId());
-        Response response;
-        if (template != null) {
-          trace(Level.FINE, "Edit information for the dictionary structure " + template.getName());
-          response = new Response(true, template, ConceptTemplate.class, "template");
-        }
-        else {
-          trace(Level.INFO, "Cannot edit information for the dictionary structure " + getConceptTemplateId());
-          response = new Response(false, "cannot find dictionary stucture");
-        }
-        return getRepresentation(response, variant);
-      }
-      else {
         ResourceCollectionFilter filter = new ResourceCollectionFilter(this.getRequest());
         List<ConceptTemplate> templates = getStore().getList(filter);
         int total = templates.size();
         templates = getStore().getPage(filter, templates);
         trace(Level.FINE, "View available dictionary structures");
-        Response response = new Response(true, templates, ConceptTemplate.class, "templates");
-        response.setTotal(total);
-        return getRepresentation(response, variant);
-      }
+        return new ListCollection<ConceptTemplate>(templates, total);
     }
     catch (ResourceException e) {
       trace(Level.INFO, "Cannot view available dictionary structures");

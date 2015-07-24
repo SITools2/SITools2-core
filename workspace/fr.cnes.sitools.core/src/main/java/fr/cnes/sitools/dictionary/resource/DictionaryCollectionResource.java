@@ -21,17 +21,15 @@ package fr.cnes.sitools.dictionary.resource;
 import java.util.List;
 import java.util.logging.Level;
 
+import fr.cnes.sitools.common.resource.ListCollection;
 import org.restlet.data.Status;
 import org.restlet.ext.wadl.MethodInfo;
 import org.restlet.ext.wadl.ResponseInfo;
-import org.restlet.representation.Representation;
-import org.restlet.representation.Variant;
 import org.restlet.resource.Get;
 import org.restlet.resource.Post;
 import org.restlet.resource.ResourceException;
 
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
-import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.dictionary.model.Dictionary;
 import fr.cnes.sitools.notification.model.Notification;
 
@@ -52,24 +50,15 @@ public final class DictionaryCollectionResource extends AbstractDictionaryResour
 
   /**
    * Create a new dictionary
-   * 
-   * @param representation
-   *          input
-   * @param variant
-   *          client preferred media type
-   * @return Representation
    */
   @Post
-  public Representation newDictionary(Representation representation, Variant variant) {
-    if (representation == null) {
+  public Dictionary newDictionary(Dictionary dictionary) throws ResourceException {
+    if (dictionary == null) {
       throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "DICTIONARY_REPRESENTATION_REQUIRED");
     }
     try {
-      // Parse object representation
-      Dictionary dictionaryInput = getObject(representation, variant);
-
       // Business service
-      Dictionary dictionaryOutput = getStore().create(dictionaryInput);
+      Dictionary dictionaryOutput = getStore().create(dictionary);
 
       // Notify observers
       Notification notification = new Notification();
@@ -79,9 +68,9 @@ public final class DictionaryCollectionResource extends AbstractDictionaryResour
       getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
 
       trace(Level.INFO, "Create the dictionary " + dictionaryOutput.getName());
+
       // Response
-      Response response = new Response(true, dictionaryOutput, Dictionary.class, "dictionary");
-      return getRepresentation(response, variant);
+      return dictionaryOutput;
     }
     catch (ResourceException e) {
       trace(Level.INFO, "Cannot create the dictionary");
@@ -125,37 +114,16 @@ public final class DictionaryCollectionResource extends AbstractDictionaryResour
 
   /**
    * get all dictionary
-   * 
-   * @param variant
-   *          client preferred media type
-   * @return Representation
    */
   @Get
-  public Representation retrieveDictionary(Variant variant) {
+  public ListCollection<Dictionary> retrieveDictionary() throws ResourceException{
     try {
-      if (getDictionaryId() != null) {
-        Dictionary dictionary = getStore().retrieve(getDictionaryId());
-        Response response;
-        if (dictionary != null) {
-          trace(Level.FINE, "Edit information for the dictionary " + dictionary.getName());
-          response = new Response(true, dictionary, Dictionary.class, "dictionary");
-        }
-        else {
-          trace(Level.FINE, "Edit information for the dictionary " + getDictionaryId());
-          response = new Response(false, "cannot find dictionary");
-        }
-        return getRepresentation(response, variant);
-      }
-      else {
         ResourceCollectionFilter filter = new ResourceCollectionFilter(this.getRequest());
         List<Dictionary> dictionaries = getStore().getList(filter);
         int total = dictionaries.size();
         dictionaries = getStore().getPage(filter, dictionaries);
         trace(Level.FINE, "View available dictionaries");
-        Response response = new Response(true, dictionaries, Dictionary.class, "dictionaries");
-        response.setTotal(total);
-        return getRepresentation(response, variant);
-      }
+        return new ListCollection<Dictionary>(dictionaries, total);
     }
     catch (ResourceException e) {
       trace(Level.INFO, "Cannot view available dictionaries");
