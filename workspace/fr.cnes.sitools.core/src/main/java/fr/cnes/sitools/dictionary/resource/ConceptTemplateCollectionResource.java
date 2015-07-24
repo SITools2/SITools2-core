@@ -21,7 +21,6 @@ package fr.cnes.sitools.dictionary.resource;
 import java.util.List;
 import java.util.logging.Level;
 
-import fr.cnes.sitools.common.resource.ListCollection;
 import org.restlet.data.Status;
 import org.restlet.ext.wadl.MethodInfo;
 import org.restlet.ext.wadl.ResponseInfo;

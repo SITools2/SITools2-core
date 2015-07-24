@@ -1,11 +1,13 @@
-package fr.cnes.sitools.common.resource;
+package fr.cnes.sitools.dictionary.resource;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import fr.cnes.sitools.dictionary.model.ConceptTemplate;
 
 import java.util.List;
 
 public class ListCollection<T> {
 
+    @JsonProperty("data")
     private List<T> list;
 
     private int total;
