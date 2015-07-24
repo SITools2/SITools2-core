@@ -330,7 +330,7 @@ sitools.component.dictionary.dictionaryPropPanel = Ext.extend(Ext.Window, {
                     method : 'GET',
                     scope : this,
                     success : function (ret) {
-                        var data = Ext.decode(ret.responseText).dictionary;
+                        var data = Ext.decode(ret.responseText);
 
                         //load the form
                         var f = this.findById('dictionaryFormPanel').getForm();

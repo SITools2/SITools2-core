@@ -71,7 +71,7 @@ sitools.component.dictionary.gridPanel = Ext.extend(Ext.grid.EditorGridPanel, {
                     method : 'GET',
                     scope : this,
                     success : function (ret) {
-                        var data = Ext.decode(ret.responseText).dictionary;
+                        var data = Ext.decode(ret.responseText);
                         var nbConcepts = 0;
                         if (!Ext.isEmpty(data.concepts)) {
 							for (i = 0; i < data.concepts.length; i++) {

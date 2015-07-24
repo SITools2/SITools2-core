@@ -256,7 +256,7 @@ sitools.component.dictionary.templatePropPanel = Ext.extend(Ext.Window, {
                         var f = this.findByType('form')[0].getForm();
                         var store = this.findById('gridPropertySelect').getStore();
 
-                        var data = Ext.decode(ret.responseText).template;
+                        var data = Ext.decode(ret.responseText);
                         var rec = {};
                         rec.id = data.id;
                         rec.name = data.name;
