@@ -108,6 +108,7 @@ Ext.define('sitools.user.controller.component.datasets.services.ServicesControll
             columnModel : dataview.columns,
             store : dataview.getStore(),
             dataview : dataview,
+            serviceView : serviceView,
             origin : this.origin,
             record : record,
             columnAlias : columnAlias

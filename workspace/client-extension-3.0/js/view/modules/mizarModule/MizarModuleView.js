@@ -32,11 +32,51 @@ Ext.define('sitools.extension.view.modules.mizarModule.MizarModuleView', {
 
         Ext.each(this.moduleModel.listProjectModulesConfigStore.data.items, function (config) {
             switch (config.get('name')) {
-                case "configFile" :
-                    this.configFile = config.get('value');
+                case "startingLong" :
+                    this.startingLong = config.get('value');
+                    break;
+                case "startingLat" :
+                    this.startingLat = config.get('value');
+                    break;
+                case "startingZoom" :
+                    this.startingZoom = config.get('value');
+                    break;
+                case "angleDistance" :
+                    this.angleDistance = config.get('value');
+                    break;
+                case "samp" :
+                    this.samp = config.get('value');
+                    break;
+                case "shortenerUrl" :
+                    this.shortenerUrl = config.get('value');
+                    break;
+                case "2dMap" :
+                    this.twoDMap = config.get('value');
+                    break;
+                case "reverseNameResolver" :
+                    this.reverseNameResolver = config.get('value');
+                    break;
+                case "nameResolver" :
+                    this.nameResolver = config.get('value');
+                    break;
+                case "category" :
+                    this.category = config.get('value');
+                    break;
+                case "compass" :
+                    this.compass = config.get('value');
+                    break;
+                case "showCredits" :
+                    this.showCredits = config.get('value');
+                    break;
+                case "imageViewer" :
+                    this.imageViewer = config.get('value');
                     break;
             }
         }, this);
+
+        this.listeners = {
+
+        }
 
         this.items = [{
             layout: 'fit',
@@ -64,7 +104,6 @@ Ext.define('sitools.extension.view.modules.mizarModule.MizarModuleView', {
             preferencesFileName: this.id,
             xtype: this.$className
         };
-
     }
 
 });

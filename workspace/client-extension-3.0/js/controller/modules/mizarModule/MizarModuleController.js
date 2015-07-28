@@ -37,7 +37,8 @@ Ext.define('sitools.extension.controller.modules.mizarModule.MizarModuleControll
     init: function () {
         this.control({
             'mizarModuleView': {
-                afterrender: function () {
+                scope : this,
+                boxready: function (mizarView) {
                     var div = this.getDiv();
                     var options = {
                         "nameResolver": {
@@ -47,7 +48,7 @@ Ext.define('sitools.extension.controller.modules.mizarModule.MizarModuleControll
                     };
 
                     if (Ext.isEmpty(this.configFile)) {
-                        this.initMizar(div, options);
+                        this.initMizar(div, options, mizarView);
                     }
                     else {
                         Ext.Ajax.request({
@@ -61,12 +62,20 @@ Ext.define('sitools.extension.controller.modules.mizarModule.MizarModuleControll
                             }
                         });
                     }
+                },
+                destroy : function () {
+                    this.mizarWidget.sky.destroy();
+                    var layersToDestroy = this.mizarWidget.getLayers();
+                    Ext.each(layersToDestroy, function (layer) {
+                        this.mizarWidget.removeLayer(layer);
+                    });
                 }
+                //resize : this.fitCanvasToDiv
             }
         });
     },
 
-    initMizar: function (div, options) {
+    initMizar: function (div, options, mizarView) {
 
         mizarWidget = new MizarWidget(div, options);
 
@@ -88,7 +97,7 @@ Ext.define('sitools.extension.controller.modules.mizarModule.MizarModuleControll
             }
         });
 
-        oslayer = this.mizarWidget.addLayer({
+        this.geoJsonLayer = this.mizarWidget.addLayer({
             "category": "Other",
             "type": "GeoJSON",
             "name": "RESTO",
@@ -96,7 +105,7 @@ Ext.define('sitools.extension.controller.modules.mizarModule.MizarModuleControll
             //"serviceUrl": "http://localhost:8182/sitools/datastorage/user/storage",
             "data": {
                 "type": "JSON",
-                "url": "http://localhost:8182/features/geojson"
+                "url": "http://localhost:8182/resto_features/geojson"
             },
             //"availableServices": [ "OpenSearch" ],
             "visible": true,
@@ -104,5 +113,51 @@ Ext.define('sitools.extension.controller.modules.mizarModule.MizarModuleControll
             "color": "purple"
             //"minOrder": 3
         });
+
+        this.mizarWidget.sky.subscribe("endLoad", function (featureData) {
+            alert('toto quoi');
+        });
+        this.mizarWidget.subscribe("backgroundLayer:add", function (featureData) {
+            alert('toto quoi');
+        });
+
+        mizarView.geoJsonLayer = this.geoJsonLayer;
+
+        var applyGuiOptions = Ext.bind(function () {
+
+            // Set different GUIs
+            this.mizarWidget.setAngleDistanceGui(JSON.parse(mizarView.angleDistance));
+            this.mizarWidget.setSampGui(JSON.parse(mizarView.samp));
+            this.mizarWidget.setShortenerUrlGui(JSON.parse(mizarView.shortenerUrl));
+            this.mizarWidget.set2dMapGui(JSON.parse(mizarView.twoDMap));
+            this.mizarWidget.setReverseNameResolverGui(JSON.parse(mizarView.reverseNameResolver));
+            this.mizarWidget.setNameResolverGui(JSON.parse(mizarView.nameResolver));
+            this.mizarWidget.setCategoryGui(JSON.parse(mizarView.category));
+            this.mizarWidget.setCompassGui(JSON.parse(mizarView.compass));
+            this.mizarWidget.setShowCredits(JSON.parse(mizarView.showCredits));
+            this.mizarWidget.setImageViewerGui(JSON.parse(mizarView.imageViewer));
+
+            var startingPoint = [mizarView.startingLong, mizarView.startingLat];
+            mizarWidget.navigation.zoomTo(startingPoint, mizarView.startingZoom);
+
+        }, this);
+
+
+        //$("#mizarModule").on("load", applyGuiOptions);
     },
+
+    fitCanvasToDiv : function (mizarView, width, height, oldWidth, oldHeight) {
+
+        var globWebCanvas = Ext.get('GlobWebCanvas');
+        globWebCanvas.setHeight(height);
+        globWebCanvas.setWidth(width);
+    },
+
+    destroyMizar : function () {
+        Ext.each(this.mizarWidget.getLayers(), function (layer) {
+           layer.removeAllFeatures();
+           layer.detach();
+        });
+        this.mizarWidget.sky.destroy();
+    }
 });
