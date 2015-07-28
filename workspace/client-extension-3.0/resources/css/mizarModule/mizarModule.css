@@ -4,6 +4,10 @@
 
 
 
-#selectedFeatureDiv {
-    z-index : 10000;
+.ui-widget-content {
+    z-index : 20000;
+}
+
+.nameResolverResult {
+    color:white;
 }

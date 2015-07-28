@@ -60,7 +60,7 @@ Ext.define('sitools.extension.modules.MizarModule', {
                             });
                         }
                     },
-                    name: "startLat",
+                    name: "startingLat",
                     value: undefined
                 }
             }, {
@@ -77,7 +77,7 @@ Ext.define('sitools.extension.modules.MizarModule', {
                             });
                         }
                     },
-                    name: "startLat",
+                    name: "startingZoom",
                     value: undefined
                 }
             }, {

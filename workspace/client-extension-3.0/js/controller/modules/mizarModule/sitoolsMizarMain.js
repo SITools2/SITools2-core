@@ -65,8 +65,13 @@ require.config({
 /**
  * Mizar widget main
  */
-require(["MizarWidget", "PickingManager", "Utils"], function(mizarWidget, pickingManager, utils) {
+require(["MizarWidget", "PickingManager", "Utils",  "NameResolverView", "ReverseNameResolverView", "NameResolver", "LayerManagerView"], function(mizarWidget, pickingManager, utils, nameResolverView, reverseNameResolverView, nameResolver, layerManagerView ) {
 	MizarWidget = mizarWidget;
-	PickingManager = pickingManager;
-	Utils = utils;
+	MizarGlobal = {};
+	MizarGlobal.pickingManager = pickingManager;
+	MizarGlobal.utils = utils;
+	MizarGlobal.nameResolverView = nameResolverView;
+	MizarGlobal.reverseNameResolverView = reverseNameResolverView;
+	MizarGlobal.nameResolver = nameResolver;
+	MizarGlobal.layerManagerView = layerManagerView;
 });

@@ -88,7 +88,7 @@ Ext.define('sitools.extension.component.datasets.services.MizarMappingService', 
     selectRecordInGrid: function (event) {
         var pickPoint = mizarWidget.navigation.globe.getLonLatFromPixel(event.layerX, event.layerY);
 
-        var selections = PickingManager.computePickSelection(pickPoint);
+        var selections = MizarGlobal.pickingManager.computePickSelection(pickPoint);
 
         if (selections.length > 0) {
             this.dataview.getSelectionModel().deselectAll();
@@ -113,7 +113,7 @@ Ext.define('sitools.extension.component.datasets.services.MizarMappingService', 
 
         Ext.each(features, function (feature, index) {
             if (feature.id == record.get(primaryKey)) {
-                var coordBary = Utils.computeGeometryBarycenter(feature.geometry);
+                var coordBary = MizarGlobal.utils.computeGeometryBarycenter(feature.geometry);
                 var coord = mizarWidget.sky.coordinateSystem.fromGeoToEquatorial(coordBary, null, false);
                 this.focusRecordOnMap(coord, feature);
             }

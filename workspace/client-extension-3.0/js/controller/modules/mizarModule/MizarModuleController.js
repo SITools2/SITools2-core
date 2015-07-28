@@ -62,15 +62,10 @@ Ext.define('sitools.extension.controller.modules.mizarModule.MizarModuleControll
                             }
                         });
                     }
-                },
-                destroy : function () {
-                    this.mizarWidget.sky.destroy();
-                    var layersToDestroy = this.mizarWidget.getLayers();
-                    Ext.each(layersToDestroy, function (layer) {
-                        this.mizarWidget.removeLayer(layer);
-                    });
-                },
-                resize : this.fitCanvasToDiv
+
+                    mizarView.up("component[specificType=moduleWindow]").on("beforedestroy", this.destroyMizar, this);
+                    mizarView.up("component[specificType=moduleWindow]").on("resize", this.fitCanvasToDiv, this);
+                }
             }
         });
     },
@@ -81,21 +76,30 @@ Ext.define('sitools.extension.controller.modules.mizarModule.MizarModuleControll
 
         this.mizarWidget = mizarWidget;
 
-        this.mizarWidget.setNameResolverGui(true);
-        this.mizarWidget.setReverseNameResolverGui(true);
-        this.mizarWidget.set2dMapGui(true);
-        this.mizarWidget.setCompassGui(true);
-        this.mizarWidget.setCategoryGui(true);
-        mizar.setShowCredits(false);
+        // Set different GUIs
+        this.mizarWidget.setAngleDistanceGui(JSON.parse(mizarView.angleDistance));
+        this.mizarWidget.setSampGui(JSON.parse(mizarView.samp));
+        this.mizarWidget.setShortenerUrlGui(JSON.parse(mizarView.shortenerUrl));
+        this.mizarWidget.set2dMapGui(JSON.parse(mizarView.twoDMap));
+        this.mizarWidget.setReverseNameResolverGui(JSON.parse(mizarView.reverseNameResolver));
+        this.mizarWidget.setNameResolverGui(JSON.parse(mizarView.nameResolver));
+        this.mizarWidget.setShowCredits(JSON.parse(mizarView.showCredits));
 
-        $('#toggleCompass').click(function () {
-            if ($(this).is(":checked")) {
-                this.mizarWidget.setCompassGui(true);
-            }
-            else {
-                this.mizarWidget.setCompassGui(false);
-            }
-        });
+        var startingPoint = [mizarView.startingLong, mizarView.startingLat];
+        mizarWidget.navigation.zoomTo(startingPoint, mizarView.startingZoom);
+
+        //Unprotected setter properties !!!!! Cannot be called with false value
+        if(JSON.parse(mizarView.category)) {
+            this.mizarWidget.setCategoryGui(JSON.parse(mizarView.category));
+        }
+
+        if(JSON.parse(mizarView.compass)) {
+            this.mizarWidget.setCompassGui(JSON.parse(mizarView.compass));
+        }
+
+        if(JSON.parse(JSON.parse(mizarView.imageViewer))) {
+            this.mizarWidget.setImageViewerGui(JSON.parse(mizarView.imageViewer));
+        }
 
         this.geoJsonLayer = this.mizarWidget.addLayer({
             "category": "Other",
@@ -123,44 +127,45 @@ Ext.define('sitools.extension.controller.modules.mizarModule.MizarModuleControll
 
         mizarView.geoJsonLayer = this.geoJsonLayer;
 
-        var applyGuiOptions = Ext.bind(function () {
-
-            // Set different GUIs
-            this.mizarWidget.setAngleDistanceGui(JSON.parse(mizarView.angleDistance));
-            this.mizarWidget.setSampGui(JSON.parse(mizarView.samp));
-            this.mizarWidget.setShortenerUrlGui(JSON.parse(mizarView.shortenerUrl));
-            this.mizarWidget.set2dMapGui(JSON.parse(mizarView.twoDMap));
-            this.mizarWidget.setReverseNameResolverGui(JSON.parse(mizarView.reverseNameResolver));
-            this.mizarWidget.setNameResolverGui(JSON.parse(mizarView.nameResolver));
-            this.mizarWidget.setCategoryGui(JSON.parse(mizarView.category));
-            this.mizarWidget.setCompassGui(JSON.parse(mizarView.compass));
-            this.mizarWidget.setShowCredits(JSON.parse(mizarView.showCredits));
-            this.mizarWidget.setImageViewerGui(JSON.parse(mizarView.imageViewer));
-
-            var startingPoint = [mizarView.startingLong, mizarView.startingLat];
-            mizarWidget.navigation.zoomTo(startingPoint, mizarView.startingZoom);
-
-        }, this);
-
-
         //$("#mizarModule").on("load", applyGuiOptions);
     },
 
-    fitCanvasToDiv : function (mizarView, width, height, oldWidth, oldHeight) {
+    fitCanvasToDiv : function (moduleContainer, width, height, oldWidth, oldHeight) {
+
+        var mizarDiv = moduleContainer.down("mizarModuleView");
 
         var globWebCanvas = Ext.get('GlobWebCanvas');
         globWebCanvas.set({
-            "height":height,
-            "width":width
+            "height":mizarDiv.getHeight(),
+            "width":mizarDiv.getWidth()
         });
         this.mizarWidget.sky.refresh();
     },
 
-    destroyMizar : function () {
-        Ext.each(this.mizarWidget.getLayers(), function (layer) {
-           layer.removeAllFeatures();
-           layer.detach();
-        });
+    destroyMizar : function (moduleContainer) {
+
+        var layers = this.mizarWidget.getLayers();
+
+        for (var i = 0; i < layers.length; i++) {
+            console.dir(layers[i]);
+            try {
+                this.mizarWidget.removeLayer(layers[i]);
+            }catch(e) {
+                console.dir(e);
+            }
+            console.log("removed");
+        }
+
+        MizarGlobal.nameResolverView.remove();
+        MizarGlobal.reverseNameResolverView.remove();
+        MizarGlobal.nameResolver.remove();
+        MizarGlobal.layerManagerView.remove();
+
+
+        Ext.get("selectedFeatureDiv").destroy();
+
+
         this.mizarWidget.sky.destroy();
+        console.log("destroyed");
     }
 });
