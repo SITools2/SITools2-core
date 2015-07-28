@@ -69,8 +69,8 @@ Ext.define('sitools.extension.controller.modules.mizarModule.MizarModuleControll
                     Ext.each(layersToDestroy, function (layer) {
                         this.mizarWidget.removeLayer(layer);
                     });
-                }
-                //resize : this.fitCanvasToDiv
+                },
+                resize : this.fitCanvasToDiv
             }
         });
     },
@@ -149,8 +149,11 @@ Ext.define('sitools.extension.controller.modules.mizarModule.MizarModuleControll
     fitCanvasToDiv : function (mizarView, width, height, oldWidth, oldHeight) {
 
         var globWebCanvas = Ext.get('GlobWebCanvas');
-        globWebCanvas.setHeight(height);
-        globWebCanvas.setWidth(width);
+        globWebCanvas.set({
+            "height":height,
+            "width":width
+        });
+        this.mizarWidget.sky.refresh();
     },
 
     destroyMizar : function () {
