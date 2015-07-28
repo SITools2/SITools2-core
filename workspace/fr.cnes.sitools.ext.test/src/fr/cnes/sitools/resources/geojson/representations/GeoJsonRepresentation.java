@@ -39,6 +39,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
 
 /**
  * Produce a GeoJson representation from a DatabaseRequest, a geometry column
@@ -54,6 +55,9 @@ public class GeoJsonRepresentation extends WriterRepresentation {
     private String geometryColName;
     /** The converters to apply */
     private ConverterChained converterChained;
+
+    /** The Context */
+    private Context context;
 
     private static ObjectMapper mapper = new ObjectMapper(); // can reuse, share
 
@@ -79,6 +83,7 @@ public class GeoJsonRepresentation extends WriterRepresentation {
         this.geometryColName = geometryColName;
         this.converterChained = converterChained;
         this.primaryKey = getPrimaryKeyColumnName(dataset);
+        this.context = context;
     }
 
     /**
@@ -190,6 +195,19 @@ public class GeoJsonRepresentation extends WriterRepresentation {
             jGenerator.flush();
             // end global object
             writer.flush();
+
+            if (databaseRequest != null) {
+                try {
+                    databaseRequest.close();
+                }
+                catch (SitoolsException e) {
+                    context.getLogger().log(Level.SEVERE, "Cannot close database request", e);
+                }
+            }
+
+            if (writer != null) {
+                writer.close();
+            }
         }
     }
 }
