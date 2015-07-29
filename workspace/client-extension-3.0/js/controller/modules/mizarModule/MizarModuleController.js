@@ -100,34 +100,6 @@ Ext.define('sitools.extension.controller.modules.mizarModule.MizarModuleControll
         if(JSON.parse(JSON.parse(mizarView.imageViewer))) {
             this.mizarWidget.setImageViewerGui(JSON.parse(mizarView.imageViewer));
         }
-
-        this.geoJsonLayer = this.mizarWidget.addLayer({
-            "category": "Other",
-            "type": "GeoJSON",
-            "name": "RESTO",
-            //"serviceUrl": "http://localhost:8182/proxy_resto",
-            //"serviceUrl": "http://localhost:8182/sitools/datastorage/user/storage",
-            "data": {
-                "type": "JSON",
-                "url": "http://localhost:8182/resto_features/geojson"
-            },
-            //"availableServices": [ "OpenSearch" ],
-            "visible": true,
-            "pickable": true,
-            "color": "purple"
-            //"minOrder": 3
-        });
-
-        this.mizarWidget.sky.subscribe("endLoad", function (featureData) {
-            alert('toto quoi');
-        });
-        this.mizarWidget.subscribe("backgroundLayer:add", function (featureData) {
-            alert('toto quoi');
-        });
-
-        mizarView.geoJsonLayer = this.geoJsonLayer;
-
-        //$("#mizarModule").on("load", applyGuiOptions);
     },
 
     fitCanvasToDiv : function (moduleContainer, width, height, oldWidth, oldHeight) {

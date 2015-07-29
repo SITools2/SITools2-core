@@ -4,7 +4,8 @@ Ext.define('sitools.extension.modules.MizarModule', {
     extend: 'sitools.user.core.Module',
 
     pluginName: 'mizarModule',
-    requires: ['sitools.user.utils.I18nRegistry'],
+    requires: ['sitools.user.utils.I18nRegistry',
+                'sitools.extension.utils.MizarUtils'],
 
     // PRODUCTION MODE
     //js: ["/sitools/client-extension/js/controller/modules/mizarModule/src/mizar/MizarWidget.min.js"],

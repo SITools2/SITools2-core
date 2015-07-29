@@ -46,9 +46,9 @@ Ext.define('sitools.extension.component.datasets.services.MizarMappingService', 
                 config: {
                     anchor: "100%",
                     fieldLabel: i18n.get("label.GeoJSONPostGisResourceModel"),
-                    labelWidth : 150,
-                    value: "",
-                    name: "/geojson"
+                    labelWidth: 150,
+                    value: "/geojson",
+                    name: "geojsonResource"
                 }
             }];
         }
@@ -72,70 +72,172 @@ Ext.define('sitools.extension.component.datasets.services.MizarMappingService', 
         this.dataset = config.dataview.dataset;
         this.dataview = config.dataview;
         this.datasetCm = config.dataview.columns;
-        this.mizarServiceButton = config.serviceView.down('button[idService=' + config.id +']');
+        this.mizarServiceButton = config.serviceView.down('button[idService=' + config.id + ']');
+
+        //add layer to Mizar
+        Ext.each(config.parameters, function (config) {
+            switch (config.name) {
+                case "geojsonResource" :
+                    this.geojsonResource = config.value;
+                    break;
+            }
+        }, this);
+        //service url
+        var geojsonUrl = this.dataset.sitoolsAttachementForUsers + this.geojsonResource;
+
+        var layer = mizarWidget.getLayer(this.dataset.name);
+        if (Ext.isEmpty(layer)) {
+
+            //layer = mizarWidget.addLayer({
+            //    "category": "Other",
+            //    "type": "DynamicOpenSearch",
+            //    "name": this.dataset.name,
+            //    "serviceUrl": geojsonUrl,
+            //    //"data": {
+            //    //    "type": "JSON",
+            //    //    "url": geojsonUrl
+            //    //},
+            //    "availableServices": [ "OpenSearch" ],
+            //    "visible": true,
+            //    "pickable": true,
+            //    "minOrder": 3
+            //});
+
+            layer = mizarWidget.addLayer({
+                "category": "Other",
+                "type": "GeoJSON",
+                "name": this.dataset.name,
+                //"serviceUrl": "http://localhost:8182/proxy_resto",
+                //"data": {
+                //    "type": "JSON",
+                //    "url": geojsonUrl
+                //},
+                //"availableServices": [ "OpenSearch" ],
+                "visible": true,
+                "pickable": true
+                //"minOrder": 3
+            });
+
+            //layer.subscribe("endLoad", function(layer){
+            //    // Show received features
+            //    console.dir(arguments);
+            //    //mizarUtils.zoomTo(layer);
+            //});
+
+
+            Ext.Ajax.request({
+                url: geojsonUrl,
+                method: 'GET',
+                success: function (ret) {
+                    var response = Ext.decode(ret.responseText);
+                    MizarGlobal.jsonProcessor.handleFeatureCollection(layer, response);
+                    layer.addFeatureCollection(response);
+                    mizarUtils.zoomTo(layer);
+                }
+            })
+
+
+        }
+        else {
+            // show layer
+            layer.visible(true);
+            mizarUtils.zoomTo(layer);
+        }
 
         this.isMizarLinked = this.linkMizarWithGrid();
 
     },
 
-    linkMizarWithGrid : function () {
-        this.dataview.getSelectionModel().addListener('select', this.selectRecordOnMap, this);
-        this.dataview.getSelectionModel().addListener('deselect', this.deselectRecordOnMap, this);
+    linkMizarWithGrid: function () {
+        this.dataview.addListener('selectionchange', this.selectRecordOnMap, this);
         mizarWidget.navigation.renderContext.canvas.addEventListener('mouseup', Ext.bind(this.selectRecordInGrid, this));
         popupMessage("", this.i18nMizarMappingService.get('label.mizarSuccessfullyMapped'), null, "x-info");
     },
 
     selectRecordInGrid: function (event) {
+        console.log("selectRecordInGrid");
         var pickPoint = mizarWidget.navigation.globe.getLonLatFromPixel(event.layerX, event.layerY);
 
         var selections = MizarGlobal.pickingManager.computePickSelection(pickPoint);
+        var recordsIndex = [];
 
         if (selections.length > 0) {
-            this.dataview.getSelectionModel().deselectAll();
+            var primaryKey = this.dataview.getStore().primaryKey;
             Ext.each(selections, function (selection) {
-
-                var primaryKey = this.dataview.getStore().primaryKey;
                 var recordIndex = this.dataview.getStore().findBy(function (record) {
                     if (record.get(primaryKey) === selection.feature.id) {
                         return true;
                     }
                 }, this);
-                var record = this.dataview.getStore().getAt(recordIndex);
-                this.dataview.getSelectionModel().select(record, true, true);
+                recordsIndex.push(recordIndex);
             }, this);
+        }
+        this.dataview.getSelectionModel().select(recordsIndex, false, true);
+        //update the selection info on livegrid toolbar if it exists
+        var livegridToolbar = this.dataview.down("livegridpagingtoolbar");
+        if (livegridToolbar) {
+            livegridToolbar.updateSelectionInfo();
         }
     },
 
-    selectRecordOnMap: function (checkModel, recordIndex) {
-        var features = mizarWidget.getLayer("RESTO").features;
+    selectRecordOnMap: function (selectionModel, recordsIndex) {
+        console.log("selectRecordOnMap");
+        MizarGlobal.pickingManager.doClearSelection();
+        if (Ext.isEmpty(recordsIndex)) {
+            return;
+        }
+        MizarGlobal.pickingManager.deactivate();
+        var layer = mizarWidget.getLayer(this.dataset.name);
+        if (Ext.isEmpty(layer)) {
+            return;
+        }
+
+        var features = layer.features;
         var primaryKey = this.dataview.getStore().primaryKey;
-        var record = this.dataview.getStore().getAt(recordIndex);
+        var isAllSelected = this.dataview.isAllSelected();
 
-        Ext.each(features, function (feature, index) {
-            if (feature.id == record.get(primaryKey)) {
-                var coordBary = MizarGlobal.utils.computeGeometryBarycenter(feature.geometry);
-                var coord = mizarWidget.sky.coordinateSystem.fromGeoToEquatorial(coordBary, null, false);
-                this.focusRecordOnMap(coord, feature);
+
+        var mizarFeatureMap = new Ext.util.MixedCollection({
+            'getKey': function (obj) {
+                return obj.id;
             }
-        }, this);
+        });
+        mizarFeatureMap.addAll(features);
+
+        var featuresSelected = [];
+        if (isAllSelected) {
+            mizarFeatureMap.each(function (feature) {
+                this._selectOnMap(feature, layer);
+                featuresSelected = mizarFeatureMap.items;
+            }, this);
+        }
+        else {
+            Ext.each(recordsIndex, function (recordIndex) {
+                var record = this.dataview.getStore().getAt(recordIndex);
+                if (Ext.isEmpty(record)) {
+                    return;
+                }
+                var feature = mizarFeatureMap.get(record.get(primaryKey));
+                if (!Ext.isEmpty(feature)) {
+                    this._selectOnMap(feature, layer);
+                    featuresSelected.push(feature);
+                }
+            }, this);
+        }
+
+
+        var barycenter = mizarUtils.computeGeometryBarycenter(featuresSelected);
+        var coord = mizarWidget.sky.coordinateSystem.fromGeoToEquatorial(barycenter, null, false);
+
+        mizarWidget.navigation.zoomTo(coord, 2.0, 0.1, MizarGlobal.pickingManager.activate);
     },
 
-    focusRecordOnMap: function (coordinates, featureToSelect) {
-        var formatCoord = coordinates[0] + " " + coordinates[1];
-
-        var highLightFonction = Ext.bind(function () {
-            mizarWidget.highlightObservation({
-                feature: featureToSelect,
-                layer: this.mizarView.geoJsonLayer
-            }, {
-                color: "green"
-            });
-        }, this);
-
-        mizarWidget.goTo(formatCoord, highLightFonction);
-    },
-
-    deselectRecordOnMap : function () {
-
+    _selectOnMap: function (feature, layer) {
+        mizarWidget.highlightObservation({
+            feature: feature,
+            layer: layer
+        }, {
+            isExclusive: false
+        });
     }
 });
