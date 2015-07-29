@@ -150,12 +150,30 @@ Ext.define('sitools.extension.component.datasets.services.MizarMappingService', 
 
     linkMizarWithGrid: function () {
         this.dataview.addListener('selectionchange', this.selectRecordOnMap, this);
+        mizarWidget.navigation.renderContext.canvas.addEventListener('mousedown', Ext.bind(this.mousedown, this));
         mizarWidget.navigation.renderContext.canvas.addEventListener('mouseup', Ext.bind(this.selectRecordInGrid, this));
         popupMessage("", this.i18nMizarMappingService.get('label.mizarSuccessfullyMapped'), null, "x-info");
     },
 
+    mousedown: function (event) {
+        this.timeStart = new Date();
+        this.mouseXStart = event.layerX;
+        this.mouseYStart = event.layerY;
+    },
+
     selectRecordInGrid: function (event) {
-        console.log("selectRecordInGrid");
+        var epsilon = 5;
+        var timeEnd = new Date();
+        var diff = timeEnd - this.timeStart;
+
+        if ( diff > 500 || Math.abs(this.mouseXStart - event.layerX) > epsilon || Math.abs(this.mouseYStart - event.layerY) > epsilon ) {
+            return;
+        }
+
+        this.timeStart = undefined;
+        this.mouseXStart = undefined;
+        this.mouseYStart = undefined;
+
         var pickPoint = mizarWidget.navigation.globe.getLonLatFromPixel(event.layerX, event.layerY);
 
         var selections = MizarGlobal.pickingManager.computePickSelection(pickPoint);
@@ -181,7 +199,6 @@ Ext.define('sitools.extension.component.datasets.services.MizarMappingService', 
     },
 
     selectRecordOnMap: function (selectionModel, recordsIndex) {
-        console.log("selectRecordOnMap");
         MizarGlobal.pickingManager.doClearSelection();
         if (Ext.isEmpty(recordsIndex)) {
             return;
