@@ -1,0 +1,16 @@
+<projectModule>
+  <id>f90f7090-055f-4fde-ad1b-dda8df560926</id>
+  <name>Mizar</name>
+  <description>Mizar</description>
+  <label>mizar</label>
+  <author>JCM</author>
+  <version>1.0</version>
+  <title>mizar</title>
+  <defaultWidth>500</defaultWidth>
+  <defaultHeight>500</defaultHeight>
+  <x>0</x>
+  <y>0</y>
+  <icon>mizar</icon>
+  <xtype>sitools.extension.modules.MizarModule</xtype>
+  <priority>1</priority>
+</projectModule>

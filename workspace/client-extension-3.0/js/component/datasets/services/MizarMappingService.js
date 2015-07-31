@@ -50,7 +50,18 @@ Ext.define('sitools.extension.component.datasets.services.MizarMappingService', 
                     value: "/geojson",
                     name: "geojsonResource"
                 }
-            }];
+            },
+                {
+                    jsObj: "Ext.form.field.Text",
+                    config: {
+                        anchor: "100%",
+                        fieldLabel: i18n.get("label.mocResource"),
+                        labelWidth: 150,
+                        value: "/moc",
+                        name: "mocResource"
+                    }
+                }
+            ];
         }
     },
 
@@ -80,10 +91,14 @@ Ext.define('sitools.extension.component.datasets.services.MizarMappingService', 
                 case "geojsonResource" :
                     this.geojsonResource = config.value;
                     break;
+                case "mocResource" :
+                    this.mocResource = config.value;
+                    break;
             }
         }, this);
         //service url
         var geojsonUrl = this.dataset.sitoolsAttachementForUsers + this.geojsonResource;
+        var mocUrl = this.dataset.sitoolsAttachementForUsers + this.mocResource;
 
         var layer = mizarWidget.getLayer(this.dataset.name);
         if (Ext.isEmpty(layer)) {
@@ -121,9 +136,8 @@ Ext.define('sitools.extension.component.datasets.services.MizarMappingService', 
             mocDesc = {
                 "category": "Other",
                 "type": "Moc",
-                "name": "My MOC",
-                "description": "my MOC description",
-                "serviceUrl": "http://localhost:8182/resto_features/moc",
+                "name": this.dataset.name + "_MOC",
+                "serviceUrl": mocUrl,
                 "visible": "true"
             };
             mizarWidget.addLayer(mocDesc);
