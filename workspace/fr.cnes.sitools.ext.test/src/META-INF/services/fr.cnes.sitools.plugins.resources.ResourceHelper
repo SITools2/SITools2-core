@@ -14,3 +14,4 @@ fr.cnes.sitools.resources.order.cart.streaming.StreamingOrderResourceModel
 fr.cnes.sitools.resources.order.cart.wget.WgetListFileOrderResourceModel
 fr.cnes.sitools.resources.order.cart.wget.WgetArchiveOrderResourceModel
 fr.cnes.sitools.resources.geojson.GeoJSONPostGisResourceModel
+fr.cnes.sitools.resources.healpix.MocResourceModel

@@ -118,6 +118,16 @@ Ext.define('sitools.extension.component.datasets.services.MizarMappingService', 
                 //"minOrder": 3
             });
 
+            mocDesc = {
+                "category": "Other",
+                "type": "Moc",
+                "name": "My MOC",
+                "description": "my MOC description",
+                "serviceUrl": "http://localhost:8182/resto_features/moc",
+                "visible": "true"
+            };
+            mizarWidget.addLayer(mocDesc);
+
             //layer.subscribe("endLoad", function(layer){
             //    // Show received features
             //    console.dir(arguments);
