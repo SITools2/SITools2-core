@@ -87,6 +87,8 @@
 	<property name="test.data.dir" value="${test.dir}/data" />
 	<property name="root.data.dir" value="${ROOT_DIRECTORY}/data" />
 
+	<property name="extension.dir" value="${ROOT_DIRECTORY}/extensions" />
+
 	<!-- Repertoires destination pour la construction de l'application  -->
 	<property name="out.dir" value="out" />
 	<!--property name="out.dir"                 value="web/WEB-INF/"/-->
@@ -129,6 +131,7 @@
 		<pathelement location="${comp.cp.dir}/fr.cnes.sitools.core.jar" />
 		<path refid="restlet_jse_2_0_5_patched" />
 		<path refid="sitools_libraries" />
+		<pathelement location="${extension.dir}/astronomy/fr.cnes.sitools.ext.astronomy/dist/fr.cnes.sitools.ext.astronomy.jar" />
 	</path>
 	
 	<!-- Classpath pour l'execution des tests -->
