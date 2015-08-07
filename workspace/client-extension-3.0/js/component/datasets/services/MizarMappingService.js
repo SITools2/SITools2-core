@@ -41,16 +41,17 @@ Ext.define('sitools.extension.component.datasets.services.MizarMappingService', 
 
     statics: {
         getParameters: function () {
-            return [{
-                jsObj: "Ext.form.field.Text",
-                config: {
-                    anchor: "100%",
-                    fieldLabel: i18n.get("label.GeoJSONPostGisResourceModel"),
-                    labelWidth: 150,
-                    value: "/geojson",
-                    name: "geojsonResource"
-                }
-            },
+            return [
+                {
+                    jsObj: "Ext.form.field.Text",
+                    config: {
+                        anchor: "100%",
+                        fieldLabel: i18n.get("label.GeoJSONPostGisResourceModel"),
+                        labelWidth: 150,
+                        value: "/geojson",
+                        name: "geojsonResource"
+                    }
+                },
                 {
                     jsObj: "Ext.form.field.Text",
                     config: {
@@ -59,6 +60,16 @@ Ext.define('sitools.extension.component.datasets.services.MizarMappingService', 
                         labelWidth: 150,
                         value: "/moc",
                         name: "mocResource"
+                    }
+                },
+                {
+                    jsObj: "Ext.form.field.Text",
+                    config: {
+                        anchor: "100%",
+                        fieldLabel: i18n.get("label.opensearchResource"),
+                        labelWidth: 150,
+                        value: "/geojson",
+                        name: "opensearchResource"
                     }
                 }
             ];
@@ -85,80 +96,99 @@ Ext.define('sitools.extension.component.datasets.services.MizarMappingService', 
         this.datasetCm = config.dataview.columns;
         this.mizarServiceButton = config.serviceView.down('button[idService=' + config.id + ']');
 
+        var hasGeojson, hasMoc, hasOpensearch;
+
         //add layer to Mizar
         Ext.each(config.parameters, function (config) {
             switch (config.name) {
                 case "geojsonResource" :
-                    this.geojsonResource = config.value;
+                    if(config.value) {
+                        this.geojsonResource = config.value;
+                        hasGeojson = true;
+                    }
                     break;
                 case "mocResource" :
-                    this.mocResource = config.value;
+                    if(config.value) {
+                        this.mocResource = config.value;
+                        hasMoc = true;
+                    }
+                    break;
+                case "opensearchResource" :
+                    if(config.value) {
+                        this.opensearchResource = config.value;
+                        hasOpensearch = true;
+                    }
                     break;
             }
         }, this);
+
         //service url
         var geojsonUrl = this.dataset.sitoolsAttachementForUsers + this.geojsonResource;
         var mocUrl = this.dataset.sitoolsAttachementForUsers + this.mocResource;
+        var opensearchUrl = this.dataset.sitoolsAttachementForUsers + this.opensearchResource;
 
         var layer = mizarWidget.getLayer(this.dataset.name);
         if (Ext.isEmpty(layer)) {
 
-            //layer = mizarWidget.addLayer({
-            //    "category": "Other",
-            //    "type": "DynamicOpenSearch",
-            //    "name": this.dataset.name,
-            //    "serviceUrl": geojsonUrl,
-            //    //"data": {
-            //    //    "type": "JSON",
-            //    //    "url": geojsonUrl
-            //    //},
-            //    "availableServices": [ "OpenSearch" ],
-            //    "visible": true,
-            //    "pickable": true,
-            //    "minOrder": 3
-            //});
 
-            layer = mizarWidget.addLayer({
-                "category": "Other",
-                "type": "GeoJSON",
-                "name": this.dataset.name,
-                //"serviceUrl": "http://localhost:8182/proxy_resto",
-                //"data": {
-                //    "type": "JSON",
-                //    "url": geojsonUrl
-                //},
-                //"availableServices": [ "OpenSearch" ],
-                "visible": true,
-                "pickable": true
-                //"minOrder": 3
-            });
+            if (hasOpensearch) {
+                //OPENSEARCH LAYER
+                layer = mizarWidget.addLayer({
+                    "category": "Other",
+                    "type": "DynamicOpenSearch",
+                    "name": this.dataset.name,
+                    "serviceUrl": opensearchUrl,
+                    //"data": {
+                    //    "type": "JSON",
+                    //    "url": geojsonUrl
+                    //},
+                    "availableServices": ["OpenSearch"],
+                    "visible": true,
+                    "pickable": true,
+                    "minOrder": 5
+                });
+            }
 
-            mocDesc = {
-                "category": "Other",
-                "type": "Moc",
-                "name": this.dataset.name + "_MOC",
-                "serviceUrl": mocUrl,
-                "visible": "true"
-            };
-            mizarWidget.addLayer(mocDesc);
+            if (hasMoc) {
+                //MOC LAYER
+                mocDesc = {
+                    "category": "Other",
+                    "type": "Moc",
+                    "name": this.dataset.name + "_MOC",
+                    "serviceUrl": mocUrl,
+                    "visible": "true"
+                };
+                mizarWidget.addLayer(mocDesc);
+            }
 
-            //layer.subscribe("endLoad", function(layer){
-            //    // Show received features
-            //    console.dir(arguments);
-            //    //mizarUtils.zoomTo(layer);
-            //});
+            if (hasGeojson) {
+                //GEOJSON LAYER
+                layer = mizarWidget.addLayer({
+                    "category": "Other",
+                    "type": "GeoJSON",
+                    "name": this.dataset.name,
+                    //"serviceUrl": "http://localhost:8182/proxy_resto",
+                    //"data": {
+                    //    "type": "JSON",
+                    //    "url": geojsonUrl
+                    //},
+                    //"availableServices": [ "OpenSearch" ],
+                    "visible": true,
+                    "pickable": true
+                    //"minOrder": 3
+                });
 
-
-            Ext.Ajax.request({
-                url: geojsonUrl,
-                method: 'GET',
-                success: function (ret) {
-                    var response = Ext.decode(ret.responseText);
-                    MizarGlobal.jsonProcessor.handleFeatureCollection(layer, response);
-                    layer.addFeatureCollection(response);
-                    mizarUtils.zoomTo(layer);
-                }
-            })
+                Ext.Ajax.request({
+                    url: geojsonUrl,
+                    method: 'GET',
+                    success: function (ret) {
+                        var response = Ext.decode(ret.responseText);
+                        MizarGlobal.jsonProcessor.handleFeatureCollection(layer, response);
+                        layer.addFeatureCollection(response);
+                        mizarUtils.zoomTo(layer);
+                    }
+                });
+            }
 
 
         }
@@ -190,7 +220,7 @@ Ext.define('sitools.extension.component.datasets.services.MizarMappingService', 
         var timeEnd = new Date();
         var diff = timeEnd - this.timeStart;
 
-        if ( diff > 500 || Math.abs(this.mouseXStart - event.layerX) > epsilon || Math.abs(this.mouseYStart - event.layerY) > epsilon ) {
+        if (diff > 500 || Math.abs(this.mouseXStart - event.layerX) > epsilon || Math.abs(this.mouseYStart - event.layerY) > epsilon) {
             return;
         }
 

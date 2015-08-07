@@ -153,6 +153,8 @@ public class GeoJsonRepresentation extends WriterRepresentation {
                         geometry = attr.getValue();
                     } else if (attr.getName().equals(this.primaryKey)) {
                         primaryKeyValue = attr.getValue();
+                        jGenerator.writeFieldName(attr.getName());
+                        mapper.writeValue(jGenerator, attr.getValue());
                     } else {
                         jGenerator.writeFieldName(attr.getName());
                         mapper.writeValue(jGenerator, attr.getValue());
@@ -205,9 +207,9 @@ public class GeoJsonRepresentation extends WriterRepresentation {
                 }
             }
 
-            if (writer != null) {
-                writer.close();
-            }
+//            if (writer != null) {
+//                writer.close();
+//            }
         }
     }
 }

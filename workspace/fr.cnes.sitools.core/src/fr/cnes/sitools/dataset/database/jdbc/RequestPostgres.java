@@ -226,7 +226,7 @@ public final class RequestPostgres implements RequestSql {
           coords += "," + geom.getPoints().get(0).getX() + " " + geom.getPoints().get(0).getY();
         }
         coords += "))";
-        pred += "ST_GeomFromText('" + coords + "', 4326)";
+        pred += "ST_GeomFromText('" + coords + "', 40000)";
       }
       else {
         pred += ((String) predicat.getRightValue()).replace("\"", "\'").replace("*", "%");
