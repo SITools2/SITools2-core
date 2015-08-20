@@ -73,6 +73,7 @@ public final class RoleApplication extends SitoolsApplication {
     router.attach("/{roleId}", RoleResource.class);
     router.attach("/{roleId}/users", RoleUsersResource.class);
     router.attach("/{roleId}/groups", RoleGroupsResource.class);
+    router.attach("/{roleId}/authorizations", RoleAuthorizationsResource.class);
 
     router.attach("/users/notify/{userId}", RoleNotifyUserResource.class);
     router.attach("/groups/notify/{groupId}", RoleNotifyGroupResource.class);

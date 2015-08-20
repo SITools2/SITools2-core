@@ -103,17 +103,17 @@ Ext.define('sitools.admin.usergroups.RoleCrud', {
             },
             items : [{
                 text : i18n.get('label.create'),
-                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_create.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL') + '/res/images/icons/toolbar_create.png',
                 handler : this.onCreate,
                 xtype : 's-menuButton'
             }, {
                 text : i18n.get('label.modify'),
-                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_edit.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL') + '/res/images/icons/toolbar_edit.png',
                 handler : this.onModify,
                 xtype : 's-menuButton'
             }, {
                 text : i18n.get('label.delete'),
-                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_delete.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL') + '/res/images/icons/toolbar_delete.png',
                 handler : this.onDelete,
                 xtype : 's-menuButton'
             }, {
@@ -125,6 +125,11 @@ Ext.define('sitools.admin.usergroups.RoleCrud', {
                 text : i18n.get('label.groups'),
                 icon : 'res/images/icons/icons_perso/toolbar_groupman.png',
                 handler : this.onGroups,
+                xtype : 's-menuButton'
+            }, {
+                text : i18n.get('label.authorizations'),
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL') + 'res/images/icons/toolbar_autorizations.png',
+                handler : this.onAuthorizations,
                 xtype : 's-menuButton'
             }, '->', {
                 xtype : 's-filter',
@@ -250,34 +255,12 @@ Ext.define('sitools.admin.usergroups.RoleCrud', {
             				fieldset.add({
             	                xtype : 'label',
             	                id : authorization.id,
+            	                style : 'padding-left:10px;',
             	                html : '<img src="/sitools' + loadUrl.get('APP_CLIENT_PUBLIC_URL') + '/res/images/icons/unvalid.png"/> <b>' + authorization.name + "</b><br>"
             	            })
             			});
             			
-            			Ext.create('Ext.window.Window', {
-            				title : i18n.get('role.delete.error'),
-            				width : 350,
-            				height : 260,
-            				maxHeight : 650,
-            				padding : 15,
-            				closable : false,
-            				resizable : false,
-            				border : false,
-            				items : fieldset,
-            				modal : true,
-            				autoScroll : true,
-            				buttons : {
-            					xtype : 'toolbar',
-            					style: 'background-color:white;',
-            					items : {
-	            					xtype : 'button',
-	            			    	text : i18n.get('label.ok'),
-	            			    	handler : function () {
-	            			    		this.up('window').close();
-	            			    	}
-            					}
-            			    }
-            			}).show();
+            			this.displayRoleAuthorizationsWindow(fieldset, rec);
             		}
             	} else {
             		if (showResponse(ret)) {
@@ -322,5 +305,85 @@ Ext.define('sitools.admin.usergroups.RoleCrud', {
             data : rec.data
         });
         gp.show(ID.BOX.ROLE);
+    },
+
+    /**
+     * Open a {sitools.admin.usergroups.AuthorizationsPanel} authorizations panel retrieving all the authorizations attached to the current role
+     */
+    onAuthorizations : function () {
+        var rec = this.getLastSelectedRecord();
+        if (!rec) {
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
+        }
+        var ap = Ext.create("sitools.admin.usergroups.AuthorizationsPanel", {
+            mode : 'list',
+            url : this.url + '/' + rec.get("id") + '/authorizations',
+            data : rec.data
+        });
+        ap.show(ID.BOX.ROLE);
+    },
+    
+    displayRoleAuthorizationsWindow : function (fieldset, rec) {
+    	Ext.create('Ext.window.Window', {
+			title : Ext.String.format(i18n.get('role.delete.error'), rec.get('name')),
+			id : 'deleteAuthorizationsRoleWindow',
+			width : 350,
+			height : 260,
+			maxHeight : 650,
+			padding : 15,
+//			closable : false,
+			resizable : false,
+			draggable : false,
+			border : false,
+			items : fieldset,
+			modal : true,
+			autoScroll : true,
+			buttons : {
+				xtype : 'toolbar',
+				style: 'background-color:white;',
+				items : [{
+                    xtype : 'button',
+                    text : Ext.String.format(i18n.get('label.deleteRoleAuthorizationsAndRole'), rec.get('name')),
+                    scope: this,
+                    handler : function () {
+                        Ext.Ajax.request({
+                            url: this.url + "/" + rec.get("id") + '/' + 'authorizations',
+                            method: 'DELETE',
+                            scope: this,
+                            success : function (ret) {
+                                var json = Ext.decode(ret.responseText);
+                                popupMessage("", i18n.get(json.message), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');
+                            },
+                            callback : function (opts, success, ret) {
+                            	 var json = Ext.decode(ret.responseText);
+                            	 if (json.success) {
+                            		 Ext.Ajax.request({
+                                         url: this.url + "/" + rec.get("id"),
+                                         method: 'DELETE',
+                                         scope: this,
+                                         success : function (ret) {
+                                        	 if (showResponse(ret)) {
+                                     			this.store.reload();
+                                     		}
+                                         },
+                                         failure : alertFailure,
+                                         callback : function () {
+                                        	 var window = Ext.ComponentQuery.query('window#deleteAuthorizationsRoleWindow')[0];
+                                        	 window.close();
+                                         }
+                            		 });
+                            	 }
+                            }
+                        });
+                    }
+                }, /*{
+					xtype : 'button',
+			    	text : i18n.get('label.cancel'),
+			    	handler : function () {
+			    		this.up('window').close();
+			    	}
+				}*/]
+		    }
+		}).show();
     }
 });
