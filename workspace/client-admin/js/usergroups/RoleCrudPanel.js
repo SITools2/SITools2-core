@@ -212,11 +212,48 @@ sitools.admin.usergroups.RoleCrudPanel = Ext.extend(Ext.grid.GridPanel, {
             method : 'DELETE',
             scope : this,
             success : function (ret) {
-                if (showResponse(ret)) {
-                    this.store.reload();
-                }
+            	var json = Ext.decode(ret.responseText);
+            	if (!json.success) {
+            		if (!Ext.isEmpty(json.data)) {
+            			
+            			var fieldset = new Ext.form.FieldSet({
+            				xtype : 'fieldset',
+            				padding : 3,
+            				name : 'fieldsetRoleAuthorizations',
+            				autoScroll : true
+            			});
+            			
+            			fieldset.add({
+        	                xtype : 'label',
+        	                html : String.format(i18n.get('label.role.used'), rec.get('name'))
+        	            });
+            			
+            			fieldset.add({
+        	                xtype : 'label',
+        	                html : i18n.get('label.authorizationsConcerned')
+        	            });
+            			
+            			Ext.each(json.data, function (authorization, index) {
+            				fieldset.add({
+            	                xtype : 'label',
+            	                id : authorization.id,
+            	                style : 'padding-left:10px;',
+            	                html : '<img src="/sitools' + loadUrl.get('APP_CLIENT_PUBLIC_COMMON_URL') + '/res/images/icons/unvalid.png"/> <b>' + authorization.name + "</b><br>"
+            	            })
+            			});
+            			
+            			this.displayRoleAuthorizationsWindow(fieldset, rec);
+            		}
+            	} else {
+            		if (showResponse(ret)) {
+            			this.store.reload();
+            		}
+            	}
             },
-            failure : alertFailure
+            failure : alertFailure,
+            callback : function () {
+            	Ext.get('roleBoxId').unmask();
+            }
         });
     },
 
@@ -250,6 +287,61 @@ sitools.admin.usergroups.RoleCrudPanel = Ext.extend(Ext.grid.GridPanel, {
             data : rec.data
         });
         gp.show(ID.BOX.ROLE);
+    },
+    
+    displayRoleAuthorizationsWindow : function (fieldset, rec) {
+    	new Ext.Window({
+			title : String.format(i18n.get('role.delete.error'), rec.get('name')),
+			id : 'deleteAuthorizationsRoleWindow',
+			width : 350,
+			height : 260,
+			maxHeight : 650,
+			padding : 15,
+//			closable : false,
+			resizable : false,
+			draggable : false,
+			border : false,
+			items : fieldset,
+			modal : true,
+			autoScroll : true,
+			buttons : {
+				xtype : 'toolbar',
+				items : [{
+                    xtype : 'button',
+                    text : String.format(i18n.get('label.deleteRoleAuthorizationsAndRole'), rec.get('name')),
+                    scope: this,
+                    handler : function () {
+                        Ext.Ajax.request({
+                            url: this.url + "/" + rec.get("id") + '/' + 'authorizations',
+                            method: 'DELETE',
+                            scope: this,
+                            success : function (ret) {
+                            	showResponse(ret);
+                            },
+                            callback : function (opts, success, ret) {
+                            	 var json = Ext.decode(ret.responseText);
+                            	 if (json.success) {
+                            		 Ext.Ajax.request({
+                                         url: this.url + "/" + rec.get("id"),
+                                         method: 'DELETE',
+                                         scope: this,
+                                         success : function (ret) {
+                                        	 if (showResponse(ret)) {
+                                     			this.store.reload();
+                                     		}
+                                         },
+                                         failure : alertFailure,
+                                         callback : function () {
+                                        	 Ext.getCmp('deleteAuthorizationsRoleWindow').close();
+                                         }
+                            		 });
+                            	 }
+                            }
+                        });
+                    }
+                }]
+		    }
+		}).show();
     }
 });
 
