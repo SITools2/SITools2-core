@@ -141,18 +141,36 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseProp', {
                 inputType : 'password',
                 name : 'userPassword',
                 emptyText : null
-            },  {
-                xtype : "numberfield",
-                name : 'maxActive',
-                id : 'maxActiveId',
-                fieldLabel : i18n.get('label.maxActive'),
-                minValue : 0,
-                maxValue : 20,
-                allowDecimals : false,
-                incrementValue : 1,
-                accelerate : true,
-                anchor : "50%", 
-                value : 10
+            }, {
+                // Fieldset in Column 1
+                xtype: 'fieldset',
+                title: i18n.get("label.advancedParameters"),
+                collapsible: true,
+                collapsed: true,
+                autoHeight: true,
+                defaultType: "textfield",
+                items: [{
+                    xtype : "numberfield",
+                    name : 'maxActive',
+                    id : 'maxActiveId',
+                    fieldLabel : i18n.get('label.maxActive'),
+                    minValue : 0,
+                    maxValue : 20,
+                    allowDecimals : false,
+                    incrementValue : 1,
+                    accelerate : true,
+                    anchor : "50%",
+                    value : 10
+                }],
+                listeners : {
+                    scope : this,
+                    collapse : function () {
+                        this.setHeight(460);
+                    },
+                    expand : function () {
+                        this.setHeight(500);
+                    }
+                }
             }]
          }];
         

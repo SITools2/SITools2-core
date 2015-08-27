@@ -72,14 +72,6 @@ public final class ProjectCollectionResource extends AbstractProjectResource {
       Project projectInput = getObject(representation, variant);
       projectInput.setStatus("NEW");
 
-      // Check that the project does not already exists, or that attachment is not already assigned
-      // First need an alphanumeric name for convenience
-      if (!projectInput.getName().matches("^[a-zA-Z0-9\\-\\.\\_]+$")) {
-        response = new Response(false, projectInput, Project.class, "project");
-        response.setMessage("project.name.invalid.for.regexp");
-        trace(Level.INFO, "Cannot create the project " + projectInput.getName());
-        return getRepresentation(response, variant);
-      }
       // check for project unicity
       response = checkUnicity(projectInput, true);
       if (response != null && !response.getSuccess()) {

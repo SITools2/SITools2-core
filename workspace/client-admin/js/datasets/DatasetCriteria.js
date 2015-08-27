@@ -87,7 +87,7 @@ Ext.define('sitools.admin.datasets.DatasetCriteria', {
                 name : "sqlQuery", 
                 invalidText : i18n.get('label.invalidSQl'),
                 validator : function (value) {
-                    if (value.toLowerCase().match("where") || value.toLowerCase().match("group by")) {
+                    if (value.toLowerCase().match("where") || (value.toLowerCase().match("group by") && value.toLowerCase().match("having"))) {
                         if (value.toLowerCase().match("from")) {
                             return true;
                         }

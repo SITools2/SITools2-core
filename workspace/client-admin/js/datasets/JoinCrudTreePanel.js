@@ -44,7 +44,7 @@ Ext.define('sitools.admin.datasets.JoinCrudTreePanel', {
                 text : this.name,
                 leaf : false,
                 expanded : true,
-                type : 'table'
+                type : 'root'
             },
             proxy : {
                 type : 'memory',
@@ -279,7 +279,7 @@ Ext.define('sitools.admin.datasets.JoinCrudTreePanel', {
                 up = Ext.create("sitools.admin.datasets.JoinTableWin", {
                     node : node,
                     mode : 'create',
-                    datasetSelectTables : this.datasetSelectTables, 
+                    datasetSelectTables : this.datasetSelectTables,
                     typeJointure : item.id
                 });
                 up.show();
@@ -450,9 +450,21 @@ Ext.define('sitools.admin.datasets.JoinCrudTreePanel', {
         var root = {
             text : this.name, 
             leaf : false, 
-            expanded : true
+            expanded : true,
+            type : 'root'
         };
         this.setRootNode(root);
 
+    },
+    
+    checkJoinConditions : function () {
+    	var valid = true;
+    	
+    	this.store.getRootNode().cascadeBy(function (node) {
+    		if (node.get('type') == 'table' && !node.hasChildNodes()) {
+    			valid = false;
+    		}
+    	});
+    	return valid;
     }
 });

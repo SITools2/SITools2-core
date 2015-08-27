@@ -529,15 +529,27 @@ Ext.define('sitools.admin.datasets.DatasetsMultiTablesPanel', {
         var result = this.gridFields.gridFieldSetupValidation();
         
         var sqlQuery = Ext.getCmp('sqlQuery');
-        if (this.queryType === "S" && 
-        		(sqlQuery.getValue().substr(0, 4) !== "FROM" 
-        			&& (!sqlQuery.getValue().toLowerCase().match("where")
-    				&& !sqlQuery.getValue().toLowerCase().match("group by")))) {
-			result = {
-                success : false, 
-                message : i18n.get('label.invalidSQl')
-            };
+        if (this.queryType === "S") {
+            var from = (sqlQuery.getValue().toLowerCase().substr(0, 4) !== "from") ? false : true;
+            var where = (sqlQuery.getValue().toLowerCase().match("where") == null) ? false : true;
+            var groupBy = (sqlQuery.getValue().toLowerCase().match("group by") == null) ? false : true;
+            var having = (sqlQuery.getValue().toLowerCase().match("having") == null) ? false : true;
+
+            if ((!from || !where) && (!from || (!groupBy || !having))) {
+                result = {
+                    success : false,
+                    message : i18n.get('label.invalidSQl')
+                };
+            }
         }
+        
+        if (!this.panelWhere.wizardJoinCondition.tree.checkJoinConditions()) {
+        	result = {
+    			success : false,
+    			message : i18n.get('label.missingJoinCondition')
+        	};
+        }
+        
         return result;
     },
     

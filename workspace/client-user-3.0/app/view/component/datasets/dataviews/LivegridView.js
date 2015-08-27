@@ -53,6 +53,7 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
         leadingBufferZone: 50  // Keep 50 rows rendered in the table ahead of scroll,
     },
     viewConfig: {
+    	enableTextSelection: true,
         getRowClass: function (record, index) {
             if (Ext.isEmpty(this.gridId)) {
                 var grid = this.up('livegridView');

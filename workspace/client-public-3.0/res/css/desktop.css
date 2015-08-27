@@ -907,11 +907,13 @@ td.ux-taskButtons-edge {
 #news {
 	height : 50%;
 	width : 100%;
+	border: 1px #CECECE solid;
 }
 
 #shortcuts {
 	height : 50%;
 	width : 100%;
+	border: 1px #CECECE solid;
 /* 	border-top: 1px solid #A3A3A3; */
 }
 
@@ -1528,6 +1530,9 @@ canvas.flotr-canvas {
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7a7a7a', endColorstr='#686868',GradientType=0 ); /* IE6-9 */
 }
 
+.x-column-header-last {
+	border-right: 1px solid silver;
+}
 
 ::-webkit-scrollbar-thumb {
     -webkit-border-radius: 10px;
