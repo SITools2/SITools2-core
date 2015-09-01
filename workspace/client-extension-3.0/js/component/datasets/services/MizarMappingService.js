@@ -79,7 +79,7 @@ Ext.define('sitools.extension.component.datasets.services.MizarMappingService', 
     init: function (config) {
 
         this.i18nMizarMappingService = I18nRegistry.retrieve(this.pluginName);
-        this.mizarView = Ext.ComponentQuery.query('mizarModuleView')[0];
+        this.mizarView = Ext.ComponentQuery.query('mizarModuleView')[0] || Ext.ComponentQuery.query('mizarViewAndDataModuleView')[0];
 
         if (Ext.isEmpty(this.mizarView)) {
             return Ext.Msg.show({

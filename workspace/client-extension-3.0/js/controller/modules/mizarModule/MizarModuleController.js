@@ -29,7 +29,8 @@ Ext.namespace('sitools.extension.controller.modules.mizarModule');
 Ext.define('sitools.extension.controller.modules.mizarModule.MizarModuleController', {
     extend: 'Ext.app.Controller',
 
-    views: ['sitools.extension.view.modules.mizarModule.MizarModuleView'],
+    views: ['sitools.extension.view.modules.mizarModule.MizarModuleView',
+            'sitools.extension.view.modules.mizarModule.MizarViewAndDataModuleView'],
 
     config: {
         div: "#mizarModule"

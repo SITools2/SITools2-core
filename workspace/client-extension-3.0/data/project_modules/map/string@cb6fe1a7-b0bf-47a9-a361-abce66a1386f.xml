@@ -1,0 +1,16 @@
+<projectModule>
+  <id>cb6fe1a7-b0bf-47a9-a361-abce66a1386f</id>
+  <name>Mizar View &amp; Data Module</name>
+  <description>Mizar module regrouping livegrid and mizar view</description>
+  <label>label.mizarViewAndDataModule</label>
+  <author>AKKA</author>
+  <version>1.0</version>
+  <title>label.mizarViewAndDataModule</title>
+  <defaultWidth>500</defaultWidth>
+  <defaultHeight>500</defaultHeight>
+  <x>0</x>
+  <y>0</y>
+  <icon>mizar</icon>
+  <xtype>sitools.extension.modules.MizarViewAndDataModule</xtype>
+  <priority>1</priority>
+</projectModule>
