@@ -344,10 +344,10 @@ Ext.define('sitools.admin.datasets.JoinCrudTreePanel', {
                 schema : rec.get("schema")
             };
             
-            rootNode.set("text", rec.get("schema"));
+            rootNode.set("text", rec.get("name"));
             rootNode.set("leaf", false);
             rootNode.set("children", []);
-            rootNode.set("type", "table");
+            rootNode.set("type", "root");
             rootNode.set("table",table);
             
             var i = 0;

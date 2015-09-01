@@ -94,7 +94,7 @@ Ext.define('sitools.extension.view.modules.mizarModule.MizarViewAndDataModuleVie
 
         this.listeners = {
             scope: this,
-            afterrender : this.loadDataset
+            boxready : this.loadDataset
         };
 
         this.items = [];

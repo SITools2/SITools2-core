@@ -39,7 +39,7 @@ Ext.define('sitools.extension.controller.modules.mizarModule.MizarModuleControll
         this.control({
             'mizarModuleView': {
                 scope : this,
-                boxready: function (mizarView) {
+                afterrender : function (mizarView) {
                     var div = this.getDiv();
                     var options = {
                         "nameResolver": {
@@ -67,6 +67,12 @@ Ext.define('sitools.extension.controller.modules.mizarModule.MizarModuleControll
 
                     mizarView.up("component[specificType=moduleWindow]").on("beforedestroy", this.destroyMizar, this);
                     mizarView.up("component[specificType=moduleWindow]").on("resize", this.fitCanvasToDiv, this);
+                }
+            },
+            'mizarViewAndDataModuleView > mizarModuleView #mizarModule' : {
+                boxready : function (mizarView) {
+                    var container = mizarView.up("component[specificType=moduleWindow]");
+                    this.fitCanvasToDiv(container);
                 }
             }
         });

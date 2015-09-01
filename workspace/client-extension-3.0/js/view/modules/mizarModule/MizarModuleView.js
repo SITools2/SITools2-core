@@ -28,6 +28,8 @@ Ext.define('sitools.extension.view.modules.mizarModule.MizarModuleView', {
     layout: 'fit',
     requires: ['sitools.extension.model.MizarModuleModel'],
 
+    border : false,
+
     initComponent: function () {
 
         Ext.each(this.moduleModel.listProjectModulesConfigStore.data.items, function (config) {
