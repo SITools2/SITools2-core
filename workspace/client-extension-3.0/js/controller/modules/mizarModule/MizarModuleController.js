@@ -44,7 +44,8 @@ Ext.define('sitools.extension.controller.modules.mizarModule.MizarModuleControll
                     var options = {
                         "nameResolver": {
                             "zoomFov": 2
-                        }
+                        },
+                        debug: true
                         //"sitoolsBaseUrl": "http://localhost:8182/sitools"
                     };
 
@@ -126,7 +127,6 @@ Ext.define('sitools.extension.controller.modules.mizarModule.MizarModuleControll
             }catch(e) {
                 console.dir(e);
             }
-            console.log("removed");
         }
 
         MizarGlobal.nameResolverView.remove();
@@ -139,6 +139,5 @@ Ext.define('sitools.extension.controller.modules.mizarModule.MizarModuleControll
 
 
         this.mizarWidget.sky.destroy();
-        console.log("destroyed");
     }
 });

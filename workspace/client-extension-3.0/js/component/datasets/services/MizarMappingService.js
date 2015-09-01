@@ -138,10 +138,6 @@ Ext.define('sitools.extension.component.datasets.services.MizarMappingService', 
                     "type": "DynamicOpenSearch",
                     "name": this.dataset.name,
                     "serviceUrl": opensearchUrl,
-                    //"data": {
-                    //    "type": "JSON",
-                    //    "url": geojsonUrl
-                    //},
                     "availableServices": ["OpenSearch"],
                     "visible": true,
                     "pickable": true,
@@ -167,15 +163,8 @@ Ext.define('sitools.extension.component.datasets.services.MizarMappingService', 
                     "category": "Other",
                     "type": "GeoJSON",
                     "name": this.dataset.name,
-                    //"serviceUrl": "http://localhost:8182/proxy_resto",
-                    //"data": {
-                    //    "type": "JSON",
-                    //    "url": geojsonUrl
-                    //},
-                    //"availableServices": [ "OpenSearch" ],
                     "visible": true,
                     "pickable": true
-                    //"minOrder": 3
                 });
 
                 Ext.Ajax.request({
@@ -221,6 +210,8 @@ Ext.define('sitools.extension.component.datasets.services.MizarMappingService', 
         var diff = timeEnd - this.timeStart;
 
         if (diff > 500 || Math.abs(this.mouseXStart - event.layerX) > epsilon || Math.abs(this.mouseYStart - event.layerY) > epsilon) {
+            //deselect everything do cope with Mizar Behavior
+            this.dataview.getSelectionModel().deselectAll();
             return;
         }
 

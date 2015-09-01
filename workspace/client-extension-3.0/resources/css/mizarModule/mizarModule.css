@@ -1,13 +1,7 @@
-#mizarModule label, #selectedFeatureDiv, #selectedFeatureDiv div, .featureTitle  {
+#mizarModule label, #selectedFeatureDiv, #selectedFeatureDiv div, .featureTitle, #reverseNameResolver div, .nameResolverResult  {
     color : white;
 }
 
-
-
 .ui-widget-content {
     z-index : 100000;
-}
-
-.nameResolverResult {
-    color:white;
 }
