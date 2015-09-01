@@ -277,10 +277,10 @@ Ext.define('sitools.admin.filters.FiltersProp', {
             }),
             listeners : {
                 scope : this,
-                celldblclick : function (grid, td, cellIndex, record, tr, rowIndex, e) {
+                cellclick : function (grid, td, columnIndex, record, tr, rowIndex) {
                     var rec = record.data;
-                    
-                    if (cellIndex == 3 && rec.parameterType != "PARAMETER_INTERN") {
+                    var storeRecord = grid.getStore().getAt(rowIndex);
+                    if (columnIndex == 3 && rec.parameterType != "PARAMETER_INTERN") {
                         var selectColumnWin = Ext.create("sitools.admin.datasets.SelectColumn", {
                             field : "attachedColumn",
                             record : storeRecord,
@@ -289,7 +289,7 @@ Ext.define('sitools.admin.filters.FiltersProp', {
                             url : this.urlDatasets + "/" + this.datasetId
                         });
                         selectColumnWin.show(ID.BOX.DATASETS);
-                    } else if (cellIndex == 4 && rec.parameterType == "PARAMETER_INTERN") {
+                    } else if (columnIndex == 4 && rec.parameterType == "PARAMETER_INTERN") {
                         return true;
                     } else {
                         return false;
