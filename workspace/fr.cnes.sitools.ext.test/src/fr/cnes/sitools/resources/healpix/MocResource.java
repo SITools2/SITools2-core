@@ -31,14 +31,20 @@ import fr.cnes.sitools.dataset.database.common.DataSetExplorerUtil;
 import fr.cnes.sitools.dataset.model.Column;
 import fr.cnes.sitools.dataset.model.DataSet;
 import fr.cnes.sitools.dataset.model.SpecificColumnType;
+import fr.cnes.sitools.dataset.model.geometry.LngLatAlt;
+import fr.cnes.sitools.dataset.model.geometry.Point;
+import fr.cnes.sitools.dataset.model.geometry.Polygon;
 import fr.cnes.sitools.datasource.jdbc.model.AttributeValue;
 import fr.cnes.sitools.datasource.jdbc.model.Record;
 import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
 import fr.cnes.sitools.resources.geojson.GeoJSONPostGisResourceModel;
 import fr.cnes.sitools.util.Util;
+import fr.cnes.sitools.utils.wkt.WKTReader;
 import healpix.core.HealpixIndex;
 import healpix.core.base.set.LongRangeSet;
+import healpix.essentials.Pointing;
 import healpix.essentials.Scheme;
+import healpix.essentials.Vec3;
 import healpix.tools.SpatialVector;
 import org.restlet.Context;
 import org.restlet.data.MediaType;
@@ -51,6 +57,7 @@ import org.restlet.resource.Get;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Classic implementation of JeoSearch resource
@@ -62,14 +69,29 @@ public class MocResource extends SitoolsParameterizedResource {
 
     private static final String GEO_COLUMN_NAME = "sitools_geo_column";
 
-    private static final int ORDER = 12;
+    private static final int DEFAULT_ORDER = 12;
 
-    private static final int NSIDE = (int) Math.pow(2, ORDER);
+    private int nside;
+    private int order;
 
     @Override
     public void sitoolsDescribe() {
         setName("MocResource");
         setDescription("MocResource");
+    }
+
+
+    @Override
+    public void doInit() {
+        super.doInit();
+        ResourceParameter geometryColumnParam = this.getModel().getParameterByName(MocResourceModel.ORDER_PARAM);
+        if(!Util.isEmpty(geometryColumnParam.getValue())) {
+            order = Integer.parseInt(geometryColumnParam.getValue());
+        }
+        else {
+            order = DEFAULT_ORDER;
+        }
+        nside = (int) Math.pow(2, order);
     }
 
     /**
@@ -79,7 +101,7 @@ public class MocResource extends SitoolsParameterizedResource {
      */
     @Get
     public Representation get() {
-        Representation repr = null;
+        Logger logger = getContext().getLogger();
 
         // Get context
         Context context = getContext();
@@ -96,7 +118,7 @@ public class MocResource extends SitoolsParameterizedResource {
         // Get DatabaseRequestParameters
         DatabaseRequestParameters params = dsExplorerUtil.getDatabaseParams();
 
-        ResourceParameter geometryColumnParam = this.getModel().getParameterByName(GeoJSONPostGisResourceModel.GEOMETRY_COLUMN);
+        ResourceParameter geometryColumnParam = this.getModel().getParameterByName(MocResourceModel.GEOMETRY_COLUMN);
         String geometryColName = geometryColumnParam.getValue();
 
         // modify the sql visible columns to return some geoJSON
@@ -133,8 +155,7 @@ public class MocResource extends SitoolsParameterizedResource {
 
             ConverterChained converterChained = datasetApp.getConverterChained();
 
-            HealpixIndex index = new HealpixIndex(NSIDE, Scheme.NESTED);
-
+            HealpixIndex index = new HealpixIndex(nside, Scheme.NESTED);
 
             while (databaseRequest.nextResult()) {
 
@@ -148,41 +169,56 @@ public class MocResource extends SitoolsParameterizedResource {
                         //Parse WKT
                         String wkt = (String) attr.getValue();
                         if (wkt.startsWith("POLYGON")) {
+                            Polygon polygon = WKTReader.parsePolygon(wkt);
+                            List<LngLatAlt> coords = polygon.getExteriorRing();
 
-                            String coordinates = wkt.substring("POLYGON((".length(), wkt.length() - 2);
-                            String[] coords = coordinates.split(",");
                             ArrayList<SpatialVector> vectors = new ArrayList<SpatialVector>();
 
-                            //skip last value because its the same as the first one.
-                            for (int i = 0; i < coords.length - 1; i++) {
-                                String coord = coords[i];
+                            for (LngLatAlt coord : coords) {
                                 SpatialVector spatialVector = new SpatialVector();
-                                String[] latlong = coord.split(" ");
-                                double longitude = Double.parseDouble(latlong[0]);
+                                double longitude = coord.getLongitude();
                                 if (longitude < 0) {
                                     longitude += 360;
                                 }
-                                double lat = Double.parseDouble(latlong[1]);
-
+                                double lat = coord.getLatitude();
                                 spatialVector.set(longitude, lat);
                                 vectors.add(spatialVector);
                             }
-                            LongRangeSet rangeSet = index.query_polygon(NSIDE, vectors, 1, 1);
+                            LongRangeSet rangeSet = index.query_polygon(nside, vectors, 1, 1);
 
                             for (long pix : rangeSet) {
                                 final MocCell mocCell = new MocCell();
-                                mocCell.set(ORDER, pix);
+                                mocCell.set(order, pix);
                                 moc.add(mocCell);
                             }
+                        }
+
+                        if(wkt.startsWith("POINT")) {
+
+                            Point point = WKTReader.parsePoint(wkt);
+                            double longitude = point.getLongitude();
+                            if (longitude < 0) {
+                                longitude += 360;
+                            }
+                            double lat = point.getLatitude();
+
+                            SpatialVector vec = new SpatialVector();
+                            vec.set(longitude, lat);
+                            Pointing pointing = new Pointing(vec);
+
+                            long pix = index.ang2pix_nest(pointing.theta, pointing.phi);
+                            final MocCell mocCell = new MocCell();
+                            mocCell.set(order, pix);
+                            moc.add(mocCell);
                         }
                         break;
                     }
                 }
             }
         } catch (SitoolsException e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, e.getMessage(), e);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, e.getMessage(), e);
         } finally {
             if (databaseRequest != null) {
                 try {
@@ -193,7 +229,7 @@ public class MocResource extends SitoolsParameterizedResource {
             }
         }
         moc.sort();
-        return new StringRepresentation(moc.toString());
+        return new StringRepresentation(moc.toString(), MediaType.APPLICATION_JSON);
     }
 
     @Override

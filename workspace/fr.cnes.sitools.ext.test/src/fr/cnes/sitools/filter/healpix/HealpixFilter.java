@@ -25,11 +25,13 @@ import fr.cnes.sitools.common.validator.ConstraintViolationLevel;
 import fr.cnes.sitools.dataset.filter.business.AbstractFilter;
 import fr.cnes.sitools.dataset.filter.model.FilterParameter;
 import fr.cnes.sitools.dataset.filter.model.FilterParameterType;
+import fr.cnes.sitools.dataset.model.geometry.*;
 import fr.cnes.sitools.dataset.plugins.filters.core.AbstractFormFilter;
 import fr.cnes.sitools.extensions.astro.application.opensearch.responsibility.SiaHealpix;
 import fr.cnes.sitools.plugins.resources.model.ResourceModel;
 import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
 import fr.cnes.sitools.util.Util;
+import fr.cnes.sitools.utils.wkt.WKTWriter;
 import healpix.core.HealpixIndex;
 import healpix.essentials.Pointing;
 import healpix.essentials.Scheme;
@@ -45,9 +47,6 @@ import fr.cnes.sitools.dataset.model.Column;
 import fr.cnes.sitools.dataset.model.DataSet;
 import fr.cnes.sitools.dataset.model.Operator;
 import fr.cnes.sitools.dataset.model.Predicat;
-import fr.cnes.sitools.dataset.model.geometry.GeometryObject;
-import fr.cnes.sitools.dataset.model.geometry.GeometryType;
-import fr.cnes.sitools.dataset.model.geometry.Point;
 
 /**
  * Filter for Healpix parameters
@@ -64,6 +63,7 @@ public class HealpixFilter extends AbstractFormFilter {
     private static final String COORD_SYSTEM = "coordSystem";
 
     public static final String GEOMETRY_COLUMN = "geometryColumn";
+    public static final String SRID = "srid";
 
     // HEALPIX Properties
     /**
@@ -107,9 +107,13 @@ public class HealpixFilter extends AbstractFormFilter {
         this.setClassVersion("0.1");
         this.setDefaultFilter(false);
 
-        FilterParameter param1 = new FilterParameter(GEOMETRY_COLUMN, "The name of column containing the geometry information", FilterParameterType.PARAMETER_INTERN);
+        FilterParameter param1 = new FilterParameter(GEOMETRY_COLUMN, "The name of column containing the geometry information", FilterParameterType.PARAMETER_IN);
         param1.setValueType("xs:dataset.columnAlias");
         this.addParam(param1);
+
+        FilterParameter srid = new FilterParameter(SRID, "The SRID number to use for postgis request", FilterParameterType.PARAMETER_INTERN);
+        srid.setValueType("xs:int");
+        this.addParam(srid);
     }
 
     /*
@@ -142,80 +146,88 @@ public class HealpixFilter extends AbstractFormFilter {
 
         DataSetApplication dsApplication = null;
         DataSet ds = null;
-        Form params = request.getResourceRef().getQueryAsForm();
-        // Build predicat for filters param
 
+        //lets apply our filter
+        if (dsApplication == null) {
+            dsApplication = (DataSetApplication) getContext().getAttributes().get("DataSetApplication");
+            ds = dsApplication.getDataSet();
+        }
+
+        Map<String, FilterParameter> filterParam = this.getParametersMap();
+        FilterParameter paramGeoCol = filterParam.get(GEOMETRY_COLUMN);
+        FilterParameter paramSrid = filterParam.get(SRID);
+
+
+        Form params = request.getResourceRef().getQueryAsForm();
+
+        // Build predicat for filters param
         String orderString = params.getFirstValue(ORDER);
         String healpixString = params.getFirstValue(HEALPIX);
         String coordSystem = params.getFirstValue(COORD_SYSTEM);
 
-        if (!Util.isEmpty(orderString) && !Util.isEmpty(healpixString) && !Util.isEmpty(coordSystem)) {
+        if (checkParam(orderString, healpixString, coordSystem, paramGeoCol, paramSrid)) {
+
+            String columnAlias = paramGeoCol.getAttachedColumn();
+            String srid = paramSrid.getValue();
 
             int order = Integer.parseInt(orderString);
             long healpix = Long.parseLong(healpixString);
-
-            //lets apply our filter
-            if (dsApplication == null) {
-                dsApplication = (DataSetApplication) getContext().getAttributes().get("DataSetApplication");
-                ds = dsApplication.getDataSet();
-            }
-
-            Map<String, FilterParameter> filterParam = this.getParametersMap();
-            FilterParameter param = filterParam.get(GEOMETRY_COLUMN);
-            String columnAlias = param.getValue();
 
             Column col = ds.findByColumnAlias(columnAlias);
             if (col != null && col.getFilter() != null && col.getFilter()) {
 
                 //Calculer un polygon a partir des numeros Healpix
                 final int nside = (int) Math.pow(2, order);
-//                final double pixRes = HealpixIndex.getPixRes(nside) * ARCSEC2DEG;
-//                size = (pixRes * MULT_FACT);
                 index = new HealpixIndex(nside, Scheme.NESTED);
-//                final Pointing pointing = index.pix2ang(healpix);
-//                final double longitude = Math.toDegrees(pointing.phi);
-//                final double latitude = MAX_DEC - Math.toDegrees(pointing.theta);
-
                 SpatialVector[] vectors = index.corners_nest(healpix, 1);
 
-                GeometryObject geom = new GeometryObject(GeometryType.POLYGON);
-                Point point;
-                for (SpatialVector vector : vectors) {
+                String wkt = getWKTString(vectors);
 
-                    double latitude = vector.ra();
-                    if (latitude > 180) {
-                        latitude -= 360;
-                    }
+                String predicatFormat = " AND st_intersects(%s, ST_GeomFromText('%s', %s))";
+                String predicatString = String.format(predicatFormat, col.getDataIndex(), wkt, srid);
 
-                    point = new Point(latitude, vector.dec());
-                    geom.getPoints().add(point);
-                }
                 Predicat pred = new Predicat();
-
-                String coords = geom.getType().name() + "((";
-                boolean first = true;
-                for (Point pt1 : geom.getPoints()) {
-                    if (!first) {
-                        coords += ",";
-                    }
-                    else {
-                        first = false;
-                    }
-                    coords += pt1.getX() + " " + pt1.getY();
-                }
-                if (geom.getType() == GeometryType.POLYGON) {
-                    coords += "," + geom.getPoints().get(0).getX() + " " + geom.getPoints().get(0).getY();
-                }
-                coords += "))";
-
-
-                String predicatFormat = " AND st_intersects(%s, ST_GeomFromText('%s', 40000))";
-                String predicatString = String.format(predicatFormat, col.getDataIndex(), coords);
                 pred.setStringDefinition(predicatString);
                 predicats.add(pred);
             }
         }
         return predicats;
+    }
+
+    /**
+     * Generate a WKT string from the given Polygon identified by the array of SpatialVector
+     * @param vectors the list of vectors
+     * @return a WKT string
+     */
+    private String getWKTString(SpatialVector[] vectors) {
+        Polygon geom = new Polygon();
+        List<LngLatAlt> points = new ArrayList<LngLatAlt>();
+        LngLatAlt firstPoint = null;
+        for (SpatialVector vector : vectors) {
+            double latitude = vector.ra();
+            if (latitude > 180) {
+                latitude -= 360;
+            }
+
+            if (firstPoint == null) {
+                firstPoint = new LngLatAlt(latitude, vector.dec());
+            }
+            points.add(new LngLatAlt(latitude, vector.dec()));
+        }
+        points.add(firstPoint);
+        geom.add(points);
+
+        return WKTWriter.write(geom);
+    }
+
+    private boolean checkParam(String orderString, String healpixString, String coordSystem, FilterParameter columnAlias, FilterParameter srid) {
+        return !Util.isEmpty(orderString) &&
+                !Util.isEmpty(healpixString) &&
+                !Util.isEmpty(coordSystem) &&
+                columnAlias != null &&
+                !Util.isEmpty(columnAlias.getAttachedColumn()) &&
+                srid != null &&
+                !Util.isEmpty(srid.getValue());
     }
 
     @Override
@@ -226,11 +238,24 @@ public class HealpixFilter extends AbstractFormFilter {
             public Set<ConstraintViolation> validate(AbstractFilter item) {
                 Set<ConstraintViolation> constraints = new HashSet<ConstraintViolation>();
                 Map<String, FilterParameter> params = item.getParametersMap();
+
+                //GEOMETRY COLUMN
                 FilterParameter param = params.get(GEOMETRY_COLUMN);
-                String value = param.getValue();
+                String value = param.getAttachedColumn();
                 if (value.equals("")) {
                     ConstraintViolation constraint = new ConstraintViolation();
                     constraint.setMessage("There is not column defined");
+                    constraint.setLevel(ConstraintViolationLevel.CRITICAL);
+                    constraint.setValueName(param.getName());
+                    constraints.add(constraint);
+                }
+
+                //SRID
+                param = params.get(SRID);
+                value = param.getValue();
+                if (value.equals("")) {
+                    ConstraintViolation constraint = new ConstraintViolation();
+                    constraint.setMessage("There is srid defined");
                     constraint.setLevel(ConstraintViolationLevel.CRITICAL);
                     constraint.setValueName(param.getName());
                     constraints.add(constraint);
