@@ -73,7 +73,7 @@ Ext.define('sitools.user.controller.component.datasets.services.SorterServiceCon
                         
                         if(!Ext.isEmpty(field) && !Ext.isEmpty(direction)) {
                             sorters[index] = {};
-                            sorters[index].field = field;
+                            sorters[index].property = field;
                             sorters[index].direction = direction;
                             field = null;
                             direction = null;
@@ -84,7 +84,7 @@ Ext.define('sitools.user.controller.component.datasets.services.SorterServiceCon
                     if (sorters.length < 1) {
                         view.store.load();
                     } else if (sorters.length === 1) {
-                        view.store.sort(sorters[0].field, sorters[0].direction);
+                        view.store.sort(sorters[0].property, sorters[0].direction);
                     } else {
                         view.store.sort(sorters);
                     }

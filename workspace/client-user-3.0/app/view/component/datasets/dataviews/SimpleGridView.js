@@ -78,15 +78,15 @@ Ext.define('sitools.user.view.component.datasets.dataviews.SimpleGridView', {
             mode: 'MULTI'
         });
 
-        //this.bbar = Ext.create("sitools.user.view.component.datasets.dataviews.paging.LivegridPagingToolbar", {
-        //    xtype: 'livegridpagingtoolbar',
-        //    store: this.store,
-        //    displayInfo: true,
-        //    displayMsg: i18n.get('paging.display'),
-        //    emptyMsg: i18n.get('paging.empty'),
-        //    selectedMessage: i18n.get("paging.selectedMsg"),
-        //    grid: this
-        //});
+        this.bbar = Ext.create("Ext.toolbar.Paging", {
+            //xtype: 'livegridpagingtoolbar',
+            store: this.store,
+            displayInfo: true,
+            displayMsg: i18n.get('paging.display'),
+            emptyMsg: i18n.get('paging.empty'),
+            selectedMessage: i18n.get("paging.selectedMsg"),
+            grid: this
+        });
 
         this.tbar = Ext.create("sitools.user.view.component.datasets.services.ServiceToolbarView", {
             enableOverflow: true,

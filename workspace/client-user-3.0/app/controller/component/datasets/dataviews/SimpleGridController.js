@@ -73,16 +73,16 @@ Ext.define('sitools.user.controller.component.datasets.dataviews.SimpleGridContr
                 }
             },
             'simpleGridView' : {
-            	resize : function (view) {
-                    view.getSelectionModel().updateSelection();
-                    view.down("pagingtoolbar").updateInfo();
-                },
+                //resize : function (view) {
+                //    view.getSelectionModel().updateSelection();
+                //    view.down("pagingtoolbar").updateInfo();
+                //},
 
                 afterrender : function (view) {
-                    view.getView().getEl().on('scroll', function (e, t, eOpts) {
-                        view.getSelectionModel().updateSelection();
-                        view.down("pagingtoolbar").updateInfo();
-                    }, view);
+                    //view.getView().getEl().on('scroll', function (e, t, eOpts) {
+                    //    view.getSelectionModel().updateSelection();
+                    //    view.down("pagingtoolbar").updateInfo();
+                    //}, view);
 
 
                     view.getStore().on("load", function(records, operation, success) {
