@@ -1,0 +1,8 @@
+<datasetView>
+  <id>8b9a7521-1bea-4934-9f81-daaac733e435</id>
+  <jsObject>sitools.user.component.datasets.dataviews.SimpleGrid</jsObject>
+  <imageUrl></imageUrl>
+  <priority>3</priority>
+  <name>SimpleGridView</name>
+  <description>A simple grid view</description>
+</datasetView>
