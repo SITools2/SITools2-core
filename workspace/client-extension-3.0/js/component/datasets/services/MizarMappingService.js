@@ -94,6 +94,7 @@ Ext.define('sitools.extension.component.datasets.services.MizarMappingService', 
         this.dataset = config.dataview.dataset;
         this.dataview = config.dataview;
         this.datasetCm = config.dataview.columns;
+        this.datasetStore = config.store;
         this.mizarServiceButton = config.serviceView.down('button[idService=' + config.id + ']');
 
         var hasGeojson, hasMoc, hasOpensearch;
@@ -143,6 +144,9 @@ Ext.define('sitools.extension.component.datasets.services.MizarMappingService', 
                     "pickable": true,
                     "minOrder": 5
                 });
+                layer.subscribe("features:added", Ext.bind(this.synchronizeFeaturesGridMap, this));
+                layer.subscribe("feature:removed", Ext.bind(this.removeFeatureFromGrid, this));
+                //layer.subscribe("tile:removeFeatures", Ext.bind(this.removeFeatureFromGrid, this));
             }
 
             if (hasMoc) {
@@ -191,6 +195,21 @@ Ext.define('sitools.extension.component.datasets.services.MizarMappingService', 
 
     },
 
+    synchronizeFeaturesGridMap : function (featureData) {
+        this.datasetStore.removeAll();
+        Ext.each(featureData.layer.features, function (feature) {
+            this.datasetStore.add(feature.properties);
+        }, this);
+        //console.log('feature added...');
+        //console.dir(featureData.features);
+        /*this.dataview.down('pagingtoolbar').doRefresh();*/
+    },
+
+    removeFeatureFromGrid : function (featureId) {
+        var feature = this.datasetStore.findRecord(this.datasetStore.primaryKey, featureId);
+        this.datasetStore.remove(feature);
+    },
+
     linkMizarWithGrid: function () {
         this.dataview.addListener('selectionchange', this.selectRecordOnMap, this);
         mizarWidget.navigation.renderContext.canvas.addEventListener('mousedown', Ext.bind(this.mousedown, this));
@@ -229,10 +248,10 @@ Ext.define('sitools.extension.component.datasets.services.MizarMappingService', 
             Ext.each(selections, function (selection) {
                 var recordIndex = this.dataview.getStore().findBy(function (record) {
                     if (record.get(primaryKey) === selection.feature.id) {
+                        recordsIndex.push(record);
                         return true;
                     }
                 }, this);
-                recordsIndex.push(recordIndex);
             }, this);
         }
         this.dataview.getSelectionModel().select(recordsIndex, false, true);
@@ -274,11 +293,11 @@ Ext.define('sitools.extension.component.datasets.services.MizarMappingService', 
             }, this);
         }
         else {
-            Ext.each(recordsIndex, function (recordIndex) {
-                var record = this.dataview.getStore().getAt(recordIndex);
-                if (Ext.isEmpty(record)) {
-                    return;
-                }
+            Ext.each(recordsIndex, function (record) {
+                //var record = this.dataview.getStore().getAt(recordIndex);
+                //if (Ext.isEmpty(record)) {
+                //    return;
+                //}
                 var feature = mizarFeatureMap.get(record.get(primaryKey));
                 if (!Ext.isEmpty(feature)) {
                     this._selectOnMap(feature, layer);
@@ -287,11 +306,15 @@ Ext.define('sitools.extension.component.datasets.services.MizarMappingService', 
             }, this);
         }
 
+        if (!Ext.isEmpty(featuresSelected)) {
+            var barycenter = mizarUtils.computeGeometryBarycenter(featuresSelected);
+            var coord = mizarWidget.sky.coordinateSystem.fromGeoToEquatorial(barycenter, null, false);
 
-        var barycenter = mizarUtils.computeGeometryBarycenter(featuresSelected);
-        var coord = mizarWidget.sky.coordinateSystem.fromGeoToEquatorial(barycenter, null, false);
+            mizarWidget.navigation.zoomTo(coord, 2.0, 0.1, MizarGlobal.pickingManager.activate);
 
-        mizarWidget.navigation.zoomTo(coord, 2.0, 0.1, MizarGlobal.pickingManager.activate);
+        } else {
+            popupMessage('', i18n.get('label.featureNotFound'));
+        }
     },
 
     _selectOnMap: function (feature, layer) {

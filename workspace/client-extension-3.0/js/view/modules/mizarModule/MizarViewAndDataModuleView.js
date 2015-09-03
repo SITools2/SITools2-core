@@ -124,12 +124,12 @@ Ext.define('sitools.extension.view.modules.mizarModule.MizarViewAndDataModuleVie
         };
         var windowConfig = {};
 
-        var livegrid = Ext.create('sitools.user.component.datasets.dataviews.Livegrid', {
+        var simpleGrid = Ext.create('sitools.user.component.datasets.dataviews.SimpleGrid', {
             autoShow: false
         });
-        livegrid.init(componentConfig, windowConfig);
+        simpleGrid.init(componentConfig, windowConfig);
 
-        this.livegridView = livegrid.getComponentView();
+        this.livegridView = simpleGrid.getComponentView();
         this.livegridView.title = Ext.String.format(this.i18nMizarModule.get('label.dataFrom'), this.datasetName);
         this.livegridView.width = this.datasetWidth + "%";
         this.livegridView.border = false;

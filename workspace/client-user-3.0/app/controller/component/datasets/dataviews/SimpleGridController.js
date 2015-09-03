@@ -62,7 +62,7 @@ Ext.define('sitools.user.controller.component.datasets.dataviews.SimpleGridContr
             'component#columnItem menucheckitem' : {
                 checkchange : function (item, checked) {
                     if (checked) {
-                        var view = item.up('livegridView');
+                        var view = item.up('simpleGridView');
                         var colModel = extColModelToSrv(view.getColumns());
                         view.getStore().load({
                             params : {
@@ -119,9 +119,9 @@ Ext.define('sitools.user.controller.component.datasets.dataviews.SimpleGridContr
                 },
 
                 cellclick : function (table, td, cellIndex, record, tr, rowIndex, e) {
-                    var livegrid = table.up('livegridView');
+                    var livegrid = table.up('simpleGridView');
                     
-                    var column = livegrid.columnManager.getHeaderAtIndex(cellIndex)
+                    var column = livegrid.columnManager.getHeaderAtIndex(cellIndex);
                     if (Ext.isEmpty(column.columnRenderer)) {
                         return;
                     }

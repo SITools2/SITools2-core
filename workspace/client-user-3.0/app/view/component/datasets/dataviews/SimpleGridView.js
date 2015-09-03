@@ -34,13 +34,13 @@
 Ext.define('sitools.user.view.component.datasets.dataviews.SimpleGridView', {
     extend: 'Ext.grid.Panel',
 
-    requires: ['Ext.selection.CheckboxModelView'],
+    requires: ['Ext.selection.CheckboxModel'],
 
     mixins: {
         datasetView: 'sitools.user.view.component.datasets.dataviews.AbstractDataview'
     },
 
-    alias: 'widget.livegridView',
+    alias: 'widget.simpleGridView',
     layout: 'fit',
     autoScroll: true,
     bodyBorder: false,
@@ -49,7 +49,7 @@ Ext.define('sitools.user.view.component.datasets.dataviews.SimpleGridView', {
     	enableTextSelection: true,
         getRowClass: function (record, index) {
             if (Ext.isEmpty(this.gridId)) {
-                var grid = this.up('livegridView');
+                var grid = this.up('simpleGridView');
                 this.gridId = grid.id;
             }
             return 'rowHeight_' + this.gridId;

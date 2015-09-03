@@ -101,7 +101,8 @@ Ext.define('sitools.user.component.datasets.dataviews.SimpleGrid', {
             gridFiltersCfg : componentConfig.gridFiltersCfg,
             sortInfo : componentConfig.sortInfo,
             formConceptFilters : componentConfig.formConceptFilters,
-            remoteSort : true
+            remoteSort : true,
+            autoLoad : false
         });
         
         Ext.apply(windowSettings, windowConfig, {
