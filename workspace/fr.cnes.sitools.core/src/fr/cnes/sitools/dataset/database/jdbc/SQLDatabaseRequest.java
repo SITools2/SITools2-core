@@ -48,7 +48,7 @@ import fr.cnes.sitools.util.DateUtils;
 
 /**
  * Create a request SQL
- * 
+ *
  * @author c.mozdzierz <a
  *         href="https://sourceforge.net/tracker/?func=detail&atid=2158259&aid=3355053&group_id=531341">[#3355053]</a><br/>
  *         2011/07/06 d.arpin {Change the name and the return of the method getColumnFromQuery ->
@@ -81,7 +81,7 @@ public class SQLDatabaseRequest implements DatabaseRequest {
 
   /**
    * Create a {@code SQLDatabaseRequest}
-   * 
+   *
    * @param params
    *          the request parameters
    */
@@ -218,7 +218,7 @@ public class SQLDatabaseRequest implements DatabaseRequest {
 
   /**
    * Compute the number of Records in the current request
-   * 
+   *
    * @param sql
    *          the request without the select clause
    * @return the number of total results
@@ -229,9 +229,9 @@ public class SQLDatabaseRequest implements DatabaseRequest {
     ResultSet resultSet = null;
     try {
       RequestSql request = RequestFactory.getRequest(params.getDb().getDsModel().getDriverClass());
-
+      String distinct = (params.getDataset().isDistinct() == true) ? "DISTINCT " : "";
       resultSet = datasource.limitedQuery(
-          "SELECT count(*) from (SELECT " + request.getAttributes(params.getSqlVisibleColumns()) + sql
+          "SELECT count(*) from (SELECT " + distinct +  request.getAttributes(params.getSqlVisibleColumns()) + sql
               + ") as datasetQuery", 1, 0);
 
       if (resultSet == null) {
@@ -339,7 +339,7 @@ public class SQLDatabaseRequest implements DatabaseRequest {
 
   /**
    * Fill in attributes for a given Record
-   * 
+   *
    * @param record
    *          the <code>Record</code>
    * @param rs
@@ -406,7 +406,7 @@ public class SQLDatabaseRequest implements DatabaseRequest {
 
   /**
    * Close the current JDBC request
-   * 
+   *
    * @throws SitoolsException
    *           if there is an error while closing the JDBC request
    */
@@ -424,7 +424,7 @@ public class SQLDatabaseRequest implements DatabaseRequest {
 
   /**
    * If the count must be done or not
-   * 
+   *
    * @return true if the count is done, false otherwise
    */
   @Override
@@ -434,10 +434,10 @@ public class SQLDatabaseRequest implements DatabaseRequest {
 
   /**
    * Gets the maxResultsToSend value
-   * 
+   *
    * @see AbstractDatabaseRequest.MAX_ROWS property in the sitools.properties file
    * @see Developer Guide
-   * 
+   *
    * @return the maxResultsToSend
    */
   public final int getMaxResultsToSend() {
@@ -446,10 +446,10 @@ public class SQLDatabaseRequest implements DatabaseRequest {
 
   /**
    * Get the number of records in the current request when no limit parameter is set
-   * 
+   *
    * @see AbstractDatabaseRequest.PAGE_SIZE property in the sitools.properties file
    * @see Developer Guide
-   * 
+   *
    * @return the number of records in the current request when no limit parameter is set
    */
   public final int getPageSize() {
@@ -501,7 +501,7 @@ public class SQLDatabaseRequest implements DatabaseRequest {
     RequestSql request = RequestFactory.getRequest(params.getDb().getDsModel().getDriverClass());
     sql = "";
     distinct = (params.getDataset().isDistinct() == true) ? "DISTINCT " : "";
-    
+
     if ("S".equals(params.getDataset().getQueryType())) {
       sql += " " + params.getDataset().getSqlQuery() + request.getWhereClause(predicats, columns);
     }
