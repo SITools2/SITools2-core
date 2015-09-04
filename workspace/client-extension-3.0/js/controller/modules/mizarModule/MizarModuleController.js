@@ -74,6 +74,21 @@ Ext.define('sitools.extension.controller.modules.mizarModule.MizarModuleControll
                     var container = mizarView.up("component[specificType=moduleWindow]");
                     this.fitCanvasToDiv(container);
                 }
+            },
+            'mizarViewAndDataModuleView > simpleGridView' : {
+                scope : this,
+                resize : function (simpleGridView) {
+                    var mizarViewAndDataModuleView = simpleGridView.up('mizarViewAndDataModuleView');
+                    this.fitCanvasToDiv(mizarViewAndDataModuleView);
+                },
+                collapse : function (simpleGridView) {
+                    var mizarViewAndDataModuleView = simpleGridView.up('mizarViewAndDataModuleView');
+                    this.fitCanvasToDiv(mizarViewAndDataModuleView);
+                },
+                expand : function (simpleGridView) {
+                    var mizarViewAndDataModuleView = simpleGridView.up('mizarViewAndDataModuleView');
+                    this.fitCanvasToDiv(mizarViewAndDataModuleView);
+                }
             }
         });
     },
@@ -110,7 +125,7 @@ Ext.define('sitools.extension.controller.modules.mizarModule.MizarModuleControll
         }
     },
 
-    fitCanvasToDiv : function (moduleContainer, width, height, oldWidth, oldHeight) {
+    fitCanvasToDiv : function (moduleContainer) {
 
         var mizarDiv = moduleContainer.down("mizarModuleView");
 

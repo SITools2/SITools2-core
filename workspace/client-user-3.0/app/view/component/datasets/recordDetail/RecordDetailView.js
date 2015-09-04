@@ -438,7 +438,7 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
 		        if (! rowSelect.selectNext()) {
 		            return;
 		        }
-		        rec = this.grid.getStore().getAt(rowSelect.getSelection()[0]);
+		        rec = this.grid.getStore().getAt(rowSelect.getSelection()[0]) || rowSelect.getSelection()[0];
 	            this.primaryKeyValue = rec.get(this.primaryKeyName);
 	            this.primaryKeyValue = encodeURIComponent(this.primaryKeyValue);
 	            this.url = this.baseUrl + this.primaryKeyValue;

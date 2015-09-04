@@ -285,7 +285,6 @@ Ext.define('sitools.extension.component.datasets.services.MizarMappingService', 
     },
 
     synchronizeFeaturesGridMap: function (featureData) {
-        //this.datasetStore.removeAll();
         var tab = [];
         this.dataview.suspendLayouts();
         Ext.each(featureData.features, function (feature) {
@@ -293,7 +292,11 @@ Ext.define('sitools.extension.component.datasets.services.MizarMappingService', 
         }, this);
         this.datasetStore.loadData(tab, true);
         this.dataview.resumeLayouts(true);
-        /*this.dataview.down('pagingtoolbar').doRefresh();*/
+
+        if (!Ext.isEmpty(this.currentGridSelections)) {
+            this._selectOnGrid(this.currentGridSelections);
+            delete this.currentGridSelections;
+        }
     },
 
     removeFeatureFromGrid : function (featuresId) {
@@ -349,15 +352,9 @@ Ext.define('sitools.extension.component.datasets.services.MizarMappingService', 
                 }
             }, this);
         }
-        this.dataview.getSelectionModel().select(recordsToSelectInGrid, false, true);
-        var rowIndex = this.dataview.getStore().indexOf(recordsToSelectInGrid[0]);
-        this.dataview.getView().scrollRowIntoView(rowIndex);
 
-        //update the selection info on livegrid toolbar if it exists
-        //var livegridToolbar = this.dataview.down("livegridpagingtoolbar");
-        //if (livegridToolbar) {
-        //    livegridToolbar.updateSelectionInfo();
-        //}
+        this.currentGridSelections = recordsToSelectInGrid;
+        this._selectOnGrid(recordsToSelectInGrid);
     },
 
     selectRecordOnMap: function (selectionModel, recordsIndex) {
@@ -428,5 +425,11 @@ Ext.define('sitools.extension.component.datasets.services.MizarMappingService', 
         }, {
             isExclusive: false
         });
+    },
+
+    _selectOnGrid : function (recordsToSelectInGrid) {
+        this.dataview.getSelectionModel().select(recordsToSelectInGrid, false, true);
+        var rowIndex = this.dataview.getStore().indexOf(recordsToSelectInGrid[0]);
+        this.dataview.getView().scrollRowIntoView(rowIndex);
     }
 });
