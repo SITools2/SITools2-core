@@ -71,6 +71,66 @@ Ext.define('sitools.extension.component.datasets.services.MizarMappingService', 
                         value: "/geojson",
                         name: "opensearchResource"
                     }
+                }, {
+                    jsObj: "Ext.form.field.Number",
+                    config: {
+                        fieldLabel: i18n.get('label.startingLong'),
+                        allowBlank: true,
+                        labelWidth: 150,
+                        minValue: 0,
+                        maxValue: 360,
+                        decimalPrecision : 10,
+                        listeners: {
+                            render: function (c) {
+                                Ext.QuickTips.register({
+                                    target: c,
+                                    text: "The longitutude of the starting point"
+                                });
+                            }
+                        },
+                        name: "startingLong",
+                        value: undefined
+                    }
+                }, {
+                    jsObj: "Ext.form.field.Number",
+                    config: {
+                        fieldLabel: i18n.get('label.startingLat'),
+                        allowBlank: true,
+                        labelWidth: 150,
+                        minValue: 0,
+                        maxValue: 180,
+                        decimalPrecision : 10,
+                        listeners: {
+                            render: function (c) {
+                                Ext.QuickTips.register({
+                                    target: c,
+                                    text: "The latitude of the starting point"
+                                });
+                            }
+                        },
+                        name: "startingLat",
+                        value: undefined
+                    }
+                }, {
+                    jsObj: "Ext.form.field.Number",
+                    config: {
+                        fieldLabel: i18n.get('label.startingZoom'),
+                        allowBlank: true,
+                        labelWidth: 150,
+                        minValue: 0,
+                        maxValue: 20,
+                        decimalPrecision : 0,
+                        listeners: {
+                            render: function (c) {
+                                Ext.QuickTips.register({
+                                    target: c,
+                                    text: "The starting zoom level"
+                                });
+                            }
+                        },
+                        name: "startingZoom",
+                        value: undefined
+                    }
                 }
             ];
         }
@@ -109,7 +169,7 @@ Ext.define('sitools.extension.component.datasets.services.MizarMappingService', 
                     }
                     break;
                 case "mocResource" :
-                    if(config.value) {
+                    if (config.value) {
                         this.mocResource = config.value;
                         hasMoc = true;
                     }
@@ -120,6 +180,21 @@ Ext.define('sitools.extension.component.datasets.services.MizarMappingService', 
                         hasOpensearch = true;
                     }
                     break;
+                case "startingLong" :
+                    if (config.value) {
+                        this.startingLong = config.value;
+                    }
+                    break;
+                case "startingLat" :
+                    if (config.value) {
+                        this.startingLat = config.value;
+                    }
+                    break;
+                case "startingZoom" :
+                    if (config.value) {
+                        this.startingZoom = config.value;
+                    }
+                    break;
             }
         }, this);
 
@@ -128,11 +203,9 @@ Ext.define('sitools.extension.component.datasets.services.MizarMappingService', 
         var mocUrl = this.dataset.sitoolsAttachementForUsers + this.mocResource;
         var opensearchUrl = this.dataset.sitoolsAttachementForUsers + this.opensearchResource;
 
-        var layer = mizarWidget.getLayer(this.dataset.name);
-        if (Ext.isEmpty(layer)) {
-
-
-            if (hasOpensearch) {
+        if (hasOpensearch) {
+            var layer = mizarWidget.getLayer(this.dataset.name);
+            if (Ext.isEmpty(layer)) {
                 //OPENSEARCH LAYER
                 layer = mizarWidget.addLayer({
                     "category": "Other",
@@ -148,8 +221,18 @@ Ext.define('sitools.extension.component.datasets.services.MizarMappingService', 
                 //layer.subscribe("feature:removed", Ext.bind(this.removeFeatureFromGrid, this));
                 layer.subscribe("tile:removeFeatures", Ext.bind(this.removeFeatureFromGrid, this));
             }
+            else {
+                // show layer
+                layer.visible(true);
+                //mizarUtils.zoomTo(layer);
+            }
+        }
 
-            if (hasMoc) {
+
+        if (hasMoc) {
+            layer = mizarWidget.getLayer(this.dataset.name + "_MOC");
+            if (Ext.isEmpty(layer)) {
+
                 //MOC LAYER
                 mocDesc = {
                     "category": "Other",
@@ -160,13 +243,21 @@ Ext.define('sitools.extension.component.datasets.services.MizarMappingService', 
                 };
                 mizarWidget.addLayer(mocDesc);
             }
+            else {
+                // show layer
+                layer.visible(true);
+                //mizarUtils.zoomTo(layer);
+            }
+        }
 
-            if (hasGeojson) {
+        if (hasGeojson) {
+            layer = mizarWidget.getLayer(this.dataset.name + "_GEOJSON");
+            if (Ext.isEmpty(layer)) {
                 //GEOJSON LAYER
-                layer = mizarWidget.addLayer({
+                var geoJsonLayer = mizarWidget.addLayer({
                     "category": "Other",
                     "type": "GeoJSON",
-                    "name": this.dataset.name,
+                    "name": this.dataset.name + "_GEOJSON",
                     "visible": true,
                     "pickable": true
                 });
@@ -176,42 +267,44 @@ Ext.define('sitools.extension.component.datasets.services.MizarMappingService', 
                     method: 'GET',
                     success: function (ret) {
                         var response = Ext.decode(ret.responseText);
-                        MizarGlobal.jsonProcessor.handleFeatureCollection(layer, response);
-                        layer.addFeatureCollection(response);
-                        mizarUtils.zoomTo(layer);
+                        MizarGlobal.jsonProcessor.handleFeatureCollection(geoJsonLayer, response);
+                        geoJsonLayer.addFeatureCollection(response);
+                        //mizarUtils.zoomTo(geoJsonLayer);
                     }
                 });
             }
-
-
         }
-        else {
-            // show layer
-            layer.visible(true);
-            mizarUtils.zoomTo(layer);
+
+        if (!Ext.isEmpty(this.startingLong) && !Ext.isEmpty(this.startingLat) && !Ext.isEmpty(this.startingZoom)) {
+            var startingPoint = [this.startingLong, this.startingLat];
+            mizarWidget.navigation.zoomTo(startingPoint, this.startingZoom);
         }
 
         this.isMizarLinked = this.linkMizarWithGrid();
 
     },
 
-    synchronizeFeaturesGridMap : function (featureData) {
-        this.datasetStore.removeAll();
-        Ext.each(featureData.layer.features, function (feature) {
-            this.datasetStore.add(feature.properties);
+    synchronizeFeaturesGridMap: function (featureData) {
+        //this.datasetStore.removeAll();
+        var tab = [];
+        this.dataview.suspendLayouts();
+        Ext.each(featureData.features, function (feature) {
+            tab.push(feature.properties);
         }, this);
-        //console.log('feature added...');
-        //console.dir(featureData.features);
+        this.datasetStore.loadData(tab, true);
+        this.dataview.resumeLayouts(true);
         /*this.dataview.down('pagingtoolbar').doRefresh();*/
     },
 
     removeFeatureFromGrid : function (featuresId) {
+        this.dataview.suspendLayouts();
         Ext.each(featuresId, function (featureId) {
             var feature = this.datasetStore.getById(featureId);
             if (!Ext.isEmpty(feature)) {
                 this.datasetStore.remove(feature);
             }
         }, this);
+        this.dataview.resumeLayouts(true);
     },
 
     linkMizarWithGrid: function () {
@@ -233,7 +326,7 @@ Ext.define('sitools.extension.component.datasets.services.MizarMappingService', 
         var diff = timeEnd - this.timeStart;
 
         if (diff > 500 || Math.abs(this.mouseXStart - event.layerX) > epsilon || Math.abs(this.mouseYStart - event.layerY) > epsilon) {
-            //deselect everything do cope with Mizar Behavior
+            //deselect everything to cope with Mizar Behavior
             this.dataview.getSelectionModel().deselectAll();
             return;
         }

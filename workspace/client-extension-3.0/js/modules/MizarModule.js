@@ -30,7 +30,8 @@ Ext.define('sitools.extension.modules.MizarModule', {
     statics: {
         getParameters: function () {
 
-            return [{
+            return [
+            {
                 jsObj: "Ext.form.TextField",
                 config: {
                     fieldLabel: i18n.get('label.startingLong'),
