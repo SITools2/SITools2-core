@@ -145,8 +145,8 @@ Ext.define('sitools.extension.component.datasets.services.MizarMappingService', 
                     "minOrder": 5
                 });
                 layer.subscribe("features:added", Ext.bind(this.synchronizeFeaturesGridMap, this));
-                layer.subscribe("feature:removed", Ext.bind(this.removeFeatureFromGrid, this));
-                //layer.subscribe("tile:removeFeatures", Ext.bind(this.removeFeatureFromGrid, this));
+                //layer.subscribe("feature:removed", Ext.bind(this.removeFeatureFromGrid, this));
+                layer.subscribe("tile:removeFeatures", Ext.bind(this.removeFeatureFromGrid, this));
             }
 
             if (hasMoc) {
@@ -205,9 +205,13 @@ Ext.define('sitools.extension.component.datasets.services.MizarMappingService', 
         /*this.dataview.down('pagingtoolbar').doRefresh();*/
     },
 
-    removeFeatureFromGrid : function (featureId) {
-        var feature = this.datasetStore.findRecord(this.datasetStore.primaryKey, featureId);
-        this.datasetStore.remove(feature);
+    removeFeatureFromGrid : function (featuresId) {
+        Ext.each(featuresId, function (featureId) {
+            var feature = this.datasetStore.getById(featureId);
+            if (!Ext.isEmpty(feature)) {
+                this.datasetStore.remove(feature);
+            }
+        }, this);
     },
 
     linkMizarWithGrid: function () {
@@ -241,25 +245,26 @@ Ext.define('sitools.extension.component.datasets.services.MizarMappingService', 
         var pickPoint = mizarWidget.navigation.globe.getLonLatFromPixel(event.layerX, event.layerY);
 
         var selections = MizarGlobal.pickingManager.computePickSelection(pickPoint);
-        var recordsIndex = [];
+        var recordsToSelectInGrid = [];
 
         if (selections.length > 0) {
             var primaryKey = this.dataview.getStore().primaryKey;
             Ext.each(selections, function (selection) {
-                var recordIndex = this.dataview.getStore().findBy(function (record) {
-                    if (record.get(primaryKey) === selection.feature.id) {
-                        recordsIndex.push(record);
-                        return true;
-                    }
-                }, this);
+                var record = this.dataview.getStore().getById(selection.feature.id);
+                if (!Ext.isEmpty(record)) {
+                    recordsToSelectInGrid.push(record);
+                }
             }, this);
         }
-        this.dataview.getSelectionModel().select(recordsIndex, false, true);
+        this.dataview.getSelectionModel().select(recordsToSelectInGrid, false, true);
+        var rowIndex = this.dataview.getStore().indexOf(recordsToSelectInGrid[0]);
+        this.dataview.getView().scrollRowIntoView(rowIndex);
+
         //update the selection info on livegrid toolbar if it exists
-        var livegridToolbar = this.dataview.down("livegridpagingtoolbar");
-        if (livegridToolbar) {
-            livegridToolbar.updateSelectionInfo();
-        }
+        //var livegridToolbar = this.dataview.down("livegridpagingtoolbar");
+        //if (livegridToolbar) {
+        //    livegridToolbar.updateSelectionInfo();
+        //}
     },
 
     selectRecordOnMap: function (selectionModel, recordsIndex) {
@@ -310,7 +315,13 @@ Ext.define('sitools.extension.component.datasets.services.MizarMappingService', 
             var barycenter = mizarUtils.computeGeometryBarycenter(featuresSelected);
             var coord = mizarWidget.sky.coordinateSystem.fromGeoToEquatorial(barycenter, null, false);
 
-            mizarWidget.navigation.zoomTo(coord, 2.0, 0.1, MizarGlobal.pickingManager.activate);
+            var callback = function () {
+                MizarGlobal.pickingManager.activate();
+                MizarGlobal.featurePopup.hide();
+            };
+
+            //mizarWidget.navigation.zoomTo(coord, 2.0, 0.1, callback);
+            mizarWidget.navigation.moveTo(coord, 0.1, callback);
 
         } else {
             popupMessage('', i18n.get('label.featureNotFound'));

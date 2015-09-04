@@ -92,8 +92,16 @@ Ext.define('sitools.user.store.dataviews.AbstractDataviewStore', {
             this.sorters = this.convertSorters(this.getSortInfo());
         }
 
-        Ext.apply(config, {
+        var configDynamicModel = {
+            extend : 'Ext.data.Model',
             fields : config.fields,
+            idProperty : config.primaryKey
+        };
+        Ext.define('sitools.user.model.DynamicModel', configDynamicModel);
+
+        Ext.apply(config, {
+            //fields : config.fields,
+            model : 'sitools.user.model.DynamicModel',
             proxy : {
                 type : 'ajax',
                 url : config.urlAttach + "/records",
