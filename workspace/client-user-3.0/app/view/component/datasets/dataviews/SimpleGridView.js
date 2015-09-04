@@ -34,7 +34,7 @@
 Ext.define('sitools.user.view.component.datasets.dataviews.SimpleGridView', {
     extend: 'Ext.grid.Panel',
 
-    requires: ['Ext.selection.CheckboxModel'],
+    requires: ['Ext.selection.CheckboxModelView'],
 
     mixins: {
         datasetView: 'sitools.user.view.component.datasets.dataviews.AbstractDataview'

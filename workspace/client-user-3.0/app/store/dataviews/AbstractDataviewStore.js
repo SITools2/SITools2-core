@@ -97,11 +97,13 @@ Ext.define('sitools.user.store.dataviews.AbstractDataviewStore', {
             fields : config.fields,
             idProperty : config.primaryKey
         };
-        Ext.define('sitools.user.model.DynamicModel', configDynamicModel);
+
+        var modelName = 'sitools.user.model.DynamicModel_' + config.datasetName + "_" + Ext.id();
+        Ext.define(modelName, configDynamicModel);
 
         Ext.apply(config, {
             //fields : config.fields,
-            model : 'sitools.user.model.DynamicModel',
+            model : modelName,
             proxy : {
                 type : 'ajax',
                 url : config.urlAttach + "/records",

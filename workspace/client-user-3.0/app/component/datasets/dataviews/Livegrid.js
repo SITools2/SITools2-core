@@ -100,7 +100,8 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
             gridFilters : componentConfig.gridFilters,
             gridFiltersCfg : componentConfig.gridFiltersCfg,
             sortInfo : componentConfig.sortInfo,
-            formConceptFilters : componentConfig.formConceptFilters
+            formConceptFilters : componentConfig.formConceptFilters,
+            datasetName : dataset.name
         });
         
         Ext.apply(windowSettings, windowConfig, {

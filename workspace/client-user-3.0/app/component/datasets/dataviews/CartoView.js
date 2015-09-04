@@ -84,7 +84,8 @@ Ext.define('sitools.user.component.datasets.dataviews.CartoView', {
             gridFiltersCfg: componentConfig.gridFiltersCfg,
             sortInfo: componentConfig.sortInfo,
             formConceptFilters: componentConfig.formConceptFilters,
-            layer: vecLayer
+            layer: vecLayer,
+            datasetName : dataset.name
         });
 
         Ext.apply(windowSettings, windowConfig, {
