@@ -42,7 +42,14 @@ Ext.define('sitools.extension.component.projectGraph.MizarGraphColumn', {
                     var mizarServiceUrl = record.get("url") + '/services/gui';
                     this.callMizarService(record, mizarServiceUrl);
                 }
-            }]
+            }],
+            renderer : function (value, metadata, record, rowIndex, colIndex, store, view) {
+                var me = view.up("projectGraph");
+                if(me.isNodeANode(record)) {
+                    metadata.style = "visibility:hidden";
+                }
+                return value;
+            }
         }];
     },
 
@@ -90,7 +97,7 @@ Ext.define('sitools.extension.component.projectGraph.MizarGraphColumn', {
     checkIfMizarServiceExists : function (services) {
         var mizarService = null;
         Ext.each(services, function (service) {
-            if (service.xtype = 'sitools.extension.component.datasets.services.MizarMappingService') {
+            if (service.xtype == 'sitools.extension.component.datasets.services.MizarMappingService') {
                 mizarService = service;
                 return;
             }
