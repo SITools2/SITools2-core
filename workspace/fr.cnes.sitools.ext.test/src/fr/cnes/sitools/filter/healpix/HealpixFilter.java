@@ -179,7 +179,7 @@ public class HealpixFilter extends AbstractFormFilter {
                 //Calculer un polygon a partir des numeros Healpix
                 final int nside = (int) Math.pow(2, order);
                 index = new HealpixIndex(nside, Scheme.NESTED);
-                SpatialVector[] vectors = index.corners_nest(healpix, 1);
+                SpatialVector[] vectors = index.corners_nest(healpix, 2);
 
                 String wkt = getWKTString(vectors);
 

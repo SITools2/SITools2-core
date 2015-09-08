@@ -8,6 +8,7 @@ import fr.cnes.sitools.plugins.resources.model.DataSetSelectionType;
 import fr.cnes.sitools.plugins.resources.model.ResourceModel;
 import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
 import fr.cnes.sitools.plugins.resources.model.ResourceParameterType;
+import fr.cnes.sitools.util.Util;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -17,6 +18,10 @@ public class GeoJSONPostGisResourceModel extends ResourceModel {
 
 
     public static final String GEOMETRY_COLUMN = "geometryColumn";
+    public static final String QUICKLOOK_COLUMN = "quicklookColumn";
+    public static final String THUMBNAIL_COLUMN = "thumbnailColumn";
+    public static final String DOWNLOAD_COLUMN = "downloadColumn";
+    public static final String MIME_TYPE_COLUMN = "mimeTypeColumn";
 
     /**
      * JeoSearchResourceModel constructor
@@ -35,10 +40,30 @@ public class GeoJSONPostGisResourceModel extends ResourceModel {
         param1.setValueType("xs:dataset.columnAlias");
         this.addParam(param1);
 
+        ResourceParameter paramQuicklook = new ResourceParameter(QUICKLOOK_COLUMN, "The name of column containing the quicklook information",
+                ResourceParameterType.PARAMETER_INTERN);
+        paramQuicklook.setValueType("xs:dataset.columnAlias");
+        this.addParam(paramQuicklook);
+
+        ResourceParameter paramThumbnail = new ResourceParameter(THUMBNAIL_COLUMN, "The name of column containing the thumbnail information",
+                ResourceParameterType.PARAMETER_INTERN);
+        paramThumbnail.setValueType("xs:dataset.columnAlias");
+        this.addParam(paramThumbnail);
+
+        ResourceParameter paramDownload = new ResourceParameter(DOWNLOAD_COLUMN, "The name of column containing the download information",
+                ResourceParameterType.PARAMETER_INTERN);
+        paramDownload.setValueType("xs:dataset.columnAlias");
+        this.addParam(paramDownload);
+
+        ResourceParameter paramMimeType = new ResourceParameter(MIME_TYPE_COLUMN, "The mimeType of the data downloaded",
+                ResourceParameterType.PARAMETER_INTERN);
+        paramMimeType.setValueType("xs:dataset.columnAlias");
+        this.addParam(paramMimeType);
+
         this.setApplicationClassName(DataSetApplication.class.getName());
         this.setDataSetSelection(DataSetSelectionType.MULTIPLE);
         this.getParameterByName("methods").setValue("GET");
-        this.getParameterByName("url").setValue("/geojson");
+        this.getParameterByName("url").setValue("/geojson/search");
 
     }
 
@@ -52,12 +77,25 @@ public class GeoJSONPostGisResourceModel extends ResourceModel {
                 Map<String, ResourceParameter> params = item.getParametersMap();
                 ResourceParameter param = params.get(GEOMETRY_COLUMN);
                 String value = param.getValue();
-                if (value.equals("")) {
+                if (Util.isEmpty(value)) {
                     ConstraintViolation constraint = new ConstraintViolation();
-                    constraint.setMessage("There is not column defined");
+                    constraint.setMessage("There is not column defined for geometry");
                     constraint.setLevel(ConstraintViolationLevel.CRITICAL);
                     constraint.setValueName(param.getName());
                     constraints.add(constraint);
+                }
+
+                //Check that there is a mimeType if download column is defined
+                ResourceParameter paramDownload = params.get(DOWNLOAD_COLUMN);
+                if (!Util.isEmpty(paramDownload.getValue())) {
+                    ResourceParameter paramMimeType = params.get(MIME_TYPE_COLUMN);
+                    if (Util.isEmpty(paramMimeType.getValue())) {
+                        ConstraintViolation constraint = new ConstraintViolation();
+                        constraint.setMessage("MimeType is mandatory if download is configured");
+                        constraint.setLevel(ConstraintViolationLevel.CRITICAL);
+                        constraint.setValueName(paramMimeType.getName());
+                        constraints.add(constraint);
+                    }
                 }
                 return constraints;
             }

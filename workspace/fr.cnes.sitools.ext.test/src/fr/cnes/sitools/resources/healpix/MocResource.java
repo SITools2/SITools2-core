@@ -140,6 +140,7 @@ public class MocResource extends SitoolsParameterizedResource {
             }
         }
         params.setSqlVisibleColumns(col);
+        params.setPaginationExtend(-1);
 
         DataSet dataset = datasetApp.getDataSet();
 
@@ -222,6 +223,7 @@ public class MocResource extends SitoolsParameterizedResource {
         } finally {
             if (databaseRequest != null) {
                 try {
+                    databaseRequest.close();
                     databaseRequest.close();
                 } catch (SitoolsException e) {
                     context.getLogger().log(Level.SEVERE, "Cannot close database request", e);

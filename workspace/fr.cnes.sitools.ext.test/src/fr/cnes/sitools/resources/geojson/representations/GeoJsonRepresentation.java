@@ -56,6 +56,11 @@ public class GeoJsonRepresentation extends WriterRepresentation {
     /** The converters to apply */
     private ConverterChained converterChained;
 
+    private String quicklookColumn;
+    private String thumbnailColumn;
+    private String downloadColumn;
+    private String mimeTypeColumn;
+
     /** The Context */
     private Context context;
 
@@ -86,12 +91,21 @@ public class GeoJsonRepresentation extends WriterRepresentation {
         this.context = context;
     }
 
+    public GeoJsonRepresentation(DatabaseRequestParameters params, String geometryColName, ConverterChained converterChained, DataSet dataset, Context context, String quicklookColumn, String thumbnailColumn, String downloadColumn, String mimeTypeColumn) {
+        this(params, geometryColName, converterChained, dataset, context);
+        this.downloadColumn = downloadColumn;
+        this.thumbnailColumn = thumbnailColumn;
+        this.quicklookColumn = quicklookColumn;
+        this.mimeTypeColumn = mimeTypeColumn;
+    }
+
+
     /**
      * Retrieve the primary key column name from the given dataset
      * @param dataset the DataSet
      * @return the primary key column alias or null if not found
      */
-    private String getPrimaryKeyColumnName(DataSet dataset) {
+    protected String getPrimaryKeyColumnName(DataSet dataset) {
         String primaryColumnName = null;
         List<Column> columns = dataset.getColumnModel();
         for (Column column : columns) {
@@ -114,79 +128,16 @@ public class GeoJsonRepresentation extends WriterRepresentation {
         jGenerator = jFactory.createJsonGenerator(writer);
 
         try {
-            if (params.getDistinct()) {
-                databaseRequest.createDistinctRequest();
-            } else {
-                databaseRequest.createRequest();
-            }
+            createDbRequest(databaseRequest);
 
-            jGenerator.writeStartObject();
-            jGenerator.writeStringField("type", "FeatureCollection");
-            jGenerator.writeNumberField("totalResults", databaseRequest.getCount());
+            startWriting(jGenerator);
 
-            jGenerator.writeObjectFieldStart("properties");
-            jGenerator.writeNumberField("totalResults", databaseRequest.getCount());
-            jGenerator.writeEndObject();
+            writeProperties(databaseRequest, jGenerator);
+            writeFeatures(databaseRequest, jGenerator);
 
-            // Features
-            jGenerator.writeArrayFieldStart("features");
-
-            Object geometry = null;
-            Object primaryKeyValue = null;
-
-            while (databaseRequest.nextResult()) {
-                rec = databaseRequest.getRecord();
-                if (Util.isSet(converterChained)) {
-                    rec = converterChained.getConversionOf(rec);
-                }
-
-                // feature
-                jGenerator.writeStartObject();
-                jGenerator.writeStringField("type", "Feature");
-
-                // properties
-                jGenerator.writeObjectFieldStart("properties");
-
-                for (Iterator<AttributeValue> it = rec.getAttributeValues().iterator(); it.hasNext(); ) {
-                    AttributeValue attr = it.next();
-                    if (attr.getName().equals(geometryColName)) {
-                        geometry = attr.getValue();
-                    } else if (attr.getName().equals(this.primaryKey)) {
-                        primaryKeyValue = attr.getValue();
-                        jGenerator.writeFieldName(attr.getName());
-                        mapper.writeValue(jGenerator, attr.getValue());
-                    } else {
-                        jGenerator.writeFieldName(attr.getName());
-                        mapper.writeValue(jGenerator, attr.getValue());
-                    }
-                }
-                jGenerator.writeEndObject();
-                // end properties
-
-                if (Util.isSet(primaryKeyValue)) {
-                    // id
-                    jGenerator.writeFieldName("id");
-                    mapper.writeValue(jGenerator, primaryKeyValue);
-                }
-                if (Util.isSet(geometry)) {
-                    // geometry
-                    jGenerator.writeFieldName("geometry");
-                    jGenerator.writeRawValue(geometry.toString());
-                }
-
-                jGenerator.writeEndObject();
-                // end feature
-            }
         } catch (SitoolsException e) {
 
-            jGenerator.writeStartObject();
-            jGenerator.writeObjectFieldStart("error");
-            jGenerator.writeStringField("error", e.getLocalizedMessage());
-            jGenerator.writeStringField("code", "500");
-            //end error
-            jGenerator.writeEndObject();
-            //end object
-            jGenerator.writeEndObject();
+            writeError(jGenerator, e);
             jGenerator.flush();
             // end global object
             writer.flush();
@@ -201,15 +152,120 @@ public class GeoJsonRepresentation extends WriterRepresentation {
             if (databaseRequest != null) {
                 try {
                     databaseRequest.close();
-                }
-                catch (SitoolsException e) {
+                } catch (SitoolsException e) {
                     context.getLogger().log(Level.SEVERE, "Cannot close database request", e);
                 }
             }
+        }
+    }
 
-//            if (writer != null) {
-//                writer.close();
-//            }
+    protected void writeError(JsonGenerator jGenerator, SitoolsException e) throws IOException {
+        jGenerator.writeStartObject();
+        jGenerator.writeObjectFieldStart("error");
+        jGenerator.writeStringField("error", e.getLocalizedMessage());
+        jGenerator.writeStringField("code", "500");
+        //end error
+        jGenerator.writeEndObject();
+        //end object
+        jGenerator.writeEndObject();
+    }
+
+    protected void writeFeatures(DatabaseRequest databaseRequest, JsonGenerator jGenerator) throws IOException, SitoolsException {
+        Record rec;// Features
+        jGenerator.writeArrayFieldStart("features");
+
+        Object geometry = null;
+        Object primaryKeyValue = null;
+        Object downloadUrl = null;
+        Object mimeType = null;
+
+        while (databaseRequest.nextResult()) {
+            rec = databaseRequest.getRecord();
+            if (Util.isSet(converterChained)) {
+                rec = converterChained.getConversionOf(rec);
+            }
+
+            // feature
+            jGenerator.writeStartObject();
+            jGenerator.writeStringField("type", "Feature");
+
+            // properties
+            jGenerator.writeObjectFieldStart("properties");
+
+            for (Iterator<AttributeValue> it = rec.getAttributeValues().iterator(); it.hasNext(); ) {
+                AttributeValue attr = it.next();
+                if (attr.getName().equals(geometryColName)) {
+                    geometry = attr.getValue();
+                } else if (attr.getName().equals(this.primaryKey)) {
+                    primaryKeyValue = attr.getValue();
+                    this.doWriteValue(jGenerator, attr.getName(), attr.getValue());
+                } else if (attr.getName().equals(this.downloadColumn)) {
+                    downloadUrl = attr.getValue();
+                } else if (attr.getName().equals(this.mimeTypeColumn)) {
+                    mimeType = attr.getValue();
+                } else if (attr.getName().equals(this.thumbnailColumn)) {
+                    this.doWriteValue(jGenerator, "thumbnail", attr.getValue());
+                } else if (attr.getName().equals(this.quicklookColumn)) {
+                    this.doWriteValue(jGenerator, "quicklook", attr.getValue());
+                } else {
+                    this.doWriteValue(jGenerator, attr.getName(), attr.getValue());
+                }
+            }
+            jGenerator.writeEndObject();
+            // end properties
+
+            if (Util.isSet(primaryKeyValue)) {
+                // id
+                jGenerator.writeFieldName("id");
+                mapper.writeValue(jGenerator, primaryKeyValue);
+            }
+            if (Util.isSet(geometry)) {
+                // geometry
+                jGenerator.writeFieldName("geometry");
+                jGenerator.writeRawValue(geometry.toString());
+            }
+
+            if (Util.isSet(downloadUrl) && Util.isSet(mimeType)) {
+                //start services
+                jGenerator.writeObjectFieldStart("services");
+                //start download
+                jGenerator.writeObjectFieldStart("download");
+                this.doWriteValue(jGenerator, "mimetype", mimeType);
+                this.doWriteValue(jGenerator, "url", downloadUrl);
+                //end download
+                jGenerator.writeEndObject();
+                //end services
+                jGenerator.writeEndObject();
+            }
+
+            jGenerator.writeEndObject();
+            // end feature
+        }
+
+    }
+
+    protected void doWriteValue(JsonGenerator jGenerator, String name, Object value) throws IOException {
+        jGenerator.writeFieldName(name);
+        mapper.writeValue(jGenerator, value);
+    }
+
+    protected void writeProperties(DatabaseRequest databaseRequest, JsonGenerator jGenerator) throws IOException {
+        jGenerator.writeNumberField("totalResults", databaseRequest.getCount());
+        jGenerator.writeObjectFieldStart("properties");
+        jGenerator.writeNumberField("totalResults", databaseRequest.getCount());
+        jGenerator.writeEndObject();
+    }
+
+    protected void startWriting(JsonGenerator jGenerator) throws IOException {
+        jGenerator.writeStartObject();
+        jGenerator.writeStringField("type", "FeatureCollection");
+    }
+
+    protected void createDbRequest(DatabaseRequest databaseRequest) throws SitoolsException {
+        if (params.getDistinct()) {
+            databaseRequest.createDistinctRequest();
+        } else {
+            databaseRequest.createRequest();
         }
     }
 }
