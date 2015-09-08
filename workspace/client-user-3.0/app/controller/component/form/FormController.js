@@ -48,16 +48,33 @@ Ext.define('sitools.user.controller.component.form.FormController', {
     init: function () {
         this.control({
             'formContainerView': {
+                scope : this,
                 componentChanged: this.componentChanged,
                 afterrender: this.afterRenderFormContainer
             },
 
             'formsView': {
-                resize: this.resizeForm
+                scope : this,
+                resize: this.resizeForm,
+                render: function (formPanel) {
+                    formPanel.getEl().on('keyup', function (e) {
+                        if (e.getKey() == e.ENTER) {
+                            var formsView = Ext.ComponentQuery.query('formsView#' + e.currentTarget.id)[0];
+                            this.onSearch(formsView);
+                        }
+                    }, this);
+                },
+                boxready : function (formPanel) {
+                    formPanel.focus();
+                }
             },
 
             'formsView button#btnSearchForm': {
-                click: this.onSearch
+                scope : this,
+                click: function (btn) {
+                    var formsView = btn.up('formsView');
+                    this.onSearch(formsView);
+                }
             },
 
             'formsView button#resetSearchForm': {
@@ -146,11 +163,9 @@ Ext.define('sitools.user.controller.component.form.FormController', {
         }, this);
     },
 
-    onSearch: function (btn) {
+    onSearch: function (me) {
 
         var valid = true;
-
-        var me = btn.up('formsView');
 
         var cmpList = Ext.ComponentQuery.query("formContainerView", me);
 
