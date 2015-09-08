@@ -14,8 +14,8 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
     extend: 'Ext.panel.Panel',
 
     alias: 'widget.desktop',
-    
-    requires : [ 'sitools.user.view.header.ButtonTaskBarView', 'sitools.user.view.header.LeftTaskBarView' ],
+
+    requires: ['sitools.user.view.header.ButtonTaskBarView', 'sitools.user.view.header.LeftTaskBarView'],
 
     uses: [
         'Ext.util.MixedCollection',
@@ -36,11 +36,11 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
 
     xTickSize: 1,
     yTickSize: 1,
-    
-    height : 50,
+
+    height: 50,
 
     app: null,
-    
+
     /**
      * @cfg {Array|Store} shortcuts
      * The items to add to the DataView. This can be a {@link Ext.data.Store Store} or a
@@ -64,12 +64,12 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
      */
     shortcutTpl: [
         '<tpl for=".">',
-            '<div class="ux-desktop-shortcut" id="{name}-shortcut">',
-                '<div class="ux-desktop-shortcut-icon {iconCls}">',
-                    '<img src="',Ext.BLANK_IMAGE_URL,'" title="{name}">',
-                '</div>',
-                '<span class="ux-desktop-shortcut-text">{name}</span>',
-            '</div>',
+        '<div class="ux-desktop-shortcut" id="{name}-shortcut">',
+        '<div class="ux-desktop-shortcut-icon {iconCls}">',
+        '<img src="', Ext.BLANK_IMAGE_URL, '" title="{name}">',
+        '</div>',
+        '<span class="ux-desktop-shortcut-text">{name}</span>',
+        '</div>',
         '</tpl>',
         '<div class="x-clear"></div>'
     ],
@@ -81,50 +81,50 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
     taskbarConfig: null,
 
     windowMenu: null,
-    
-    cls : 'x-panel-body-silver',
+
+    cls: 'x-panel-body-silver',
 
     initComponent: function () {
         var me = this;
         me.windowMenu = Ext.create("Ext.menu.Menu", me.createWindowMenu());
 
         var navBarInstances = Ext.create("Ext.ux.desktop.TaskBar", me.taskbarConfig);
-        
+
         this.navToolbarButtons = Ext.create('sitools.user.view.header.ButtonTaskBarView', {
-            desktopController : this.desktopController,
-            width : 90 // width without save button
+            desktopController: this.desktopController,
+            width: 90 // width without save button
         });
-        
+
         this.leftTaskbar = Ext.create('sitools.user.view.header.LeftTaskBarView', {
-        	desktopController : this.desktopController,
-        	width : 90,
-            observer : this
+            desktopController: this.desktopController,
+            width: 90,
+            observer: this
         });
-        
+
         this.navBarModules = Ext.create('sitools.user.view.header.ModuleToolbar');
-        
+
         this.NavBarsPanel = Ext.create('Ext.panel.Panel', {
-        	name : 'navbarPanels',
-        	cls : 'allTaskbars-bg',
-            border : false,
-            layout : {
-                type : "hbox",
-                align : "stretch"
+            name: 'navbarPanels',
+            cls: 'allTaskbars-bg',
+            border: false,
+            layout: {
+                type: "hbox",
+                align: "stretch"
             },
 //            items : [ this.navBarModule, this.taskbar, this.navToolbarButtons ]
-            items : [ this.navBarModules, this.navToolbarButtons ]
+            items: [this.navBarModules, this.navToolbarButtons]
         });
 
         me.taskbar = navBarInstances
         me.tbar = this.NavBarsPanel;
         me.bbar = Ext.create('Ext.panel.Panel', {
-            cls : 'ux-taskbar moduleInstances-bg',
-            border : false,
-            layout : {
-                type : "hbox",
-                align : "stretch"
+            cls: 'ux-taskbar moduleInstances-bg',
+            border: false,
+            layout: {
+                type: "hbox",
+                align: "stretch"
             },
-            items : [this.leftTaskbar, navBarInstances]
+            items: [this.leftTaskbar, navBarInstances]
         });
 
         me.taskbar.windowMenu = me.windowMenu;
@@ -132,7 +132,7 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
         me.contextMenu = Ext.create("Ext.menu.Menu", me.createDesktopMenu());
 
         me.items = [
-            { xtype: 'wallpaper', id: 'wallpaperId', taskbar : this.taskbar }
+            {xtype: 'wallpaper', id: 'wallpaperId', taskbar: this.taskbar}
         ];
 
         me.callParent(arguments);
@@ -153,21 +153,21 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
     afterRender: function () {
         var me = this;
         me.callParent();
-        
+
         me.el.on('contextmenu', me.onDesktopMenu, me);
         this.fitDesktop();
     },
-    
+
     /**
      * Set the height of the different elements of the desktop, according to the screen height.
-     * @private 
+     * @private
      */
-    fitDesktop : function () {
+    fitDesktop: function () {
         var el = Desktop.getMainDesktop();
 
         var enteteEl = Desktop.getEnteteEl();
         var bottomEl = Desktop.getBottomEl();
-        
+
         var desktopEl = Desktop.getDesktopEl();
 
         enteteEl.setWidth(Ext.getBody().getWidth());
@@ -178,8 +178,19 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
         var desktopHeight = Desktop.getDesktopAndTaskBarEl().getHeight();
 
         desktopEl.setHeight(desktopHeight);
-       
+
         this.setHeight(desktopHeight);
+
+        var headerView = Ext.ComponentQuery.query("headerView")[0];
+        if (headerView) {
+            headerView.setWidth(Ext.getBody().getWidth());
+        }
+
+        var footerView = Ext.ComponentQuery.query("footerView")[0];
+        if (footerView) {
+            footerView.setWidth(Ext.getBody().getWidth());
+        }
+
     },
 
     //------------------------------------------------------
@@ -187,8 +198,8 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
 
     createDesktopMenu: function () {
         var me = this, ret = {
-            border : false,
-            plain : true,
+            border: false,
+            plain: true,
             items: me.contextMenuItems || []
         };
 
@@ -198,8 +209,8 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
             }
 
             ret.items.push(
-                { text: i18n.get('label.tile'), handler: me.tileWindows, scope: me, minWindows: 1 },
-                { text: i18n.get('label.cascade'), handler: me.cascadeWindows, scope: me, minWindows: 1 })
+                {text: i18n.get('label.tile'), handler: me.tileWindows, scope: me, minWindows: 1},
+                {text: i18n.get('label.cascade'), handler: me.cascadeWindows, scope: me, minWindows: 1})
         }
 
         return ret;
@@ -209,14 +220,14 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
         var me = this;
         return {
 //            defaultAlign: 'bl-l?',
-            border : false,
-            plain : true,
+            border: false,
+            plain: true,
             items: [
-                { text: i18n.get('label.restore'), handler: me.onWindowMenuRestore, scope: me },
-                { text: i18n.get('label.minimize'), handler: me.onWindowMenuMinimize, scope: me },
-                { text: i18n.get('label.maximize'), handler: me.onWindowMenuMaximize, scope: me },
+                {text: i18n.get('label.restore'), handler: me.onWindowMenuRestore, scope: me},
+                {text: i18n.get('label.minimize'), handler: me.onWindowMenuMinimize, scope: me},
+                {text: i18n.get('label.maximize'), handler: me.onWindowMenuMaximize, scope: me},
                 '-',
-                { text: i18n.get('label.close'), handler: me.onWindowMenuClose, scope: me }
+                {text: i18n.get('label.close'), handler: me.onWindowMenuClose, scope: me}
             ],
             listeners: {
                 beforeshow: me.onWindowMenuBeforeShow,
@@ -248,7 +259,7 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
         });
     },
 
-    onWindowClose: function(win) {
+    onWindowClose: function (win) {
         var me = this;
         me.windows.remove(win);
         me.taskbar.removeTaskButton(win.taskButton);
@@ -273,7 +284,7 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
     },
 
     onWindowMenuHide: function (menu) {
-        Ext.defer(function() {
+        Ext.defer(function () {
             menu.theWin = null;
         }, 1);
     },
@@ -289,10 +300,10 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
         var me = this, win = me.windowMenu.theWin;
 
         if (win.xtype == 'window') {
-        	win.minimize();
-		} else if (win instanceof Ext.panel.Panel) {
-			win.hide();
-		}
+            win.minimize();
+        } else if (win instanceof Ext.panel.Panel) {
+            win.hide();
+        }
     },
 
     onWindowMenuRestore: function () {
@@ -308,12 +319,12 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
         return this.wallpaper.wallpaper;
     },
 
-    setTickSize: function(xTickSize, yTickSize) {
+    setTickSize: function (xTickSize, yTickSize) {
         var me = this,
             xt = me.xTickSize = xTickSize,
             yt = me.yTickSize = (arguments.length > 1) ? yTickSize : xt;
 
-        me.windows.each(function(win) {
+        me.windows.each(function (win) {
             var dd = win.dd, resizer = win.resizer;
             dd.xTickSize = xt;
             dd.yTickSize = yt;
@@ -330,11 +341,11 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
     //------------------------------------------------------
     // Window management methods
 
-    cascadeWindows: function() {
+    cascadeWindows: function () {
         var x = 0, y = 0,
             zmgr = this.getDesktopZIndexManager();
 
-        zmgr.eachBottomUp(function(win) {
+        zmgr.eachBottomUp(function (win) {
             if (win.isWindow && win.isVisible() && !win.maximized) {
                 win.setPosition(x, y);
                 x += 20;
@@ -343,34 +354,34 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
         });
     },
 
-    createWindow: function(config, cls) {
+    createWindow: function (config, cls) {
         var me = this, win, cfg = Ext.applyIf(config || {}, {
-                stateful: false,
-                isWindow: true,
+            stateful: false,
+            isWindow: true,
 //                constrainHeader: true,
-                constrain : true,
-                minimizable: true,
-                maximizable: true,
-                listeners : {
-                	resizeDesktop : function (me, newW, newH) {
-                		var deskWidth = Desktop.getDesktopEl().getWidth();
-                		var deskHeight = Desktop.getDesktopEl().getHeight() - me.up('desktop').down('taskbar').getHeight() - me.up('desktop').down('moduleToolbar').getHeight();
-                		
-                		if (me.getWidth() > deskWidth) {
-                			me.setWidth(deskWidth);
-                		}
-                		
-                		if (me.getHeight() > deskHeight) {
-                			me.setHeight(deskHeight);
-                		}
-                        
-                        var child = me.items.items[0];
-                        if (child && child.getEl()) {
-                            child.fireEvent("resize", child, me.body.getWidth(), me.body.getHeight(), child.getWidth(), child.getHeight());
-                        }
+            constrain: true,
+            minimizable: true,
+            maximizable: true,
+            listeners: {
+                resizeDesktop: function (me, newW, newH) {
+                    var deskWidth = Desktop.getDesktopEl().getWidth();
+                    var deskHeight = Desktop.getDesktopEl().getHeight() - me.up('desktop').down('taskbar').getHeight() - me.up('desktop').down('moduleToolbar').getHeight();
+
+                    if (me.getWidth() > deskWidth) {
+                        me.setWidth(deskWidth);
+                    }
+
+                    if (me.getHeight() > deskHeight) {
+                        me.setHeight(deskHeight);
+                    }
+
+                    var child = me.items.items[0];
+                    if (child && child.getEl()) {
+                        child.fireEvent("resize", child, me.body.getWidth(), me.body.getHeight(), child.getWidth(), child.getHeight());
                     }
                 }
-            });
+            }
+        });
 
         cls = cls || Ext.window.Window;
         win = me.add(new cls(cfg));
@@ -403,7 +414,7 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
         });
 
         // replace normal window close w/fadeOut animation:
-        win.doClose = function ()  {
+        win.doClose = function () {
             win.doClose = Ext.emptyFn; // dblclick can call again...
             win.el.disableShadow();
             win.el.fadeOut({
@@ -417,30 +428,30 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
 
         return win;
     },
-    
-    createPanel: function(config, cls) {
+
+    createPanel: function (config, cls) {
         var me = this, win, cfg = Ext.applyIf(config || {}, {
-                stateful: false,
-                constrain : true,
-                border : false,
-                bodyBorder : false,
-                constrainHeader: true,
-                floating : true,
-                listeners : {
-                	resizeDesktop : function (me, newW, newH) {
-                		var deskWidth = Desktop.getDesktopEl().getWidth();
-                		var deskHeight = Desktop.getDesktopEl().getHeight() - me.up('desktop').down('taskbar').getHeight() - me.up('desktop').down('moduleToolbar').getHeight();
-                		
-                		me.setWidth(deskWidth);
-                		me.setHeight(deskHeight);
-                        
-                        var child = me.items.items[0];
-                        if (child && child.getEl()) {
-                            child.fireEvent("resize", child, me.body.getWidth(), me.body.getHeight(), child.getWidth(), child.getHeight());
-                        }
+            stateful: false,
+            constrain: true,
+            border: false,
+            bodyBorder: false,
+            constrainHeader: true,
+            floating: true,
+            listeners: {
+                resizeDesktop: function (me, newW, newH) {
+                    var deskWidth = Desktop.getDesktopEl().getWidth();
+                    var deskHeight = Desktop.getDesktopEl().getHeight() - me.up('desktop').down('taskbar').getHeight() - me.up('desktop').down('moduleToolbar').getHeight();
+
+                    me.setWidth(deskWidth);
+                    me.setHeight(deskHeight);
+
+                    var child = me.items.items[0];
+                    if (child && child.getEl()) {
+                        child.fireEvent("resize", child, me.body.getWidth(), me.body.getHeight(), child.getWidth(), child.getHeight());
                     }
                 }
-            });
+            }
+        });
 
         cls = cls || Ext.panel.Panel;
         win = me.add(new cls(cfg));
@@ -458,13 +469,13 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
             destroy: me.onWindowClose,
             scope: me
         });
-        
+
         win.on({
             single: true
         });
 
         // replace normal window close w/fadeOut animation:
-        win.doClose = function ()  {
+        win.doClose = function () {
             win.doClose = Ext.emptyFn; // dblclick can call again...
             win.el.disableShadow();
             win.el.fadeOut({
@@ -488,8 +499,8 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
             // components in the stack.
 
             zmgr.eachTopDown(function (comp) {
-            	// have to also manage Panel in fixe mode
-                if ((comp.isWindow || comp instanceof Ext.panel.Panel)  && !comp.hidden) {
+                // have to also manage Panel in fixe mode
+                if ((comp.isWindow || comp instanceof Ext.panel.Panel) && !comp.hidden) {
                     win = comp;
                     return false;
                 }
@@ -506,22 +517,22 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
         return (windows.getCount() && windows.getAt(0).zIndexManager) || null;
     },
 
-    getWindow: function(id) {
+    getWindow: function (id) {
         return this.windows.get(id);
     },
 
-    minimizeWindow: function(win) {
+    minimizeWindow: function (win) {
         win.minimized = true;
         win.hide();
     },
 
     restoreWindow: function (win) {
-    	
-    	if (win.xtype == 'window' || win instanceof Ext.panel.Panel) {
-    		win.show();
-    		win.toFront();
-    	}
-    	
+
+        if (win.xtype == 'window' || win instanceof Ext.panel.Panel) {
+            win.show();
+            win.toFront();
+        }
+
 //        if (win.isVisible()) {
 //            win.restore();
 //            win.toFront();
@@ -531,11 +542,11 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
         return win;
     },
 
-    tileWindows: function() {
+    tileWindows: function () {
         var me = this, availWidth = me.body.getWidth(true);
         var x = me.xTickSize, y = me.yTickSize, nextY = y;
 
-        me.windows.each(function(win) {
+        me.windows.each(function (win) {
             if (win.isVisible() && !win.maximized) {
                 var w = win.el.getWidth();
 

@@ -185,7 +185,14 @@ Ext.define('sitools.user.controller.header.HeaderController', {
             }
         });
 
+        Ext.EventManager.onWindowResize(this.fireResize, this);
+
         this.callParent(arguments);
+    },
+
+    fireResize : function () {
+        var headerView = Ext.ComponentQuery.query("headerView")[0];
+        headerView.setWidth(Ext.getBody().getWidth());
     },
 
     /** Button Taskbar Events **/

@@ -26,36 +26,19 @@
 Ext.define('sitools.user.view.header.HeaderView', {
     extend : 'Ext.Panel',
     alias : 'widget.headerView',
-    
+
     requires : [ 'sitools.user.view.header.ButtonTaskBarView', 'sitools.user.view.header.LeftTaskBarView' ],
     height : 0,
 
     initComponent : function () {
 
     	this.navBarHeight = 44;
-    	
-//        this.navBarModule = Ext.create('sitools.user.view.header.LeftTaskBarView', {
-//            modules : this.modules,
-//            observer : this
-//        });
-//
-//        this.navToolbarButtons = Ext.create('sitools.user.view.header.ButtonTaskBarView', {
-//            observer : this,
-//            width : '162px' // width without save button
-//        });
-
-//        this.NavBarsPanel = Ext.create('Ext.Toolbar', {
-//        	name : 'navbarPanels',
-//        	cls : 'navBar_bg',
-//            padding : 0,
-//            border : false,
-////            items : [ this.navBarModule, this.navToolbarButtons ]
-//        });
 
         this.entetePanel = Ext.create("Ext.panel.Panel", {
         	style : 'overflow : visible;',
             html : this.htmlContent,
             border : false,
+            layout : 'fit',
             flex : 1,
             listeners : {
                 scope : this,
@@ -64,67 +47,13 @@ Ext.define('sitools.user.view.header.HeaderView', {
         });
 
         Ext.apply(this, {
-            items : [ this.entetePanel, /*this.NavBarsPanel*/ ],
+            items : [ this.entetePanel],
             border : false,
-            layout : 'fit',
-            listeners : {
-                scope : this
-//                afterRender : function (me) {
-//                    // var enteteEl = SitoolsDesk.getEnteteEl();
-//                    var enteteEl = Ext.get('x-headers');
-//                    me.setHeight(enteteEl.getHeight());
-//
-//                    me.heightNormalMode = enteteEl.getHeight();
-//                    me.heightMaximizeDesktopMode = this.NavBarsPanel.getHeight();
-//                },
-//
-//                maximizeDesktop : this.onMaximizeDesktop,
-//                minimizeDesktop : this.onMinimizeDesktop,
-//                windowResize : function (me) {
-//                    if (!Ext.isEmpty(this.userContainer) && this.userContainer.isVisible()) {
-//                        this.userContainer.hide();
-//                    }
-//                }
-//                desktopReady : function (me) {
-//                    this.entetePanel.fireEvent("desktopReady", this.navToolbarButtons);
-//                }
-            }
+            layout : 'fit'
         });
 
         this.callParent(arguments);
     },
-
-//    /**
-//     * listeners of maximizeDesktop event :
-//     */
-//    onMaximizeDesktop : function () {
-//        this.entetePanel.hide();
-//        this.container.setHeight(this.heightMaximizeDesktopMode);
-//        this.setHeight(this.heightMaximizeDesktopMode);
-//        this.NavBarsPanel.fireEvent("maximizeDesktop");
-//        // this.userContainer.setVisible(! SitoolsDesk.desktopMaximizeMode);
-//        if (this.userContainer) {
-//            this.userContainer.fireEvent("maximizeDesktop", this.userContainer, this.navToolbarButtons);
-//            this.userContainer = null;
-//        }
-//        this.doLayout();
-//    },
-//    /**
-//     * listeners of minimizeDesktop event :
-//     */
-//    onMinimizeDesktop : function () {
-//        this.entetePanel.setVisible(true);
-//        this.container.dom.style.height = "";
-//        this.setHeight(this.heightNormalMode);
-//        this.NavBarsPanel.fireEvent("minimizeDesktop");
-//        // this.userContainer.setVisible(! SitoolsDesk.desktopMaximizeMode);
-//        if (this.userContainer) {
-//            this.userContainer.fireEvent("minimizeDesktop", this.userContainer, this.navToolbarButtons);
-//            this.userContainer = null;
-//        }
-//        this.doLayout();
-//
-//    },
 
     showUserContainer : function (navBar) {
         var tpl, textToDisplay = i18n.get("label.welcome"), userContainerHeight, userContainerWidth;

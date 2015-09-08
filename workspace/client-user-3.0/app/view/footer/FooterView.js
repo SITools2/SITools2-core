@@ -27,6 +27,7 @@
 Ext.define('sitools.user.view.footer.FooterView', {
     extend : 'Ext.panel.Panel',
     itemId : 'footer',
+    alias :'widget.footerView',
 
     heightNormalMode : 0,
     heightMaximizeDesktopMode : 0,

@@ -401,7 +401,8 @@ body,a,p,div,td,input,select,label,th,button,dt,em {
 
 .sitools_footer {
 	background-image: url(../images/bottom_cnes2.png);
-	background-size: 100% 100%;
+	background-size: 100% 100% !important;
+	background-repeat: no-repeat !important;
 }
 
 /* .sitools_footer {

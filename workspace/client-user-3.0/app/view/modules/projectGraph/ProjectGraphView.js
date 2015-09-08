@@ -159,6 +159,15 @@ Ext.define('sitools.user.view.modules.projectGraph.ProjectGraphView', {
             }
         };
 
+
+	    if(!Ext.isEmpty(columnsConfig)){
+	        Ext.each(this.columns.items, function(column) {
+	            if (columnsConfig.containsKey(column.name)) {
+	                column.hidden = !columnsConfig.get(column.name);
+	            }
+	        });
+	    }
+
         Ext.each(additionalColumns, function(columnDefinition) {
             var colObject = Ext.create(columnDefinition.xtype);
             colObject.create(Desktop.getApplication(), function() {
@@ -168,15 +177,7 @@ Ext.define('sitools.user.view.modules.projectGraph.ProjectGraphView', {
                 }
             }, this);
         }, this);
-	    
-	    if(!Ext.isEmpty(columnsConfig)){
-	        Ext.each(this.columns.items, function(column) {
-	            if (columnsConfig.containsKey(column.name)) {
-	                column.hidden = !columnsConfig.get(column.name);
-	            }
-	        });
-	    }
-	    
+
 		this.callParent(arguments);
 	},
 	

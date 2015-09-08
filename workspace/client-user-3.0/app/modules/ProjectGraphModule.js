@@ -94,10 +94,6 @@ Ext.define('sitools.user.modules.ProjectGraphModule', {
                             label : i18n.get("label.opensearchMini"),
                             columnName : 'opensearch',
                             selected : true
-                        }, {
-                            label : i18n.get("label.mizarService"),
-                            columnName : 'mizar',
-                            selected : true
                         }],
                         listeners : {
                             add : function (store, records) {
