@@ -309,10 +309,7 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
                                     this.remove(record);
                                 }
                             }, store);
-                            //Set the templateFile value after the store is loaded, cannot be done in afterRender because store may not be fully loaded.
-                            this.ihmProfile.down('combo').setValue(this.project.ftlTemplateFile);
-                        },
-                        scope : this
+                        }
                     }
                 }),
                 valueField : 'name',
@@ -1071,10 +1068,24 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
                         rec.navigationMode = data.navigationMode;
                         f = this.ihmProfile.getForm();
                         f.setValues(rec);
-                        this.project = rec;
                         //Mise a jour manuelle de la combo 
+
+
+                        this.ihmProfile.down('combo').getStore().load({
+                            scope : this,
+                            callback : function (recs) {
+                                var tabRec = [];
+                                tabRec[0] = rec.ftlTemplateFile;
+                                var combo = this.ihmProfile.down('combo');
+                                var ftl = combo.getStore().getById(rec.ftlTemplateFile);
+                                combo.select(ftl);
+                            }
+                        });
+
                         try {
                             this.ihmProfile.find('xtype', 'radiogroup').setValue(rec.navigationMode);
+                            this.ihmProfile.down('combo').setValue(rec.ftlTemplateFile);
+                            this.ihmProfile.down('radiogroup').setValue(rec.navigationMode);
 
                         }
                         catch (err) {

@@ -541,15 +541,16 @@ Ext.define('sitools.admin.datasets.DatasetsMultiTablesPanel', {
                     message : i18n.get('label.invalidSQl')
                 };
             }
+        } else if (this.queryType === "W") {
+            if (!this.panelWhere.wizardJoinCondition.tree.checkJoinConditions()) {
+                result = {
+                    success : false,
+                    message : i18n.get('label.missingJoinCondition')
+                };
+            }
         }
-        
-        if (!this.panelWhere.wizardJoinCondition.tree.checkJoinConditions()) {
-        	result = {
-    			success : false,
-    			message : i18n.get('label.missingJoinCondition')
-        	};
-        }
-        
+
+
         return result;
     },
     

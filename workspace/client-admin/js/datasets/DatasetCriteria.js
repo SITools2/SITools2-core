@@ -92,11 +92,11 @@ Ext.define('sitools.admin.datasets.DatasetCriteria', {
                             return true;
                         }
                         else {
-                            return false;
+                            return i18n.get('label.invalidSQl');
                         }
                     }
                     else {
-                        return false;
+                        return i18n.get('label.invalidSQl');
                     }
                 }
             }]
