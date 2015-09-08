@@ -48,8 +48,8 @@ public class GeoJSONPostGisResource extends SitoolsParameterizedResource {
 
     @Override
     public void sitoolsDescribe() {
-        setName("HtmlResourceFacade");
-        setDescription("Export dataset records with HTML format");
+        setName("GeoJSONPostGisResource");
+        setDescription("Export dataset records with GeoJSON format");
     }
 
     /**

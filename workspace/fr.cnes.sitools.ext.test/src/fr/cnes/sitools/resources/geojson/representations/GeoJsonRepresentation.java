@@ -130,10 +130,13 @@ public class GeoJsonRepresentation extends WriterRepresentation {
         try {
             createDbRequest(databaseRequest);
 
-            startWriting(jGenerator);
+            jGenerator.writeStartObject();
+            jGenerator.writeStringField("type", "FeatureCollection");
 
             writeProperties(databaseRequest, jGenerator);
             writeFeatures(databaseRequest, jGenerator);
+
+            jGenerator.writeEndObject();
 
         } catch (SitoolsException e) {
 
@@ -142,9 +145,7 @@ public class GeoJsonRepresentation extends WriterRepresentation {
             // end global object
             writer.flush();
         } finally {
-            jGenerator.writeEndArray();
-            // end features
-            jGenerator.writeEndObject();
+
             jGenerator.flush();
             // end global object
             writer.flush();
@@ -242,6 +243,9 @@ public class GeoJsonRepresentation extends WriterRepresentation {
             // end feature
         }
 
+        //end features
+        jGenerator.writeEndArray();
+
     }
 
     protected void doWriteValue(JsonGenerator jGenerator, String name, Object value) throws IOException {
@@ -254,11 +258,6 @@ public class GeoJsonRepresentation extends WriterRepresentation {
         jGenerator.writeObjectFieldStart("properties");
         jGenerator.writeNumberField("totalResults", databaseRequest.getCount());
         jGenerator.writeEndObject();
-    }
-
-    protected void startWriting(JsonGenerator jGenerator) throws IOException {
-        jGenerator.writeStartObject();
-        jGenerator.writeStringField("type", "FeatureCollection");
     }
 
     protected void createDbRequest(DatabaseRequest databaseRequest) throws SitoolsException {
