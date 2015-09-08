@@ -74,7 +74,7 @@
       <label>label.formsAsMenu</label>
     </fr.cnes.sitools.project.model.ProjectModule>
   </modules>
-  <htmlHeader>&lt;div id=&quot;top-header&quot; style=&quot;background-color: black;&quot;&gt;&lt;a href=&quot;http://www.cnes.fr&quot; target=&quot;_blank&quot;&gt;&lt;img src=&quot;/sitools/common/res/images/bg_cnes.jpg&quot; style=&quot;border: none;&quot; /&gt; &lt;/a&gt;&lt;/div&gt;
+ <htmlHeader>&lt;div id=&quot;top-header&quot; style=&quot;background-color: black;&quot;&gt;&lt;a href=&quot;http://www.cnes.fr&quot; target=&quot;_blank&quot;&gt;&lt;img src=&quot;/sitools/common/res/images/entete_cnes.png&quot; style=&quot;border: none; width: 100%; background-size: 100% 100%;&quot; /&gt; &lt;/a&gt;&lt;/div&gt;
 </htmlHeader>
   <htmlDescription>&lt;p&gt;SITools2 est une plate-forme web conviviale permettant de mettre en place un syst&amp;egrave;me de recherche et d&amp;#39;acc&amp;egrave;s aux donn&amp;eacute;es &amp;agrave; partir d&amp;#39;une ou plusieurs bases de donn&amp;eacute;es existantes. SiTools2 permet de prendre en compte et de s&amp;#39;adapter aux structures de nombreuses bases de donn&amp;eacute;es qui sont g&amp;eacute;r&amp;eacute;es dans divers centres scientifiques, et permet d&amp;#39;&amp;eacute;viter des processus lourds et complexes de migration de donn&amp;eacute;es.&lt;/p&gt;
 
