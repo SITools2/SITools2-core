@@ -99,11 +99,14 @@ Ext.define('sitools.extension.modules.MizarViewAndDataModule', {
                     value: 35
                 }
             }, {
-                jsObj: "Ext.form.TextField",
+                jsObj: "Ext.form.field.Number",
                 config: {
                     fieldLabel: i18n.get('label.startingLong'),
                     allowBlank: true,
                     width: 200,
+                    minValue: 0,
+                    maxValue: 360,
+                    decimalPrecision : 10,
                     listeners: {
                         render: function (c) {
                             Ext.QuickTips.register({
@@ -116,11 +119,14 @@ Ext.define('sitools.extension.modules.MizarViewAndDataModule', {
                     value: undefined
                 }
             }, {
-                jsObj: "Ext.form.TextField",
+                jsObj: "Ext.form.field.Number",
                 config: {
                     fieldLabel: i18n.get('label.startingLat'),
                     allowBlank: true,
                     width: 200,
+                    minValue: 0,
+                    maxValue: 180,
+                    decimalPrecision : 10,
                     listeners: {
                         render: function (c) {
                             Ext.QuickTips.register({
@@ -133,11 +139,13 @@ Ext.define('sitools.extension.modules.MizarViewAndDataModule', {
                     value: undefined
                 }
             }, {
-                jsObj: "Ext.form.TextField",
+                jsObj: "Ext.form.field.Number",
                 config: {
                     fieldLabel: i18n.get('label.startingZoom'),
                     allowBlank: true,
                     width: 200,
+                    minValue: 0,
+                    maxValue: 20,
                     listeners: {
                         render: function (c) {
                             Ext.QuickTips.register({
@@ -262,4 +270,3 @@ Ext.define('sitools.extension.modules.MizarViewAndDataModule', {
         };
     }
 });
-

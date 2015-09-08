@@ -36,5 +36,20 @@ Ext.define('sitools.user.utils.ModuleUtils', {
             
             var controller = Desktop.getApplication().getController('core.SitoolsController');
             controller.openModule(module);
+        },
+
+        openModuleByXtype : function (moduleXtype) {
+            var modulestore = Ext.data.StoreManager.lookup("ModulesStore");
+            var index = modulestore.find('xtype', moduleXtype);
+            var module = modulestore.getAt(index);
+
+            if (Ext.isEmpty(module)) {
+                return Ext.Msg.alert(i18n.get('label.info'), i18n.get('label.notEnoughtRightModule'));
+            }
+
+            var controller = Desktop.getApplication().getController('core.SitoolsController');
+            controller.openModule(module);
         }
 });
+
+ModuleUtils = sitools.user.utils.ModuleUtils;

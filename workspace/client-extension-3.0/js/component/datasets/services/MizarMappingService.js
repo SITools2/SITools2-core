@@ -150,12 +150,14 @@ Ext.define('sitools.extension.component.datasets.services.MizarMappingService', 
             });
         }
 
-
-        this.dataset = config.dataview.dataset;
-        this.dataview = config.dataview;
-        this.datasetCm = config.dataview.columns;
-        this.datasetStore = config.store;
-        this.mizarServiceButton = config.serviceView.down('button[idService=' + config.id + ']');
+        if (config.fromProjectGraph == true) {
+            this.dataset = config.dataset;
+        } else {
+            this.dataset = config.dataview.dataset;
+            this.dataview = config.dataview;
+            this.datasetStore = config.store;
+            this.mizarServiceButton = config.serviceView.down('button[idService=' + config.id + ']');
+        }
 
         var hasGeojson, hasMoc, hasOpensearch;
 
@@ -216,9 +218,11 @@ Ext.define('sitools.extension.component.datasets.services.MizarMappingService', 
                     "pickable": true,
                     "minOrder": 5
                 });
-                layer.subscribe("features:added", Ext.bind(this.synchronizeFeaturesGridMap, this));
-                //layer.subscribe("feature:removed", Ext.bind(this.removeFeatureFromGrid, this));
-                layer.subscribe("tile:removeFeatures", Ext.bind(this.removeFeatureFromGrid, this));
+
+                if (config.fromProjectGraph == false) {
+                    layer.subscribe("tile:removeFeatures", Ext.bind(this.removeFeatureFromGrid, this));
+                    layer.subscribe("features:added", Ext.bind(this.synchronizeFeaturesGridMap, this));
+                }
             }
             else {
                 // show layer
@@ -279,7 +283,11 @@ Ext.define('sitools.extension.component.datasets.services.MizarMappingService', 
             mizarWidget.navigation.zoomTo(startingPoint, this.startingZoom);
         }
 
-        this.isMizarLinked = this.linkMizarWithGrid();
+        if (config.fromProjectGraph == false) {
+            this.isMizarLinked = this.linkMizarWithGrid();
+        } else {
+            popupMessage("", this.i18nMizarMappingService.get('label.mizarSuccessfullyMapped'), null, "x-info");
+        }
 
     },
 

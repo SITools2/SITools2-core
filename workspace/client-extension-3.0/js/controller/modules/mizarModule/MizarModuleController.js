@@ -91,7 +91,10 @@ Ext.define('sitools.extension.controller.modules.mizarModule.MizarModuleControll
                     var mizarViewAndDataModuleView = simpleGridView.up('mizarViewAndDataModuleView');
                     this.fitCanvasToDiv(mizarViewAndDataModuleView);
                 }
-            }
+            },
+
+
+
         });
     },
 

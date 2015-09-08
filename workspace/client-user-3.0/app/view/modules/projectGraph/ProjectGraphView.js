@@ -39,6 +39,7 @@ Ext.define('sitools.user.view.modules.projectGraph.ProjectGraphView', {
 	initComponent : function () {
 	    this.store = Ext.create("sitools.user.store.ProjectGraphTreeStore");
 	    var columnsConfig = Ext.create("Ext.util.MixedCollection");
+        var additionalColumns;
 	    
 	    this.moduleModel.listProjectModulesConfig().each(function (config) {
             if (!Ext.isEmpty(config.get("value"))) {
@@ -48,6 +49,9 @@ Ext.define('sitools.user.view.modules.projectGraph.ProjectGraphView', {
                     Ext.each(columnsConf, function (column) {
                         columnsConfig.add(column.columnName, column.selected);
                     });
+                    break;
+                    case 'additionalColumns':
+                        additionalColumns = Ext.JSON.decode(config.get("value"));
                     break;
                 }
             }
@@ -154,6 +158,16 @@ Ext.define('sitools.user.view.modules.projectGraph.ProjectGraphView', {
                 sortable : false
             }
         };
+
+        Ext.each(additionalColumns, function(columnDefinition) {
+            var colObject = Ext.create(columnDefinition.xtype);
+            colObject.create(Desktop.getApplication(), function() {
+                if (Ext.isFunction(colObject.getAdditionalColumns) && columnDefinition.selected) {
+                    var colDefinition = colObject.getAdditionalColumns();
+                    this.columns.items = Ext.Array.merge(this.columns.items, colDefinition);
+                }
+            }, this);
+        }, this);
 	    
 	    if(!Ext.isEmpty(columnsConfig)){
 	        Ext.each(this.columns.items, function(column) {
@@ -178,8 +192,7 @@ Ext.define('sitools.user.view.modules.projectGraph.ProjectGraphView', {
 	
 	getClickDatasetIconString : function (url, type, imgSrc) {
 	    var imageUrl = Ext.String.format("{0}/common/res/images/icons/{1}", loadUrl.get('APP_URL'), imgSrc);
-	    return Ext.String.format("<a href='#' onClick='sitools.user.utils.DatasetUtils.clickDatasetIcone(\"{0}\", \"{1}\"); return false;'><img src='{2}'/></a>", url, type, imageUrl);
+	    return Ext.String.format("<a href='#' onClick='sitools.user.utils.DatasetUtils.clickDatasetIcone(\"{0}\", \"{1}\"); return false;'><img src='{2}' height='16px'/></a>", url, type, imageUrl);
 	}
-	
 });
 
