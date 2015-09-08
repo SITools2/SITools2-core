@@ -45,22 +45,24 @@ Ext.define('sitools.extension.controller.modules.mizarModule.MizarModuleControll
                         "nameResolver": {
                             "zoomFov": 2
                         },
-                        debug: true
-                        //"sitoolsBaseUrl": "http://localhost:8182/sitools"
+                        debug: true,
+                        "sitoolsBaseUrl": window.location.origin + loadUrl.get('APP_URL')
                     };
 
-                    if (Ext.isEmpty(this.configFile)) {
+                    if (Ext.isEmpty(mizarView.configFile)) {
                         this.initMizar(div, options, mizarView);
                     }
                     else {
                         Ext.Ajax.request({
-                            url: this.configFile,
+                            url: mizarView.configFile,
                             method: 'GET',
                             scope: this,
                             success: function (response) {
                                 var data = Ext.decode(response.responseText);
                                 options.backgroundSurveys = data;
-                                this.initMizar(div, options);
+                                this.initMizar(div, options, mizarView);
+                                var container = mizarView.up("component[specificType=moduleWindow]");
+                                this.fitCanvasToDiv(container);
                             }
                         });
                     }
@@ -130,11 +132,13 @@ Ext.define('sitools.extension.controller.modules.mizarModule.MizarModuleControll
         var mizarDiv = moduleContainer.down("mizarModuleView");
 
         var globWebCanvas = Ext.get('GlobWebCanvas');
-        globWebCanvas.set({
-            "height":mizarDiv.getHeight(),
-            "width":mizarDiv.getWidth()
-        });
-        this.mizarWidget.sky.refresh();
+        if (!Ext.isEmpty(globWebCanvas)) {
+            globWebCanvas.set({
+                "height": mizarDiv.getHeight(),
+                "width": mizarDiv.getWidth()
+            });
+            this.mizarWidget.sky.refresh();
+        }
     },
 
     destroyMizar : function (moduleContainer) {

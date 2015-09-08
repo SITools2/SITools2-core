@@ -1,0 +1,51 @@
+<div class="detailedInfo">
+	<% if ( properties.thumbnail ) 
+	{ %>
+		<div class="thumbnail"><img src="<%= properties.thumbnail %>" /></div>
+	<% } %>
+	<div class="featureProperties">
+		<table class="propertiesTable" rules="rows">
+			<tbody>
+				<% print(descriptionTableTemplate( { properties: properties, descriptionTableTemplate: descriptionTableTemplate, dictionary: dictionary }) ); %>
+			</tbody>
+		</table>
+	</div>
+	
+		<div id="services">
+			<%
+			if ( properties.quicklook ) { %>
+				<span class="featureService" title="Quicklook" id='quicklook' class=<%= (properties.style.fillTextureUrl && properties.style.fill ? 'selected' : '' ) %> ></span>
+			<% } %>
+
+			<% if ( services )
+			{
+				if ( services.download )
+				{
+					if ( services.download.mimetype == "image/fits" )
+					{
+						if ( !isMobile ) 
+						{
+							var fitsQuicklookOn = properties.style.fill && !properties.style.fillTextureUrl;
+							%>
+							<span class="featureService" title="Fits quicklook" id='quicklookFits' class=<%= (fitsQuicklookOn ? 'selected' : '' ) %> ></span>
+						<% } %>
+						<span style="display: inline-block; position: relative;">
+							<span class="featureService" title="Solar object service" id="solarObjects" class=<%= (services.solarObjects && services.solarObjects.layer.visible() ? 'selected' : '' ) %>></span>
+							<div style="display: none" id="solarObjectsSpinner"></div>
+						</span>
+						<span title="Image processing" id="dynamicImageView" class='dynamicAvailable' />
+						<span class="featureService" title="Export image by SAMP" id="sendImage"></span>
+					<%
+					}
+				 	%>
+					<a href="<%= services ? services.download.url : "" %>" target="_self" download><span class="featureService" id="downloadImage" title="Download"></span></a>
+					<%
+				}
+				if ( services.healpix ) { %>
+					<span class="featureService" title="Healpix service" id='healpix' class=<%= (services.healpix.layer.visible() ? 'selected' : '' ) %> ></span>
+				<% }
+			} %>
+			<div style="display: none;" id="serviceStatus"></div>
+		</div>
+
+</div>

@@ -208,11 +208,10 @@ Ext.define('sitools.extension.component.datasets.services.MizarMappingService', 
             if (Ext.isEmpty(layer)) {
                 //OPENSEARCH LAYER
                 layer = mizarWidget.addLayer({
-                    "category": "Other",
+                    "category": "Image",
                     "type": "DynamicOpenSearch",
                     "name": this.dataset.name,
                     "serviceUrl": opensearchUrl,
-                    "availableServices": ["OpenSearch"],
                     "visible": true,
                     "pickable": true,
                     "minOrder": 5

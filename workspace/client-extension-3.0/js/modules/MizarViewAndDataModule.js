@@ -229,6 +229,23 @@ Ext.define('sitools.extension.modules.MizarViewAndDataModule', {
                     labelWidth: 170,
                     checked: true
                 }
+            }, {
+                jsObj: 'Ext.form.TextField',
+                config: {
+                    name: 'configFile',
+                    fieldLabel: i18n.get('label.configFile'),
+                    labelWidth: 170,
+                    allowBlank: true,
+                    width: 200,
+                    listeners: {
+                        render: function (c) {
+                            Ext.QuickTips.register({
+                                target: c,
+                                text: "The Mizar configuration file"
+                            });
+                        }
+                    }
+                }
             }];
         }
     },

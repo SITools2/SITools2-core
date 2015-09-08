@@ -84,6 +84,9 @@ Ext.define('sitools.extension.view.modules.mizarModule.MizarViewAndDataModuleVie
                 case "imageViewer" :
                     this.imageViewer = config.get('value');
                     break;
+                case "configFile" :
+                    this.configFile = config.get('value');
+                    break;
             }
         }, this);
 
