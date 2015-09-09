@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -40,185 +40,178 @@ import fr.cnes.sitools.util.Property;
 
 /**
  * Resource for notification on project
- * 
+ *
  * @author AKKA Technologies
- * 
+ *
  */
 public final class ProjectNotificationResource extends AbstractProjectResource {
 
-  @Override
-  public void sitoolsDescribe() {
-    setName("ProjectNotificationResource");
-    setDescription("Manage notification of project resources updating");
-    setNegotiated(true);
-  }
+    @Override
+    public void sitoolsDescribe() {
+        setName("ProjectNotificationResource");
+        setDescription("Manage notification of project resources updating");
+        setNegotiated(true);
+    }
 
-  /**
-   * Update / Validate existing project
-   * 
-   * @param representation
-   *          Project representation
-   * @param variant
-   *          client preferred media type
-   * @return Representation
-   */
-  @Put
-  public Representation notification(Representation representation, Variant variant) {
-    try {
-      Notification notification = null;
-      if (representation != null) {
-        notification = getObject(representation);
-      }
+    /**
+     * Update / Validate existing project
+     *
+     * @param representation
+     *          Project representation
+     * @param variant
+     *          client preferred media type
+     * @return Representation
+     */
+    @Put
+    public Representation notification(Representation representation, Variant variant) {
+        try {
+            Notification notification = null;
+            if (representation != null) {
+                notification = getObject(representation);
+            }
 
-      if ((notification != null) && "DELETED".equals(notification.getStatus())) {
-        // Business service
-        Project projectInput = getStore().retrieve(getProjectId());
-        boolean updated = false;
-        for (Iterator<Resource> iterator = projectInput.getDataSets().iterator(); iterator.hasNext();) {
-          Resource dataset = (Resource) iterator.next();
-          if (dataset.getId().equals(notification.getObservable())) {
-            getLogger().info("Remove resource from project");
-            iterator.remove();
-            updated = true;
-          }
-        }
-        if (updated) {
-          getStore().update(projectInput);
-          return new StringRepresentation("OK");
-        }
-        return new StringRepresentation("DEPRECATED");
-      }
-      else if (notification != null && "DATASET_STATUS_CHANGED".equals(notification.getEvent())) {
-        getLogger().log(Level.INFO, "Try to get project with id : " + getProjectId());
-        Project projectInput = getStore().retrieve(getProjectId());
-        boolean updated = false;
-        for (Iterator<Resource> iterator = projectInput.getDataSets().iterator(); iterator.hasNext();) {
-          Resource dataset = (Resource) iterator.next();
-          if (dataset.getId().equals(notification.getObservable())) {
-            DataSet dsObject = this.getDataset(dataset.getId());
-            dataset.setName(dsObject.getName());
-            dataset.setDescription(dsObject.getDescription());
-            dataset.setVisible(dsObject.isVisible());
-            dataset.setStatus(dsObject.getStatus());
-
-            ArrayList<Property> dsProp = dataset.getProperties();
-            int nbRecord = dsObject.getNbRecords();
-            // String imageUrl = null;
-            // if (dsObject.getImage() != null) {
-            // imageUrl = dsObject.getImage().getUrl();
-            // }
-            // String description = dsObject.getDescriptionHTML();
-            if (dsProp != null) {
-              for (Property property : dsProp) {
-                if (property.getName().equals("nbRecord")) {
-                  property.setValue(String.valueOf(nbRecord));
+            if ((notification != null) && "DELETED".equals(notification.getStatus())) {
+                // Business service
+                Project projectInput = getStore().retrieve(getProjectId());
+                boolean updated = false;
+                for (Iterator<Resource> iterator = projectInput.getDataSets().iterator(); iterator.hasNext(); ) {
+                    Resource dataset = (Resource) iterator.next();
+                    if (dataset.getId().equals(notification.getObservable())) {
+                        getLogger().info("Remove resource from project");
+                        iterator.remove();
+                        updated = true;
+                    }
                 }
-              }
+                if (updated) {
+                    getStore().update(projectInput);
+                    return new StringRepresentation("OK");
+                }
+                return new StringRepresentation("DEPRECATED");
+            } else if (notification != null && "DATASET_STATUS_CHANGED".equals(notification.getEvent())) {
+                getLogger().log(Level.INFO, "Try to get project with id : " + getProjectId());
+                Project projectInput = getStore().retrieve(getProjectId());
+                boolean updated = false;
+                if (projectInput.getDataSets() != null) {
+                    for (Resource dataset : projectInput.getDataSets()) {
+                        if (dataset.getId().equals(notification.getObservable())) {
+                            DataSet dsObject = this.getDataset(dataset.getId());
+                            dataset.setName(dsObject.getName());
+                            dataset.setDescription(dsObject.getDescription());
+                            dataset.setVisible(dsObject.isVisible());
+                            dataset.setStatus(dsObject.getStatus());
+
+                            ArrayList<Property> dsProp = dataset.getProperties();
+                            int nbRecord = dsObject.getNbRecords();
+                            // String imageUrl = null;
+                            // if (dsObject.getImage() != null) {
+                            // imageUrl = dsObject.getImage().getUrl();
+                            // }
+                            // String description = dsObject.getDescriptionHTML();
+                            if (dsProp != null) {
+                                for (Property property : dsProp) {
+                                    if (property.getName().equals("nbRecord")) {
+                                        property.setValue(String.valueOf(nbRecord));
+                                    }
+                                }
+                            }
+                            dataset.setProperties(dsProp);
+
+                            getLogger().info("Dataset resource updated");
+                            updated = true;
+                        }
+                    }
+                }
+                if (updated) {
+                    getStore().update(projectInput);
+                    getProjectApplication().detachProject(projectInput);
+                    getProjectApplication().attachProject(projectInput);
+
+                    return new StringRepresentation("OK");
+                }
+                return new StringRepresentation("DEPRECATED");
+            } else if (notification != null && "DATASET_UPDATED".equals(notification.getEvent())) {
+                Project projectInput = getStore().retrieve(getProjectId());
+                boolean updated = false;
+                if (projectInput.getDataSets() != null) {
+                    for (Resource dataset : projectInput.getDataSets()) {
+                        if (dataset.getId().equals(notification.getObservable())) {
+                            DataSet dsObject = this.getDataset(dataset.getId());
+                            dataset.setName(dsObject.getName());
+                            dataset.setDescription(dsObject.getDescription());
+                            dataset.setVisible(dsObject.isVisible());
+                            dataset.setUrl(dsObject.getSitoolsAttachementForUsers());
+
+                            ArrayList<Property> dsProp = dataset.getProperties();
+                            String imageUrl = null;
+                            if (dsObject.getImage() != null) {
+                                imageUrl = dsObject.getImage().getUrl();
+                            }
+                            String description = dsObject.getDescriptionHTML();
+                            for (Property property : dsProp) {
+                                if (property.getName().equals("imageUrl")) {
+                                    property.setValue(imageUrl);
+                                } else if (property.getName().equals("descriptionHTML")) {
+                                    property.setValue(description);
+                                }
+
+                            }
+                            dataset.setProperties(dsProp);
+
+                            getLogger().info("Dataset resource updated");
+                            updated = true;
+                        }
+
+                    }
+                }
+                if (updated) {
+                    getStore().update(projectInput);
+                    getProjectApplication().detachProject(projectInput);
+                    getProjectApplication().attachProject(projectInput);
+
+                    return new StringRepresentation("OK");
+                }
+                return new StringRepresentation("DEPRECATED");
+            } else {
+                // Others status
+                return new StringRepresentation("OK");
             }
-            dataset.setProperties(dsProp);
-
-            getLogger().info("Dataset resource updated");
-            updated = true;
-          }
+        } catch (ResourceException e) {
+            getLogger().log(Level.INFO, null, e);
+            throw e;
+        } catch (Exception e) {
+            getLogger().log(Level.SEVERE, null, e);
+            throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
         }
-        if (updated) {
-          getStore().update(projectInput);
-          getProjectApplication().detachProject(projectInput);
-          getProjectApplication().attachProject(projectInput);
+    }
 
-          return new StringRepresentation("OK");
-        }
-        return new StringRepresentation("DEPRECATED");
-      }
-      else if (notification != null && "DATASET_UPDATED".equals(notification.getEvent())) {
-        Project projectInput = getStore().retrieve(getProjectId());
-        boolean updated = false;
-        for (Iterator<Resource> iterator = projectInput.getDataSets().iterator(); iterator.hasNext();) {
-          Resource dataset = (Resource) iterator.next();
-          if (dataset.getId().equals(notification.getObservable())) {
-            DataSet dsObject = this.getDataset(dataset.getId());
-            dataset.setName(dsObject.getName());
-            dataset.setDescription(dsObject.getDescription());
-            dataset.setVisible(dsObject.isVisible());
-            dataset.setUrl(dsObject.getSitoolsAttachementForUsers());
+    @Override
+    public void describePut(MethodInfo info) {
+        info.setDocumentation("Method to handle notification from observed objects.");
+        this.addStandardNotificationInfo(info);
+    }
 
-            ArrayList<Property> dsProp = dataset.getProperties();
-            String imageUrl = null;
-            if (dsObject.getImage() != null) {
-              imageUrl = dsObject.getImage().getUrl();
+    /**
+     * Get Notification object
+     *
+     * @param representation
+     *          the representation to use
+     * @return Notification
+     */
+    public Notification getObject(Representation representation) {
+        try {
+            ObjectRepresentation<Notification> or;
+            try {
+                or = new ObjectRepresentation<Notification>(representation);
+                return or.getObject();
+            } catch (IllegalArgumentException e) {
+                throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
+            } catch (ClassNotFoundException e) {
+                throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
             }
-            String description = dsObject.getDescriptionHTML();
-            for (Property property : dsProp) {
-              if (property.getName().equals("imageUrl")) {
-                property.setValue(imageUrl);
-              }
-              else if (property.getName().equals("descriptionHTML")) {
-                property.setValue(description);
-              }
 
-            }
-            dataset.setProperties(dsProp);
-
-            getLogger().info("Dataset resource updated");
-            updated = true;
-          }
-
+        } catch (IOException e) {
+            getLogger().log(Level.WARNING, "Bad representation of project resource updating notification", e);
+            throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
         }
-        if (updated) {
-          getStore().update(projectInput);
-          getProjectApplication().detachProject(projectInput);
-          getProjectApplication().attachProject(projectInput);
-
-          return new StringRepresentation("OK");
-        }
-        return new StringRepresentation("DEPRECATED");
-      }
-      else {
-        // Others status
-        return new StringRepresentation("OK");
-      }
     }
-    catch (ResourceException e) {
-      getLogger().log(Level.INFO, null, e);
-      throw e;
-    }
-    catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
-      throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
-    }
-  }
-
-  @Override
-  public void describePut(MethodInfo info) {
-    info.setDocumentation("Method to handle notification from observed objects.");
-    this.addStandardNotificationInfo(info);
-  }
-
-  /**
-   * Get Notification object
-   * 
-   * @param representation
-   *          the representation to use
-   * @return Notification
-   */
-  public Notification getObject(Representation representation) {
-    try {
-      ObjectRepresentation<Notification> or;
-      try {
-        or = new ObjectRepresentation<Notification>(representation);
-        return or.getObject();
-      }
-      catch (IllegalArgumentException e) {
-        throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
-      }
-      catch (ClassNotFoundException e) {
-        throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
-      }
-
-    }
-    catch (IOException e) {
-      getLogger().log(Level.WARNING, "Bad representation of project resource updating notification", e);
-      throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
-    }
-  }
 }
