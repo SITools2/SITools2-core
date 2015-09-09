@@ -412,6 +412,12 @@ Ext.define('sitools.admin.usergroups.UserProp', {
                 failure : alertFailure
             });
         }
+
+        this.getEl().on('keyup', function (e) {
+            if (e.getKey() == e.ENTER) {
+                this.onModifyOrCreate();
+            }
+        }, this);
     }
     
 

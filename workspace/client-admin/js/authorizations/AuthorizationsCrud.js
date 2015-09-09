@@ -129,11 +129,11 @@ Ext.define('sitools.admin.authorizations.AuthorizationsCrud', {
             itemdblclick : this.onDefineRole
         };
 
-        sitools.admin.authorizations.AuthorizationsCrud.superclass.initComponent.call(this);
+        this.callParent(arguments);
     },
 
     onRender : function () {
-        sitools.admin.authorizations.AuthorizationsCrud.superclass.onRender.apply(this, arguments);
+        this.callParent(arguments);
         this.store.load({
             params : {
                 start : 0,

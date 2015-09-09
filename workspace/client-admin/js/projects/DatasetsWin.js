@@ -128,14 +128,14 @@ Ext.define('sitools.admin.projects.DatasetsWin', {
         } ];
         
         // this.relayEvents(this.store, ['destroy', 'save', 'update']);
-        sitools.admin.projects.DatasetsWin.superclass.initComponent.call(this);
+        this.callParent(arguments);
     },
 
     /**
-     * done a specific render to load datasets informations. 
+     * done a specific render to load datasets informations.
      */
     onRender : function () {
-        sitools.admin.projects.DatasetsWin.superclass.onRender.apply(this, arguments);
+        this.callParent(arguments);
         this.store.load({
             scope : this,
             params : {
@@ -149,6 +149,12 @@ Ext.define('sitools.admin.projects.DatasetsWin', {
                 }
             }
         });
+
+        this.getEl().on('keyup', function (e) {
+            if (e.getKey() == e.ENTER) {
+                this._onOK();
+            }
+        }, this);
     },
 
     /**

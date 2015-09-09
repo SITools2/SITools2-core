@@ -201,7 +201,7 @@ Ext.define('sitools.admin.usergroups.RegProp', { extend : 'Ext.Window',
                 }
             } ]
         } ];
-        sitools.admin.usergroups.RegProp.superclass.initComponent.call(this);
+        this.callParent(arguments);
     },
     onCreateProperties : function () {
         this.gridProperties.getStore().insert(this.gridProperties.getStore().getCount(), {});
@@ -257,7 +257,7 @@ Ext.define('sitools.admin.usergroups.RegProp', { extend : 'Ext.Window',
     },
 
     onRender : function () {
-        sitools.admin.usergroups.RegProp.superclass.onRender.apply(this, arguments);
+        this.callParent();
         if (this.url) {
             var f = this.down('form').getForm();
             Ext.Ajax.request({
@@ -283,6 +283,11 @@ Ext.define('sitools.admin.usergroups.RegProp', { extend : 'Ext.Window',
                 failure : alertFailure
             });
         }
+        this.getEl().on('keyup', function (e) {
+            if (e.getKey() == e.ENTER) {
+                this.onModify();
+            }
+        }, this);
     }
 
 });

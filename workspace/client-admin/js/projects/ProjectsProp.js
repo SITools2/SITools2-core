@@ -742,7 +742,7 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
                 this.destroyCkeditor();
             }
         };        
-        sitools.admin.projects.ProjectsProp.superclass.initComponent.call(this);
+        this.callParent(arguments);
     },
     /**
      * Create a {sitools.admin.projects.DatasetsWin} datasetWindow to add datasets
@@ -1126,6 +1126,12 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
                 this.applyCkeditor();
             }
         }
+
+        this.getEl().on('keyup', function (e) {
+            if (e.getKey() == e.ENTER) {
+                this.onValidate();
+            }
+        }, this);
     }, 
     fillDefaultLinks : function () {
         Ext.each(this.defaultLinks, function (link) {

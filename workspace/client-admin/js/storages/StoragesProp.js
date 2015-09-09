@@ -115,7 +115,7 @@ Ext.define('sitools.admin.storages.StoragesProp', {
                 }
             } ]
         } ];
-        sitools.admin.storages.StoragesProp.superclass.initComponent.call(this);
+        this.callParent(arguments);
     },
     /**
      * Validate the modification. 
@@ -177,7 +177,7 @@ Ext.define('sitools.admin.storages.StoragesProp', {
 	 * Load the selected storage in case of modification.
 	 */
     onRender : function () {
-        sitools.admin.storages.StoragesProp.superclass.onRender.apply(this, arguments);
+        this.callParent(arguments);
         if (this.url) {
             // var gs = this.groupStore, qs = this.quotaStore;
             if (this.action == 'modify') {
@@ -198,6 +198,11 @@ Ext.define('sitools.admin.storages.StoragesProp', {
                 });
             }
         }
+        this.getEl().on('keyup', function (e) {
+            if (e.getKey() == e.ENTER) {
+                this.onValidate();
+            }
+        }, this);
     }
 
 });

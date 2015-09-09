@@ -418,6 +418,12 @@ Ext.define('sitools.admin.filters.FiltersProp', {
             }
 
         }
+
+        this.getEl().on('keyup', function (e) {
+            if (e.getKey() == e.ENTER) {
+                this.onValidate();
+            }
+        }, this);
     },
     onValidate : function () {
         var rec = this.getLastSelectedRecord(this.gridFilter);

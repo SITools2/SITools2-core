@@ -575,11 +575,17 @@ Ext.define('sitools.admin.resourcesPlugins.ResourcesPluginsProp', {
      * If "action" is "modify", load data from record into the form else load empty form
      */
     afterRender : function () {
-        sitools.admin.resourcesPlugins.ResourcesPluginsProp.superclass.afterRender.apply(this, arguments);
+        this.callParent(arguments);
 
         if (this.action == "modify") {
             this.fillGridAndForm(this.record.data, this.action);
         }
+
+        this.getEl().on('keyup', function (e) {
+            if (e.getKey() == e.ENTER) {
+                this.onValidate();
+            }
+        }, this);
     },
 
     /**

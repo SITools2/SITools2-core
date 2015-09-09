@@ -978,7 +978,7 @@ Ext.define('sitools.admin.multiDs.MultiDsProp', {
      * Loads the form as defined if in modification mode. 
      */
     onRender : function () {
-        sitools.admin.multiDs.MultiDsProp.superclass.onRender.apply(this, arguments);
+        this.callParent(arguments);
         if (this.formId) {
             // Si l'objet est en modification, on charge l'objet en question
             if (this.action == 'modify') {
@@ -1130,5 +1130,11 @@ Ext.define('sitools.admin.multiDs.MultiDsProp', {
                 });
             }
         }
+
+        this.getEl().on('keyup', function (e) {
+            if (e.getKey() == e.ENTER) {
+                this.onValidate();
+            }
+        }, this);
     }	
 });

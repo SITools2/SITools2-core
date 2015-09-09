@@ -429,6 +429,12 @@ Ext.define('sitools.admin.converters.ConvertersProp', {
                 this.gridFieldMapping.getView().refresh();
             }
         }
+
+        this.getEl().on('keyup', function (e) {
+            if (e.getKey() == e.ENTER) {
+                this.onValidate();
+            }
+        }, this);
     },
     /**
      * Called on save Button : Validate fields and send POST or PUT request depending on action 

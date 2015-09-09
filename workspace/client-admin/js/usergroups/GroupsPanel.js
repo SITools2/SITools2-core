@@ -147,6 +147,12 @@ Ext.define('sitools.admin.usergroups.GroupsPanel', {
                 }
             }
         });
+
+        this.getEl().on('keyup', function (e) {
+            if (e.getKey() == e.ENTER) {
+                this._onOK();
+            }
+        }, this);
     },
 
     /**

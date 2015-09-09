@@ -376,6 +376,13 @@ Ext.define('sitools.admin.filtersPlugins.FiltersPluginsSingle', {
             this.gridfilterPlugin.getStore().load();
         }
         this.tabPanel.setHeight(this.body.getHeight());
+
+        this.getEl().on('keyup', function (e) {
+            if (e.getKey() == e.ENTER) {
+                this.onValidate();
+            }
+        }, this);
+
     },
 
     fillGridAndForm : function (filterPlugin, action) {

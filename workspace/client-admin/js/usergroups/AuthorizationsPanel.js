@@ -132,6 +132,12 @@ Ext.define('sitools.admin.usergroups.AuthorizationsPanel', {
                 }
             }
         });
+
+        this.getEl().on('keyup', function (e) {
+            if (e.getKey() == e.ENTER) {
+                this._onOK();
+            }
+        }, this);
     },
 
     /**

@@ -304,6 +304,11 @@ Ext.define('sitools.admin.datasets.DatasetsMultiTablesPanel', {
     afterRender : function () {
         this.callParent(arguments);
         this.loadDataset();
+        this.getEl().on('keyup', function (e) {
+            if (e.getKey() == e.ENTER) {
+                this.onValidate();
+            }
+        }, this);
     },
     /**
      * called when user click on Ok button. 

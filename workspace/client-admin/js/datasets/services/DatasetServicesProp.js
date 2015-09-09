@@ -304,6 +304,12 @@ Ext.define('sitools.admin.datasets.services.DatasetServicesProp', {
         }
         
         this.callParent(arguments);
+
+        this.getEl().on('keyup', function (e) {
+            if (e.getKey() == e.ENTER) {
+                this.onValidate();
+            }
+        }, this);
     },
 
     /**

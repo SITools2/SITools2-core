@@ -130,6 +130,12 @@ Ext.define('sitools.admin.forms.ComponentProp', {
         this.height = this.specificHeight;
         this.width = this.specificWidth;
         this.callParent(arguments);
+
+        this.getEl().on('keyup', function (e) {
+            if (e.getKey() == e.ENTER) {
+                this.onValidate();
+            }
+        }, this);
     },
 
     onValidate : function () {

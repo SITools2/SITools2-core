@@ -187,6 +187,12 @@ Ext.define('sitools.admin.projects.modules.ProjectModulesProp', {
                 failure : alertFailure
             });
         }
+
+        this.getEl().on('keyup', function (e) {
+            if (e.getKey() == e.ENTER) {
+                this._onValidate();
+            }
+        }, this);
     },
 
     /**

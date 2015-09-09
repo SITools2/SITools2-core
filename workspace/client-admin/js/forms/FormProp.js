@@ -482,6 +482,12 @@ Ext.define('sitools.admin.forms.FormProp', {
                 });
             }
         }
+
+        this.getEl().on('keyup', function (e) {
+            if (e.getKey() == e.ENTER) {
+                this.onValidate();
+            }
+        }, this);
     },
     
     _sizeUp : function () {

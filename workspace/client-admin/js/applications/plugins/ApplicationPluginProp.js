@@ -459,6 +459,12 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginProp', {
                 failure : alertFailure
             });
         }
+
+        this.getEl().on('keyup', function (e) {
+            if (e.getKey() == e.ENTER) {
+                this.onValidate();
+            }
+        }, this);
     },
 	/**
 	 * Fill the properties from the requested object.

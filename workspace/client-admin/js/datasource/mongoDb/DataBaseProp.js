@@ -201,10 +201,10 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseProp', {
 				this.down('form').setSize(size);
 			}
         };
-        sitools.admin.datasource.mongoDb.DataBaseProp.superclass.initComponent.call(this);
+        this.callParent(arguments);
     },
     afterRender : function () {
-        sitools.admin.datasource.mongoDb.DataBaseProp.superclass.afterRender.apply(this, arguments);
+        this.callParent(arguments);
         var frm = this.down('form');
         var basicFrm = frm.getForm();
         Ext.each(frm.items.items, function (item) {
@@ -242,6 +242,12 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseProp', {
         var authentication = this.down("checkbox[name=authentication]").getValue();
         this.down("textfield[name=userLogin]").setDisabled(!authentication);
         this.down("textfield[name=userPassword]").setDisabled(!authentication);
+
+        this.getEl().on('keyup', function (e) {
+            if (e.getKey() == e.ENTER) {
+                this._onValidate();
+            }
+        }, this);
     },
     
     _onValidate : function () {

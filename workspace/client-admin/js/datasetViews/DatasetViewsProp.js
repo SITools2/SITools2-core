@@ -121,6 +121,11 @@ Ext.define('sitools.admin.datasetViews.DatasetViewsProp', {
                 failure : alertFailure
             });
         }
+        this.getEl().on('keyup', function (e) {
+            if (e.getKey() == e.ENTER) {
+                this._onValidate();
+            }
+        }, this);
     },
 
     /**

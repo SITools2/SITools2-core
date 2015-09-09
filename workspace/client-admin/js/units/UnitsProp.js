@@ -182,50 +182,7 @@ Ext.define('sitools.admin.units.UnitsProp', {
             }
         });
         
-        // colonne avec checkbox pour choisir quelles colonnes indexer
-        /*var indexed = new Ext.grid.CheckColumn({
-            header : i18n.get('header.selected'),
-            dataIndex : 'selected',
-            width : 60
-        });
-        
-        // définition des plugins nécessaires (colonnes avec checkbox )
-        var plugins = [ indexed ];
-        
-        this.gridConverters = new Ext.grid.EditorGridPanel({
-            viewConfig : {
-                forceFit : true
-            },
-            plugins : plugins,
-            id : 'gridFieldMapping',
-            layout : 'fit',
-            title : i18n.get('title.parametersMapping'),            
-            store : new Ext.data.JsonStore({
-                idProperty : 'name',
-                fields : [ {
-                    name : 'name',
-                    type : 'string'
-                }, {
-                    name : 'selected',
-                    type : 'boolean'
-                }],
-                autoLoad : false
-            }), 
-            cm : new Ext.grid.ColumnModel({
-                // specify any defaults for each column
-                defaults : {
-                    sortable : true
-                // columns are not sortable by default
-                },
-                columns : [ {
-                    header : i18n.get('label.name'),
-                    dataIndex : 'name',
-                    width : 100,
-                    sortable : true
-                }, indexed ]
-            })
-        });*/
-        //------------------- UNITS GRID 
+        //------------------- UNITS GRID
         
         var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
             clicksToEdit: 1
@@ -311,7 +268,7 @@ Ext.define('sitools.admin.units.UnitsProp', {
             }
         });
         this.items = [ this.tabPanel ];
-        sitools.admin.units.UnitsProp.superclass.initComponent.call(this);
+        this.callParent(arguments);
     },
 
     beforeTabChange : function (self, newTab, currentTab) {
@@ -332,38 +289,12 @@ Ext.define('sitools.admin.units.UnitsProp', {
         }
 
     },
-    /*onClassClick : function (self, rowIndex, columnIndex, e) {
-        if (this.action == "create") {
-            var rec = this.gridHelper.getSelectionModel().getSelected();
-            if (!rec) {
-                var tmp = new Ext.ux.Notification({
-                        iconCls : 'x-icon-information',
-                        title : i18n.get('label.information'),
-                        html : i18n.get('warning.noselection'),
-                        autoDestroy : true,
-                        hideDelay : 1000
-                    }).show(document);
-                return false;
-            }
-            
-            //fill in the converter grid
-            var converterStore = this.gridConverters.getStore();
-            converterStore.removeAll();
-            Ext.each(rec.data.converters, function (record) {
-                var conv = {};
-                conv.name = record;
-                conv.selected = true;                
-                converterStore.add(new Ext.data.Record(conv));
-            });
-        }
-
-    },*/
 
     /**
      * Set the dimension information if the action is "modify"
      */
     afterRender : function () {
-        sitools.admin.units.UnitsProp.superclass.afterRender.apply(this, arguments);
+        this.callParent(arguments);
 
         if (this.action == "modify") {
             this.unitsId = this.record.data.id;
@@ -382,6 +313,11 @@ Ext.define('sitools.admin.units.UnitsProp', {
                 failure : alertFailure
             });
         }
+        this.getEl().on('keyup', function (e) {
+            if (e.getKey() == e.ENTER) {
+                this.onValidate();
+            }
+        }, this);
     },
 
     /**

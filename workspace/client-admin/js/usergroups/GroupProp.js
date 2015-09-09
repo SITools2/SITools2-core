@@ -37,14 +37,9 @@ Ext.define('sitools.admin.usergroups.GroupProp', {
     modal : true,
     pageSize : ADMIN_PANEL_NB_ELEMENTS,
     layout : 'fit',
-    
+
     initComponent : function () {
-//        if (this.action == "create") {
-//            this.title = i18n.get('label.createGroup');
-//        } else {
-//            this.title = i18n.get('label.modifyGroup');
-//        }
-        
+
         this.title = i18n.get('label.groupInfo'),
 
         this.items = [ {
@@ -83,8 +78,8 @@ Ext.define('sitools.admin.usergroups.GroupProp', {
                 this.close();
             }
         }];
-        
-        sitools.admin.usergroups.GroupProp.superclass.initComponent.call(this);
+
+        this.callParent(arguments);
     },
 
     /**
@@ -131,7 +126,7 @@ Ext.define('sitools.admin.usergroups.GroupProp', {
      * done a specific render to load informations from the group. 
      */
     onRender : function () {
-        sitools.admin.usergroups.GroupProp.superclass.onRender.apply(this, arguments);
+        this.callParent(arguments);
         if (this.url) {
             var f = this.down('form').getForm();
             Ext.Ajax.request({
@@ -146,6 +141,12 @@ Ext.define('sitools.admin.usergroups.GroupProp', {
                 failure : alertFailure
             });
         }
+
+        this.getEl().on('keyup', function (e) {
+            if (e.getKey() == e.ENTER) {
+                this.onModifyOrCreate();
+            }
+        }, this);
     }
 
 });

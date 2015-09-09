@@ -166,14 +166,14 @@ Ext.define('sitools.admin.rssFeed.RssFeedItemProp', {
             }
         }];
         
-        sitools.admin.rssFeed.RssFeedItemProp.superclass.initComponent.call(this);
+        this.callParent(arguments);
     },
 
     /**
      * If the "action" is "modify", fill fields with the record data
      */
     afterRender : function () {
-        sitools.admin.rssFeed.RssFeedItemProp.superclass.afterRender.apply(this, arguments);
+        this.callParent(arguments);
         if (this.action == "modify") {
             var form = this.formPanel.getForm();
 
@@ -206,6 +206,12 @@ Ext.define('sitools.admin.rssFeed.RssFeedItemProp', {
             
             form.setValues(record.data);
         }
+
+        this.getEl().on('keyup', function (e) {
+            if (e.getKey() == e.ENTER) {
+                this.onValidate();
+            }
+        }, this);
     },
 
     /**

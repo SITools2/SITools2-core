@@ -133,6 +133,12 @@ Ext.define('sitools.admin.formComponents.FormComponentsProp', {
                 failure : alertFailure
             });
         }
+
+        this.getEl().on('keyup', function (e) {
+            if (e.getKey() == e.ENTER) {
+                this._onValidate();
+            }
+        }, this);
     },
 
     _onValidate : function () {

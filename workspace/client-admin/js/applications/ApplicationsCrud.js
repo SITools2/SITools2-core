@@ -144,7 +144,7 @@ Ext.define('sitools.admin.applications.ApplicationsCrud', {
             enableGroupingMenu: false
         }];
         
-        sitools.admin.applications.ApplicationsCrud.superclass.initComponent.call(this);
+        this.callParent(arguments);
     },
 
     /**
@@ -154,7 +154,7 @@ Ext.define('sitools.admin.applications.ApplicationsCrud', {
      */
     onDefineRole : function () {
         var rec = this.getLastSelectedRecord();
-        var up = new sitools.admin.applications.ApplicationsRole({
+        var up = Ext.create("sitools.admin.applications.ApplicationsRole", {
             urlAuthorizations : this.urlAuthorizations + "/" + rec.data.id,
             applicationRecord : rec
         });

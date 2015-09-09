@@ -248,10 +248,10 @@ Ext.define('sitools.admin.datasource.jdbc.DataBaseProp', {
 				this.down('form').setSize(size);
 			}
         };
-        sitools.admin.datasource.jdbc.DataBaseProp.superclass.initComponent.call(this);
+        this.callParent(arguments);
     },
     afterRender : function () {
-        sitools.admin.datasource.jdbc.DataBaseProp.superclass.afterRender.apply(this, arguments);
+        this.callParent(arguments);
         Ext.each(this.down('form').items.items, function (item) {
             item.disable();
         }, this);
@@ -289,6 +289,12 @@ Ext.define('sitools.admin.datasource.jdbc.DataBaseProp', {
             this.down('button[name=testConnectionButton]').enable();
             this.down('button[name=okButton]').enable();
         }
+
+        this.getEl().on('keyup', function (e) {
+            if (e.getKey() == e.ENTER) {
+                this._onValidate();
+            }
+        }, this);
         
     },
     

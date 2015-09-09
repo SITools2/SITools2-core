@@ -318,7 +318,7 @@ Ext.define('sitools.admin.filtersPlugins.FiltersPluginsProp', {
 
         this.items = [ this.tabPanel ];
 
-        sitools.admin.filtersPlugins.FiltersPluginsProp.superclass.initComponent.call(this);
+        this.callParent(arguments);
     },
 
     beforeTabChange : function (self, newTab, currentTab) {
@@ -369,7 +369,7 @@ Ext.define('sitools.admin.filtersPlugins.FiltersPluginsProp', {
     },
 
     afterRender : function () {
-        sitools.admin.filtersPlugins.FiltersPluginsProp.superclass.afterRender.apply(this, arguments);
+        this.callParent(arguments);
 
         if (this.action == "modify") {
             //this.filterPluginId = this.record.data.id;
@@ -381,6 +381,12 @@ Ext.define('sitools.admin.filtersPlugins.FiltersPluginsProp', {
             //only need to load the filtersPlugins for creation
             this.gridfilterPlugin.getStore().load();
         }
+
+        this.getEl().on('keyup', function (e) {
+            if (e.getKey() == e.ENTER) {
+                this.onValidate();
+            }
+        }, this);
     },
     fillGridAndForm : function (filterPlugin, action) {
         if (!Ext.isEmpty(filterPlugin)) {

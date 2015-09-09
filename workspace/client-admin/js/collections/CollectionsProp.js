@@ -199,7 +199,7 @@ Ext.define('sitools.admin.collections.CollectionsProp', {
 			}
 
         };        
-        sitools.admin.collections.CollectionsProp.superclass.initComponent.call(this);
+        this.callParent(arguments);
     },
     /**
      * Create a {sitools.admin.projects.DatasetsWin} datasetWindow to add datasets
@@ -294,7 +294,7 @@ Ext.define('sitools.admin.collections.CollectionsProp', {
 	 * do a specific render to fill informations from the collection. 
 	 */
     onRender : function () {
-        sitools.admin.collections.CollectionsProp.superclass.onRender.apply(this, arguments);
+        this.callParent(arguments);
         if (this.urlCollections) {
             // var gs = this.groupStore, qs = this.quotaStore;
             if (this.action == 'modify') {
@@ -342,6 +342,11 @@ Ext.define('sitools.admin.collections.CollectionsProp', {
             }
             
         }
+        this.getEl().on('keyup', function (e) {
+            if (e.getKey() == e.ENTER) {
+                this.onValidate();
+            }
+        }, this);
     }
 });
 

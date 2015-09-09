@@ -175,7 +175,7 @@ Ext.define('sitools.admin.dictionary.DictionaryProp', {
 
         };
 
-        sitools.admin.dictionary.DictionaryProp.superclass.initComponent.call(this);
+        this.callParent(arguments);
     },
 
     onUpload : function () {
@@ -323,7 +323,7 @@ Ext.define('sitools.admin.dictionary.DictionaryProp', {
     },
 
     afterRender : function () {
-        sitools.admin.dictionary.DictionaryProp.superclass.afterRender.apply(this, arguments);
+        this.callParent(arguments);
         if (this.url) {
             // var gs = this.groupStore, qs = this.quotaStore;
             var i;
@@ -390,6 +390,12 @@ Ext.define('sitools.admin.dictionary.DictionaryProp', {
                 });
             }
         }
+
+        this.getEl().on('keyup', function (e) {
+            if (e.getKey() == e.ENTER) {
+                this.onValidate();
+            }
+        }, this);
     },
     
     onTemplateClick : function (self, rowIndex,  e) {

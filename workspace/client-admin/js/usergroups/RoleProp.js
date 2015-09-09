@@ -140,7 +140,7 @@ Ext.define('sitools.admin.usergroups.RoleProp', {
      * done a specific render to load role data from the store. 
      */ 
     onRender : function () {
-        sitools.admin.usergroups.RoleProp.superclass.onRender.apply(this, arguments);
+        this.callParent(arguments);
         if (this.url) {
             var f = this.down('form').getForm();
             if (this.action == 'modify') {
@@ -162,6 +162,12 @@ Ext.define('sitools.admin.usergroups.RoleProp', {
                 });
             }
         }
+
+        this.getEl().on('keyup', function (e) {
+            if (e.getKey() == e.ENTER) {
+                this.onModify();
+            }
+        }, this);
     }
 
 });

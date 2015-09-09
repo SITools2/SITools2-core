@@ -144,7 +144,7 @@ Ext.define('sitools.admin.usergroups.RolesPanel', {
      * done a specific render to load roles from the store. 
      */ 
     onRender : function () {
-        sitools.admin.usergroups.RolesPanel.superclass.onRender.apply(this, arguments);
+        this.callParent(arguments);
         
         if (this.mode == 'select'){
             this.store.load({
@@ -169,6 +169,12 @@ Ext.define('sitools.admin.usergroups.RolesPanel', {
             }
             
         }
+
+        this.getEl().on('keyup', function (e) {
+            if (e.getKey() == e.ENTER) {
+                this._onOK();
+            }
+        }, this);
     },
 
     /**

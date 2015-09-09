@@ -154,6 +154,15 @@ Ext.define('sitools.admin.applications.ApplicationsRole', {
         this.callParent(arguments);
 
     },
+
+    onRender : function () {
+        this.callParent(arguments);
+        this.getEl().on('keyup', function (e) {
+            if (e.getKey() == e.ENTER) {
+                this._onValidate();
+            }
+        }, this);
+    },
     /**
      * Adds a record to the role store. 
      */

@@ -363,14 +363,14 @@ Ext.define('sitools.admin.rssFeed.RssFeedProp', {
             }
         }];
 
-        sitools.admin.rssFeed.RssFeedProp.superclass.initComponent.call(this);
+        this.callParent(arguments);
     },
     
     /**
      * done a specific render to load rss informations. 
      */
     afterRender : function () {
-        sitools.admin.rssFeed.RssFeedProp.superclass.afterRender.apply(this, arguments);
+        this.callParent(arguments);
         if (this.action == "modify") {
             Ext.Ajax.request({
                 url : this.url + "/" + this.id + this.urlRef + "/" + this.idFeed,
@@ -402,6 +402,12 @@ Ext.define('sitools.admin.rssFeed.RssFeedProp', {
                 failure : alertFailure
             });
         }
+
+        this.getEl().on('keyup', function (e) {
+            if (e.getKey() == e.ENTER) {
+                this.onValidate();
+            }
+        }, this);
 
     },
 
