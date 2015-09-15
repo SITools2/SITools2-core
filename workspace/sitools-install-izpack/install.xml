@@ -27,7 +27,7 @@
 	<jar src="lib/hsqldb.jar" />
 	<info>
 		<appname>Sitools2</appname>
-		<appversion>3.0-beta1</appversion>
+		<appversion>3.0-beta2</appversion>
 		<authors>
 			<author email="" name="CNES" />
 			<author email="" name="Akka Technologies" />

@@ -2,8 +2,8 @@
 ______________
 
 Identification                       : SITools2
-Date                                 : 2015-01-12
-Version                              : 3.0-beta1
+Date                                 : 2015-09-15
+Version                              : 3.0-beta2
 Owner                                : CNES
 Developer                            : AKKA Technologies
 Type                                 : Complete
@@ -12,9 +12,47 @@ Project page                         : http://sitools2.github.io/
 Classification                       : Not Confidential - Opensource GPL V3
 Characteristics                      : Standalone, Java, ExtJS
 Role/Function                        : Adaptable web interface for scientific data exposition.
-Reference tag                        : (3.0-beta1)
+Reference tag                        : (3.0-beta2)
 
 2/ Changes
+
+_________________
+-3.0-beta2 (2015-09-15)
+
+	This version fixes some bugs from the beta1 and includes MIZAR as a module in order to display datasets.
+
+	* New features :
+		- Mizar module linked to a dataset through a dataset GUI service or a project graph column
+		- Another Mizar module linked to a dataset directly in the same module
+		- Healpix dataset filter
+		- Delete all authorizations associated to a role when deleting a role
+		- Regroup dataset columns into categories
+		- Dataset can use DISTINCT and GROUP BY
+		- New GeoJSON resource for MIZAR without dictionary configuration
+		- New simple dataset view for MIZAR
+
+	* Enhancements :
+		- Trigger Search in a form with a shorcut 'Enter' #34
+		- Click Enter to validate admin window
+		- GroupBy et Having #22
+		- Remove the file charts.swf #15
+		- Improve converter and services parameters configuration
+		- Use real column name (alias or table name and column name) for sorting
+		- Display and sort column by schema in dataset administration
+		- Fix desktop resize
+
+	* Bug fixed :
+		- Sort by alias dataset #23
+		- Tri colonne requête multiples jointures #18
+		- Reconnexion source de données MySQL #17
+		- Suppression d'un rôle #16
+		- Ajout de node dans le project graph #10
+		- Feature Type Image et Thumbnail #9
+		- bug dans le module projectGraph #8
+		- vue bloquée lors de l'upload d'une image #7
+		- Creation Dataset avec Criteria #6
+		- Scroll bar graph projet #5
+		- Tri colonne requête multiples jointures #4
 _________________
 -3.0-beta1 (2015-01-12)
 
