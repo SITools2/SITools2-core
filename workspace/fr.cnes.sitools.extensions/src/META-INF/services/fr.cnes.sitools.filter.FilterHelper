@@ -1,2 +1,3 @@
 fr.cnes.sitools.filter.basic.LoggingFilter
 fr.cnes.sitools.filter.basic.SecurityFilter
+fr.cnes.sitools.filter.healpix.HealpixFilter
