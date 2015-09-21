@@ -297,13 +297,15 @@ public class ListReferencesAPI {
    * @param noDuplicateUrlSet
    * @param selectionId
    */
-  public void addNoDuplicateSourceRef(Map<String, String> noDuplicateUrlMap, String selectionId) {
-    for (Entry<String, String> entry : noDuplicateUrlMap.entrySet()) {
-      String strUrl = entry.getValue();
+  public void addNoDuplicateSourceRef(Map<String, List<String>> noDuplicateUrlMap, String selectionId) {
+    for (Entry<String, List<String>> entry : noDuplicateUrlMap.entrySet()) {
+      List<String> urls = entry.getValue();
       String recordId = entry.getKey();
-      Reference ref = new Reference(strUrl);
-      this.addReferenceSource(ref);
-      this.refSourceTarget.put(ref, "data/" + selectionId + "/" + recordId);
+      for (String strUrl : urls) {
+        Reference ref = new Reference(strUrl);
+        this.addReferenceSource(ref);
+        this.refSourceTarget.put(ref, "data/" + selectionId + "/" + recordId);
+      }
     }
   }
 

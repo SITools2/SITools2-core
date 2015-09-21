@@ -211,7 +211,7 @@ public abstract class AbstractCartOrderResource extends AbstractOrderResource {
         List<Record> recs = getRecordListFromResponse(response);
 
         // ** ADD DATA TO SOURCE REFERENCES
-        Map<String, String> noDuplicateUrlSet = new HashMap<String, String>();
+        Map<String, List<String>> noDuplicateUrlSet = new HashMap<String, List<String>>();
 
         // ** PREPARE LIST FOR METADATA.XML
         List<Record> extractrecs = new ArrayList<Record>();
@@ -273,16 +273,16 @@ public abstract class AbstractCartOrderResource extends AbstractOrderResource {
               if (attributeValue.getName().equals(exportableColumn.getColumnAlias())) {
 
                 if (attributeValue.getValue().toString().startsWith(settings.getString(Consts.APP_URL))) {
-                  noDuplicateUrlSet.put(primaryKeyValue, settings.getPublicHostDomain()
-                      + attributeValue.getValue().toString());
+                  addUrlToMap(primaryKeyValue, settings.getPublicHostDomain()
+                      + attributeValue.getValue().toString(), noDuplicateUrlSet);
                 }
                 else {
-                  noDuplicateUrlSet.put(primaryKeyValue, attributeValue.getValue().toString());
+                  addUrlToMap(primaryKeyValue, attributeValue.getValue().toString(), noDuplicateUrlSet);
                 }
 
                 String[] segments = attributeValue.getValue().toString().split("/");
                 String lastsegment = segments[segments.length - 1];
-                attributeValue.setValue("data/" + sel.getDatasetName() + "/" + primaryKeyValue +"/" + lastsegment);
+                attributeValue.setValue("data/" + sel.getDatasetName() + "/" + primaryKeyValue + "/" + lastsegment);
                 attributeValues.add(attributeValue);
 
               }
@@ -349,6 +349,15 @@ public abstract class AbstractCartOrderResource extends AbstractOrderResource {
 
     return listRef;
 
+  }
+
+  private void addUrlToMap(String primaryKey, String url, Map<String, List<String>> urlSet) {
+    List<String> urls = urlSet.get(primaryKey);
+    if (urls == null) {
+      urls = new ArrayList<String>();
+    }
+    urls.add(url);
+    urlSet.put(primaryKey, urls);
   }
 
   /**
