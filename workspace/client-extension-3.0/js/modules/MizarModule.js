@@ -170,6 +170,7 @@ Ext.define('sitools.extension.modules.MizarModule', {
                         labelWidth: 170,
                         allowBlank: true,
                         width: 200,
+                        value : '/sitools/client-extension/resources/conf/mizar/sitools_mizar.json',
                         listeners: {
                             render: function (c) {
                                 Ext.QuickTips.register({

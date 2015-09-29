@@ -16,51 +16,52 @@
 * You should have received a copy of the GNU General Public License 
 * along with SITools2. If not, see <http://www.gnu.org/licenses/>. 
 ******************************************************************************/
-
-/**
- * Configuration for require.js
- */
-require.config({
-	baseUrl : '/sitools/client-extension/resources/libs/mizar/src/mizar/js',
-	paths: {
-		"jquery": "../externals/jquery-1.11.1.min",
-		"jquery.ui": "../externals/jquery-ui-1.11.0.min",
-		"underscore-min": "../externals/underscore-1.6.0.min",
-		"jquery.nicescroll.min": "../externals/jquery.nicescroll-3.5.4.min",
-		"fits": "../externals/fits",
-		"samp": "../externals/samp",
-		"gzip": "../externals/gzip",
-		"crc32": "../externals/crc32",
-		"deflate-js": "../externals/deflate",
-		"inflate-js": "../externals/inflate",
-		"wcs": "../externals/wcs",
-		"jquery.ui.timepicker": "../externals/jquery.ui.timepicker",
-		"gw": "../externals/GlobWeb/src"
-	},
-	shim: {
-		'jquery': {
-			deps: [],
-			exports: 'jQuery'
+if(mizarEnv == "dev") {
+	/**
+	 * Configuration for require.js
+	 */
+	require.config({
+		baseUrl: '/sitools/client-extension/resources/libs/mizar/src/mizar/js',
+		paths: {
+			"jquery": "../externals/jquery-1.11.1.min",
+			"jquery.ui": "../externals/jquery-ui-1.11.0.min",
+			"underscore-min": "../externals/underscore-1.6.0.min",
+			"jquery.nicescroll.min": "../externals/jquery.nicescroll-3.5.4.min",
+			"fits": "../externals/fits",
+			"samp": "../externals/samp",
+			"gzip": "../externals/gzip",
+			"crc32": "../externals/crc32",
+			"deflate-js": "../externals/deflate",
+			"inflate-js": "../externals/inflate",
+			"wcs": "../externals/wcs",
+			"jquery.ui.timepicker": "../externals/jquery.ui.timepicker",
+			"gw": "../externals/GlobWeb/src"
 		},
-		'jquery.ui': {
-			deps: ['jquery'],
-			exports: 'jQuery'
+		shim: {
+			'jquery': {
+				deps: [],
+				exports: 'jQuery'
+			},
+			'jquery.ui': {
+				deps: ['jquery'],
+				exports: 'jQuery'
+			},
+			'jquery.ui.timepicker': {
+				deps: ['jquery.ui'],
+				exports: 'jQuery'
+			},
+			'underscore-min': {
+				deps: ['jquery'],
+				exports: '_'
+			},
+			'jquery.nicescroll.min': {
+				deps: ['jquery'],
+				exports: ''
+			}
 		},
-		'jquery.ui.timepicker': {
-			deps: ['jquery.ui'],
-			exports: 'jQuery'
-		},
-		'underscore-min': {
-			deps: ['jquery'],
-			exports: '_'
-		},
-		'jquery.nicescroll.min': {
-			deps: ['jquery'],
-			exports: ''
-		}
-	},
-	waitSeconds: 0
-});
+		waitSeconds: 0
+	});
+}
 
 /**
  * Mizar widget main
