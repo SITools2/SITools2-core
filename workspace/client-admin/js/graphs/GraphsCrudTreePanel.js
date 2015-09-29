@@ -29,7 +29,8 @@ Ext.define('sitools.admin.graphs.GraphsCrudTreePanel', {
     border : false,
     bodyBorder : false,
     idGraph : null,
-    
+    autoScroll : true,
+
     requires : ["sitools.admin.graphs.GraphsDatasetWin",
                 "sitools.admin.graphs.GraphsNodeWin",
                 "sitools.admin.graphs.GraphsDatasetWin",
@@ -78,7 +79,6 @@ Ext.define('sitools.admin.graphs.GraphsCrudTreePanel', {
         }];
         
         this.menuNodeToolbar = Ext.Array.merge(this.menuLeafToolbar, ['-'], this.menuRootToolbar);
-        
         
         this.listeners = {
             scope : this,

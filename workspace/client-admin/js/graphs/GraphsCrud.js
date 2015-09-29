@@ -20,12 +20,13 @@
  showHelp, loadUrl*/
 Ext.namespace('sitools.admin.graphs');
 
-Ext.define('sitools.admin.graphs.GraphsCrud', { 
+Ext.define('sitools.admin.graphs.GraphsCrud', {
     extend : 'Ext.panel.Panel',
 	alias : 'widget.s-graphs',
     border : false,
     height : ADMIN_PANEL_HEIGHT,
     id : ID.BOX.GRAPHS,
+    layout : 'fit',
     
     requires : ['sitools.admin.graphs.GraphsCrudTreePanel'],
     
@@ -117,8 +118,6 @@ Ext.define('sitools.admin.graphs.GraphsCrud', {
             items : []
         };
 
-        this.buttons = [ ];
-
         this.callParent(arguments);
 
     },
@@ -135,8 +134,7 @@ Ext.define('sitools.admin.graphs.GraphsCrud', {
             projectId : projectId,
             graphsCrud : this
         });
-        
-        
+
         this.add(this.tree);
     },
 
@@ -288,7 +286,6 @@ Ext.define('sitools.admin.graphs.GraphsCrud', {
                 }
             }
         });
-
     }
 
 });
