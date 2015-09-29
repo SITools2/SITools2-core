@@ -34,12 +34,13 @@ Ext.define('sitools.admin.projects.DatasetsWin', {
     // url + mode + storeref
     width : 500,
     modal : true,
-    closable : false,
+    closable : true,
     pageSize : ADMIN_PANEL_NB_ELEMENTS,
     layout : 'fit',
+    resizable :false,
 
     initComponent : function () {
-        this.title = i18n.get('label.datasets');
+        this.title = i18n.get("label.selectDataset");
 
         this.store = Ext.create('Ext.data.JsonStore', {
             pageSize : this.pageSize,
@@ -93,29 +94,26 @@ Ext.define('sitools.admin.projects.DatasetsWin', {
                 mode : 'MULTI'
             }),
             store : this.store,
-            height : 200,
             forceFit : true,
+            layout : 'fit',
+            height : 320,
             columns : [{
                 header : i18n.get('label.name'),
                 dataIndex : 'name'
             }, {
                 header : i18n.get('label.description'),
                 dataIndex : 'description'
-            }]
-        });
-        
-        this.items = [{
-            xtype : 'panel',
-            title : i18n.get('label.selectDataset'),
-            items : [ this.grid ],
+            }],
             bbar : {
                 xtype : 'pagingtoolbar',
-	            store : this.store,
-	            displayInfo : true,
-	            displayMsg : i18n.get('paging.display'),
-	            emptyMsg : i18n.get('paging.empty')
+                store : this.store,
+                displayInfo : true,
+                displayMsg : i18n.get('paging.display'),
+                emptyMsg : i18n.get('paging.empty')
             }
-        }];
+        });
+        
+        this.items = [this.grid];
         
         this.buttons = [{
             text : i18n.get('label.ok'),

@@ -38,7 +38,7 @@ Ext.define('sitools.admin.projects.modules.ProjectModuleConfig', {
     requires : ['sitools.admin.common.FormParametersConfigUtil'],
     
     initComponent : function () {
-		
+
         this.buttons = [{
             text : i18n.get('label.ok'),
             id : "btnValidateId",
@@ -57,11 +57,15 @@ Ext.define('sitools.admin.projects.modules.ProjectModuleConfig', {
 			parametersList : this.module.data.listProjectModulesConfig,
 			parametersFieldName : 'listProjectModulesConfig'
 		});
+
+        if (!Ext.isEmpty(this.module.data)) {
+            this.title = i18n.get('label.projectModuleConfig') + " " + this.module.data.name;
+        }
 		
 		
         this.items = [this.formPanel];
         
-        sitools.admin.projects.modules.ProjectModuleConfig.superclass.initComponent.call(this);
+        this.callParent(arguments);
     },
     
     _onValidate : function () {

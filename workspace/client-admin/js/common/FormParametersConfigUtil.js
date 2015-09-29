@@ -50,7 +50,6 @@ Ext.define('sitools.admin.common.FormParametersConfigUtil', {
             padding : 6
         });
         if (!Ext.isEmpty(this.rec)) {
-            this.title = i18n.get('label.projectModuleConfig') + " " + this.rec.name;
             this.buildViewConfig(this.rec);
         }
 
@@ -61,18 +60,16 @@ Ext.define('sitools.admin.common.FormParametersConfigUtil', {
     },
 
     addDefaultParameter: function (param) {
-// on charge les parametres par défaut définis dans le
-        // projectModule
-        // var parameterValue =
-        // this.findDefaultParameterValue(param);
+        // on charge les parametres par défaut définis dans le projectModule
+        var parameterValue = this.findDefaultParameterValue(param);
         var config = Ext.applyIf(param.config, {
             anchor: "100%"
         });
 
         var p = Ext.create(param.jsObj, config);
-        // if (!Ext.isEmpty(parameterValue)) {
-        // p.setValue(parameterValue);
-        // }
+        if (!Ext.isEmpty(parameterValue)) {
+            p.setValue(parameterValue);
+        }
         this.parametersFieldset.add(p);
     },
 
@@ -167,6 +164,15 @@ Ext.define('sitools.admin.common.FormParametersConfigUtil', {
 
     setRecord : function (rec) {
         this.rec = rec;
+    },
+    findDefaultParameterValue : function (param) {
+        var result;
+        Ext.each(this.viewConfigParamsValue, function (paramValue) {
+            if (paramValue.name == param.config.parameterName) {
+                result = paramValue.value;
+            }
+        });
+        return result;
     }
 
 });
