@@ -380,5 +380,18 @@
 			</fileset>
 			<depends packname="public" />
 		</pack>
+		<!-- CLIENT EXTENSION -->
+		<pack name="client-extension" preselected="yes" required="no" parent="Client">
+			<description>Client-extension</description>
+			<fileset override="update" dir="../client-extension-3.0"
+					 targetdir="$INSTALL_PATH/$workspacePath/client-extension-3.0">
+				<exclude name=".*" />
+				<exclude name=".settings/" />
+				<exclude name="node_modules/" />
+				<exclude name="build/" />
+				<exclude name=".sencha/" />
+			</fileset>
+			<depends packname="public" />
+		</pack>
 	</packs>
 </installation>
