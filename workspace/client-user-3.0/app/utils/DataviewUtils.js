@@ -433,11 +433,14 @@ Ext.define('sitools.user.utils.DataviewUtils', {
             }
             
             if (customConfig) {
-                windowConfig = customConfig;
+                 Ext.apply(windowConfig, customConfig, {
+                     id : Ext.id()
+                 });
             }
             else {
                 windowConfig = {
-                    title : value
+                    title : value,
+                    id : Ext.id()
                 };
             }
             
