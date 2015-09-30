@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -90,8 +90,8 @@ sitools.widget.rss2FeedReader = function (config) {
         loadMask : {
             msg : i18n.get("label.loadingFeed")
         },
-        sm : Ext.create('Ext.selection.RowModel',{
-            mode : 'SINGLE'
+        sm : new Ext.grid.RowSelectionModel({
+            singleSelect : true
         }),
         autoExpandColumn : 'title',
         hideHeaders : true,
@@ -109,8 +109,9 @@ sitools.widget.rss2FeedReader = function (config) {
     // this.on('beforeShow',this.loadData);
 };
 
-Ext.define('sitools.widget.rss2FeedReader', {
-    extend : 'Ext.grid.Panel',
+Ext.extend(sitools.widget.rss2FeedReader, Ext.grid.GridPanel, {
+
+   
     loadData : function () {
         this.loadFeed('http://feeds.feedburner.com/extblog');
         this.doLayout();
@@ -168,13 +169,13 @@ Ext.define('sitools.widget.rss2FeedReader', {
         var dateFormat = this.formatDate(record.data.pubDate);
         var res = "";
         if (link !== undefined && link !== "") {
-            res = Ext.String.format('<div class="topic"><a href="{0}" title="{1}" target="_blank"><span class="rss_feed_title">{2}</span></a><br/><span class="author">{3}</span></div>', link, value, 
+            res = String.format('<div class="topic"><a href="{0}" title="{1}" target="_blank"><span class="rss_feed_title">{2}</span></a><br/><span class="author">{3}</span></div>', link, value, 
                     xf.ellipsis(xf.stripTags(value), 50), author);
         } else {
-            res = Ext.String.format('<div class="topic"><span class="rss_feed_title">{0}</span><br/><span class="author">{1}</span></div>', xf.ellipsis(xf.stripTags(value), 50), author);
+            res = String.format('<div class="topic"><span class="rss_feed_title">{0}</span><br/><span class="author">{1}</span></div>', xf.ellipsis(xf.stripTags(value), 50), author);
         }
         if (dateFormat != "" && dateFormat != null ){
-            res += Ext.String.format('<p id="feeds-date">{0}</p>', dateFormat);
+            res += String.format('<p id="feeds-date">{0}</p>', dateFormat);
         }
         return res;
     }, 
@@ -186,7 +187,7 @@ Ext.define('sitools.widget.rss2FeedReader', {
         if (record.data.imageType.substr(0, 5) != "image") {
         	return "";
         }
-		return Ext.String.format('<img src="{0}" width="50px">', value);
+		return String.format('<img src="{0}" width="50px">', value);
     },
     
     sortByDate : function (direction){

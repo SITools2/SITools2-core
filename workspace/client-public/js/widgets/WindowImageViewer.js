@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -26,8 +26,7 @@ Ext.ns('sitools.widget');
  * false to keep the image size with scrollbars if needed. Default to false
  * @extends Ext.Window
  */
-Ext.define('sitools.widget.WindowImageViewer', {
-    extend : 'Ext.Window',
+sitools.widget.WindowImageViewer = Ext.extend(Ext.Window, {
     resizeImage : false, 
     maximizable : true, 
     modal : true, 
@@ -108,7 +107,7 @@ Ext.define('sitools.widget.WindowImageViewer', {
 			wi *= 0.9;
 		}
 
-		this.setSize(wi /*+ this.getFrameWidth()*/, hi + this.getHeader().getHeight());
+		this.setSize(wi + this.getFrameWidth(), hi + this.getFrameHeight());
         
 		// if (Ext.isIE) {
 		this.center();
@@ -142,8 +141,7 @@ Ext.define('sitools.widget.WindowImageViewer', {
  * @class sitools.widget.WindowImageViewer
  * @extends Ext.Window
  */
-Ext.define('sitools.widget.PanelImageViewer', {
-    extend : 'Ext.Panel',
+sitools.widget.PanelImageViewer = Ext.extend(Ext.Panel, {
 
     initComponent : function () {
         this.bodyCfg = {

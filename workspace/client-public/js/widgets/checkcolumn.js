@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -72,11 +72,9 @@ Ext.ux.grid.CheckColumn = function(config){
     this.renderer = this.renderer.createDelegate(this);
 };
 
-Ext.define('Ext.ux.grid.CheckColumn', {
-    extend : 'Ext.Component',
-	alias : 'widget.checkcolumn',
+Ext.ux.grid.CheckColumn = Ext.extend(Ext.Component, {
     enabled : true, 
-    init : function(grid) {
+    init : function(grid){
         this.grid = grid;
         this.grid.on('render', function(){
             var view = this.grid.getView();
@@ -104,10 +102,10 @@ Ext.define('Ext.ux.grid.CheckColumn', {
         p.css += ' x-grid3-check-col-td'; 
         var cmp = Ext.getCmp(this.id); 
         if (cmp.enabled) {
-        	return Ext.String.format('<div id="{2}" class="x-grid3-check-col{0} x-grid3-check-col-enabled {1}">&#160;</div>', v ? '-on' : '', cmp.createId(), this.id);
+        	return String.format('<div id="{2}" class="x-grid3-check-col{0} x-grid3-check-col-enabled {1}">&#160;</div>', v ? '-on' : '', cmp.createId(), this.id);
         }
         else {
-        	return Ext.String.format('<div id="{2}" class="x-grid3-check-disabled-col{0} {1}">&#160;</div>', v ? '-on' : '', cmp.createId(), this.id);
+        	return String.format('<div id="{2}" class="x-grid3-check-disabled-col{0} {1}">&#160;</div>', v ? '-on' : '', cmp.createId(), this.id);
         }
     },
     
@@ -122,6 +120,9 @@ Ext.define('Ext.ux.grid.CheckColumn', {
     }
     
 });
+
+// register ptype
+Ext.preg('checkcolumn', Ext.ux.grid.CheckColumn);
 
 // backwards compat
 Ext.grid.CheckColumn = Ext.ux.grid.CheckColumn;

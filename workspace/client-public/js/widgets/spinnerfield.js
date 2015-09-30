@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -30,9 +30,7 @@ Ext.ns('Ext.ux.form');
  * Creates a field utilizing Ext.ux.Spinner
  * @xtype spinnerfield
  */
-Ext.define('Ext.ux.form.SpinnerField', {
-    extend : 'Ext.form.NumberField',
-	alias : 'widget.spinnerfield',
+Ext.ux.form.SpinnerField = Ext.extend(Ext.form.NumberField, {
     actionMode: 'wrap',
     deferHeight: true,
     autoSize: Ext.emptyFn,
@@ -74,6 +72,8 @@ Ext.define('Ext.ux.form.SpinnerField', {
         return true;
     }
 });
+
+Ext.reg('spinnerfield', Ext.ux.form.SpinnerField);
 
 //backwards compat
 Ext.form.SpinnerField = Ext.ux.form.SpinnerField;

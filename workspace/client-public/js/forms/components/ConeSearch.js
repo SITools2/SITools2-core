@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -21,7 +21,7 @@
  * @include "../AbstractComponentsWithUnit.js"
  * @include "../ComponentFactory.js"
  */
-Ext.namespace('sitools.common.forms.components');
+Ext.ns('sitools.common.forms.components');
 
 /**
  * Abstract Class to build Container to display a Cone Search. 
@@ -32,9 +32,7 @@ Ext.namespace('sitools.common.forms.components');
  * @class sitools.common.forms.components.AbstractConeSearch
  * @extends sitools.common.forms.AbstractWithUnit
  */
-Ext.define('sitools.common.forms.components.AbstractConeSearch', {
-    extend : 'sitools.common.forms.AbstractWithUnit',
-    
+sitools.common.forms.components.AbstractConeSearch = Ext.extend(sitools.common.forms.AbstractWithUnit, {
     initComponent : function () {
         this.context = new sitools.common.forms.ComponentFactory(this.context);
         //formattage de extraParams : 
@@ -76,7 +74,7 @@ Ext.define('sitools.common.forms.components.AbstractConeSearch', {
         	defaultThirdValue = this.defaultValues[2];
         }
         
-	    this.raParam = Ext.create("Ext.form.NumberField", {
+	    this.raParam = new Ext.form.NumberField({
 	        fieldLabel : "RA", 
 	        allowBlank : true,
 	        decimalPrecision : 20, 
@@ -86,7 +84,7 @@ Ext.define('sitools.common.forms.components.AbstractConeSearch', {
 	        labelSeparator : ""
 	        
 	    });
-	    this.decParam = Ext.create("Ext.form.NumberField", {
+	    this.decParam = new Ext.form.NumberField({
 	        fieldLabel : "DEC", 
 	        allowBlank : true,
 	        decimalPrecision : 20, 
@@ -96,7 +94,7 @@ Ext.define('sitools.common.forms.components.AbstractConeSearch', {
 	        labelSeparator : ""
 	    });
 	    
-		this.thirdParam = Ext.create("Ext.form.NumberField", {
+		this.thirdParam = new Ext.form.NumberField({
 			fieldLabel : this.getLabelThirdParam(), 
 			allowBlank : true,
 			decimalPrecision : 20, 
@@ -105,37 +103,31 @@ Ext.define('sitools.common.forms.components.AbstractConeSearch', {
 	        labelSeparator : ""
 		});
 
-		var thirdCont = Ext.create("Ext.form.FieldContainer", {
+		var thirdCont = new Ext.form.CompositeField({
 			labelWidth : 100,
-            layout: {
-                type : 'hbox',
-                defaultMargins : {top: 0, right: 5, bottom: 0, left: 0}
-            },
-            defaults : {
-                flex : 1
-            }, 
+			fieldLabel : this.getLabelThirdParam(),
 			items : [this.thirdParam, unit], 
         	labelSeparator : ""
 		});
 		
 		//build the resolver Name
-		this.targetName = Ext.create("Ext.form.TextField", {
-			flex : 1, 
-			fieldLabel : i18n.get("label.targetName"),
-			enableKeyEvents : true,
-			listeners : {
-			    scope : this,
-			    change : function (field, newValue, oldValue) {
-			        this.nameResolverButton.setDisabled(Ext.isEmpty(newValue));
-			    }
-			},
-			keyup : function () {
-            	this.nameResolverButton.setDisabled(Ext.isEmpty(this.targetName.getValue()));
+		this.targetName = new Ext.form.TextField({
+            flex : 1,
+            fieldLabel : i18n.get("label.targetName"),
+            enableKeyEvents : true,
+            listeners : {
+                scope : this,
+                change : function (field, newValue, oldValue) {
+                    this.nameResolverButton.setDisabled(Ext.isEmpty(newValue));
+                },
+                keyup : function () {
+                    this.nameResolverButton.setDisabled(Ext.isEmpty(this.targetName.getValue()));
+                }
             }
 		});
 
 		
-		this.nameResolverButton = Ext.create("Ext.Button", {
+		this.nameResolverButton = new Ext.Button({
             scope : this,
             id : 'resolveNameBtn',
             handler : this.resolveTargetName, 
@@ -144,19 +136,13 @@ Ext.define('sitools.common.forms.components.AbstractConeSearch', {
             disabled : true
         });
 		
-		var targetCmp = Ext.create("Ext.form.FieldSet", {
+		var targetCmp = new Ext.form.FieldSet({
 			title : i18n.get('label.resolverName'), 
-			items : [{
-				xtype : 'fieldcontainer',
-                layout: {
-                    type : 'hbox',
-                    defaultMargins : {top: 0, right: 5, bottom: 0, left: 0}
-                },
-                defaults : {
-                    flex : 1
-                }, 
-                items : [this.targetName, this.nameResolverButton]
-			}]
+			items : [
+				new Ext.form.CompositeField ({
+					items : [this.targetName, this.nameResolverButton]
+				})
+			]
 		});
 		
 		//Load the 3 fields into a form layout in the main container items
@@ -185,7 +171,7 @@ Ext.define('sitools.common.forms.components.AbstractConeSearch', {
 	    sitools.common.forms.components.AbstractConeSearch.superclass.initComponent.apply(
 	            this, arguments);
    	    if (!Ext.isEmpty(this.label)) {
-	    	this.items.insert(0, Ext.create("Ext.Container", {
+	    	this.items.insert(0, new Ext.Container({
 	            border : false,
 	            html : this.label,
 	            width : 100
@@ -377,8 +363,7 @@ Ext.define('sitools.common.forms.components.AbstractConeSearch', {
  * @class sitools.common.forms.components.ConeSearchCartesien
  * @extends sitools.common.forms.components.AbstractConeSearch
  */
-Ext.define('sitools.common.forms.components.ConeSearchCartesien', {
-    extend : 'sitools.common.forms.components.AbstractConeSearch',
+sitools.common.forms.components.ConeSearchCartesien = Ext.extend(sitools.common.forms.components.AbstractConeSearch, {
     getLabelThirdParam : function () {
 		return "Search Radius";
     }
@@ -389,8 +374,7 @@ Ext.define('sitools.common.forms.components.ConeSearchCartesien', {
  * @class sitools.common.forms.components.ConeSearchPGSphere
  * @extends sitools.common.forms.components.AbstractConeSearch
  */
-Ext.define('sitools.common.forms.components.ConeSearchPGSphere', {
-    extend : 'sitools.common.forms.components.AbstractConeSearch',
+sitools.common.forms.components.ConeSearchPGSphere = Ext.extend(sitools.common.forms.components.AbstractConeSearch, {
     getLabelThirdParam : function () {
 		return "Radius";
     }

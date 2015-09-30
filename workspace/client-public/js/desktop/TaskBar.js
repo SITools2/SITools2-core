@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -32,8 +32,7 @@ Ext.ux.TaskBar = function (app, enableWarning) {
 	this.init(enableWarning);
 };
 
-Ext.define('Ext.ux.TaskBar', {
-    extend : 'Ext.util.Observable',
+Ext.extend(Ext.ux.TaskBar, Ext.util.Observable, {
     init : function (enableWarning) {
 //	    this.startMenu = new Ext.ux.StartMenu(Ext.apply({
 //	        iconCls : 'user',
@@ -134,8 +133,7 @@ Ext.define('Ext.ux.TaskBar', {
  * @class Ext.ux.TaskBarContainer
  * @extends Ext.Container
  */
-Ext.define('Ext.ux.TaskBarContainer', {
-    extend : 'Ext.Container',
+Ext.ux.TaskBarContainer = Ext.extend(Ext.Container, {
     initComponent : function () {
 	    Ext.ux.TaskBarContainer.superclass.initComponent.call(this);
 
@@ -171,8 +169,7 @@ Ext.define('Ext.ux.TaskBarContainer', {
  * @class Ext.ux.TaskButtonsPanel
  * @extends Ext.BoxComponent
  */
-Ext.define('Ext.ux.TaskButtonsPanel', {
-    extend : 'Ext.Component',
+Ext.ux.TaskButtonsPanel = Ext.extend(Ext.BoxComponent, {
     activeButton : null,
     enableScroll : true,
     scrollIncrement : 0,
@@ -397,7 +394,7 @@ Ext.define('Ext.ux.TaskButtonsPanel', {
 		    if (!this.scrolling) {
 			    this.el.addClass('x-taskbuttons-scrolling');
 		    }
-		    tw -= wrap.getMargin('lr');
+		    tw -= wrap.getMargins('lr');
 		    wrap.setWidth(tw > 20 ? tw : 20);
 		    if (!this.scrolling) {
 			    if (!this.scrollLeft) {
@@ -553,8 +550,7 @@ Ext.ux.TaskBar.TaskButton = function (win, el) {
 	});
 };
 
-Ext.define('Ext.ux.TaskBar.TaskButton', {
-    extend : 'Ext.Button',
+Ext.extend(Ext.ux.TaskBar.TaskButton, Ext.Button, {
 	scale : "medium", 
 	width : 50, 
 	initButtonEl : function() {

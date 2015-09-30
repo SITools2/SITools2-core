@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -35,7 +35,6 @@ Ext.app.Module = function (config) {
 	this.init();
 };
 
-Ext.define('Ext.app.Module', {
-    extend : 'Ext.util.Observable',
+Ext.extend(Ext.app.Module, Ext.util.Observable, {
 	init : Ext.emptyFn
 });

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  * 
  * This file is part of SITools2.
  * 
@@ -20,8 +20,7 @@ Ext.namespace('sitools.userProfile');
 /*
  * config { url + handler }
  */
-Ext.define('sitools.userProfile.editProfile', {
-    extend : 'Ext.Panel',
+sitools.userProfile.editProfile = Ext.extend(Ext.Panel, {
 //    id : 'winEditProfile',
 //    layout : 'hbox',
 //    width : 420,
@@ -58,8 +57,8 @@ Ext.define('sitools.userProfile.editProfile', {
             } ],
             autoLoad : false
         });
-        var smProperties = Ext.create('Ext.selection.RowModel',{
-            mode : 'SINGLE'
+        var smProperties = new Ext.grid.RowSelectionModel({
+            singleSelect : true
         });
 
         var cmProperties = new Ext.grid.ColumnModel({

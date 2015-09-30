@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -20,8 +20,7 @@ Ext.namespace("Ext.ux");
 Ext.ux.NotificationMgr = {
 positions: []
 };
-Ext.define('Ext.ux.Notification', {
-    extend : 'Ext.Window',
+Ext.ux.Notification = Ext.extend(Ext.Window, {
     initComponent: function(){
         Ext.apply(this, {
             iconCls: this.iconCls || 'x-icon-information',

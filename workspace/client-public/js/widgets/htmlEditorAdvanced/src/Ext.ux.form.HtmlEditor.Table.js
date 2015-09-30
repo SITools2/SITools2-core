@@ -110,7 +110,7 @@ Ext.ux.form.HtmlEditor.Table = Ext.extend(Ext.util.Observable, {
                                         for (var row = 0; row < rowcol[0]; row++) {
                                             html += "<tr>";
                                             for (var col = 0; col < rowcol[1]; col++) {
-                                                html += "<td width='" + colwidth + "%' style='border: " + border + ";'>" + Ext.String.format(cellText, (row+1), String.fromCharCode(col+65)) + "</td>";
+                                                html += "<td width='" + colwidth + "%' style='border: " + border + ";'>" + String.format(cellText, (row+1), String.fromCharCode(col+65)) + "</td>";
                                             }
                                             html += "</tr>";
                                         }

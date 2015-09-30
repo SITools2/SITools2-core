@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -264,4 +264,4 @@ Ext.ux.Plugin.RemoteComponent = function (config){
 		}           
     };
 };
-Ext.define('Ext.ux.Plugin.RemoteComponent', {extend : 'Ext.util.Observable'});
+Ext.extend(Ext.ux.Plugin.RemoteComponent, Ext.util.Observable);

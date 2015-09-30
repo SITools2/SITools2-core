@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -44,8 +44,7 @@ var filters = new Ext.ux.grid.GridFilters({
 });
  * </code></pre>
  */
-Ext.define('Ext.ux.grid.filter.StringFilter', {
-    extend : 'Ext.ux.grid.filter.Filter',
+Ext.ux.grid.filter.StringFilter = Ext.extend(Ext.ux.grid.filter.Filter, {
 
     /**
      * @cfg {String} iconCls

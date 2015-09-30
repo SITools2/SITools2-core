@@ -1,6 +1,5 @@
 Ext.ns("sitools.widget");
-Ext.define('sitools.widget.StringFilter', {
-    extend : 'sitools.widget.Filter',
+sitools.widget.StringFilter = Ext.extend(sitools.widget.Filter, {
 	
     /**
      * @cfg {String} iconCls

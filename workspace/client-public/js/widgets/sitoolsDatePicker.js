@@ -3,9 +3,8 @@
  * @class Ext.SitoolsDatePicker
  * @extends Ext.BoxComponent
  */
-Ext.define('Ext.SitoolsDatePicker', {
-    extend : 'Ext.Component',
-    alias : 'widget.datepicker',
+Ext.SitoolsDatePicker = Ext.extend(Ext.BoxComponent, {
+    
     todayText : 'Today',
     /**
      * @cfg {String} okText
@@ -404,8 +403,8 @@ Ext.define('Ext.SitoolsDatePicker', {
             var today = (new Date()).dateFormat(this.format);
             this.todayBtn = new Ext.Button({
                 renderTo: this.el.child('td.x-date-bottom', true),
-                text: Ext.String.format(this.todayText, today),
-                tooltip: Ext.String.format(this.todayTip, today),
+                text: String.format(this.todayText, today),
+                tooltip: String.format(this.todayTip, today),
                 handler: this.selectToday,
                 scope: this
             });
@@ -529,7 +528,7 @@ Ext.define('Ext.SitoolsDatePicker', {
         		labelWidth : 1,
         		itemsCls : "sitools-no-margin",
         		items : [{
-        			xtype : "fieldcontainer",
+        			xtype : "compositefield",
         			width : 135,
         			style : {
         				padding : "3px"
@@ -950,5 +949,7 @@ Ext.define('Ext.SitoolsDatePicker', {
 
     
 });
+
+Ext.reg('datepicker', Ext.SitoolsDatePicker);
 
 

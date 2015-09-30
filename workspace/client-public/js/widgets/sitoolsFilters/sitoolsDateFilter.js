@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -17,8 +17,7 @@
 * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
 ***************************************/
 Ext.ns("sitools.widget");
-Ext.define('sitools.widget.DateFilter',
-    extend : 'sitools.widget.Filter',
+sitools.widget.DateFilter = Ext.extend(sitools.widget.Filter, {
 	
     /**
      * @cfg {String} iconCls

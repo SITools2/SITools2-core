@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -22,9 +22,8 @@ Ext.namespace('sitools.widget');
 /**
  * Common component for creating a dynamic link
  */
-Ext.define('sitools.widget.ActionLink', {
-    extend : 'Ext.Component',
-	alias : 'widget.s-actionlink',
+sitools.widget.ActionLink = Ext.extend(Ext.BoxComponent, {
+
     /**
 	 * must be declared at the configuration
 	 */
@@ -79,3 +78,5 @@ Ext.define('sitools.widget.ActionLink', {
     }
 });
 
+// register type
+Ext.reg('s-actionlink', sitools.widget.ActionLink);

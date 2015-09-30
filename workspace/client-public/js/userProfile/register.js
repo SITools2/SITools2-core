@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -27,9 +27,7 @@ Ext.namespace('sitools.userProfile');
  * @class sitools.userProfile.Register
  * @extends Ext.Window
  */
-Ext.define('sitools.userProfile.Register', {
-    extend : 'Ext.Window',
-	alias : 'widget.s-register',
+sitools.userProfile.Register = Ext.extend(Ext.Window, {
     id: 'winRegister',
 	layout: 'hbox',
 	width: 420,
@@ -160,7 +158,7 @@ Ext.define('sitools.userProfile.Register', {
             },
             {
 				xtype: 'checkbox',
-				fieldLabel: Ext.String.format(i18n.get('label.acceptCGU'), URL_CGU),
+				fieldLabel: String.format(i18n.get('label.acceptCGU'), URL_CGU),
 	            id: 'acceptCGU',
 				name: 'acceptCGU',
 	            height: 40,
@@ -287,3 +285,4 @@ Ext.define('sitools.userProfile.Register', {
    
 });
 
+Ext.reg('s-register', sitools.userProfile.Register);

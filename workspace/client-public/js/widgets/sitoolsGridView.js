@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -22,8 +22,7 @@
  * @class Ext.ux.sitoolsGridView
  * @extends Ext.grid.GridView
  */
-// Ext.define('Ext.ux.sitoolsGridView', { extend : 'Ext.grid.GridView', 
-Ext.define('Ext.ux.sitoolsGridView', { extend : 'Ext.grid.View', 
+Ext.ux.sitoolsGridView = Ext.extend(Ext.grid.GridView, {
 	// surcharge de la méthode pour que l'ajout d'une colonne relance une
 	// interrogation du store
 	// avec comme parametre le nouveau columnModel

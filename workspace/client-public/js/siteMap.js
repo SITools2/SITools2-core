@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  * 
  * This file is part of SITools2.
  * 
@@ -49,30 +49,21 @@ var loadUrl = {
      */
     transformsPropertiesToMap : function (url, callback, scope) {
 
-        Ext.define('maps', {     
-            extend: 'Ext.data.Model',
-            fields: [
-                {name: 'name', type: 'string'},
-                {name: 'loc', type: 'string'}
-            ]
-        }); 
-        
-        var store = Ext.create('Ext.data.Store', {
-            model : 'maps',
-            proxy : {
+        var store = new Ext.data.Store({
+            proxy : new Ext.data.HttpProxy({
                 url : url,
-                type: 'ajax',
-                headers : {
-                    "Accept" : "application/xml"
-                },
-                reader: {
-                    type: 'xml',
-                    record : 'url',
-                    idProperty : 'name'
-                },
-            }
+                restful : true
+            }),
+            reader : new Ext.data.XmlReader({
+                record : 'url'
+            }, [ {
+                name : 'name',
+                mapping : 'name'
+            }, {
+                name : 'loc',
+                mapping : 'loc'
+            } ])
         });
-
         var localMap = this.map;
 
         store.load({

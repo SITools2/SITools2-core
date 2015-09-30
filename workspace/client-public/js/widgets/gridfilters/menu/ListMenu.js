@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -31,8 +31,7 @@ Ext.namespace('Ext.ux.menu');
  * Although not listed as configuration options for this class, this class
  * also accepts all configuration options from {@link Ext.ux.grid.filter.ListFilter}.
  */
-Ext.define('Ext.ux.menu.ListMenu', {
-    extend : 'Ext.menu.Menu',
+Ext.ux.menu.ListMenu = Ext.extend(Ext.menu.Menu, {
     /**
      * @cfg {String} labelField
      * Defaults to 'text'.

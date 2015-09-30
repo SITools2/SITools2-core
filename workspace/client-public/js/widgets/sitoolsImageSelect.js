@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -23,10 +23,7 @@
  * @class Ext.form.SitoolsSelectImage
  * @extends Ext.form.TriggerField
  */
-Ext.define('Ext.form.SitoolsSelectImage', {
-    extend : 'Ext.form.TriggerField',
-	alias : 'widget.sitoolsSelectImage',
-	
+Ext.form.SitoolsSelectImage = Ext.extend(Ext.form.TriggerField, {
 	onTriggerClick : function () {
         if (!this.disabled) {
 			function validate(data, config) {
@@ -37,12 +34,11 @@ Ext.define('Ext.form.SitoolsSelectImage', {
 	            url : loadUrl.get('APP_URL') + '/upload/?media=json',
 	            width : 515,
 	            height : 450,
-	            fieldUrl : this,
-	            callback : validate
+	            fieldUrl : this
 	        });
-	        chooser.show(document);
+	        chooser.show(document, validate);
         }
 	} 
 
 });
-
+Ext.reg('sitoolsSelectImage', Ext.form.SitoolsSelectImage);

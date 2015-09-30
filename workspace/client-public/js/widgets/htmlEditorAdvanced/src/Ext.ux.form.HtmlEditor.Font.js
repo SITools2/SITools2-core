@@ -29,6 +29,7 @@ Ext.ux.form.HtmlEditor.Font = Ext.extend(Ext.util.Observable, {
             triggerAction: 'all',
             width: 80,
             emptyText: 'Font',
+            tpl: '<tpl for="."><div class="x-combo-list-item" style="font-family:{value};">{display}</div></tpl>',
             store: {
                 xtype: 'arraystore',
                 autoDestroy: true,

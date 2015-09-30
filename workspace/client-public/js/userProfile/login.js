@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  * 
  * This file is part of SITools2.
  * 
@@ -27,29 +27,25 @@ Ext.namespace('sitools.userProfile');
  * unblacklist : url to set to UnBlacklist button
  */
 
-Ext.define('sitools.userProfile.Login', {
-    extend : 'Ext.window.Window',
-    alias : 'widget.s-login',
+sitools.userProfile.Login = Ext.extend(Ext.Window, {
     id : 'winLogin',
+    layout : 'hbox',
     width : 392,
-    height : 200,
-    draggable : false,
+    height : 220,
     resizable : false,
     closable : false,
     modal : true,
-    layout : 'fit',
-    
     initComponent : function () {
         this.title = i18n.get('label.login');
-        this.icon = loadUrl.get('APP_URL') + "/common/res/images/ux/login-big.gif";
         
-        this.combo = Ext.create('Ext.form.field.ComboBox', {
+        this.combo = new Ext.form.ComboBox({
             typeAhead : true,
             triggerAction : 'all',
             forceSelection : true,
             allowBlank : false,
-            queryMode : 'local',
-            store : Ext.create('Ext.data.ArrayStore', {
+            lazyRender : true,
+            mode : 'local',
+            store : new Ext.data.ArrayStore({
                 id : 0,
                 fields : [ 'myId', 'displayText' ],
                 data : [ [ 1, i18n.get('label.userPortal') ], [ 2, i18n.get('label.administration') ] ]
@@ -66,16 +62,22 @@ Ext.define('sitools.userProfile.Login', {
             this.combo.hideLabel = false;
         } else {
             this.combo.setVisible(false);
+//            this.setSize(392, 160);
+            this.setSize(392, 175);
         }
-        
-        this.items = [{
+        this.items = [ {
             xtype : 'form',
+            frame : true,
             border : false,
             buttonAlign : 'center',
             id : 'frmLogin',
+            width : 392,
             labelWidth : 100,
-            padding : "10px 10px 0px 50px",
-            items : [{
+            padding : "10px 10px 0px 60px",
+            bodyStyle : "background-image: url("+loadUrl.get('APP_URL')+"/common/res/images/ux/login-big.gif);" +
+			"background-position: top left;" +
+			"background-repeat: no-repeat;",
+            items : [ {
                 xtype : 'textfield',
                 fieldLabel : i18n.get('label.login'),
                 name : 'login',
@@ -84,7 +86,7 @@ Ext.define('sitools.userProfile.Login', {
                 anchor : '80%',
                 listeners : {
                     afterrender : function (login) {
-                        login.focus(false, 300);
+                        login.focus(false, 100);
                     }
                 }
             }, {
@@ -104,39 +106,33 @@ Ext.define('sitools.userProfile.Login', {
                     }
                 }
             }, this.combo ],
-            buttons : {
-                xtype : 'toolbar',
-                style : 'background-color:white;',
-                items : [{
-                    text : i18n.get('label.login'),
-                    scale : 'large',
-                    handler : this.getAuth,
-                    scope : this
-                }, {
-                    text : i18n.get('label.register'),
-                    hidden : !this.register,
-                    scope : this,
-                    icon : loadUrl.get('APP_URL') + '/common/res/images/icons/refresh.png',
-                    handler : function () {
-                        Ext.getCmp('winLogin').close();
-                        var register = Ext.create('sitools.userProfile.Register', {
-                            closable : this.closable,
-                            url : this.register,
-                            login : this.url,
-                            handler : this.handler,
-                            back : this
-                        });
-                        register.show();
-                    }
-                }]
-            }
-        }];
+            buttons : [ {
+                text : i18n.get('label.login'),
+                handler : this.getAuth,
+                scope : this
+            }, {
+                text : i18n.get('label.register'),
+                hidden : !this.register,
+                scope : this,
+                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/refresh.png',
+                handler : function () {
+                    Ext.getCmp('winLogin').close();
+                    var register = new sitools.userProfile.Register({
+                        closable : this.closable,
+                        url : this.register,
+                        login : this.url,
+                        handler : this.handler,
+                        back : this
+                    });
+                    register.show();
+                }
+            } ]
+        } ];
         
-        this.bbar = Ext.create('Ext.ux.StatusBar', {
+        this.bbar = new Ext.ux.StatusBar({
             text : i18n.get('label.ready'),
             id : 'sbWinLogin',
             iconCls : 'x-status-valid',
-//            height : 40,
             items : [ {
                 icon : loadUrl.get('APP_URL') + '/common/res/images/icons/wadl.gif',
                 iconAlign : 'right',
@@ -145,7 +141,7 @@ Ext.define('sitools.userProfile.Login', {
                 scope : this,
                 handler : function () {
                     Ext.getCmp('winLogin').close();
-                    var reset = Ext.create('sitools.userProfile.lostPassword', {
+                    var reset = new sitools.userProfile.lostPassword({
                         closable : this.closable,
                         urlResetPassword : this.reset,
                         urlUnblacklist : this.unblacklist,
@@ -197,10 +193,9 @@ Ext.define('sitools.userProfile.Login', {
                         });
                         var A1 = auth.getA1();
 
-                        date.setMinutes(date.getMinutes() + 1);
                         // stockage en cookie du mode d'authorization
                         Ext.util.Cookies.set('A1', A1);
-                        Ext.util.Cookies.set('userLogin', auth.usr, date);
+                        Ext.util.Cookies.set('userLogin', auth.usr, date.add(Date.MINUTE, 1));
                         Ext.util.Cookies.set('scheme', Json.data.scheme);
                         Ext.util.Cookies.set('algorithm', Json.data.algorithm);
                         Ext.util.Cookies.set('realm', auth.realm);
@@ -213,11 +208,10 @@ Ext.define('sitools.userProfile.Login', {
                         var hash = Base64.encode(tok);
                         var auth = 'Basic ' + hash;
 
-                        date.setMinutes(date.getMinutes() + 1);
                         // stockage en cookie du mode d'authorization
-                        Ext.util.Cookies.set('userLogin', usr, date);
+                        Ext.util.Cookies.set('userLogin', usr, date.add(Date.MINUTE, 1));
                         Ext.util.Cookies.set('scheme', Json.data.scheme);
-                        Ext.util.Cookies.set('hashCode', auth, date);
+                        Ext.util.Cookies.set('hashCode', auth, date.add(Date.MINUTE, 1));
                     }
                 }
 
@@ -247,6 +241,7 @@ Ext.define('sitools.userProfile.Login', {
                 try {
                     var Json = Ext.decode(response.responseText);
                     if (Json.success) {
+                        // var date = new Date();
                         Ext.apply(Ext.Ajax.defaultHeaders, {
                             "Authorization" : Ext.util.Cookies.get('hashCode')
                         });
@@ -267,6 +262,8 @@ Ext.define('sitools.userProfile.Login', {
                                         Ext.Msg.alert('error login.js redirect with authorization');
                                     }
                                 });
+                                // window.location.href =
+                                // "/sitools/client-admin";
                             }
                         } else {
                             window.location.reload();
@@ -277,7 +274,12 @@ Ext.define('sitools.userProfile.Login', {
                         
                         var txt = i18n.get('warning.serverError') + ': ' + Json.message;
                         Ext.getCmp('winLogin').body.unmask();
-                        Ext.getCmp('sbWinLogin').setStatus({ text : txt, iconCls : 'x-status-error' });
+                        Ext.getCmp('sbWinLogin').setStatus({
+                            // text: ret.error ? ret.error :
+                            // i18n.get('warning.serverUnreachable'),
+                            text : txt,
+                            iconCls : 'x-status-error'
+                        });
 
                     }
                 } catch (err) {
@@ -309,3 +311,5 @@ Ext.define('sitools.userProfile.Login', {
     }
 
 });
+
+Ext.reg('s-login', sitools.userProfile.Login);

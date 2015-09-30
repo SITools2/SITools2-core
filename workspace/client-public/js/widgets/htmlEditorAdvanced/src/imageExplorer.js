@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -79,7 +79,7 @@ ImageExplorer.prototype = {
 				tpl: this.thumbTemplate,
 				id : 'imageChooserDataViewId', 
 				singleSelect: true,
-				overItemCls:'x-view-over',
+				overClass:'x-view-over',
 				itemSelector: 'div.thumb-wrap',
 				emptyText : '<div style="padding:10px;">No images match the specified filter</div>',
 				store: this.store,
@@ -113,7 +113,7 @@ ImageExplorer.prototype = {
 	                checked: false,
 	                menu : {
 	                	items : [{
-	                		xtype: 'numberfield',
+	                		xtype: 'spinnerfield',
 	                    	emptyText: 'Custom width...',
 	                    	name: 'width',
 	                    	listeners : {
@@ -124,7 +124,7 @@ ImageExplorer.prototype = {
 	                    	}
 	                	},
 	                	{
-	                		xtype: 'numberfield',
+	                		xtype: 'spinnerfield',
 	                		emptyText: 'Custom height...',
 	                    	name: 'height',
 	                    	listeners : {

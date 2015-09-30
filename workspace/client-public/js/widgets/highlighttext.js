@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -21,9 +21,8 @@ Ext.namespace('sitools.widget');
 /**
  * Text component that allows Highlighting
  */
-Ext.define('sitools.widget.HighlightText', {
-    extend : 'Ext.Component',
-	alias : 'widget.s-lighttext',
+sitools.widget.HighlightText = Ext.extend(Ext.BoxComponent,{
+
     /**
      * must be declared at the configuration
      */
@@ -59,3 +58,5 @@ Ext.define('sitools.widget.HighlightText', {
     }
 });
 
+//register type
+Ext.reg('s-lighttext', sitools.widget.HighlightText);

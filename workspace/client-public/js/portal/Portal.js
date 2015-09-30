@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -23,9 +23,7 @@
  * licensing@extjs.com
  * http://www.extjs.com/license
  */
-Ext.define('Ext.ux.Portal', {
-    extend : 'Ext.Panel',
-	alias : 'widget.portal',
+Ext.ux.Portal = Ext.extend(Ext.Panel, {
     layout : 'column',
     autoScroll : true,
     cls : 'x-portal',
@@ -56,10 +54,9 @@ Ext.define('Ext.ux.Portal', {
     }
 });
 
+Ext.reg('portal', Ext.ux.Portal);
 
-
-Ext.define('Ext.ux.Portal.DropZone', {
-    extend : 'Ext.dd.DropTarget',
+Ext.ux.Portal.DropZone = Ext.extend(Ext.dd.DropTarget, {
 
     constructor : function (portal, cfg) {
 	    this.portal = portal;

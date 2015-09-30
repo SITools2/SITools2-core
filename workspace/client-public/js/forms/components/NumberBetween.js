@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -43,8 +43,8 @@ Ext.ns('sitools.common.forms.components');
  * @class sitools.common.forms.components.NumericBetween
  * @extends sitools.common.forms.AbstractWithUnit
  */
-Ext.define('sitools.common.forms.components.NumericBetween', {
-    extend : 'sitools.common.forms.AbstractWithUnit',
+sitools.common.forms.components.NumericBetween = Ext.extend(sitools.common.forms.AbstractWithUnit, {
+//sitools.component.users.SubSelectionParameters.SingleSelection.NumericBetween = Ext.extend(sitools.common.forms.AbstractWithUnit, {
     /**
 	 * The left bound of the period.
 	 */

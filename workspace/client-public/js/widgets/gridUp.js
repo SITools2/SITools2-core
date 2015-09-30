@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -18,25 +18,22 @@
 ***************************************/
 Ext.namespace('sitools.widget');	
 
-Ext.define('sitools.widget.GridUp', {
-    extend: 'Ext.button.Button',
+sitools.widget.GridUp = Ext.extend(Ext.Button, {
     initComponent : function () {
         this.icon = loadUrl.get('APP_URL') + '/common/res/images/icons/simple-arrow-up.png';
         sitools.widget.GridUp.superclass.initComponent.call(this);
     },	 
 	handler: function (){
-          if (Ext.isEmpty(this.gridId)) {
-              var grid = this.down('grid');
-          } else {
-              var grid = Ext.getCmp(this.gridId);
-          }
-         
-        if (!grid) {
-            var grid = this;
-        } 
-          
-//        var grid = this;
-		var rec = grid.getSelectionModel().getLastSelected();
+        
+		 if (Ext.isEmpty(this.gridId)) {
+            var grid = this.findByType('grid')[0];
+        } else {
+            var grid = Ext.getCmp(this.gridId);
+        }
+		if (! grid) {
+			var grid = this;
+		} 
+		var rec = grid.getSelectionModel().getSelected();
         if (!rec){
             return;
         }
@@ -49,7 +46,7 @@ Ext.define('sitools.widget.GridUp', {
 		if( index > 0){
 			store.remove (rec);
 			store.insert (index-1, rec);
-			grid.getSelectionModel().select(index-1);
+			grid.getSelectionModel().selectRow(index-1);
 			
 		}
 		grid.getView().refresh();
@@ -58,26 +55,21 @@ Ext.define('sitools.widget.GridUp', {
 	
 });
 
-Ext.define('sitools.widget.GridDown', {
-    extend: 'Ext.button.Button',
+sitools.widget.GridDown = Ext.extend(Ext.Button, {
     initComponent : function () {
         this.icon = loadUrl.get('APP_URL') + '/common/res/images/icons/simple-arrow-down.png';
         sitools.widget.GridDown.superclass.initComponent.call(this);
     },  
 	handler: function (){
-	    if (Ext.isEmpty(this.gridId)) {
-            var grid = this.down('grid');
+		 if (Ext.isEmpty(this.gridId)) {
+            var grid = this.findByType('grid')[0];
         } else {
             var grid = Ext.getCmp(this.gridId);
         }
-		 
-		if (!grid) {
+		if (! grid) {
 			var grid = this;
 		} 
-		
-//		var grid = this;
-		
-		var rec = grid.getSelectionModel().getLastSelected();
+		var rec = grid.getSelectionModel().getSelected();
         if (!rec){
             return;
         }
@@ -90,7 +82,7 @@ Ext.define('sitools.widget.GridDown', {
 		if(index < store.getCount()-1){
 			store.remove (rec);
 			store.insert (index+1, rec);
-			grid.getSelectionModel().select(index+1);
+			grid.getSelectionModel().selectRow(index+1);
 			
 		}
 		grid.getView().refresh();
@@ -99,26 +91,22 @@ Ext.define('sitools.widget.GridDown', {
 	
 });
 
-Ext.define('sitools.widget.GridTop', {
-    extend: 'Ext.button.Button',
+sitools.widget.GridTop = Ext.extend(Ext.Button, {
     initComponent : function () {
         this.icon = loadUrl.get('APP_URL') + '/common/res/images/icons/double-arrow-up.png';
         sitools.widget.GridTop.superclass.initComponent.call(this);
     },
     handler: function (){
         if (Ext.isEmpty(this.gridId)) {
-            var grid = this.down('grid');
-          } else {
-              var grid = Ext.getCmp(this.gridId);
-          }
-         
-        if (!grid) {
+			var grid = this.findByType('grid')[0];
+		} else {
+			var grid = Ext.getCmp(this.gridId);
+		}
+        
+        if (! grid) {
             var grid = this;
         } 
-          
-//        var grid = this;
-        
-        var rec = grid.getSelectionModel().getLastSelected();
+        var rec = grid.getSelectionModel().getSelected();
         if (!rec){
             return;
         }
@@ -129,31 +117,28 @@ Ext.define('sitools.widget.GridTop', {
         
         store.remove (rec);
         store.insert (0, rec);
-        grid.getSelectionModel().select(0);
+        grid.getSelectionModel().selectRow(0);
 		grid.getView().refresh();
     }
+
+    
 });
 
-Ext.define('sitools.widget.GridBottom', {
-    extend: 'Ext.button.Button',
-    
+sitools.widget.GridBottom = Ext.extend(Ext.Button, {
     initComponent : function () {
         this.icon = loadUrl.get('APP_URL') + '/common/res/images/icons/double-arrow-down.png';
         sitools.widget.GridBottom.superclass.initComponent.call(this);
     },
     handler: function (){
-          if (Ext.isEmpty(this.gridId)) {
-              var grid = this.down('grid');
-          } else {
-              var grid = Ext.getCmp(this.gridId);
-          }
-         
-        if (!grid) {
+         if (Ext.isEmpty(this.gridId)) {
+            var grid = this.findByType('grid')[0];
+        } else {
+            var grid = Ext.getCmp(this.gridId);
+        }
+        if (! grid) {
             var grid = this;
         } 
-          
-//        var grid = this;
-        var rec = grid.getSelectionModel().getLastSelected();
+        var rec = grid.getSelectionModel().getSelected();
         if (!rec){
             return;
         }
@@ -165,7 +150,7 @@ Ext.define('sitools.widget.GridBottom', {
         
         store.remove (rec);
         store.insert (store.getCount(), rec);
-        grid.getSelectionModel().select(store.getCount() - 1);
+        grid.getSelectionModel().selectRow(store.getCount() - 1);
 		grid.getView().refresh();
             
     }

@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -33,8 +33,7 @@ Ext.ns('Ext.ux.grid');
  *
  * @ptype roweditor
  */
-Ext.define('Ext.ux.grid.RowEditor', {
-    extend : 'Ext.Panel',
+Ext.ux.grid.RowEditor = Ext.extend(Ext.Panel, {
     floating: true,
     shadow: false,
     layout: 'hbox',

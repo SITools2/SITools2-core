@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  * 
  * This file is part of SITools2.
  * 
@@ -24,9 +24,8 @@ Ext.namespace('sitools.widget.HtmlEditor');
  * @class sitools.widget.HtmlEditor.datasetLink
  * @extends Ext.util.Observable
  */
-Ext.define('sitools.widget.HtmlEditor.datasetLink', {
-    extend : 'Ext.util.Observable',
-	alias : 'widget.sitools.widget.HtmlEditor.datasetLink',
+sitools.widget.HtmlEditor.datasetLink = Ext.extend(Ext.util.Observable, {
+
 	init : function(cmp) {
 //        this.cmp = cmp;
 //        this.cmp.on('render', this.onRender, this);
@@ -97,7 +96,7 @@ Ext.define('sitools.widget.HtmlEditor.datasetLink', {
 						text = frm.findField('text').getValue(); 
 						browseField = frm.findField('datasetLink');
 						
-						var html = Ext.String.format(browseField.dataLinkComponent + "{0}</a>", text);
+						var html = String.format(browseField.dataLinkComponent + "{0}</a>", text);
 						this.cmp.insertAtCursor(html);
 						this.datasetLinkWindow.close();
 					} else {
@@ -145,3 +144,5 @@ Ext.define('sitools.widget.HtmlEditor.datasetLink', {
 	
 });
 
+Ext.reg('sitools.widget.HtmlEditor.datasetLink',
+		sitools.widget.HtmlEditor.datasetLink);

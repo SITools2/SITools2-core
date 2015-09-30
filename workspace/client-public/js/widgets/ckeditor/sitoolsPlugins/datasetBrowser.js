@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  * 
  * This file is part of SITools2.
  * 
@@ -176,9 +176,7 @@ sitools.widget.sitoolsEditorPlugins.datasetBrowser = function(config) {
 
 };
 
-Ext.define('sitools.widget.sitoolsEditorPlugins.datasetBrowser', {
-        extend : 'Ext.tree.TreePanel',
-		alias : 'sitools.widget.sitoolsEditorPlugins.datasetBrowser',
+Ext.extend(sitools.widget.sitoolsEditorPlugins.datasetBrowser, Ext.tree.TreePanel, {
 			_getSettings : function() {
 				return {
 					preferencesPath : "/modules",
@@ -204,12 +202,12 @@ Ext.define('sitools.widget.sitoolsEditorPlugins.datasetBrowser', {
 					    this.browseField.setValue('Data : ' + selNode.attributes.datasetName);
 					    this.textField.setValue(selNode.attributes.datasetName);
 					    
-						this.browseField.dataLinkComponent = Ext.String.format("parent.sitools.user.clickDatasetIcone(\"{0}\", 'data'); return false;", urlLink);
+						this.browseField.dataLinkComponent = String.format("parent.sitools.user.clickDatasetIcone(\"{0}\", 'data'); return false;", urlLink);
 					}
 					else if (selNode.attributes.type == "form"){
 					    this.browseField.setValue('Form : ' + selNode.attributes.datasetName);
 					    this.textField.setValue(selNode.attributes.datasetName);
-						this.browseField.dataLinkComponent = Ext.String.format('parent.SitoolsDesk.showFormFromEditor(\'{0}/forms\'); return false;', urlLink);
+						this.browseField.dataLinkComponent = String.format('parent.SitoolsDesk.showFormFromEditor(\'{0}/forms\'); return false;', urlLink);
 					}
 					this.ownerCt.close();
 				}
@@ -217,3 +215,4 @@ Ext.define('sitools.widget.sitoolsEditorPlugins.datasetBrowser', {
 
 		});
 
+Ext.reg('sitools.widget.sitoolsEditorPlugins.datasetBrowser', sitools.widget.sitoolsEditorPlugins.datasetBrowser);

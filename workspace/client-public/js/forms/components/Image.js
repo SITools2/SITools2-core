@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -24,13 +24,13 @@ Ext.ns('sitools.common.forms.components');
  * @class sitools.common.forms.components.Image
  * @extends Ext.Container
  */
-Ext.define('sitools.common.forms.components.Image', {
-    extend : 'Ext.Container',
+sitools.common.forms.components.Image = Ext.extend(Ext.Container, {
+//sitools.component.users.SubSelectionParameters.noSelection.Image = Ext.extend(Ext.Container, {
 
     initComponent : function () {
         Ext.apply(this, {
             overCls : 'fieldset-child',
-            html : "<img src='" + this.label + "' style ='height:" + this.height + "px; width:" + this.widthBox + "px;'>"
+            html : "<img src='" + this.label + "' height='" + this.height + "px' width='" + this.widthBox + "px'>"
         });
         sitools.common.forms.components.Image.superclass.initComponent.apply(this, arguments);
     },

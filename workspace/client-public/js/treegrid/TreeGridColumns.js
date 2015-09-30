@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -23,7 +23,7 @@
  * http://www.sencha.com/license
  */
 (function() {
-    Ext.override(Ext.grid.column.Column, {
+    Ext.override(Ext.list.Column, {
         init : function() {    
             var types = Ext.data.Types,
                 st = this.sortType;
@@ -45,35 +45,13 @@
         }
     });
 
-    // TO CHECK
-    
-    Ext.tree.Column = Ext.define('Ext.tree.Column', {
-        extend : 'Ext.grid.Column'
-    });
-    
-    Ext.tree.NumberColumn = Ext.define('Ext.tree.NumberColumn', {
-        extend : 'Ext.grid.column.Number'
-    });
-    
-    Ext.tree.DateColumn = Ext.define('Ext.tree.DateColumn', {
-        extend : 'Ext.grid.Column.Date'
-    });
-    
-    Ext.tree.BooleanColumn = Ext.define('Ext.tree.BooleanColumn', {
-        extend : 'Ext.grid.column.Boolean'
-    });
-    
-    Ext.define('tgcolumn',{
-        alias : 'Ext.grid.Column'
-    });
-    Ext.define('tgnumbercolumn',{
-        alias : 'Ext.grid.column.Number'
-    });
-    Ext.define('tgdatecolumn',{
-        alias : 'Ext.grid.Column.Date'
-    });
-    Ext.define('tgbooleancolumn',{
-        alias : 'Ext.grid.column.Boolean'
-    });
-    
+    Ext.tree.Column = Ext.extend(Ext.list.Column, {});
+    Ext.tree.NumberColumn = Ext.extend(Ext.list.NumberColumn, {});
+    Ext.tree.DateColumn = Ext.extend(Ext.list.DateColumn, {});
+    Ext.tree.BooleanColumn = Ext.extend(Ext.list.BooleanColumn, {});
+
+    Ext.reg('tgcolumn', Ext.tree.Column);
+    Ext.reg('tgnumbercolumn', Ext.tree.NumberColumn);
+    Ext.reg('tgdatecolumn', Ext.tree.DateColumn);
+    Ext.reg('tgbooleancolumn', Ext.tree.BooleanColumn);
 })();

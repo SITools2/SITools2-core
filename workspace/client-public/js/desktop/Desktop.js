@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -108,11 +108,7 @@ Ext.Desktop = function (app) {
                 win.fitContainer();
             }
             else {
-            	if (win.fitToDesktop) {
-                win.fitToDesktop();    
-            	} else {
-            		console.log("NOT A WINDOW: " + win);
-            	}
+                win.fitToDesktop();               
             }
         });
 		
@@ -286,17 +282,17 @@ Ext.Desktop = function (app) {
 		SitoolsDesk.app.getModulesInDiv().each(function (moduleInDiv) {
 			moduleInDiv.fireEvent("maximizeDesktop", moduleInDiv);
 		});
-
+		
 		//Agrandir la zone desktopAndTaskbar
 		this.getDesktopAndTaskBarEl().setHeight(Ext.getBody().getHeight() - SitoolsDesk.getEnteteEl().getHeight());
 		this.getDesktopAndTaskBarEl().setWidth(Ext.getBody().getWidth());
 		this.getDesktopEl().setHeight(Ext.getBody().getHeight() - SitoolsDesk.getEnteteEl().getHeight() - taskbarEl.getHeight());
 		this.getDesktopEl().setWidth(Ext.getBody().getWidth());
-
+		
 		if (SitoolsDesk.getDesktop().activePanel) {
 			SitoolsDesk.getDesktop().activePanel.fireEvent("resizeDesktop", SitoolsDesk.getDesktop().activePanel);
 		}
-
+		
 		this.getManager().each(function (win) {
 			if (win.maximized) {
 				win.fitContainer();
@@ -304,35 +300,35 @@ Ext.Desktop = function (app) {
 		});
 
 		SitoolsDesk.getDesktop().taskbar.tbPanel.ownerCt.doLayout()
-
+		
 	}
-
+	
 	this.minimize = function () {
 		SitoolsDesk.getEnteteComp().fireEvent("minimizeDesktop");
 		SitoolsDesk.getBottomComp().fireEvent("minimizeDesktop");
-
+		
 		Ext.DomQuery.select("div[stype=freeDiv]").each(function (freeDiv) {
 			freeDiv.style.height = "";
 			freeDiv.style.width = "";
 		});
-
+		
 		//Revenir à la taille initiale de la zone desktopAndTaskbar
 		this.getDesktopAndTaskBarEl().dom.style.height="";
 		this.getDesktopAndTaskBarEl().dom.style.width="";
-
+		
 		this.getDesktopEl().setWidth("");
-
+		
 		layout();
 		if (SitoolsDesk.getDesktop().activePanel) {
 			SitoolsDesk.getDesktop().activePanel.fireEvent("resizeDesktop", SitoolsDesk.getDesktop().activePanel);
 		}
-
+		
 		SitoolsDesk.getDesktop().taskbar.tbPanel.ownerCt.doLayout()
-
+		
 		SitoolsDesk.app.getModulesInDiv().each(function (moduleInDiv) {
 			moduleInDiv.fireEvent("minimizeDesktop", moduleInDiv);
 		});
-
+		
 	}
 	/**
 	 * called when contextMenu cascade option is pressed.

@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -70,9 +70,7 @@ sb.clearStatus(); // once completeed
  * Creates a new StatusBar
  * @param {Object/Array} config A config object
  */
-Ext.define('Ext.ux.StatusBar', {
-    extend : 'Ext.Toolbar',
-	alias : 'widget.statusbar',
+Ext.ux.StatusBar = Ext.extend(Ext.Toolbar, {
     /**
      * @cfg {String} statusAlign
      * The alignment of the status element within the overall StatusBar layout.  When the StatusBar is rendered,
@@ -401,7 +399,7 @@ statusBar.setStatus({
 
         if(this.rendered){
 	        if(this.currIconCls){
-	            this.statusEl.removeCls(this.currIconCls);
+	            this.statusEl.removeClass(this.currIconCls);
 	            this.currIconCls = null;
 	        }
 	        if(cls.length > 0){
@@ -435,4 +433,4 @@ statusBar.setStatus({
         return this.setStatus(o);
     }
 });
-
+Ext.reg('statusbar', Ext.ux.StatusBar);

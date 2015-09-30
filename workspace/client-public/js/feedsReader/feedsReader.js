@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -107,9 +107,7 @@ sitools.widget.FeedGridFlux = function (config) {
     sitools.widget.FeedGridFlux.superclass.constructor.call(this);
 };
 
-Ext.define('sitools.widget.FeedGridFlux', {
-    extend : 'Ext.Panel',
-	alias : 'widget.appfeedgridflux',
+Ext.extend(sitools.widget.FeedGridFlux, Ext.Panel, {
     componentType : "feeds",
     _getSettings : function () {
         return {
@@ -124,3 +122,4 @@ Ext.define('sitools.widget.FeedGridFlux', {
 
 });
 
+Ext.reg('appfeedgridflux', sitools.widget.FeedGridFlux);

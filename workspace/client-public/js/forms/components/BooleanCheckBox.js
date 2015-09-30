@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -27,8 +27,8 @@ Ext.ns('sitools.common.forms.components');
  * @class sitools.common.forms.components.BooleanCheckbox
  * @extends Ext.Container
  */
-Ext.define('sitools.common.forms.components.BooleanCheckbox', {
-    extend : 'Ext.Container',
+sitools.common.forms.components.BooleanCheckbox = Ext.extend(Ext.Container, {
+//sitools.component.users.SubSelectionParameters.SingleSelection.BooleanCheckbox = Ext.extend(Ext.Container, {
 
     initComponent : function () {
 	    this.context = new sitools.common.forms.ComponentFactory(this.context);

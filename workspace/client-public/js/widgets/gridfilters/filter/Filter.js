@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -29,8 +29,7 @@ Ext.namespace('Ext.ux.grid.filter');
  * @extends Ext.util.Observable
  * Abstract base class for filter implementations.
  */
-Ext.define('Ext.ux.grid.filter.Filter', {
-    extend : 'Ext.util.Observable',
+Ext.ux.grid.filter.Filter = Ext.extend(Ext.util.Observable, {
     /**
      * @cfg {Boolean} active
      * Indicates the initial status of the filter (defaults to false).

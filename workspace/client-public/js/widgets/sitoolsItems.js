@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -24,22 +24,20 @@ Ext.namespace('sitools.widget');
  * @class sitools.widget.Box
  * @extends Ext.Panel
  */
-Ext.define('sitools.widget.Box', {
-    extend : 'Ext.panel.Panel',
-	alias : 'widget.s-box',
+sitools.widget.Box = Ext.extend(Ext.Panel, {
     width : '98%',
     frame : true,
     baseCls : 'x-box',
     cls : 'x-box-blue module-root centering',
     _title : '',
 
-//    constructor : function (cfg) {
-//
-//	    sitools.widget.Box.superclass.constructor.call(this, Ext.apply({
-//	        _title : cfg.label,
-//	        _idItem : cfg.idItem
-//	    }, cfg));
-//    },
+    constructor : function (cfg) {
+
+	    sitools.widget.Box.superclass.constructor.call(this, Ext.apply({
+	        _title : cfg.label,
+	        _idItem : cfg.idItem
+	    }, cfg));
+    },
 
     initComponent : function () {
 	    this.items.unshift({
@@ -51,15 +49,15 @@ Ext.define('sitools.widget.Box', {
     } 
     
 });
-
+// register type
+Ext.reg('s-box', sitools.widget.Box);
 
 /**
  * A simple json store with new methods
  * @class sitools.widget.JsonStore
  * @extends Ext.data.JsonStore
  */
-Ext.define('sitools.widget.JsonStore', { 
-    extend : 'Ext.data.JsonStore',
+sitools.widget.JsonStore = Ext.extend(Ext.data.JsonStore, {
     /**
      * dirty : true if one record have been added
      * @type Boolean
@@ -103,9 +101,8 @@ Ext.define('sitools.widget.JsonStore', {
  * @class sitools.widget.menuButton
  * @extends Ext.Button
  */
-Ext.define('sitools.widget.menuButton', {
-    extend : 'Ext.Button',
-    alias : 'widget.s-menuButton',
+sitools.widget.menuButton = Ext.extend(Ext.Button, {
+
 	constructor : function (config) {
 
 		config = Ext.apply({
@@ -115,7 +112,7 @@ Ext.define('sitools.widget.menuButton', {
 		sitools.widget.menuButton.superclass.constructor.call(this, config);
 	}
 });
-
+Ext.reg('s-menuButton', sitools.widget.menuButton);
 
 /**
  * @class TemplateTreeNode
@@ -140,13 +137,11 @@ sitools.widget.templateTreeNode = function (attributes) {
 
 };
 
-// DOES NOT EXIST ANYMORE !!!
-//Ext.extend(sitools.widget.templateTreeNode, Ext.tree.AsyncTreeNode, {
-//
-//});
+Ext.extend(sitools.widget.templateTreeNode, Ext.tree.AsyncTreeNode, {
+
+});
 // add this new node to the list of nodes
-// TODO Ext.tree.Panel.nodeTypes.templateTreeNode = sitools.widget.templateTreeNode;
-//Ext.tree.Panel.nodeTypes.templateTreeNode = sitools.widget.templateTreeNode;
+Ext.tree.TreePanel.nodeTypes.templateTreeNode = sitools.widget.templateTreeNode;
 
 /**
  * A toolbar with buttons to move rows up or down
@@ -157,28 +152,21 @@ sitools.widget.templateTreeNode = function (attributes) {
  * @class sitools.widget.GridSorterToolbar
  * @extends Ext.Toolbar
  */
-Ext.define('sitools.widget.GridSorterToolbar', {
-    extend : 'Ext.toolbar.Toolbar',
-	alias : 'widget.sitools.widget.GridSorterToolbar',
-	alignRight : true, //default to true
+sitools.widget.GridSorterToolbar = Ext.extend(Ext.Toolbar, {
     initComponent : function () {
-        
         sitools.widget.GridSorterToolbar.superclass.initComponent.call(this);
-        
-        if (this.alignRight) {
-            this.add('->');
-        }
-        this.add(Ext.create('sitools.widget.GridTop', {
-				gridId : this.gridId
-			}), Ext.create('sitools.widget.GridUp', {
-				gridId : this.gridId
-			}), Ext.create('sitools.widget.GridDown', {
-				gridId : this.gridId
-			}), Ext.create('sitools.widget.GridBottom', {
-				gridId : this.gridId
-			}));
+        this.add('->', new sitools.widget.GridTop({
+							gridId : this.gridId
+						}), new sitools.widget.GridUp({
+							gridId : this.gridId
+						}), new sitools.widget.GridDown({
+							gridId : this.gridId
+						}), new sitools.widget.GridBottom({
+							gridId : this.gridId
+						}));
     }
 });
+Ext.reg('sitools.widget.GridSorterToolbar', sitools.widget.GridSorterToolbar);
 
 /**
  * A RowExpander used for plugin grids to add violation informations 
@@ -187,10 +175,9 @@ Ext.define('sitools.widget.GridSorterToolbar', {
  * @class sitools.admin.resourcesPlugins.violationRowExpander
  * @extends Ext.ux.grid.RowExpander
  */
-Ext.define('sitools.widget.ViolationRowExpander', {
-       extend : 'Ext.ux.grid.RowExpander',
-	   alias : 'sitools.widget.ViolationRowExpander',
-       getRowClass : function (record, index, rowParams, store) {
+sitools.widget.ViolationRowExpander = Ext.extend(
+   Ext.ux.grid.RowExpander, {
+        getRowClass : function (record, index, rowParams, store) {
             //call the method from the superclass
             var cls = sitools.widget.ViolationRowExpander.superclass.getRowClass.call(this,
                     record, index, rowParams, store);
@@ -207,6 +194,7 @@ Ext.define('sitools.widget.ViolationRowExpander', {
         }
 });
 
+Ext.reg('sitools.widget.ViolationRowExpander', sitools.widget.ViolationRowExpander);
 
 /**
  * Color picker on a triggerField * 
@@ -214,47 +202,46 @@ Ext.define('sitools.widget.ViolationRowExpander', {
  * @class sitools.widget.colorField
  * @extends Ext.form.TriggerField
  */
-Ext.define('sitools.widget.colorField', {
-    extend : 'Ext.form.TriggerField',
-	onTriggerClick : function (e) {
-		var cp = new Ext.menu.ColorMenu({
-	        scope : this, 
-	        handler: function (cm, color) {
-	            this.setValue("#" + color);
-	            this.setFontColor("#" + color);
-                this.fireEvent("select", this, color);
-	        }
-	    });
-	    cp.showAt(e.getXY());
+sitools.widget.colorField = Ext.extend(
+	Ext.form.TriggerField, {
+		onTriggerClick : function (e) {
+			var cp = new Ext.menu.ColorMenu({
+		        scope : this, 
+		        handler: function (cm, color) {
+		            this.setValue("#" + color);
+		            this.setFontColor("#" + color);
+                    this.fireEvent("select", this, color);
+		        }
+		    });
+		    cp.showAt(e.getXY());
 
-	},
-	setFontColor : function (color) {
-        var h2d = function (d) {
-			return parseInt(d, 16);
-		};
-		var value = [
-            h2d(color.slice(1, 3)),
-            h2d(color.slice(3, 5)),
-            h2d(color.slice(5))
-        ];
-        var avg = (value[0] + value[1] + value[2]) / 3;
-	    this.el.setStyle({
-			'color' : (avg > 128) ? '#000' : '#FFF', 
-			'background-color' : color, 
-			'background-image' : "none"
-	    });
-        
-	}, 
-	listeners : {
-		afterrender : function (tf) {
-			tf.setFontColor(tf.getValue());
+		},
+		setFontColor : function (color) {
+	        var h2d = function (d) {
+				return parseInt(d, 16);
+			};
+			var value = [
+                h2d(color.slice(1, 3)),
+                h2d(color.slice(3, 5)),
+                h2d(color.slice(5))
+            ];
+	        var avg = (value[0] + value[1] + value[2]) / 3;
+		    this.el.setStyle({
+				'color' : (avg > 128) ? '#000' : '#FFF', 
+				'background-color' : color, 
+				'background-image' : "none"
+		    });
+            
+		}, 
+		listeners : {
+			afterrender : function (tf) {
+				tf.setFontColor(tf.getValue());
+			}
 		}
 	}
-});
+)
 
-Ext.define('sitools.widget.DateFieldWithToday', {
-    extend : 'Ext.form.field.Date',
-    
+sitools.widget.DateFieldWithToday = Ext.extend(Ext.form.DateField, {
 	regToday : new RegExp("^\{\\$TODAY\}"), 
     invalidTextWithToday : "Impossible to make a date with {0}. A valid example is {$TODAY} + 1", 
     parseDate : function (value) {
@@ -281,7 +268,7 @@ Ext.define('sitools.widget.DateFieldWithToday', {
     getErrors : function (value) {
         var errors = Ext.form.DateField.superclass.getErrors.apply(this, arguments);
 
-        value = this.formatDate(value || this.processRawValue(this.getRawValue()));
+        value = this.formatDate(value || this.processValue(this.getRawValue()));
 
         if (value.length < 1) { // if it's blank and textfield didn't flag it then it's valid
              return errors;
@@ -298,7 +285,7 @@ Ext.define('sitools.widget.DateFieldWithToday', {
 				}
 			}
         	catch (err) {
-        		errors.push(Ext.String.format(this.invalidTextWithToday, svalue));
+        		errors.push(String.format(this.invalidTextWithToday, svalue));
         		return errors;	
         	}
         	
@@ -308,18 +295,18 @@ Ext.define('sitools.widget.DateFieldWithToday', {
         }
         
         if (!value) {
-            errors.push(Ext.String.format(this.invalidText, svalue, this.format));
+            errors.push(String.format(this.invalidText, svalue, this.format));
             return errors;
         }
 
         time = value.getTime();
         
         if (this.minValue && time < this.minValue.clearTime().getTime()) {
-            errors.push(Ext.String.format(this.minText, this.formatDate(this.minValue)));
+            errors.push(String.format(this.minText, this.formatDate(this.minValue)));
         }
 
         if (this.maxValue && time > this.maxValue.clearTime().getTime()) {
-            errors.push(Ext.String.format(this.maxText, this.formatDate(this.maxValue)));
+            errors.push(String.format(this.maxText, this.formatDate(this.maxValue)));
         }
 
         if (this.disabledDays) {
@@ -335,7 +322,7 @@ Ext.define('sitools.widget.DateFieldWithToday', {
 
         var fvalue = this.formatDate(value);
         if (this.disabledDatesRE && this.disabledDatesRE.test(fvalue)) {
-            errors.push(Ext.String.format(this.disabledDatesText, fvalue));
+            errors.push(String.format(this.disabledDatesText, fvalue));
         }
 
         return errors;
@@ -353,40 +340,40 @@ Ext.define('sitools.widget.DateFieldWithToday', {
     }
 });
 
-//sitools.widget.rootTreeLoader = Ext.extend(Ext.tree.TreeLoader, {
-//	createNode : function (attr) {
-//		if (Ext.isEmpty(attr.children)) {
-//			attr.leaf = true;
-//		}
-//		return Ext.tree.TreeLoader.prototype.createNode.call(this, attr);
-//	}, 
-//	processResponse : function (response, node, callback, scope) {
-//	    var json = response.responseText, children, newNode, i = 0, len;
-//	    try {
-//	
-//	        if (!(children = response.responseData)) {
-//	            children = Ext.decode(json);
-//	            if (this.root) {
-//	                if (!this.getRoot) {
-//	                    this.getRoot = Ext.data.JsonReader.prototype.createAccessor(this.root);
-//	                }
-//	                children = this.getRoot(children);
-//	            }
-//	        }
-//	        node.beginUpdate();
-//	        for (len = children.length; i < len; i++) {
-//	            newNode = this.createNode(children[i]);
-//	            if (newNode) {
-//	                node.appendChild(newNode);
-//	            }
-//	        }
-//	        node.endUpdate();
-//	        this.runCallback(callback, scope || node, [ node ]);
-//	    } catch (e) {
-//	        this.handleFailure(response);
-//	    }
-//	}, 
-//	setUrl : function (url) {
-//		this.url = url;
-//	}
-//});
+sitools.widget.rootTreeLoader = Ext.extend(Ext.tree.TreeLoader, {
+	createNode : function (attr) {
+		if (Ext.isEmpty(attr.children)) {
+			attr.leaf = true;
+		}
+		return Ext.tree.TreeLoader.prototype.createNode.call(this, attr);
+	}, 
+	processResponse : function (response, node, callback, scope) {
+	    var json = response.responseText, children, newNode, i = 0, len;
+	    try {
+	
+	        if (!(children = response.responseData)) {
+	            children = Ext.decode(json);
+	            if (this.root) {
+	                if (!this.getRoot) {
+	                    this.getRoot = Ext.data.JsonReader.prototype.createAccessor(this.root);
+	                }
+	                children = this.getRoot(children);
+	            }
+	        }
+	        node.beginUpdate();
+	        for (len = children.length; i < len; i++) {
+	            newNode = this.createNode(children[i]);
+	            if (newNode) {
+	                node.appendChild(newNode);
+	            }
+	        }
+	        node.endUpdate();
+	        this.runCallback(callback, scope || node, [ node ]);
+	    } catch (e) {
+	        this.handleFailure(response);
+	    }
+	}, 
+	setUrl : function (url) {
+		this.url = url;
+	}
+});

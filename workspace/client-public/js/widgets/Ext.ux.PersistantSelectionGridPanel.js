@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  * 
  * This file is part of SITools2.
  * 
@@ -18,9 +18,7 @@
 
 /*global Ext, sitools, i18n, projectGlobal, alertFailure, showResponse, loadUrl, userLogin*/
 
-Ext.define('Ext.ux.PersistantSelectionGridPanel', {
-    extend : 'Ext.grid.GridPanel',
-	alias : 'widget.Ext.ux.PersistantSelectionGridPanel',
+Ext.ux.PersistantSelectionGridPanel = Ext.extend(Ext.grid.GridPanel, {
     selectedRecords: [],
     initComponent : function () {
         
@@ -56,3 +54,4 @@ Ext.define('Ext.ux.PersistantSelectionGridPanel', {
     }
 });
 
+Ext.reg('Ext.ux.PersistantSelectionGridPanel',Ext.ux.PersistantSelectionGridPanel);

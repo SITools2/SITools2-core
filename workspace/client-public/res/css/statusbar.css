@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -67,11 +67,11 @@
 .x-statusbar .x-status-error {
     cursor: pointer;
     padding-left: 25px !important;
-    background: transparent no-repeat 3px 0px;
+    background: transparent no-repeat 3px 2px;
 }
 .x-statusbar .x-status-valid {
     padding-left: 25px !important;
-    background: transparent no-repeat 3px 0px;
+    background: transparent no-repeat 3px 2px;
 }
 .x-status-error-list {
     font: 11px tahoma,arial,verdana,sans-serif;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  * 
  * This file is part of SITools2.
  * 
@@ -67,6 +67,7 @@ sitools.userProfile.LoginUtils = {
                 // if the parameters are not available perform classic login
                 sitools.userProfile.LoginUtils.sitoolsLogin(config);
             }
+
         });
     },
 
@@ -167,13 +168,14 @@ sitools.userProfile.LoginUtils = {
     },
 
     sitoolsLogin : function (config) {
-        var loginWindow = Ext.create('sitools.userProfile.Login', config);
-        loginWindow.show();
+        new sitools.userProfile.Login(config).show();
     },
 
     delegateLoginLogout : function (urlTemplate) {
         var url = urlTemplate.replace("{goto}", document.URL);
         window.open(url, "_self");
-    }
+    },
+    
+    
 
 };

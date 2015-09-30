@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -24,8 +24,7 @@
 
 Ext.ns("sitools.widget");
 
-Ext.define('sitools.widget.FiltersCollection', {
-    extend : 'Ext.util.MixedCollection',
+sitools.widget.FiltersCollection = Ext.extend(Ext.util.MixedCollection, {
     
     constructor : function (config) {
         sitools.widget.FiltersCollection.superclass.constructor.call(this);

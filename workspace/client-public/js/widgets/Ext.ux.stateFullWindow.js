@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -18,9 +18,7 @@
 ***************************************/
 /*global Ext, sitools, i18n,document,projectGlobal,userStorage*/
 Ext.ns('Ext.ux');
-Ext.define('Ext.ux.stateFullWindow', {
-    extend : 'Ext.Window',
-	alias : 'widget.statewindow',
+Ext.ux.stateFullWindow = Ext.extend(Ext.Window, {
     saveSettings : function (componentSettings, forPublicUser) {
 	    if (Ext.isEmpty(userLogin)) {
 		    Ext.Msg.alert(i18n.get('label.warning', 'label.needLogin'));
@@ -91,3 +89,4 @@ Ext.define('Ext.ux.stateFullWindow', {
     }
     
 });
+Ext.reg('statewindow', Ext.ux.stateFullWindow);

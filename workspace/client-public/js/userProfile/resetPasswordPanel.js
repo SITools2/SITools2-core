@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  * 
  * This file is part of SITools2.
  * 
@@ -20,8 +20,7 @@ Ext.namespace('sitools.userProfile');
 /*
  * config { url + handler }
  */
-Ext.define('sitools.userProfile.resetPasswordPanel', {
-    extend : 'Ext.Panel',
+sitools.userProfile.resetPasswordPanel = Ext.extend(Ext.Panel, {
 	padding : "10px 10px 0px 60px",
 	frame : true,
 	layout : "fit", 

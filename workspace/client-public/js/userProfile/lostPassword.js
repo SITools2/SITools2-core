@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  * 
  * This file is part of SITools2.
  * 
@@ -25,8 +25,7 @@ Ext.namespace('sitools.userProfile');
  * @class sitools.userProfile.lostPassword
  * @extends Ext.Window
  */
-Ext.define('sitools.userProfile.lostPassword', {
-    extend : 'Ext.Window',
+sitools.userProfile.lostPassword = Ext.extend(Ext.Window, {
     id : 'winPassword',
     layout : 'hbox',
     width : 420,

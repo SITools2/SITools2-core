@@ -137,7 +137,7 @@ CKEDITOR.dialog.add( 'documentDialog', function ( editor ) {
                         
                         if (this.getValue() == false) {
                             var documentText = this.getDialog().getContentElement('mainFrameDocument','textDocUrlID');
-                            data.documentComponent.link = Ext.String.format("parent.sitools.user.component.dataviews.dataviewUtils.downloadFile(\"{0}\"); return false;",
+                            data.documentComponent.link = String.format("parent.sitools.user.component.dataviews.dataviewUtils.downloadFile(\"{0}\"); return false;",
                                     documentText.documentUrl);
                         }
                         

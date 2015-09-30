@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -24,8 +24,8 @@ Ext.ns('sitools.common.forms.components');
  * @class sitools.common.forms.components.Hl
  * @extends Ext.Container
  */
-Ext.define('sitools.common.forms.components.Hl', {
-    extend : 'Ext.Container',
+sitools.common.forms.components.Hl = Ext.extend(Ext.Container, {
+//sitools.component.users.SubSelectionParameters.noSelection.Hl = Ext.extend(Ext.Container, {
 
     initComponent : function () {
 	    Ext.apply(this, {

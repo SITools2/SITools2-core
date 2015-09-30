@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -23,10 +23,10 @@ Ext.namespace('sitools.widget');
  * @param urlFeed :
  *            The feed URL
  */
-Ext.define('sitools.widget.feedItemDetails', {
-    extend : 'Ext.Panel',
+sitools.widget.feedItemDetails = Ext.extend(Ext.Panel, {
 
     initComponent : function () {
+
         this.layout = "fit";
 
         var record = this.record;

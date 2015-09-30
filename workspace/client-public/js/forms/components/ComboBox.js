@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -27,8 +27,9 @@ Ext.ns('sitools.common.forms.components');
  * @class sitools.common.forms.components.ComboBox
  * @extends Ext.Container
  */
-Ext.define('sitools.common.forms.components.ComboBox', {
-    extend : 'Ext.Container',
+sitools.common.forms.components.ComboBox = Ext.extend(Ext.Container, {
+//sitools.component.users.SubSelectionParameters.SingleSelection.ComboBox = Ext.extend(Ext.Container, {
+
     initComponent : function () {
 		this.context = new sitools.common.forms.ComponentFactory(this.context);
         var defaultValue = "", value, items=[];
@@ -90,7 +91,7 @@ Ext.define('sitools.common.forms.components.ComboBox', {
 	        valueField : 'id',
 	        displayField : 'value',
 	        typeAhead : true,
-	        queryMode : 'local',
+	        mode : 'local',
 	        triggerAction : 'all',
 	        selectOnFocus : true,
 	        allowBlank : true,
@@ -99,6 +100,7 @@ Ext.define('sitools.common.forms.components.ComboBox', {
 	        flex : 1, 
 	        height : this.height,
 	        value : defaultValue,
+            tpl : '<tpl for="."><div class="x-combo-list-item comboItem">{value}</div></tpl>', 
 			stype : "sitoolsFormItem", 
 	        /**
 			 * The Parent Window.

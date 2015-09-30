@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -30,8 +30,7 @@
  */
 Ext.ns('Ext.ux.grid');
 
-Ext.define('Ext.ux.grid.LockingGridView', {
-    extend : 'Ext.grid.GridView',
+Ext.ux.grid.LockingGridView = Ext.extend(Ext.grid.GridView, {
     lockText : 'Lock',
     unlockText : 'Unlock',
     rowBorderWidth : 1,
@@ -661,10 +660,10 @@ Ext.define('Ext.ux.grid.LockingGridView', {
             last = colCount - 1, 
             cls = ['x-grid3-row'], 
             rowParams = {
-                tstyle: Ext.String.format("width: {0};", this.getTotalWidth())
+                tstyle: String.format("width: {0};", this.getTotalWidth())
             }, 
             lockedRowParams = {
-                tstyle: Ext.String.format("width: {0};", this.getLockedWidth())
+                tstyle: String.format("width: {0};", this.getLockedWidth())
             }, 
             colBuffer = [], 
             lockedColBuffer = [], 
@@ -874,8 +873,7 @@ Ext.define('Ext.ux.grid.LockingGridView', {
     }
 });
 
-Ext.define('Ext.ux.grid.LockingColumnModel', {
-    extend : 'Ext.grid.ColumnModel',
+Ext.ux.grid.LockingColumnModel = Ext.extend(Ext.grid.ColumnModel, {
 	isHelp : function (colIndex) {
 		return Ext.isEmpty (this.config[colIndex].helpUrl);
 	}, 

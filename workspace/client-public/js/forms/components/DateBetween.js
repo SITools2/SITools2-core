@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -27,11 +27,11 @@ Ext.ns('sitools.common.forms.components');
  * @class sitools.common.forms.components.DateBetween
  * @extends Ext.Container
  */
-Ext.define('sitools.common.forms.components.DateBetween', {
-    extend : 'Ext.Container',
+sitools.common.forms.components.DateBetween = Ext.extend(Ext.Container, {
+//sitools.component.users.SubSelectionParameters.SingleSelection.DateBetween = Ext.extend(Ext.Container, {
     regToday : new RegExp("^\{\\$TODAY\}"), 
     initComponent : function () {
-        this.context = Ext.create("sitools.common.forms.ComponentFactory", this.context);
+        this.context = new sitools.common.forms.ComponentFactory(this.context);
         //formattage de extraParams : 
         var extraParams = {};
         Ext.each(this.extraParams, function (param) {
@@ -54,7 +54,7 @@ Ext.define('sitools.common.forms.components.DateBetween', {
         var valueFrom = this.getDefaultValue(this.defaultValues[0]) ;
 		var valueTo = this.getDefaultValue(this.defaultValues[1]) ;
 		
-        this.fieldFrom = Ext.create("Ext.form.DateField", {
+        this.fieldFrom = new Ext.form.DateField({
             allowBlank : true,
             format : dateFormat, 
             flex : 1,
@@ -69,7 +69,7 @@ Ext.define('sitools.common.forms.components.DateBetween', {
                 }
             }
         });
-        this.fieldTo = Ext.create("Ext.form.DateField", {
+        this.fieldTo = new Ext.form.DateField({
             allowBlank : true,
             format : dateFormat, 
             flex : 1,
@@ -93,19 +93,19 @@ Ext.define('sitools.common.forms.components.DateBetween', {
 	    		case 0 : 
 	    			break;
 	    		case 1 : 
-	    			this.items.insert(0, Ext.create("Ext.Container", {
+	    			this.items.insert(0, new Ext.Container({
 			            border : false,
 			            html : labels[0],
 			            width : 100
 			        }));
 			        break;
 			    case 2 : 
-		        	this.items.insert(0, Ext.create("Ext.Container", {
+		        	this.items.insert(0, new Ext.Container({
 			            border : false,
 			            html : labels[0],
 			            width : 50
 			        }));
-		        	this.items.insert(2, Ext.create("Ext.Container", {
+		        	this.items.insert(2, new Ext.Container({
 			            border : false,
 			            html : labels[1],
 			            width : 50, 
@@ -115,12 +115,12 @@ Ext.define('sitools.common.forms.components.DateBetween', {
 			        }));
 			        break;
 			    case 3 : 
-		        	this.items.insert(0, Ext.create("Ext.Container", {
+		        	this.items.insert(0, new Ext.Container({
 			            border : false,
 			            html : labels[0],
 			            width : 50
 			        }));
-		        	this.items.insert(1, Ext.create("Ext.Container", {
+		        	this.items.insert(1, new Ext.Container({
 			            border : false,
 			            html : labels[1],
 			            width : 50, 
@@ -128,7 +128,7 @@ Ext.define('sitools.common.forms.components.DateBetween', {
 			            	"padding-left" : "10px"
 			            }
 			        }));
-			        this.items.insert(3, Ext.create("Ext.Container", {
+			        this.items.insert(3, new Ext.Container({
 			            border : false,
 			            html : labels[2],
 			            width : 50, 
@@ -202,8 +202,8 @@ Ext.define('sitools.common.forms.components.DateBetween', {
 			return null;
 		}
 		else {
-			if (Ext.isDate(Ext.Date.parse(val, SITOOLS_DATE_FORMAT))) {
-				result = Ext.Date.parse(val, SITOOLS_DATE_FORMAT);
+			if (Ext.isDate(Date.parseDate(val, SITOOLS_DATE_FORMAT))) {
+				result = Date.parseDate(val, SITOOLS_DATE_FORMAT);
 			}
 			else {
 				if (this.regToday.test(val)) {
@@ -219,7 +219,7 @@ Ext.define('sitools.common.forms.components.DateBetween', {
 		}
 		
 		if (this.truncateDefaultValue) {
-			return Ext.Date.clearTime(result);
+			return result.clearTime();
 		}
 		else {
 			return result;

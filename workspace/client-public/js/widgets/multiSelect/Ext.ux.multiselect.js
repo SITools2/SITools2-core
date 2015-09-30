@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -38,9 +38,7 @@ Ext.ns('Ext.ux.form');
  * @param {Object} config Configuration options
  * @xtype multiselect
  */
-Ext.define('Ext.ux.form.MultiSelect', {
-    extend: 'Ext.form.field.Base',
-	alias : 'widget.multiselect',
+Ext.ux.form.MultiSelect = Ext.extend(Ext.form.Field,  {
     /**
      * @cfg {String} legend Wraps the object with a fieldset and specified legend.
      */
@@ -182,11 +180,9 @@ Ext.define('Ext.ux.form.MultiSelect', {
         });
         fs.body.addClass('ux-mselect');
 
-        this.view = Ext.create('Ext.grid.Panel', {
+        this.view = new Ext.ListView({
+            multiSelect: true,
             store: this.store,
-            selModel : {
-              mode : "MULTI"  
-            },
             columns: [{ header: 'Value', width: 1, dataIndex: this.displayField }],
             hideHeaders: true
         });
@@ -274,7 +270,7 @@ Ext.define('Ext.ux.form.MultiSelect', {
     setValue: function(values) {
         var index;
         var selections = [];
-        this.view.getSelectionModel().deselectAll();
+        this.view.clearSelections();
         this.hiddenField.dom.value = '';
 
         if (!values || (values == '')) { return; }
@@ -324,11 +320,11 @@ Ext.define('Ext.ux.form.MultiSelect', {
              }
         }
         if (value.length < this.minSelections) {
-            this.markInvalid(Ext.String.format(this.minSelectionsText, this.minSelections));
+            this.markInvalid(String.format(this.minSelectionsText, this.minSelections));
             return false;
         }
         if (value.length > this.maxSelections) {
-            this.markInvalid(Ext.String.format(this.maxSelectionsText, this.maxSelections));
+            this.markInvalid(String.format(this.maxSelectionsText, this.maxSelections));
             return false;
         }
         return true;
@@ -359,10 +355,14 @@ Ext.define('Ext.ux.form.MultiSelect', {
     }
 });
 
+
+Ext.reg('multiselect', Ext.ux.form.MultiSelect);
+
 //backwards compat
 Ext.ux.Multiselect = Ext.ux.form.MultiSelect;
 
-Ext.ux.form.MultiSelect.DragZone = function(ms, config) {
+
+Ext.ux.form.MultiSelect.DragZone = function(ms, config){
     this.ms = ms;
     this.view = ms.view;
     var ddGroup = config.ddGroup || 'MultiselectDD';
@@ -377,8 +377,7 @@ Ext.ux.form.MultiSelect.DragZone = function(ms, config) {
     this.setDraggable(ddGroup);
 };
 
-Ext.define('Ext.ux.form.MultiSelect.DragZone', {
-    extend : 'Ext.dd.DragZone',
+Ext.extend(Ext.ux.form.MultiSelect.DragZone, Ext.dd.DragZone, {
     onInitDrag : function(x, y){
         var el = Ext.get(this.dragData.ddel.cloneNode(true));
         this.proxy.update(el.dom);
@@ -473,8 +472,7 @@ Ext.ux.form.MultiSelect.DropZone = function(ms, config){
     this.setDroppable(ddGroup);
 };
 
-Ext.define('Ext.ux.form.MultiSelect.DropZone', {
-    extend : 'Ext.dd.DropZone',
+Ext.extend(Ext.ux.form.MultiSelect.DropZone, Ext.dd.DropZone, {
     /**
      * Part of the Ext.dd.DropZone interface. If no target node is found, the
      * whole Element becomes the target, and this causes the drop gesture to append.

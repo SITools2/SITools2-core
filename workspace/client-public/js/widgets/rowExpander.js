@@ -15,9 +15,7 @@ Ext.ns('Ext.ux.grid');
  *
  * @ptype rowexpander
  */
-Ext.define('Ext.ux.grid.RowExpander', {
-    extend : 'Ext.util.Observable',
-
+Ext.ux.grid.RowExpander = Ext.extend(Ext.util.Observable, {
     /**
      * @cfg {Boolean} expandOnEnter
      * <tt>true</tt> to toggle selected row(s) between expanded/collapsed when the enter
@@ -39,6 +37,7 @@ Ext.define('Ext.ux.grid.RowExpander', {
     menuDisabled : true,
     dataIndex : '',
     id : 'expander',
+    lazyRender : true,
     enableCaching : true,
 
     constructor: function (config) {
@@ -99,7 +98,7 @@ Ext.define('Ext.ux.grid.RowExpander', {
     getRowClass : function (record, rowIndex, p, ds) {
         p.cols = p.cols - 1;
         var content = this.bodyContent[record.id];
-        if (!content) {
+        if (!content && !this.lazyRender) {
             content = this.getBodyContent(record, rowIndex);
         }
         if (content) {
@@ -193,7 +192,7 @@ Ext.define('Ext.ux.grid.RowExpander', {
 
     beforeExpand : function (record, body, rowIndex) {
 		if (this.fireEvent('beforeexpand', this, record, body, rowIndex) !== false) {
-			if (this.tpl) {
+			if (this.tpl && this.lazyRender) {
 				body.innerHTML = this.getBodyContent(record, rowIndex);
 			}
 			return true;
@@ -241,7 +240,7 @@ Ext.define('Ext.ux.grid.RowExpander', {
 	}
 });
 
-//Ext.preg('rowexpander', Ext.ux.grid.RowExpander);
+Ext.preg('rowexpander', Ext.ux.grid.RowExpander);
 
 //backwards compat
 Ext.grid.RowExpander = Ext.ux.grid.RowExpander;

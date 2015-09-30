@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  * 
  * This file is part of SITools2.
  * 
@@ -24,8 +24,7 @@ Ext.namespace('sitools.widget.sitoolsEditorPlugins');
  * @class sitools.widget.sitoolsEditorPlugins.documentBrowser
  * @extends Ext.util.Observable
  */
-Ext.define('sitools.widget.sitoolsEditorPlugins.documentBrowser', {
-    extend : 'Ext.Window',
+sitools.widget.sitoolsEditorPlugins.documentBrowser = Ext.extend(Ext.Window, {
     width : 500,
     height : 500,
     layout : 'fit',
@@ -213,7 +212,7 @@ Ext.define('sitools.widget.sitoolsEditorPlugins.documentBrowser', {
         textfield.documentName = document.data.name;
         textfield.documentUrl = docUrl;
         textfield.setValue("Document : " + document.data.name);
-        textfield.documentComponent = Ext.String.format("parent.sitools.user.component.bottom.Bottom.showFooterLink(\"{0}\", \"{1}\"); return false;", docUrl, document.data.name);
+        textfield.documentComponent = String.format("parent.sitools.user.component.bottom.Bottom.showFooterLink(\"{0}\", \"{1}\"); return false;", docUrl, document.data.name);
         
         this.close();
     },

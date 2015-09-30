@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -24,8 +24,8 @@ Ext.ns('sitools.common.forms');
  * @class sitools.common.forms.AbstractWithUnit
  * @extends Ext.Container
  */
-Ext.define('sitools.common.forms.AbstractWithUnit', {
-   extend : 'Ext.Container',
+sitools.common.forms.AbstractWithUnit = Ext.extend(Ext.Container, {
+//sitools.component.users.SubSelectionParameters.AbstractComponentsWithUnit = Ext.extend(Ext.Container, {
    dimensionId : null,
    userUnit : null, 
    userDimension : null,
@@ -104,8 +104,8 @@ Ext.define('sitools.common.forms.AbstractWithUnit', {
             }
         });
 
-        var smUnits = Ext.create('Ext.selection.RowModel',{
-            mode : 'SINGLE'
+        var smUnits = new Ext.grid.RowSelectionModel({
+            singleSelect : true
         });
 
         this.gridUnits = new Ext.grid.GridPanel({

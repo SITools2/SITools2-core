@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -18,16 +18,15 @@
 ***************************************/
 Ext.namespace('sitools.widget');
 
-Ext.define('sitools.widget.TextFilter', {
-    extend : 'Ext.form.field.Trigger',
-	alias : 'widget.s-filter',
+sitools.widget.TextFilter = Ext.extend(Ext.form.TriggerField, {
+	
 	ctCls:"s-textfilter",
 	cls:"s-textfilter-text",
 	triggerConfig:{tag:"div", cls:"x-form-trigger s-textfilter-trigger"},
 	enableKeyEvents:true,
 	listeners:{
-		keyup: { fn:function(tf,a) {tf.setVisible((tf.getValue()!==""));} },
-		render: { fn:function(tf) {tf.hide();} }
+		keyup: { fn:function(tf,a) {tf.trigger.setVisible((tf.getValue()!==""));} },
+		render: { fn:function(tf) {tf.trigger.hide();} }
 	},
 	queryDelay:500,
 	queryAction:"find",
@@ -56,20 +55,16 @@ Ext.define('sitools.widget.TextFilter', {
 		this.pageSize=size;
 	},
 	
-
-	onBeforeLoad : function (store, operation, eOpts) {
-        var c = this.getValue();
-        if (Ext.isEmpty(operation.params)) {
-            operation.params = {};
-        }
-        if (c) {
-            operation.params[this.queryParam] = c;
-            operation.params.action = this.queryAction;
-        } else {
-            operation.params.action = this.enumAction;
-        }
-        return true;
-    },
+	onBeforeLoad:function(a,b){
+		var c=this.getValue();
+		if(c){
+			b.params[this.queryParam]=c;
+			b.params.action=this.queryAction;
+		}else{
+			b.params.action=this.enumAction;
+		}
+		return true;
+	},
 	
 	filter: function(){
 		var b=this.getValue();
@@ -114,3 +109,5 @@ Ext.define('sitools.widget.TextFilter', {
 	}
 });
 
+//register type
+Ext.reg('s-filter', sitools.widget.TextFilter);

@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -23,12 +23,11 @@
  * licensing@extjs.com
  * http://www.extjs.com/license
  */
-Ext.define('Ext.ux.PortalColumn', {
-    extend : 'Ext.Container',
-	alias : 'widget.portalcolumn',
+Ext.ux.PortalColumn = Ext.extend(Ext.Container, {
     // layout : 'anchor',
     // autoEl : 'div',//already defined by Ext.Component
     defaultType : 'portlet',
     cls : 'x-portal-column'
 });
 
+Ext.reg('portalcolumn', Ext.ux.PortalColumn);

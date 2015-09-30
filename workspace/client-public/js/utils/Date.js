@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -30,7 +30,7 @@ sitools.common.utils.Date = {
 	 * in the template {$TODAY} + x, determine the x unit (currently it is a Day)
 	 * @type 
 	 */
-	timeInterval : Ext.Date.DAY, 
+	timeInterval : Date.DAY, 
 	/**
 	 * Transform a String value containing {$TODAY} into a valid date.
 	 * @param {String} val the string value
@@ -57,7 +57,7 @@ sitools.common.utils.Date = {
 			if (op == "-") {
 				nbJour = nbJour * -1;
 			}
-			result = Ext.Date.add(result, this.timeInterval, nbJour); 
+			result = result.add(this.timeInterval, nbJour); 
 		}
 		return result;
 

@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -37,8 +37,7 @@ Ext.state.Provider = function(){
     this.state = {};
     Ext.state.Provider.superclass.constructor.call(this);
 };
-Ext.define('Ext.state.Provider', {
-    extend : 'Ext.util.Observable',
+Ext.extend(Ext.state.Provider, Ext.util.Observable, {
     /**
      * Returns the current value for a key
      * @param {String} name The key name
@@ -244,8 +243,7 @@ Ext.state.CookieProvider = function(config){
     this.state = this.readCookies();
 };
 
-Ext.define('Ext.state.CookieProvider', {
-    extend : 'Ext.state.Provider',
+Ext.extend(Ext.state.CookieProvider, Ext.state.Provider, {
     // private
     set : function(name, value){
         if(typeof value == "undefined" || value === null){

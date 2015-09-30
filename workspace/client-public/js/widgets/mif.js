@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -159,8 +159,7 @@
         };
 
  //Add basic capabilities to the Ext.Element.Flyweight class
-// Ext.override(El.Flyweight, fx.El);
-// Ext.override(Ext.dom.Element.Fly, fx.El);
+ Ext.override(El.Flyweight, fx.El);
 
  Ext.ux.plugin.VisibilityMode = function(opt) {
 
@@ -4436,7 +4435,7 @@
 
   Ext.ux.ManagedIFrame.Panel = Ext.extend( Ext.Panel , {
         ctype       : 'Ext.ux.ManagedIFrame.Panel',
-        bodyCls: 'ux-mif-mask-target',
+        bodyCssClass: 'ux-mif-mask-target',
         constructor : function(config){
             MIF.Panel.superclass.constructor.call(this, embed_MIF.call(this, config));
          }
@@ -4492,7 +4491,7 @@
   Ext.ux.ManagedIFrame.Window = Ext.extend( Ext.Window , 
        {
             ctype       : "Ext.ux.ManagedIFrame.Window",
-            bodyCls: 'ux-mif-mask-target',
+            bodyCssClass: 'ux-mif-mask-target',
             constructor : function(config){
 			    MIF.Window.superclass.constructor.call(this, embed_MIF.call(this, config));
             }

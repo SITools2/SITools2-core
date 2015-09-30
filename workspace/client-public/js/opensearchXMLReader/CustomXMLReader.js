@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -30,8 +30,7 @@ sitools.component.users.datasets.XmlReader = function (meta, recordType) {
 
     sitools.component.users.datasets.XmlReader.superclass.constructor.call(this, meta, recordType || meta.fields);
 };
-Ext.define('sitools.component.users.datasets.XmlReader', {
-    extend : 'Ext.data.XmlReader',
+Ext.extend(sitools.component.users.datasets.XmlReader, Ext.data.XmlReader, {
 
     /**
      * Creates a function to return some particular key of data from a response.
@@ -69,4 +68,5 @@ Ext.define('sitools.component.users.datasets.XmlReader', {
             }
         };
     }()
+
 });

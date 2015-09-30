@@ -16,8 +16,7 @@ Ext.ux.plugins.SliderRange = function(config) {
 };
  
 // plugin code
-Ext.define('Ext.ux.plugins.SliderRange', {
-    extend : 'Ext.util.Observable',
+Ext.extend(Ext.ux.plugins.SliderRange, Ext.util.Observable, {
     init:function(slider) {
         Ext.apply(slider, {
             onResize:slider.onResize.createSequence(function(ct, position) {
@@ -32,8 +31,8 @@ Ext.define('Ext.ux.plugins.SliderRange', {
 				slider.range 	= slider.el.createChild({cls: 'ux-sliderrange'});
 				
 				// get position of two joining values
-				var startPos 	= slider.translatePoints(slider.minValue);
-				var nextPos 	= slider.translatePoints((slider.minValue+slider.increment));
+				var startPos 	= slider.translateValue(slider.minValue);
+				var nextPos 	= slider.translateValue((slider.minValue+slider.increment));
 				// get diff of positions
 				var diff 		= nextPos - startPos;
 				
