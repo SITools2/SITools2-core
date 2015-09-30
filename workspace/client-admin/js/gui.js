@@ -76,7 +76,6 @@ function showHelp(helpUrl) {
         winHelp = Ext.create('Ext.window.Window', {
             title : i18n.get('label.help'),
             width : DEFAULT_HELP_WIDTH,
-//            autoScroll : true,
             modal : true,
             id : 'winHelpId',
             height : DEFAULT_HELP_HEIGHT,
@@ -87,12 +86,7 @@ function showHelp(helpUrl) {
                 handler : function () {
                     this.ownerCt.ownerCt.close();
                 }
-            }],
-            listeners : {
-                resize : function (win, width, height) {
-                    //this.findById(ID.WIN.HELP).setHeight(height - 65);
-                }
-            }
+            }]
         });
 
         winHelp.show();
@@ -120,15 +114,6 @@ var clientAdmin = {
 				sitools.public.utils.LoginUtils.logout();
 	        }
 	    };
-	    // var menuList = { xtype: 'tbbutton', text: 'Menu 2', itemId:'menu_list',
-	    // handler: onMenuShow,
-	    // menu: [
-	    // {text: 'Item 1', itemId:'menu2_item1', handler: onMenuSelect},
-	    // {text: 'Item 2', itemId:'menu2_item2', handler: onMenuSelect},
-	    // '-',
-	    // {text: 'Item 3', itemId:'menu2_item3', handler: onMenuSelect}
-	    // ] };
-	    // var menuHelp = { xtype: 'tbbutton', text: 'Help', disabled: true };
 	    var toolbar = {
 	        xtype : 'toolbar',
 	        id : ID.CMP.TOOLBAR,
@@ -185,123 +170,8 @@ var clientAdmin = {
                 handler : function () {
 					Ext.create('sitools.public.version.Version').show();
                 }
-            }, /*{
-//		        text: 'Show Help',
-		        tooltip: 'Show Help',
-		        enableToggle: true,
-                style : 'padding:2px',
-                cls : 'x-custom-button-color',
-		        toggleHandler: function (item, checked) {
-					var helpPanel = Ext.getCmp(ID.PANEL.HELP);
-					SHOW_HELP = checked;
-					if (helpPanel == undefined) {
-					    return;
-					}
-				    if (!checked) {
-				        helpPanel.toggleCollapse(checked);
-				    }
-				    else {
-				        helpPanel.toggleCollapse(checked);
-				    }
-//				    mainPanel.doLayout();
-			    },
-		        pressed: true,
-		        icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/help.png'
-		    }*/, /*{
-		        tooltip : 'Advanced Mode',
-		        id : 'switchModeId',
-		        icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/maintenance.png',
-		        enableToggle: true,
-		        pressed : true,
-                style : 'padding:2px',
-                cls : 'x-custom-button-color',
-		        toggleHandler : function (item, checked) {
-		            var main = Ext.getCmp(ID.PANEL.MAIN);
-		            var tree = Ext.getCmp(ID.PANEL.TREE);
-		            
-		            if (checked) {
-		                tree.show();
-		                main.getTopToolbar().hide();
-		                main.doLayout();
-		                dataViewWin.hide();
-		            }
-		            else {
-		                tree.hide();
-		                if (Ext.isEmpty(dataViewWin)) {
-		                    
-		                    seeAlsoMenu = new sitools.admin.menu.seeAlso();
-		                    seeAlsoPanel = new Ext.Panel({
-		                        id : 'seeAlsoId',
-		                        flex : 1,
-		                        autoScroll : true, 
-		                        width : 265,
-		                        html : '<div class="title-seeAlso"></div>',
-		                        cls : 'background-seeAlso',
-		                        height : Ext.getBody().getSize().height - 110,
-		                        items : [seeAlsoMenu]
-		                    });
-		                    
-		                    seeAlsoMenu.getStore().loadData({
-		                    	links : []	
-		                    });
-		                    
-		                    dataViewMenu = new sitools.admin.menu.dataView();
-		                    
-		                    var dataViewPanel = new Ext.Panel({
-		                        id : 'panDataview',
-		                        flex : 2,
-		                        items : [dataViewMenu], 
-		                        listeners : {
-									resize : function (panel) {
-										var size = panel.body.getSize();
-										dataViewMenu.setSize({
-											height : size.height - 5, 
-											width : size.width - 5
-										});
-										seeAlsoPanel.setSize(panel.body.getSize());
-									}
-		                        }
-		                    });
-		                    
-							dataViewWin = new Ext.Window({
-								border : false, 
-								id : ID.PANEL.DATAVIEW,
-								layout: 'hbox',
-								resizable : false, 
-								layoutConfig: {
-								    align : 'stretch',
-								    pack  : 'start'
-								},
-								closable : false,
-								draggable : false, 
-								items : [seeAlsoPanel, dataViewPanel],
-								height  : Ext.getBody().getSize().height - 82, 
-								width : Ext.getBody().getSize().width,
-								y : 82,
-								allButtons : [], 
-								tbar : {
-					                cls : 'root-toolbar',
-					                id : 'idToolbarView'
-					            }
-							});
-		                }
-		                dataViewWin.show();
-		                main.getTopToolbar().show();
-		                var dataViewEl = dataViewWin.getEl();
-		                dataViewEl.fadeIn({
-						    opacity: 0.95, //can be any value between 0 and 1 (e.g. .5)
-						    easing: 'easeOut',
-						    duration: 0.5
-						});
-		            }
-		            viewport.doLayout();
-		        }
-		    }*/,
+            },
 		    "|", menuLogout
-	
-	        // menuList,
-	        // '-',
-	        // menuHelp
 	        ]
 	    };
 		
@@ -319,7 +189,6 @@ var clientAdmin = {
 	        id : ID.PANEL.TREE,
 	        region : 'west',
 	        title : i18n.get('label.menu'),
-//	        split : true,
 	        autoScroll : true,
 	        width : 300,
 	        layout : 'fit',
@@ -395,27 +264,14 @@ var clientAdmin = {
             bodyBorder : false,
 	        xtype : 'panel',
 	        id : ID.PANEL.MAIN,
-//	        title : i18n.get('label.main'),
 	        items : mainPanelItems,
 	        region : 'center'
 	    });
 	
-	    /*
-	     * contextMenu = new Ext.Window({ title: FILTER_TITLE, layout: 'hbox',
-	     * width: 260, autoHeight: true, shadow: 'drop', closable: false,
-	     * //closeAction:'hide', plain: true, //buttonAlign: 'center', items: [ ],
-	     * buttons: [ { text: 'OK', handler: function() {contextMenu.hide(),
-	     * setFilter(Ext.getCmp('filterValueId').getValue())} }, { text: 'Cancel',
-	     * handler: function() {contextMenu.hide()} } ] });
-	     */
-	    
 	    // Setting the viewport
 	    viewport = Ext.create('Ext.container.Viewport', {
 	        layout : 'border',
-	        items : [ menuPanel, treePanel, mainPanel
-	        // ,
-	        // helpPanel
-	        ], 
+	        items : [ menuPanel, treePanel, mainPanel],
 	        listeners : {
 				scope : this, 
 				resize : function () {
@@ -425,7 +281,6 @@ var clientAdmin = {
 							width : Ext.getBody().getSize().width - 5
 						});
 						dataViewWin.setPosition(0, 82);
-//						dataViewWin.doLayout();
 					}
 				}
 	        }
@@ -437,11 +292,6 @@ var clientAdmin = {
 		if (Ext.isFunction(callback)) {
             callback.call(this);
         }
-//		treePanel.doLayout();
-
-	    // viewport.doLayout();
-	
-	    // Checking if user is logged
 	}
 };
 
@@ -450,7 +300,6 @@ var clientAdmin = {
  * Init application Gui and logic
  */
 function initAppli(callback) {
-    //loadUrl.load('/sitools/client-admin/siteMap', clientAdmin.initGui());
     if (Ext.isEmpty(Ext.util.Cookies.get('showQuickStart'))) {
         Ext.util.Cookies.set('showQuickStart', true);
     }

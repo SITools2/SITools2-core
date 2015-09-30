@@ -24,7 +24,6 @@ Ext.namespace('sitools.admin.menu');
  * Build the sitools tree menu
  * @class sitools.admin.menu.TreeMenu
  */
-// TODO ExtJS3 Object > Ext.Object ? 
 Ext.define('sitools.admin.menu.TreeMenu', {
     extend: 'Ext.tree.Panel',
     alias : 'widget.treemenucontainer',
@@ -87,9 +86,6 @@ Ext.define('sitools.admin.menu.TreeMenu', {
         var nodeName = node.get('name');
         var nodeId = node.get('id');
         this.openModule(nodeName, nodeId);       
-        
-        
-//        helpUrl = loadUrl.get('APP_URL') + "/client-admin/res/help/" + LOCALE + "/" + nodeName + ".html";
     },
     
     openModule : function (nodeName, nodeId)  {
@@ -110,19 +106,16 @@ Ext.define('sitools.admin.menu.TreeMenu', {
         mainPanel.add({
             xtype : 'panel',
             width: "100%",
-//            bodyCls : 'admin-bg',
             border : false,
             bodyBorder : false,
             items : [{
                 xtype : 's-box',
-//	                label : i18n.get('label.' + nodeName),
                 items : [{
                     xtype : 's-' + nodeName,
                     sitoolsType : "mainAdminPanel",
                     cls : "adminPanel"
                 }]
-//	                idItem : nodeId
-            } ], 
+            } ],
             listeners : {
                 resize : function (panel, width, height) {
                     var size = panel.items.items[0].body.getSize();
@@ -139,7 +132,6 @@ Ext.define('sitools.admin.menu.TreeMenu', {
             
         mainPanel.setIconCls('icon-' + nodeId);
         mainPanel.setTitle(i18n.get('label.' + nodeName));
-//        }
 
         var helpPanel = Ext.create('Ext.Component', {
             bodyCls : 'admin-bg-transparent',
@@ -150,7 +142,6 @@ Ext.define('sitools.admin.menu.TreeMenu', {
                 tag : 'iframe',
                 src : loadUrl.get('APP_URL') + "/client-admin/res/help/" + LOCALE + "/" + nodeName + ".html"
             }
-//            defaultSrc : loadUrl.get('APP_URL') + "/client-admin/res/help/" + LOCALE + "/" + nodeName + ".html"
         });
         
         mainPanel.add( helpPanel );

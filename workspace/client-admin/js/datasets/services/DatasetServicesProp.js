@@ -432,32 +432,6 @@ Ext.define('sitools.admin.datasets.services.DatasetServicesProp', {
             form.findField('icon').setValue(datasetServiceIHM.icon);
             form.findField('dataSetSelection').setValue(datasetServiceIHM.dataSetSelection);
         }
-    },
-    /**
-     * Load the dependencies of the given records
-     * 
-     * @param value
-     *            (Mixed) an array of records or a single record object
-     * @param callback
-     *            (function) the callback to call at the end
-     * @param scope
-     *            (Object) the scope for the callback function
-     */
-    loadDependencies : function (value, callback, scope) {
-        var records = value;
-        if (!Ext.isArray(records)) {
-            records = [ value ];
-        }
-        var listDependencies = [];
-        Ext.each(records, function (rec) {
-            if (!Ext.isEmpty(rec.get('dependencies') && !Ext.isEmpty(rec.get('dependencies').js))) {
-                listDependencies = listDependencies.concat(rec.get('dependencies').js);
-            }
-        }, this);
-        
-        if (!Ext.isEmpty(listDependencies)) {
-            includeJsForceOrder(listDependencies, 0, callback, scope);
-        }
     }
 });
 
