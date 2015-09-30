@@ -21,78 +21,76 @@
 Ext.namespace('sitools.admin.datasource');
 
 /**
- * Open A window with a status bar, and test database. Displays the result with a status bar. 
+ * Open A window with a status bar, and test database. Displays the result with a status bar.
  * @cfg {string} url the url to request to test database
- * @cfg {} data the private data of current database. 
+ * @cfg {} data the private data of current database.
  * @class sitools.admin.datasource.DataBaseTest
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.datasource.DataBaseTest', { 
-    extend : 'Ext.Window',
-    width : 400,
-    height : 210,
-    modal : true,
-    closable : false,
-    layout : 'fit',
-    buttonAlign : 'center',
+Ext.define('sitools.admin.datasource.DataBaseTest', {
+    extend: 'Ext.Window',
+    width: 400,
+    height: 220,
+    modal: true,
+    closable: true,
+    layout: 'fit',
+    buttonAlign: 'center',
+    border : false,
 
-    initComponent : function () {
-        
+    initComponent: function () {
+
         this.title = i18n.get('label.databaseInfo');
-        this.bbar = new Ext.ux.StatusBar({
-            text : i18n.get('label.ready'),
-            iconCls : 'x-status-valid'
+        this.bbar = Ext.create("Ext.ux.StatusBar", {
+            text: i18n.get('label.ready'),
+            iconCls: 'x-status-valid',
+            cls: 'x-toolbar-footer',
+            items: [{
+                text: i18n.get('label.close'),
+                scope: this,
+                handler: function () {
+                    this.close();
+                }
+            }]
         });
-        
+
         this.items = [{
-            xtype : 'panel',
-            baseCls : 'x-plain',
-            layout : 'fit',
-            items : [ {
-                xtype : 'textarea',
-                itemId : 'DBText'
-            } ]
-        }];
-        
-        this.buttons = [{
-            text : i18n.get('label.ok'),
-            scope : this,
-            handler : function () {
-                this.close();
-            }
+            xtype: 'textarea',
+            itemId: 'DBText',
+            readOnly : true,
+            border : false
         }];
 
         this.callParent(arguments);
     },
 
-    onRender : function () {
+    onRender: function () {
         this.callParent(arguments);
         this.down('toolbar').showBusy();
 
         Ext.Ajax.request({
-            url : this.url,
-            method : 'PUT',
-            scope : this,
-            jsonData : this.data,
-            success : function (ret) {
+            url: this.url,
+            method: 'PUT',
+            scope: this,
+            jsonData: this.data,
+            success: function (ret) {
                 var rep = Ext.decode(ret.responseText);
                 var status = rep.success ? i18n.get('msg.success') : i18n.get('msg.failure');
                 var msg = rep.data ? rep.data.join('\n') : rep.message;
                 this.down('toolbar').setStatus({
-                    text : status,
-                    iconCls : rep.success ? 'x-status-valid' : 'x-status-error'
+                    text: status,
+                    iconCls: rep.success ? 'x-status-valid' : 'x-status-error'
                 });
                 this.down('textarea#DBText').setValue(msg);
             },
-            failure : function (ret) {
+            failure: function (ret) {
                 var rep = i18n.get('warning.serverError');
                 try {
                     rep = Ext.decode(ret.responseText).logs.join('\n');
                 } catch (Exception) {
                 }
                 this.down('toolbar').setStatus({
-                    text : ret.statusText,
-                    iconCls : 'x-status-error'
+                    text: ret.statusText,
+                    iconCls: 'x-status-error'
                 });
                 this.down('textarea#DBText').setValue(rep);
             }
