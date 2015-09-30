@@ -77,6 +77,18 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
             Ext.util.CSS.createStyleSheet(css, this.id);
         }
 
+        if (JSON.parse(this.dataviewConfig.autoFitColumn)) {
+            Ext.apply(this.viewConfig, {
+                listeners: {
+                    refresh: function(dataview) {
+                        Ext.each(dataview.panel.columns, function(column) {
+                            column.autoSize();
+                        });
+                    }
+                }
+            });
+        }
+
         this.selModel = new Ext.create("sitools.user.view.component.datasets.dataviews.selectionModel.SitoolsCheckboxModel", {
             checkOnly: true,
             pruneRemoved: false,

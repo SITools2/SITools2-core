@@ -65,8 +65,15 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
                 config: {
                     name: 'autoFitColumn',
                     fieldLabel: i18n.get('label.autoFitColumn'),
-                    labelWidth: 120,
+                    labelWidth: 160,
                     checked: false
+                }
+            }, {
+                jsObj: 'Ext.form.Label',
+                config: {
+                    name: 'warningAutoFit',
+                    text: i18n.get('label.warningAutoFitColumn'),
+                    labelWidth: 140
                 }
             }];
 	    }
@@ -125,19 +132,6 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
         
         windowSettings.id = "dataset_" + dataset.id + "_" + Ext.id();
 
-        var viewConfig;
-        if (JSON.parse(dataviewConfig.autoFitColumn)) {
-            viewConfig = {
-                listeners: {
-                    refresh: function(dataview) {
-                        Ext.each(dataview.panel.columns, function(column) {
-                            column.autoSize();
-                        });
-                    }
-                }
-            };
-        }
-
         componentSettings = Ext.apply(componentConfig, {
             dataset : dataset,
             store : datasetStore,
@@ -153,8 +147,7 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
             origin : 'sitools.user.view.component.datasets.dataviews.LivegridView',
             dataviewConfig : dataviewConfig,
             sitoolsType : 'datasetView',
-            // searchAction : this.searchAction,
-            viewConfig : viewConfig
+            // searchAction : this.searchAction
         });
         
         var view = Ext.create('sitools.user.view.component.datasets.dataviews.LivegridView', componentSettings);
