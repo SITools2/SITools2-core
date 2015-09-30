@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  * 
  * This file is part of SITools2.
  * 
@@ -23,10 +23,7 @@ Ext.namespace('sitools.user.modules');
  * @class sitools.user.modules.contentViewerModule
  * @extends Ext.Panel
  */
-Ext.define('sitools.user.modules.contentViewerModule', {
-    extend : 'Ext.panel.Panel',
-    alias : 'sitools.user.modules.contentViewerModule',
-    
+sitools.user.modules.contentViewerModule = Ext.extend(Ext.Panel, {
     /**
      * the node to activate
      * @type Ext.tree.TreeNode
@@ -370,3 +367,5 @@ sitools.user.modules.contentViewerModule.getParameters = function () {
         }
     }];
 };
+
+Ext.reg('sitools.user.modules.contentViewerModule', sitools.user.modules.contentViewerModule);

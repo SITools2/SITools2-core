@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -33,10 +33,7 @@ Ext.namespace('sitools.user.component.forms');
  * @class sitools.user.component.forms.resultsProjectForm
  * @extends Ext.grid.GridPanel
  */
-Ext.define('sitools.user.component.forms.resultsProjectForm', {
-    extend : 'Ext.grid.Panel',
-    alias : 'sitools.user.component.forms.resultsProjectForm',
-    
+sitools.user.component.forms.resultsProjectForm = Ext.extend(Ext.grid.GridPanel, {
     initComponent : function () {
         var params = {};
         params.datasetsList = this.datasets.join("|");
@@ -153,7 +150,7 @@ Ext.define('sitools.user.component.forms.resultsProjectForm', {
 				dataIndex : 'image', 
 				header : "", 
 				renderer : function (value) {
-					return ! Ext.isEmpty(value) && ! Ext.isEmpty(value.url) ? Ext.String.format("<img src='{0}' width=20 height=20>", value.url) : "";
+					return ! Ext.isEmpty(value) && ! Ext.isEmpty(value.url) ? String.format("<img src='{0}' width=20 height=20>", value.url) : "";
 				}
 			}, {
 				width : 100, 
@@ -242,3 +239,6 @@ Ext.define('sitools.user.component.forms.resultsProjectForm', {
     
 
 });
+
+Ext.reg('sitools.user.component.forms.resultsProjectForm', sitools.user.component.forms.resultsProjectForm);
+

@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -44,7 +44,7 @@ sitools.user.component.formComponentsPanel = Ext.extend(Ext.Panel, {
         Ext.apply(this, {
 //            title: this.formName,
 //            id : "panelResultForm" + this.formId, 
-            bodyCls : this.css,
+            bodyCssClass : this.css,
             height : this.height,
             width : this.width,
 //            border : false,
@@ -165,7 +165,7 @@ sitools.user.component.formComponentsPanel = Ext.extend(Ext.Panel, {
                         height : param.height,
                         x : x,
                         y : y,
-                        bodyCls : "noborder",
+                        bodyCssClass : "noborder",
                         cls : param.css,
                         items : containerItems
                     });
@@ -189,7 +189,7 @@ sitools.user.component.formComponentsPanel = Ext.extend(Ext.Panel, {
                     height : parameter.height,
                     x : x,
                     y : y,
-                    bodyCls : "noborder",
+                    bodyCssClass : "noborder",
                     cls : parameter.css,
                     items : containerItems
                 });

@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -20,10 +20,7 @@
 
 Ext.namespace('sitools.component.users.portal');
 
-Ext.define('sitools.component.users.portal.feedsReaderPortal', {
-    extend : 'Ext.panel.Panel',
-    alias : 'sitools.component.users.portal.feedsReaderPortal',
-    
+sitools.component.users.portal.feedsReaderPortal = Ext.extend(Ext.Panel, {
     portalId : "idPortal",
     layout : "fit",
     initComponent : function () {
@@ -52,7 +49,7 @@ Ext.define('sitools.component.users.portal.feedsReaderPortal', {
             displayField : 'name',
             valueField : 'id',
             typeAhead : true,
-            queryMode : 'local',
+            mode : 'local',
             forceSelection : true,
             triggerAction : 'all',
             emptyText : i18n.get('label.selectAFeed'),
@@ -170,3 +167,5 @@ Ext.define('sitools.component.users.portal.feedsReaderPortal', {
     }
 
 });
+
+Ext.reg('sitools.component.users.portal.feedsReaderPortal', sitools.component.users.portal.feedsReaderPortal);

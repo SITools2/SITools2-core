@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -94,7 +94,6 @@ sitools.user.modules.userSpace = function (config) {
 };
 
 Ext.extend(sitools.user.modules.userSpace, Ext.Panel, {
-	alias : 'sitools.user.modules.userSpace',
     panel : null,
     layout : 'fit',
     doOrder : function () {
@@ -168,3 +167,4 @@ Ext.extend(sitools.user.modules.userSpace, Ext.Panel, {
 
 });
 
+Ext.reg('sitools.user.modules.userSpace', sitools.user.modules.userSpace);

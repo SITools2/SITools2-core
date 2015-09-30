@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  * 
  * This file is part of SITools2.
  * 
@@ -24,7 +24,6 @@ Ext.namespace('sitools.user.modules');
  * @extends Ext.Panel
  */
 sitools.user.modules.sitoolsFitsHeader = Ext.extend(Ext.grid.GridPanel, {
-	alias : 'sitools.user.modules.sitoolsFitsHeader',
     frame : true,
     split : true,
     resizable : true,
@@ -41,8 +40,8 @@ sitools.user.modules.sitoolsFitsHeader = Ext.extend(Ext.grid.GridPanel, {
                 {header: i18n.get('headers.value'), width: 200, sortable: true, dataIndex: 'value'}]
         });
         
-        this.selModel = Ext.create('Ext.selection.RowModel',{
-            mode : 'SINGLE'
+        this.selModel = new Ext.grid.RowSelectionModel({
+            singleSelect : true
         });
         
         this.viewConfig = {
@@ -77,3 +76,4 @@ sitools.user.modules.sitoolsFitsHeader = Ext.extend(Ext.grid.GridPanel, {
     }
     
 });
+Ext.reg('sitools.user.modules.sitoolsFitsHeader', sitools.user.modules.sitoolsFitsHeader);

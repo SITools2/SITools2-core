@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -112,7 +112,7 @@ sitools.user.modules.openSearchModule = function () {
             xtype : 's-menuButton'
         } ]
     };
-    this.sm = Ext.create('Ext.selection.RowModel',{
+    this.sm = new Ext.grid.RowSelectionModel({
         
     });
     sitools.user.modules.openSearchModule.superclass.constructor.call(this, Ext.apply({

@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -72,8 +72,8 @@ sitools.user.modules.serverApplicationManager = function (config) {
         store : getStore(),
         loadMask : true,
         autoExpandColumn : 'url',
-        sm : Ext.create('Ext.selection.RowModel',{
-            mode : 'SINGLE'
+        sm : new Ext.grid.RowSelectionModel({
+            singleSelect : true
         }),
         columns : [ {
             header : i18n.get('label.name'),

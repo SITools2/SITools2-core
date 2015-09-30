@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -139,7 +139,7 @@ sitools.user.component.dataviews.tplView.TplView = function (config) {
     var tplStringImg = '<ul>';
     
 	maxColLength  = (maxColLength + 3) * 7;
-	style = Ext.String.format("width :{0}px", maxColLength);
+	style = String.format("width :{0}px", maxColLength);
 	
 	dataviewConfig = sitoolsUtils.arrayProperties2Object(config.datasetViewConfig);
 
@@ -153,7 +153,7 @@ sitools.user.component.dataviews.tplView.TplView = function (config) {
 		}
 	}, this);
     tplStringImg += '</ul>';
-    tplString += Ext.String.format('<span><div class=x-view-entete style="{0}">{1} </div></span>', style, i18n.get("label.imagesAndServices"));
+    tplString += String.format('<span><div class=x-view-entete style="{0}">{1} </div></span>', style, i18n.get("label.imagesAndServices"));
 	tplString += '<span class="linkImageDataView"> ' + tplStringImg + '</span></div></tpl><div class="x-clear"></div>';
 	var tpl = new Ext.XTemplate(
 	    tplString, 
@@ -187,7 +187,7 @@ sitools.user.component.dataviews.tplView.TplView = function (config) {
         autoHeight: true,
         multiSelect: true,
         columnModel : this.columnModel.config, 
-        overItemCls: 'x-view-over',
+        overClass: 'x-view-over',
         itemSelector: 'div.thumb-wrap',
         selectedClass : 'x-view-selected-datasetView',
         emptyText: '', 

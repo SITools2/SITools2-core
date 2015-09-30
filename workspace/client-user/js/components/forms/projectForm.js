@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -197,8 +197,8 @@ sitools.user.component.forms.projectForm = Ext.extend(Ext.Panel, {
             }, visible]
         });
         
-        var smDatasets = Ext.create('Ext.selection.RowModel',{
-            mode : 'SINGLE'
+        var smDatasets = new Ext.grid.RowSelectionModel({
+            singleSelect : true
         });
         
         /**
@@ -324,7 +324,7 @@ sitools.user.component.forms.projectForm = Ext.extend(Ext.Panel, {
         }
         
         if (! Ext.isEmpty(this.nbDatasetsMax) && datasets.length > this.nbDatasetsMax) {          
-            Ext.Msg.alert(i18n.get('label.error'), Ext.String.format(i18n.get('label.toManyDatasetsAllowed'), this.nbDatasetsMax));
+            Ext.Msg.alert(i18n.get('label.error'), String.format(i18n.get('label.toManyDatasetsAllowed'), this.nbDatasetsMax));
             button.setDisabled(false);
             return;
         }
@@ -496,7 +496,7 @@ sitools.user.component.forms.projectForm = Ext.extend(Ext.Panel, {
                     if (Ext.isEmpty(this.getValue())) {
                         return null;
                     }
-                    return Ext.String.format("{0}|{1}|{2}", prop.type, prop.name, this.getValue());
+                    return String.format("{0}|{1}|{2}", prop.type, prop.name, this.getValue());
                 }
             };          
             break;
@@ -511,13 +511,13 @@ sitools.user.component.forms.projectForm = Ext.extend(Ext.Panel, {
                     if (Ext.isEmpty(this.getValue())) {
                         return null;
                     }
-                    return Ext.String.format("{0}|{1}|{2}", prop.type, prop.name, this.getValue());
+                    return String.format("{0}|{1}|{2}", prop.type, prop.name, this.getValue());
                 }
             };          
             break;
         case "NUMERIC_BETWEEN" : 
             field = {
-                xtype: 'fieldcontainer',
+                xtype: 'compositefield',
                 defaults: {
                     flex: 1
                 },
@@ -542,13 +542,13 @@ sitools.user.component.forms.projectForm = Ext.extend(Ext.Panel, {
                     if (Ext.isEmpty(deb) || Ext.isEmpty(fin)) {
                         return null;
                     }
-                    return Ext.String.format("{0}|{1}|{2}|{3}", prop.type, prop.name, deb, fin);
+                    return String.format("{0}|{1}|{2}|{3}", prop.type, prop.name, deb, fin);
                 }
             };          
             break;
         case "DATE_BETWEEN" : 
             field = {
-                xtype: 'fieldcontainer',
+                xtype: 'compositefield',
                 defaults: {
                     flex: 1
                 },
@@ -584,7 +584,7 @@ sitools.user.component.forms.projectForm = Ext.extend(Ext.Panel, {
                     if (Ext.isEmpty(deb) || Ext.isEmpty(fin)) {
                         return null;
                     }
-                    return Ext.String.format("{0}|{1}|{2}|{3}", prop.type, prop.name, deb, fin);
+                    return String.format("{0}|{1}|{2}|{3}", prop.type, prop.name, deb, fin);
                 }
             };          
             break;

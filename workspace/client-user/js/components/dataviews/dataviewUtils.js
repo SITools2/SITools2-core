@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  * 
  * This file is part of SITools2.
  * 
@@ -83,9 +83,9 @@ sitools.user.component.dataviews.dataviewUtils = {
                     if (!Ext.isEmpty(html)) {
                         if (item.columnRenderer.behavior == ColumnRendererEnum.IMAGE_FROM_SQL) {
                             var imageUrl = record.get(item.columnRenderer.columnAlias);                     
-                            str = Ext.String.format(html, value, imageUrl);
+                            str = String.format(html, value, imageUrl);
                         } else {
-                            str = Ext.String.format(html, value);
+                            str = String.format(html, value);
                         }
                     }
                     return str;
@@ -132,25 +132,25 @@ sitools.user.component.dataviews.dataviewUtils = {
                
                 case ColumnRendererEnum.DATASET_ICON_LINK :
                     if (!Ext.isEmpty(columnRenderer.linkText)) {
-                        tplString += Ext.String.format("<tpl if=\"this.isNotEmpty({0})\">", col.columnAlias);              
-                        value = Ext.String.format(html, "{" + col.columnAlias + "}");
-                        tplString += Ext.String.format('<span class="dataview_columnValue"><div class=x-view-entete style="{2}">{0} </div> {1}</span>', col.header, value, style);
+                        tplString += String.format("<tpl if=\"this.isNotEmpty({0})\">", col.columnAlias);              
+                        value = String.format(html, "{" + col.columnAlias + "}");
+                        tplString += String.format('<span class="dataview_columnValue"><div class=x-view-entete style="{2}">{0} </div> {1}</span>', col.header, value, style);
                         tplString += "</tpl>";            
-                        tplString += Ext.String.format("<tpl if=\"this.isEmpty({0})\">", col.columnAlias);
+                        tplString += String.format("<tpl if=\"this.isEmpty({0})\">", col.columnAlias);
                         value = "";
-                        tplString += Ext.String.format('<span class="dataview_columnValue"><div class=x-view-entete style="{2}">{0} </div> {1}</span>', col.header, value, style);
+                        tplString += String.format('<span class="dataview_columnValue"><div class=x-view-entete style="{2}">{0} </div> {1}</span>', col.header, value, style);
                         tplString += "</tpl>";
                     } else if (!Ext.isEmpty(columnRenderer.image)) {
-                        tplString += Ext.String.format("<tpl if=\"this.isNotEmpty({0})\">", col.columnAlias);
-                        tplString += Ext.String.format('<li  class="img-link" ext:qtip="{0}">', col.header);
-                        tplString += Ext.String.format(html, "{" + col.columnAlias + "}");
+                        tplString += String.format("<tpl if=\"this.isNotEmpty({0})\">", col.columnAlias);
+                        tplString += String.format('<li  class="img-link" ext:qtip="{0}">', col.header);
+                        tplString += String.format(html, "{" + col.columnAlias + "}");
                         tplString += '</li></tpl>';
                     }
                     break;
                 case ColumnRendererEnum.IMAGE_THUMB_FROM_IMAGE :
-                    tplString += Ext.String.format("<tpl if=\"this.isNotEmpty({0})\">", col.columnAlias);
-                    tplString += Ext.String.format('<li  class="img-link" ext:qtip="{0}">', col.header);
-                    tplString += Ext.String.format(html, "{" + col.columnAlias + "}");
+                    tplString += String.format("<tpl if=\"this.isNotEmpty({0})\">", col.columnAlias);
+                    tplString += String.format('<li  class="img-link" ext:qtip="{0}">', col.header);
+                    tplString += String.format(html, "{" + col.columnAlias + "}");
                     tplString += '</li></tpl>';
                     break;
                 case ColumnRendererEnum.IMAGE_FROM_SQL :
@@ -160,32 +160,32 @@ sitools.user.component.dataviews.dataviewUtils = {
                     } else if (!Ext.isEmpty(columnRenderer.columnAlias)) {
                         imageUrl = "{" + columnRenderer.columnAlias + "}";            
                     }
-                    tplString += Ext.String.format("<tpl if=\"this.isNotEmpty({0})\">", col.columnAlias);
-                    tplString += Ext.String.format('<li  class="img-link" ext:qtip="{0}">', col.header, imageUrl);
-                    tplString += Ext.String.format(html, "{" + col.columnAlias + "}", imageUrl);
+                    tplString += String.format("<tpl if=\"this.isNotEmpty({0})\">", col.columnAlias);
+                    tplString += String.format('<li  class="img-link" ext:qtip="{0}">', col.header, imageUrl);
+                    tplString += String.format(html, "{" + col.columnAlias + "}", imageUrl);
                     tplString += '</li></tpl>';
                     break;
                 default :                                 
-                    tplString += Ext.String.format("<tpl if=\"this.isNotEmpty({0})\">", col.columnAlias);
-                    value = Ext.String.format(html, "{" + col.columnAlias + "}");
-                    tplString += Ext.String.format('<span class="dataview_columnValue"><div class=x-view-entete style="{2}">{0} </div> {1}</span>', col.header, value, style);
+                    tplString += String.format("<tpl if=\"this.isNotEmpty({0})\">", col.columnAlias);
+                    value = String.format(html, "{" + col.columnAlias + "}");
+                    tplString += String.format('<span class="dataview_columnValue"><div class=x-view-entete style="{2}">{0} </div> {1}</span>', col.header, value, style);
                     tplString += "</tpl>";            
-                    tplString += Ext.String.format("<tpl if=\"this.isEmpty({0})\">", col.columnAlias);
+                    tplString += String.format("<tpl if=\"this.isEmpty({0})\">", col.columnAlias);
                     value = "";
-                    tplString += Ext.String.format('<span class="dataview_columnValue"><div class=x-view-entete style="{2}">{0} </div> {1}</span>', col.header, value, style);
+                    tplString += String.format('<span class="dataview_columnValue"><div class=x-view-entete style="{2}">{0} </div> {1}</span>', col.header, value, style);
                     tplString += "</tpl>";                    
                     break;
                 }
             } else {
                 if (sql2ext.get(col.sqlColumnType) == 'dateAsString') {
-                    tplString += Ext.String.format('<span class="dataview_columnValue"><div class=x-view-entete style="{2}">{0} </div> <tpl if=\"this.isValidDate({1})\">{[Date.parseDate(values.{1}, SITOOLS_DATE_FORMAT).format("{3}")]}</tpl></span>', 
+                    tplString += String.format('<span class="dataview_columnValue"><div class=x-view-entete style="{2}">{0} </div> <tpl if=\"this.isValidDate({1})\">{[Date.parseDate(values.{1}, SITOOLS_DATE_FORMAT).format("{3}")]}</tpl></span>', 
                         col.header, 
                         col.columnAlias, 
                         style, 
                         Ext.isEmpty(col.format) ? SITOOLS_DEFAULT_IHM_DATE_FORMAT : col.format);
                 }
                 else {
-                    tplString += Ext.String.format('<span class="dataview_columnValue"><div class=x-view-entete style="{2}">{0} </div> {{1}}</span>', col.header, col.columnAlias, style);
+                    tplString += String.format('<span class="dataview_columnValue"><div class=x-view-entete style="{2}">{0} </div> {{1}}</span>', col.header, col.columnAlias, style);
                 }
             }
             return tplString;

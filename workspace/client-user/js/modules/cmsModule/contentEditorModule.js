@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  * 
  * This file is part of SITools2.
  * 
@@ -24,10 +24,7 @@ Ext.namespace('sitools.user.modules');
  * @cfg {Array} listProjectModulesConfig, the list of paramaters to set the module with
  * @extends Ext.Panel
  */
-Ext.define('sitools.user.modules.contentEditorModule', {
-    extend : 'Ext.panel.Panel',
-    alias : 'sitools.user.modules.contentEditorModule',
-    
+sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
     /**
      * the node to activate
      * @type Ext.tree.TreeNode
@@ -109,7 +106,7 @@ Ext.define('sitools.user.modules.contentEditorModule', {
             htmlReaderCfg.defaultSrc = this.url;
         }
         
-        var textTooltip = Ext.String.format(i18n.get('label.runCopyInfo'), this.datastorageSrc, this.datastorageDest);
+        var textTooltip = String.format(i18n.get('label.runCopyInfo'), this.datastorageSrc, this.datastorageDest);
         
         this.treeToolbar = new sitools.user.modules.cmsTreeToolbar({
             allowDataPublish : this.allowDataPublish,
@@ -1246,3 +1243,5 @@ sitools.user.modules.contentEditorModule.getParameters = function () {
         }
     }];
 };
+
+Ext.reg('sitools.user.modules.contentEditorModule', sitools.user.modules.contentEditorModule);

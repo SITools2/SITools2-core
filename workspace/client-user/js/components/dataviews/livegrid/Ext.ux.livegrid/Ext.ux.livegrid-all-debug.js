@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -53,9 +53,7 @@ Ext.namespace('Ext.ux.grid.livegrid');
  * 
  * @author Thorsten Suckow-Homberg <ts@siteartwork.de>
  */
-Ext.define('Ext.ux.grid.livegrid.GridPanel', {
-    extend : 'Ext.grid.Panel',
-    alias : 'Ext.ux.grid.livegrid.GridPanel',
+Ext.ux.grid.livegrid.GridPanel = Ext.extend(Ext.grid.GridPanel, {
 
     initComponent : function () {
         if (this.cls) {
@@ -138,148 +136,148 @@ Ext.namespace('Ext.ux.grid.livegrid');
  * 
  * @author Thorsten Suckow-Homberg <ts@siteartwork.de>
  */
-Ext.define('Ext.ux.grid.livegrid.GridView', {
-    extend : 'Ext.ux.sitoolsGridView',
-    alias : 'Ext.ux.grid.livegrid.GridView',
-    
-    constructor : function (config) {
-        this.addEvents({
-            /**
-             * @event beforebuffer Fires when the store is about to buffer new data.
-             * @param {Ext.ux.BufferedGridView}
-             *            this
-             * @param {Ext.data.Store}
-             *            store The store
-             * @param {Number}
-             *            rowIndex
-             * @param {Number}
-             *            visibleRows
-             * @param {Number}
-             *            totalCount
-             * @param {Number}
-             *            options The options with which the buffer request was
-             *            called
-             */
-            'beforebuffer' : true,
-            /**
-             * @event buffer Fires when the store is finsihed buffering new data.
-             * @param {Ext.ux.BufferedGridView}
-             *            this
-             * @param {Ext.data.Store}
-             *            store The store
-             * @param {Number}
-             *            rowIndex
-             * @param {Number}
-             *            visibleRows
-             * @param {Number}
-             *            totalCount
-             * @param {Object}
-             *            options
-             */
-            'buffer' : true,
-            /**
-             * @event bufferfailure Fires when buffering failed.
-             * @param {Ext.ux.BufferedGridView}
-             *            this
-             * @param {Ext.data.Store}
-             *            store The store
-             * @param {Object}
-             *            options The options the buffer-request was initiated with
-             */
-            'bufferfailure' : true,
-            /**
-             * @event cursormove Fires when the the user scrolls through the data.
-             * @param {Ext.ux.BufferedGridView}
-             *            this
-             * @param {Number}
-             *            rowIndex The index of the first visible row in the grid
-             *            absolute to it's position in the model.
-             * @param {Number}
-             *            visibleRows The number of rows visible in the grid.
-             * @param {Number}
-             *            totalCount
-             */
-            'cursormove' : true,
-            /**
-             * @event abortrequest Fires when the store is about to reload (this
-             *        does NOT mean buffering). If you are using a custom proxy in
-             *        your store, you should listen to this event and abort any
-             *        ongoing server request established in your custom proxy.
-             * @param {Ext.data.Store}
-             *            store
-             * @param {Object}
-             *            options
-             */
-            'abortrequest' : true
+Ext.ux.grid.livegrid.GridView = function (config) {
 
-        });
-
+    this.addEvents({
         /**
-         * @cfg {Number} scrollDelay The number of microseconds a call to the
-         *      onLiveScroll-lisener should be delayed when the scroll event fires
+         * @event beforebuffer Fires when the store is about to buffer new data.
+         * @param {Ext.ux.BufferedGridView}
+         *            this
+         * @param {Ext.data.Store}
+         *            store The store
+         * @param {Number}
+         *            rowIndex
+         * @param {Number}
+         *            visibleRows
+         * @param {Number}
+         *            totalCount
+         * @param {Number}
+         *            options The options with which the buffer request was
+         *            called
          */
-
+        'beforebuffer' : true,
         /**
-         * @cfg {Number} bufferSize The number of records that will at least always
-         *      be available in the store for rendering. This value will be send to
-         *      the server as the <tt>limit</tt> parameter and should not change
-         *      during the lifetime of a grid component. Note: In a paging grid,
-         *      this number would indicate the page size. The value should be set
-         *      high enough to make a userfirendly scrolling possible and should be
-         *      greater than the sum of {nearLimit} and {visibleRows}. Usually, a
-         *      value in between 150 and 200 is good enough. A lesser value will
-         *      more often make the store re-request new data, while a larger number
-         *      will make loading times higher.
+         * @event buffer Fires when the store is finsihed buffering new data.
+         * @param {Ext.ux.BufferedGridView}
+         *            this
+         * @param {Ext.data.Store}
+         *            store The store
+         * @param {Number}
+         *            rowIndex
+         * @param {Number}
+         *            visibleRows
+         * @param {Number}
+         *            totalCount
+         * @param {Object}
+         *            options
          */
-
+        'buffer' : true,
         /**
-         * @cfg {Number} nearLimit This value represents a near value that is
-         *      responsible for deciding if a request for new data is needed. The
-         *      lesser the number, the more often new data will be requested. The
-         *      number should be set to a value that lies in between 1/4 to 1/2 of
-         *      the {bufferSize}.
+         * @event bufferfailure Fires when buffering failed.
+         * @param {Ext.ux.BufferedGridView}
+         *            this
+         * @param {Ext.data.Store}
+         *            store The store
+         * @param {Object}
+         *            options The options the buffer-request was initiated with
          */
-
+        'bufferfailure' : true,
         /**
-         * @cfg {Number} horizontalScrollOffset The height of a horizontal aligned
-         *      scrollbar. The scrollbar is shown if the total width of all visible
-         *      columns exceeds the width of the grid component. On Windows XP (IE7,
-         *      FF2), this value defaults to 17.
+         * @event cursormove Fires when the the user scrolls through the data.
+         * @param {Ext.ux.BufferedGridView}
+         *            this
+         * @param {Number}
+         *            rowIndex The index of the first visible row in the grid
+         *            absolute to it's position in the model.
+         * @param {Number}
+         *            visibleRows The number of rows visible in the grid.
+         * @param {Number}
+         *            totalCount
          */
-        this.horizontalScrollOffset = 17;
-
+        'cursormove' : true,
         /**
-         * @type {Boolean} _checkEmptyBody Since Ext 3.0, &nbsp; would initially
-         *       added to the mainBody as the first child if there are no rows to
-         *       render. This element has to be removed when the first rows get
-         *       added so the UI does not crash. This property is here to determine
-         *       if this element was already removed, so we don't have to query
-         *       innerHTML all the time.
+         * @event abortrequest Fires when the store is about to reload (this
+         *        does NOT mean buffering). If you are using a custom proxy in
+         *        your store, you should listen to this event and abort any
+         *        ongoing server request established in your custom proxy.
+         * @param {Ext.data.Store}
+         *            store
+         * @param {Object}
+         *            options
          */
-        this._checkEmptyBody = true;
+        'abortrequest' : true
 
-        Ext.apply(this, config);
+    });
 
-        this.templates = {};
-        /**
-         * The master template adds an addiiotnal scrollbar to make cursoring in the
-         * data possible.
-         */
-        this.templates.master = new Ext.Template(
-                '<div class="x-grid3" hidefocus="true"><div class="liveScroller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>',
-                '<div class="x-grid3-viewport"">',
-                '<div class="x-grid3-header"><div class="x-grid3-header-inner"><div class="x-grid3-header-offset" style="{ostyle}">{header}</div></div><div class="x-clear"></div></div>',
-                '<div class="x-grid3-scroller" style="overflow-y:hidden !important;"><div class="x-grid3-body" style="{bstyle}">{body}</div><a href="#" class="x-grid3-focus" tabIndex="-1"></a></div>',
-                "</div>", '<div class="x-grid3-resize-marker">&#160;</div>',
-                '<div class="x-grid3-resize-proxy">&#160;</div>', "</div>");
+    /**
+     * @cfg {Number} scrollDelay The number of microseconds a call to the
+     *      onLiveScroll-lisener should be delayed when the scroll event fires
+     */
 
-        // shorthands for often used parent classes
-        this._gridViewSuperclass = Ext.ux.grid.livegrid.GridView.superclass;
+    /**
+     * @cfg {Number} bufferSize The number of records that will at least always
+     *      be available in the store for rendering. This value will be send to
+     *      the server as the <tt>limit</tt> parameter and should not change
+     *      during the lifetime of a grid component. Note: In a paging grid,
+     *      this number would indicate the page size. The value should be set
+     *      high enough to make a userfirendly scrolling possible and should be
+     *      greater than the sum of {nearLimit} and {visibleRows}. Usually, a
+     *      value in between 150 and 200 is good enough. A lesser value will
+     *      more often make the store re-request new data, while a larger number
+     *      will make loading times higher.
+     */
 
-        this._gridViewSuperclass.constructor.call(this);
-    },
-    
- // {{{
+    /**
+     * @cfg {Number} nearLimit This value represents a near value that is
+     *      responsible for deciding if a request for new data is needed. The
+     *      lesser the number, the more often new data will be requested. The
+     *      number should be set to a value that lies in between 1/4 to 1/2 of
+     *      the {bufferSize}.
+     */
+
+    /**
+     * @cfg {Number} horizontalScrollOffset The height of a horizontal aligned
+     *      scrollbar. The scrollbar is shown if the total width of all visible
+     *      columns exceeds the width of the grid component. On Windows XP (IE7,
+     *      FF2), this value defaults to 17.
+     */
+    this.horizontalScrollOffset = 17;
+
+    /**
+     * @type {Boolean} _checkEmptyBody Since Ext 3.0, &nbsp; would initially
+     *       added to the mainBody as the first child if there are no rows to
+     *       render. This element has to be removed when the first rows get
+     *       added so the UI does not crash. This property is here to determine
+     *       if this element was already removed, so we don't have to query
+     *       innerHTML all the time.
+     */
+    this._checkEmptyBody = true;
+
+    Ext.apply(this, config);
+
+    this.templates = {};
+    /**
+     * The master template adds an addiiotnal scrollbar to make cursoring in the
+     * data possible.
+     */
+    this.templates.master = new Ext.Template(
+            '<div class="x-grid3" hidefocus="true"><div class="liveScroller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>',
+            '<div class="x-grid3-viewport"">',
+            '<div class="x-grid3-header"><div class="x-grid3-header-inner"><div class="x-grid3-header-offset" style="{ostyle}">{header}</div></div><div class="x-clear"></div></div>',
+            '<div class="x-grid3-scroller" style="overflow-y:hidden !important;"><div class="x-grid3-body" style="{bstyle}">{body}</div><a href="#" class="x-grid3-focus" tabIndex="-1"></a></div>',
+            "</div>", '<div class="x-grid3-resize-marker">&#160;</div>',
+            '<div class="x-grid3-resize-proxy">&#160;</div>', "</div>");
+
+    // shorthands for often used parent classes
+    this._gridViewSuperclass = Ext.ux.grid.livegrid.GridView.superclass;
+
+    this._gridViewSuperclass.constructor.call(this);
+
+};
+
+Ext.extend(Ext.ux.grid.livegrid.GridView, Ext.ux.sitoolsGridView, {
+
+    // {{{
     // --------------------------properties-------------------------------------
 
     /**
@@ -466,7 +464,7 @@ Ext.define('Ext.ux.grid.livegrid.GridView', {
 
             
             var params = {
-                colModel : Ext.util.JSON.encode(extColModelToSrv(this.cm))
+				colModel : Ext.util.JSON.encode(extColModelToSrv(this.cm))
             };
             var sInfo = this.ds.sortInfo;
 
@@ -1803,8 +1801,8 @@ Ext.define('Ext.ux.grid.livegrid.GridView', {
         var contHeight = liveScrollerDom.parentNode.offsetHeight + ((ds.totalLength > 0 && scrollbar) ? -this.horizontalScrollOffset : 0) - this.hdHeight;
 
         liveScrollerDom.style.height = Math.max(contHeight, this.horizontalScrollOffset * 2) + "px";
-        this.liveScroller.dom.style.width = (this.getScrollOffset() + 2) + "px";
-        
+		this.liveScroller.dom.style.width = (this.getScrollOffset() + 2) + "px";
+		
         if (this.rowHeight == -1) {
             return;
         }
@@ -1827,7 +1825,7 @@ Ext.define('Ext.ux.grid.livegrid.GridView', {
             h = 35000000;
             var nbRecords = Math.floor(h / this.rowHeight);
             if (this._displayWarningTooManyRows) {
-                Ext.Msg.alert(i18n.get('label.warning'), Ext.String.format(i18n.get("label.tooManyRecords"), nbRecords, this.visibleRows + hiddenRows));
+                Ext.Msg.alert(i18n.get('label.warning'), String.format(i18n.get("label.tooManyRecords"), nbRecords, this.visibleRows + hiddenRows));
                 this._displayWarningTooManyRows = false;
             }
             
@@ -1944,8 +1942,8 @@ Ext.define('Ext.ux.grid.livegrid.GridView', {
         }
 
     }
-});
 
+});
 /**
  * Ext.ux.grid.livegrid.JsonReader Copyright (c) 2007-2008,
  * http://www.siteartwork.de
@@ -1981,67 +1979,66 @@ Ext.namespace('Ext.ux.grid.livegrid');
  * 
  * @author Thorsten Suckow-Homberg <ts@siteartwork.de>
  */
-Ext.define('Ext.ux.grid.livegrid.JsonReader', {
-   extend : 'Ext.data.JsonReader', 
-   alias : 'Ext.ux.grid.livegrid.JsonReader',
-   
-   constructor : function (meta, recordType) {
-       Ext.ux.grid.livegrid.JsonReader.superclass.constructor.call(this, meta, recordType);
-   },
-   
-   /**
-    * @cfg {String} versionProperty Name of the property from which to retrieve
-    *      the version of the data repository this reader parses the reponse
-    *      from
-    */
+Ext.ux.grid.livegrid.JsonReader = function (meta, recordType) {
 
-   buildExtractors : function () {
-       if (this.ef) {
-           return;
-       }
+    Ext.ux.grid.livegrid.JsonReader.superclass.constructor.call(this, meta, recordType);
+};
 
-       var s = this.meta;
+Ext.extend(Ext.ux.grid.livegrid.JsonReader, Ext.data.JsonReader, {
 
-       if (s.versionProperty) {
-           this.getVersion = this.createAccessor(s.versionProperty);
-       }
+    /**
+     * @cfg {String} versionProperty Name of the property from which to retrieve
+     *      the version of the data repository this reader parses the reponse
+     *      from
+     */
 
-       Ext.ux.grid.livegrid.JsonReader.superclass.buildExtractors.call(this);
-   },
+    buildExtractors : function () {
+        if (this.ef) {
+            return;
+        }
 
-   /**
-    * Create a data block containing Ext.data.Records from a JSON object.
-    * 
-    * @param {Object}
-    *            o An object which contains an Array of row objects in the
-    *            property specified in the config as 'root, and optionally a
-    *            property, specified in the config as 'totalProperty' which
-    *            contains the total size of the dataset.
-    * @return {Object} data A data block which is used by an Ext.data.Store
-    *         object as a cache of Ext.data.Records.
-    */
-   readRecords : function (o) {
-       // shorten for future calls
-       if (!this.__readRecords) {
-           this.__readRecords = Ext.ux.grid.livegrid.JsonReader.superclass.readRecords;
-       }
-       var intercept = this.__readRecords.call(this, o);
+        var s = this.meta;
 
-       if (this.meta.versionProperty) {
-           var v = this.getVersion(o);
-           intercept.version = (v === undefined || v === "") ? null : v;
-       }
-       //TODO
-       if (Ext.isEmpty(o.total)) {
-           intercept.totalRecords = this.totalRecordsSitools;
-       } else {
-           this.totalRecordsSitools = o.total;
-       }
+        if (s.versionProperty) {
+            this.getVersion = this.createAccessor(s.versionProperty);
+        }
 
-       return intercept;
-   }
+        Ext.ux.grid.livegrid.JsonReader.superclass.buildExtractors.call(this);
+    },
+
+    /**
+     * Create a data block containing Ext.data.Records from a JSON object.
+     * 
+     * @param {Object}
+     *            o An object which contains an Array of row objects in the
+     *            property specified in the config as 'root, and optionally a
+     *            property, specified in the config as 'totalProperty' which
+     *            contains the total size of the dataset.
+     * @return {Object} data A data block which is used by an Ext.data.Store
+     *         object as a cache of Ext.data.Records.
+     */
+    readRecords : function (o) {
+        // shorten for future calls
+        if (!this.__readRecords) {
+            this.__readRecords = Ext.ux.grid.livegrid.JsonReader.superclass.readRecords;
+        }
+        var intercept = this.__readRecords.call(this, o);
+
+        if (this.meta.versionProperty) {
+            var v = this.getVersion(o);
+            intercept.version = (v === undefined || v === "") ? null : v;
+        }
+        //TODO
+        if (Ext.isEmpty(o.total)) {
+            intercept.totalRecords = this.totalRecordsSitools;
+        } else {
+            this.totalRecordsSitools = o.total;
+        }
+
+        return intercept;
+    }
+
 });
-
 /**
  * Ext.ux.grid.livegrid.RowSelectionModel Copyright (c) 2007-2008,
  * http://www.siteartwork.de
@@ -2077,33 +2074,32 @@ Ext.namespace('Ext.ux.grid.livegrid');
  * 
  * @author Thorsten Suckow-Homberg <ts@siteartwork.de>
  */
-Ext.define('Ext.ux.grid.livegrid.RowSelectionModel', {
-    extend : 'Ext.selection.RowModel',
-    alias : 'Ext.ux.grid.livegrid.RowSelectionModel',
+Ext.ux.grid.livegrid.RowSelectionModel = function (config) {
     
-    constructor : function (config) {
+    this.addEvents({
+        /**
+         * The selection dirty event will be triggered in case records were
+         * inserted/ removed at view indexes that may affect the current
+         * selection ranges which are only represented by view indexes, but not
+         * current record-ids
+         */
+        'selectiondirty' : true,
         
-        this.addEvents({
-            /**
-             * The selection dirty event will be triggered in case records were
-             * inserted/ removed at view indexes that may affect the current
-             * selection ranges which are only represented by view indexes, but not
-             * current record-ids
-             */
-            'selectiondirty' : true,
-            
-            //SITOOLS, MG, nouvel event pour gérer les selections
-            'handleMouseDown' : true
-        });
+        //SITOOLS, MG, nouvel event pour gérer les selections
+        'handleMouseDown' : true
+    });
 
-        Ext.apply(this, config);
+    Ext.apply(this, config);
 
-        this.pendingSelections = {};
+    this.pendingSelections = {};
 
-        Ext.ux.grid.livegrid.RowSelectionModel.superclass.constructor.call(this);
-    },
-    
- // private
+    Ext.ux.grid.livegrid.RowSelectionModel.superclass.constructor.call(this);
+
+};
+
+Ext.extend(Ext.ux.grid.livegrid.RowSelectionModel, Ext.grid.RowSelectionModel, {
+
+    // private
     initEvents : function () {
         Ext.ux.grid.livegrid.RowSelectionModel.superclass.initEvents.call(this);
 
@@ -2410,9 +2406,9 @@ Ext.define('Ext.ux.grid.livegrid.RowSelectionModel', {
         if (this.lastActive == index) {
             this.lastActive = false;
         }
-        
-        //DA : suppression de l'item ds allSelections
-        delete this.allSelections[index];
+		
+		//DA : suppression de l'item ds allSelections
+		delete this.allSelections[index];
         this.selections.remove(record);
 
         if (!preventViewNotify) {
@@ -2489,9 +2485,9 @@ Ext.define('Ext.ux.grid.livegrid.RowSelectionModel', {
             } else {
                 this.pendingSelections[index] = true;
             }
-            //DA : gestion de l'objet allSelections
-            this.allSelections[index] = true;
-            
+			//DA : gestion de l'objet allSelections
+			this.allSelections[index] = true;
+			
             this.last = this.lastActive = index;
 
             if (!preventViewNotify) {
@@ -2761,7 +2757,7 @@ Ext.define('Ext.ux.grid.livegrid.RowSelectionModel', {
         var store = this.grid.store;
         this.selectRange(store.bufferRange[0],store.bufferRange[1] , (Ext.isEmpty(keepExisting)?false:keepExisting));
     }
-    
+
 });
 
 /**
@@ -2853,92 +2849,89 @@ Ext.namespace('Ext.ux.grid.livegrid');
  * 
  * @author Thorsten Suckow-Homberg <ts@siteartwork.de>
  */
-Ext.define('Ext.ux.grid.livegrid.Store', {
-    extend : 'Ext.data.Store',
-    alias : 'Ext.ux.grid.livegrid.Store',
-        
-    constructor : function (config) {
+Ext.ux.grid.livegrid.Store = function (config) {
 
-        config = config || {};
+    config = config || {};
 
-        // remoteSort will always be set to true.
-        config.remoteSort = true;
+    // remoteSort will always be set to true.
+    config.remoteSort = true;
 
-        // we will intercept the autoLoad property and set it to false so we do not
-        // load any contents of the store before the View has not fully initialized
-        // itself. if autoLoad was set to true, the Ext.ux.grid.livegrid.GridPanel
-        // will take care of loading the store once it has been rendered
-        this._autoLoad = config.autoLoad ? true : false;
-        config.autoLoad = false;
+    // we will intercept the autoLoad property and set it to false so we do not
+    // load any contents of the store before the View has not fully initialized
+    // itself. if autoLoad was set to true, the Ext.ux.grid.livegrid.GridPanel
+    // will take care of loading the store once it has been rendered
+    this._autoLoad = config.autoLoad ? true : false;
+    config.autoLoad = false;
 
-        this.addEvents(
-        /**
-         * @event bulkremove Fires when a bulk remove operation was finished.
-         * @param {Ext.ux.BufferedGridStore}
-         *            this
-         * @param {Array}
-         *            An array with the records that have been removed. The values
-         *            for each array index are record - the record that was removed
-         *            index - the index of the removed record in the store
-         */
-        'bulkremove',
-        /**
-         * @event versionchange Fires when the version property has changed.
-         * @param {Ext.ux.BufferedGridStore}
-         *            this
-         * @param {String}
-         *            oldValue
-         * @param {String}
-         *            newValue
-         */
-        'versionchange',
-        /**
-         * @event beforeselectionsload Fires before the store sends a request for
-         *        ranges of records to the server.
-         * @param {Ext.ux.BufferedGridStore}
-         *            this
-         * @param {Array}
-         *            ranges
-         */
-        'beforeselectionsload',
-        /**
-         * @event selectionsload Fires when selections have been loaded.
-         * @param {Ext.ux.BufferedGridStore}
-         *            this
-         * @param {Array}
-         *            records An array containing the loaded records from the
-         *            server.
-         * @param {Array}
-         *            ranges An array containing the ranges of indexes this records
-         *            may represent.
-         */
-        'selectionsload');
+    this.addEvents(
+    /**
+     * @event bulkremove Fires when a bulk remove operation was finished.
+     * @param {Ext.ux.BufferedGridStore}
+     *            this
+     * @param {Array}
+     *            An array with the records that have been removed. The values
+     *            for each array index are record - the record that was removed
+     *            index - the index of the removed record in the store
+     */
+    'bulkremove',
+    /**
+     * @event versionchange Fires when the version property has changed.
+     * @param {Ext.ux.BufferedGridStore}
+     *            this
+     * @param {String}
+     *            oldValue
+     * @param {String}
+     *            newValue
+     */
+    'versionchange',
+    /**
+     * @event beforeselectionsload Fires before the store sends a request for
+     *        ranges of records to the server.
+     * @param {Ext.ux.BufferedGridStore}
+     *            this
+     * @param {Array}
+     *            ranges
+     */
+    'beforeselectionsload',
+    /**
+     * @event selectionsload Fires when selections have been loaded.
+     * @param {Ext.ux.BufferedGridStore}
+     *            this
+     * @param {Array}
+     *            records An array containing the loaded records from the
+     *            server.
+     * @param {Array}
+     *            ranges An array containing the ranges of indexes this records
+     *            may represent.
+     */
+    'selectionsload');
 
-        Ext.ux.grid.livegrid.Store.superclass.constructor.call(this, config);
+    Ext.ux.grid.livegrid.Store.superclass.constructor.call(this, config);
 
-        this.totalLength = 0;
+    this.totalLength = 0;
 
-        /**
-         * The array represents the range of rows available in the buffer absolute
-         * to the indexes of the data model. Initialized with [-1, -1] which tells
-         * that no records are currrently buffered
-         * 
-         * @param {Array}
-         */
+    /**
+     * The array represents the range of rows available in the buffer absolute
+     * to the indexes of the data model. Initialized with [-1, -1] which tells
+     * that no records are currrently buffered
+     * 
+     * @param {Array}
+     */
+    this.bufferRange = [ -1, -1 ];
+
+    this.on('clear', function () {
         this.bufferRange = [ -1, -1 ];
+    }, this);
 
-        this.on('clear', function () {
-            this.bufferRange = [ -1, -1 ];
-        }, this);
+    if (this.url && !this.selectionsProxy) {
+        this.selectionsProxy = new Ext.data.HttpProxy({
+            url : this.url
+        });
+    }
 
-        if (this.url && !this.selectionsProxy) {
-            this.selectionsProxy = new Ext.data.HttpProxy({
-                url : this.url
-            });
-        }
+};
 
-    },
-
+Ext.extend(Ext.ux.grid.livegrid.Store, Ext.data.Store, {
 
     /**
      * The version of the data in the store. This value is represented by the
@@ -3362,8 +3355,8 @@ Ext.define('Ext.ux.grid.livegrid.Store', {
     },
     findBy : function () {
     }
-});
 
+});
 /**
  * Ext.ux.grid.livegrid.Toolbar Copyright (c) 2007-2008,
  * http://www.siteartwork.de
@@ -3402,8 +3395,7 @@ Ext.namespace('Ext.ux.grid.livegrid');
  * 
  * @author Thorsten Suckow-Homberg <ts@siteartwork.de>
  */
-Ext.define('Ext.ux.grid.livegrid.Toolbar', {
-    extend : 'Ext.toolbar.Toolbar',
+Ext.ux.grid.livegrid.Toolbar = Ext.extend(Ext.Toolbar, {
 
     /**
      * @cfg {Ext.grid.GridPanel} grid The grid the toolbar is bound to. If
@@ -3457,7 +3449,7 @@ Ext.define('Ext.ux.grid.livegrid.Toolbar', {
     // private
     updateInfo : function (rowIndex, visibleRows, totalCount) {
         if (this.displayEl) {
-            var msg = totalCount === 0 ? this.emptyMsg : Ext.String.format(this.displayMsg, rowIndex + 1, Math.min(rowIndex + 1 + visibleRows, totalCount), totalCount);
+            var msg = totalCount === 0 ? this.emptyMsg : String.format(this.displayMsg, rowIndex + 1, Math.min(rowIndex + 1 + visibleRows, totalCount), totalCount);
             this.displayEl.update(msg);
         }
     },
@@ -3625,17 +3617,16 @@ Ext.namespace('Ext.ux.grid.livegrid');
  * @extends Ext.dd.DragZone
  * @author Thorsten Suckow-Homberg <ts@siteartwork.de>
  */
-Ext.define('Ext.ux.grid.livegrid.DragZone', {
-    extend : 'Ext.dd.DragZone',
-    
-    constructor : function (grid, config) {
+Ext.ux.grid.livegrid.DragZone = function (grid, config) {
 
-        Ext.ux.grid.livegrid.DragZone.superclass.constructor.call(this, grid, config);
+    Ext.ux.grid.livegrid.DragZone.superclass.constructor.call(this, grid, config);
 
-        this.view.ds.on('beforeselectionsload', this._onBeforeSelectionsLoad, this);
-        this.view.ds.on('selectionsload', this._onSelectionsLoad, this);
-    },
-    
+    this.view.ds.on('beforeselectionsload', this._onBeforeSelectionsLoad, this);
+    this.view.ds.on('selectionsload', this._onSelectionsLoad, this);
+};
+
+Ext.extend(Ext.ux.grid.livegrid.DragZone, Ext.grid.GridDragZone, {
+
     /**
      * Tells whether a drop is valid. Used inetrnally to determine if pending
      * selections need to be loaded/ have been loaded.
@@ -3675,7 +3666,6 @@ Ext.define('Ext.ux.grid.livegrid.DragZone', {
         Ext.fly(this.proxy.el.dom.firstChild).removeClass('ext-ux-livegrid-drop-waiting');
     }
 });
-
 /**
  * Ext.ux.grid.livegrid.EditorGridPanel Copyright (c) 2007-2008,
  * http://www.siteartwork.de
@@ -3711,8 +3701,7 @@ Ext.namespace('Ext.ux.grid.livegrid');
  * 
  * @author Thorsten Suckow-Homberg <ts@siteartwork.de>
  */
-Ext.define('Ext.ux.grid.livegrid.EditorGridPanel', {
-    extend : 'Ext.grid.Panel',
+Ext.ux.grid.livegrid.EditorGridPanel = Ext.extend(Ext.grid.EditorGridPanel, {
 
     /**
      * Overriden so the panel listens to the "cursormove" event for cancelling

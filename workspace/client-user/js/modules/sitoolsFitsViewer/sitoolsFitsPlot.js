@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  * 
  * This file is part of SITools2.
  * 
@@ -24,10 +24,7 @@ Ext.namespace('sitools.user.modules');
  * @class sitools.user.modules.sitoolsFitsPlot
  * @extends Ext.Panel
  */
-Ext.define('sitools.user.modules.sitoolsFitsPlot', {
-    extend : 'Ext.panel.Panel',
-    alias : 'sitools.user.modules.sitoolsFitsPlot',
-            
+sitools.user.modules.sitoolsFitsPlot = Ext.extend(Ext.Panel, {
     initComponent : function () {
         this.width = 605;
         this.height = 420;
@@ -151,3 +148,4 @@ Ext.define('sitools.user.modules.sitoolsFitsPlot', {
       );
     }
 });
+Ext.reg('sitools.user.modules.sitoolsFitsPlot', sitools.user.modules.sitoolsFitsPlot);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  * 
  * This file is part of SITools2.
  * 
@@ -24,9 +24,7 @@ Ext.namespace('sitools.user.modules');
  * @class sitools.user.modules.datastorageExplorer
  * @extends Ext.Panel
  */
-Ext.define('sitools.user.modules.datastorageExplorer', {
-    extend : 'Ext.panel.Panel',
-    alias : 'sitools.user.modules.datastorageExplorer',
+sitools.user.modules.datastorageExplorer = Ext.extend(Ext.Panel, {
 
     autoScroll : true,
     initComponent : function () {
@@ -434,10 +432,10 @@ Ext.define('sitools.user.modules.datastorageExplorer', {
             height : 350,
             region : 'center',
             store : this.store,
-            mode : 'SINGLE',
+            singleSelect : true,
             tpl : this.tpl,
             selectedClass : "datastorageSelectionClass",
-//            overItemCls:'x-view-over-ds',
+//            overClass:'x-view-over-ds',
             itemSelector : 'div.dv-datastorage-wrap',
             emptyText : i18n.get('label.nothingToDisplay'),
             listeners : {
@@ -771,3 +769,5 @@ sitools.user.modules.datastorageExplorer.getParameters = function () {
             }
         } ];
 };
+
+Ext.reg('sitools.user.modules.datastorageExplorer', sitools.user.modules.datastorageExplorer);

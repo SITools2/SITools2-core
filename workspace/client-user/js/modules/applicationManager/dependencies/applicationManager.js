@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -180,8 +180,8 @@ sitools.user.modules.applicationManager.dependencies.applicationManager = functi
         addAppHandler : addAppHandler,
         delAppHandler : delAppHandler,
         
-        sm : Ext.create('Ext.selection.RowModel',{
-            mode : 'SINGLE'
+        sm : new Ext.grid.RowSelectionModel({
+            singleSelect : true
         })
 
     }, config));

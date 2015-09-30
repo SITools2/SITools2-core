@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  * 
  * This file is part of SITools2.
  * 
@@ -52,7 +52,7 @@ sitools.user.modules.cmsViewerTreeToolbar = Ext.extend(Ext.Toolbar, {
                 displayField : 'text',
                 valueField : 'locale',
                 typeAhead : true,
-                queryMode : 'local',
+                mode : 'local',
                 forceSelection : true,
                 triggerAction : 'all',
                 emptyText : i18n.get('label.selectLanguage'),

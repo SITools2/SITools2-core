@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  * 
  * This file is part of SITools2.
  * 
@@ -31,9 +31,8 @@ Ext.namespace('sitools.user.component.dataviews.services');
  * @class sitools.user.component.dataviews.services.displaySelectionCartService
  * @extends Ext.Window
  */
-Ext.define('sitools.user.component.dataviews.services.displaySelectionCartService', {
-    alias : 'sitools.user.component.dataviews.services.displaySelectionCartService',
-    
+sitools.user.component.dataviews.services.displaySelectionCartService = {
+
 	getCartSelectionFile : function(response) {
 		if (Ext.isEmpty(response.responseText)) {
 			return;
@@ -96,7 +95,11 @@ Ext.define('sitools.user.component.dataviews.services.displaySelectionCartServic
 		// scope : this
 		// });
 	}
-});
+};
+Ext
+		.reg(
+				'sitools.user.component.dataviews.services.displaySelectionCartService',
+				sitools.user.component.dataviews.services.displaySelectionCartService);
 
 sitools.user.component.dataviews.services.displaySelectionCartService.getParameters = function() {
 	return [];

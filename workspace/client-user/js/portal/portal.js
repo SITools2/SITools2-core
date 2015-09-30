@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -158,150 +158,71 @@ sitools.Portal = function (projectsList, languages, preferences) {
         items : [ toolbar ]
     });
 
-    /***************************************************************************
-     * Creation du menu d'affichage des portlets
-     */
-    var treePanel = new Ext.Panel({
-        id : 'tree',
-        region : 'west',
-        title : i18n.get('label.components'),
-        split : true,
-        collapsible : true,
-        autoScroll : true,
-        width : 200,
-        layout : 'fit',
-        defaults : {
-            padding : 10
-        },
-        collapsed : true
-    });
 
     /***************************************************************************
      * Creation du portlet Liste des projets
      */
 
-    var data = [];
-    var store = new Ext.data.JsonStore({
-        fields : [ 'id', 'name', 'description', 'image', 'authorized', 'maintenance', 'maintenanceText' ],
-        sortInfo : {
-            field : 'name',
-            direction : 'ASC'
-        }
-    });
-
+//    var data = [];
+//    var store = new Ext.data.JsonStore({
+//        fields : [ 'id', 'name', 'description', 'image', 'authorized', 'maintenance', 'maintenanceText' ],
+//        sortInfo : {
+//            field : 'name',
+//            direction : 'ASC'
+//        }
+//    });
+    
+var portletCollection = new Ext.util.MixedCollection();
+    
     Ext.each(projectsList, function (project) {
-		var record = new Ext.data.Record({
-			id : project.id, 
-			name : project.name, 
-			description : project.description, 
-			image : project.image.url || SITOOLS_DEFAULT_PROJECT_IMAGE_URL, 
-			authorized : project.authorized,
-			maintenance : project.maintenance,
-			maintenanceText : project.maintenanceText
-		});
-       // var record = new Ext.data.Record([ project.id, project.name, project.description, project.image.url, project.authorized ]);
-		store.add(record);
-    });
-
-    var myDataView = new Ext.DataView({
-        store : store, 
-        tpl : new Ext.XTemplate('<ul>', '<tpl for=".">', 
-				'<li id="{id}" ', 
-				'<tpl if="authorized == true">',
-					'class="project',
-					'<tpl if="maintenance">',
-						' sitools-maintenance-portal',
-					'</tpl>',
-					'"', 
-				'</tpl>', 
-				'<tpl if="authorized == false">',
-					'class="project projectUnauthorized"',
-				'</tpl>', 
-				'>', 
-				'<img width="80" height="80" src="{image}" />', '<strong>{name}</strong>',
-                '<span>{description} </span>', '</li>', '</tpl>', '</ul>', 
-                {
-				compiled : true, 
-				disableFormats : true, 
-				isAuthorized : function (authorized) {
-					return authorized === true;
-				}
-            }),
-
-        // plugins : [
-        // new Ext.ux.DataViewTransition({
-        // duration : 550,
-        // idProperty: 'id'
-        // })
-        // ],
-        id : 'projectDataView',
-        itemSelector : 'li.project',
-        overItemCls : 'project-hover',
-        mode : 'SINGLE',
-        multiSelect : false,
-        autoScroll : true,
-        listeners : {
-            scope : this,
-            click : function (dataView, index, node, e) {
-                // get the projectId
-                
-                var data = dataView.getRecord(node).data;
-                var projectName = data.name;
-                var authorized = data.authorized;
-				var maintenance = data.maintenance;
-				var maintenanceText = data.maintenanceText;
-                if (authorized) {
-					if (!maintenance) {
-						window.open(projectName + "/project-index.html");
-					}
-					else {
-						var alertWindow = new Ext.Window({
-							title : i18n.get('label.maintenance'),
-							width : 600, 
-							height : 400, 
-							autoScroll : true, 
-							items : [{
-								xtype : 'panel', 
-								layout : 'fit', 
-								autoScroll : true, 
-								html : maintenanceText, 
-								padding : "5"
-							}], 
-							modal : true
-						});
-						alertWindow.show();
-					}
-                } else {
-                	sitools.userProfile.LoginUtils.connect({
-                        closable : true,
-                        url : loadUrl.get('APP_URL') + loadUrl.get('APP_LOGIN_PATH_URL') + '/login',
-                        register : loadUrl.get('APP_URL') + '/inscriptions/user',
-                        reset : loadUrl.get('APP_URL') + '/lostPassword',
-                        unblacklist : loadUrl.get('APP_URL') + '/unblacklist',
-                        handler : function () {
-                        	if (!maintenance) {
-                        		window.open(projectName + "/project-index.html");
-                        	}
-                        }
-                    });
-					//Ext.Msg.alert(i18n.get('label.warning'), i18n.get('label.unauthorized'));
-                }
-                // create the new url with the given projectId
-                
+        
+        var record = new Ext.data.Record({
+            id : project.id, 
+            name : project.name, 
+            description : project.description, 
+            image : project.image.url || SITOOLS_DEFAULT_PROJECT_IMAGE_URL, 
+            authorized : project.authorized, 
+            maintenance : project.maintenance, 
+            maintenanceText : project.maintenanceText,
+            priority : project.priority,
+            categoryProject : project.categoryProject
+        });
+        
+        
+        if (Ext.isEmpty(project.categoryProject)) {
+        	project.categoryProject = "Public";
+        }
+        
+        // creation of the portletObject if it does not already exist
+        if (Ext.isEmpty(portletCollection.get(project.categoryProject))) {
+            
+            var portletObject = {};
+            portletObject.category = project.categoryProject;
+            
+            portletObject.store = this.createStore();
+            portletObject.store.add(record);
+            portletObject.store.singleSort('priority', 'ASC');
+            
+            portletObject.dataview = this.createDataview(portletObject.store);
+            
+            portletObject.portlet = this.createPortlet(portletObject);
+            
+            if (portletObject.category == "Public") {
+                portletCollection.insert(0, project.categoryProject, portletObject);
+            } else {
+                portletCollection.add(project.categoryProject, portletObject);
+            }
+            
+        } else { // just adding record to the portletObject store
+            var portletObject = portletCollection.get(project.categoryProject);
+            if (!Ext.isEmpty(portletObject)) {
+                portletObject.store.add(record);
+                portletObject.store.singleSort('priority', 'ASC');
             }
         }
-    });
+    }, this);
 
-    var portletProjet = new Ext.ux.Portlet({
-        id : ID.PORTLET.PROJET,
-        title : i18n.get('label.portletProjetTitle'),
-        height : 560,
-        // tbar : tbar,
-        items : [ myDataView ],
-        autoScroll : true
-    });
-
-        /***************************************************************************
+     /***************************************************************************
      * Creation du portlet d'affichage des flux de l'archive
      */
 
@@ -332,7 +253,7 @@ sitools.Portal = function (projectsList, languages, preferences) {
    
     var portletRecherche = new Ext.ux.Portlet({
         collapsed : true, 
-        bodyCls : 'portletRecherche',
+        bodyCssClass : 'portletRecherche',
         id : ID.PORTLET.RECHERCHE,
         title : i18n.get('label.portletRechercheTitle'),        
         items : [ osPanel ],
@@ -386,6 +307,11 @@ sitools.Portal = function (projectsList, languages, preferences) {
     /***************************************************************************
      * Creation tabPanel Center qui contient le portal
      */
+    
+    var onlyPortletTab = [];
+    portletCollection.each(function (item, index, length) {
+        onlyPortletTab.push(item.portlet);
+    }, this);
 
     var mainPanel = new Ext.TabPanel({
         baseCls : 'portalMainPanel',
@@ -423,7 +349,7 @@ sitools.Portal = function (projectsList, languages, preferences) {
                     columnWidth : 0.50,
                     style : 'padding:10px 0 10px 10px',
                     // baseCls : 'portalMainPanel',
-                    items : [ portletProjet ]
+                    items : onlyPortletTab
                 }, {
                     columnWidth : 0.50,
                     style : 'padding:10px',
@@ -447,94 +373,9 @@ sitools.Portal = function (projectsList, languages, preferences) {
      */
     sitools.Portal.superclass.constructor.call(this, Ext.apply({
         layout : 'border',
-        items : [ menuPanel, treePanel, mainPanel ]
+        items : [ menuPanel, mainPanel ]
     }));
 
-    var treeNav = new Ext.tree.TreePanel({
-        id : 'panelNav',
-        useArrows : true,
-        autoScroll : true,
-        animate : true,
-        enableDD : false,
-        containerScroll : true,
-        rootVisible : false,
-        width : 200,
-        root : new Ext.tree.AsyncTreeNode({
-            expanded : true,
-            children : [ {
-                id : ID.PORTALTREENAV.PROJET,
-                panelId : ID.PORTLET.PROJET,
-                icon : 'res/images/icons/portlet.png',
-                text : i18n.get('label.portletProjetTitle'),
-                leaf : true,
-                checked : true,
-                listeners : {
-                    checkchange : function (node) {
-                        if (!node.attributes.checked) {
-                            Ext.get(node.attributes.panelId).hide();
-                            // Pour que le panel n'ait plus de place reservee
-                            // dans le portal
-                            Ext.get(node.attributes.panelId).addClass('x-hide-display');
-                        } else {
-                            Ext.get(node.attributes.panelId).show();
-                            Ext.get(node.attributes.panelId).removeClass('x-hide-display');
-                        }
-                    }
-                }
-            }, {
-                id : ID.PORTALTREENAV.RECHERCHE,
-                icon : 'res/images/icons/portlet.png',
-                panelId : ID.PORTLET.RECHERCHE,
-                text : i18n.get('label.portletRechercheTitle'),
-                leaf : true,
-                checked : true,
-                listeners : {
-                    checkchange : function (node) {
-                        if (!node.attributes.checked) {
-                            Ext.get(node.attributes.panelId).hide();
-                            // Pour que le panel n'ait plus de place reservee
-                            // dans le portal
-                            Ext.get(node.attributes.panelId).addClass('x-hide-display');
-                        } else {
-                            Ext.get(node.attributes.panelId).show();
-                            Ext.get(node.attributes.panelId).removeClass('x-hide-display');
-                        }
-                    }
-                }
-            }, {
-                id : ID.PORTALTREENAV.FEEDS,
-                icon : 'res/images/icons/portlet.png',
-                panelId : ID.PORTLET.FEEDS,
-                text : i18n.get('label.portletFeedsTitle'),
-                leaf : true,
-                checked : true,
-                listeners : {
-                    checkchange : function (node) {
-                        if (!node.attributes.checked) {
-                            Ext.get(node.attributes.panelId).hide();
-                            // Pour que le panel n'ait plus de place reservee
-                            // dans le portal
-                            Ext.get(node.attributes.panelId).addClass('x-hide-display');
-                        } else {
-                            Ext.get(node.attributes.panelId).show();
-                            Ext.get(node.attributes.panelId).removeClass('x-hide-display');
-                        }
-                    }
-                }
-            } ]
-        }),
-        listeners : {
-            'checkchange' : function (node, checked) {
-                if (checked) {
-                    node.getUI().addClass('complete');
-                } else {
-                    node.getUI().removeClass('complete');
-                }
-            }
-        }
-    });
-    treePanel.add(treeNav);
-    treePanel.doLayout();
     // portletFlux.doLayout();
 
 };
@@ -564,6 +405,118 @@ Ext.extend(sitools.Portal, Ext.Viewport, {
         });
         win.add(edit);
         win.doLayout();
+    },
+    
+    createStore : function () {
+        return new Ext.data.JsonStore({
+            fields : [ 'id', 'name', 'description', 'image', 'authorized', 'maintenance', 'maintenanceText', 'priority', 'categoryProject' ],
+            sortInfo : {
+                field : 'priority',
+                direction : 'ASC'
+            }
+        });
+    },
+    
+    createDataview : function (store) {
+        return new Ext.DataView({
+            store : store,
+            tpl : new Ext.XTemplate('<ul>', '<tpl for=".">', 
+                    '<li id="{id}" ', 
+                    '<tpl if="authorized == true">',
+                        'class="project',
+                        '<tpl if="maintenance">',
+                            ' sitools-maintenance-portal',
+                        '</tpl>',
+                        '"', 
+                    '</tpl>', 
+                    '<tpl if="authorized == false">',
+                        'class="project projectUnauthorized"',
+                    '</tpl>', 
+                    '>', 
+                    '<img width="80" height="80" src="{image}" />', '<strong>{name}</strong>',
+                    '<span>{description} </span>', '</li>', '</tpl>', '</ul>', 
+                    {
+                    compiled : true, 
+                    disableFormats : true, 
+                    isAuthorized : function (authorized) {
+                        return authorized === true;
+                    }
+                }),
+            cls : 'projectDataView',
+            itemSelector : 'li.project',
+            overClass : 'project-hover',
+            singleSelect : true,
+            multiSelect : false,
+            autoScroll : true,
+            listeners : {
+                scope : this,
+                click : function (dataView, index, node, e) {
+                    // get the projectId
+                    var data = dataView.getRecord(node).data;
+                    var projectName = data.name;
+                    var authorized = data.authorized;
+                    var maintenance = data.maintenance;
+                    var maintenanceText = data.maintenanceText;
+                    if (authorized) {
+                        if (!maintenance) {
+                            window.open(projectName + "/project-index.html");
+                        }
+                        else {
+                            var alertWindow = new Ext.Window({
+                                title : i18n.get('label.maintenance'),
+                                width : 600, 
+                                height : 400, 
+                                autoScroll : true, 
+                                items : [{
+                                    xtype : 'panel', 
+                                    layout : 'fit', 
+                                    autoScroll : true, 
+                                    html : maintenanceText, 
+                                    padding : "5"
+                                }], 
+                                modal : true
+                            });
+                            alertWindow.show();
+                        }
+                    } else {
+                        sitools.userProfile.LoginUtils.connect({
+                            closable : true,
+                            url : loadUrl.get('APP_URL') + loadUrl.get('APP_LOGIN_PATH_URL') + '/login',
+                            register : loadUrl.get('APP_URL') + '/inscriptions/user',
+                            reset : loadUrl.get('APP_URL') + '/lostPassword',
+                            unblacklist : loadUrl.get('APP_URL') + '/unblacklist',
+                            handler : function () {
+                                if (!maintenance) {
+                                    window.open(projectName + "/project-index.html");
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    },
+    
+    createPortlet : function (portletObject) {
+        return new Ext.ux.Portlet({
+            title : portletObject.category,
+//            height : 430,
+            boxMaxHeight : 430,
+            autoHeight : true,
+            items : [ portletObject.dataview ],
+            autoScroll : true,
+            resizable : false,
+            listeners : {
+                scope : this,
+                afterrender : function (portlet) {
+                    if (portlet.getHeight() > portlet.boxMaxHeight) {
+                        portlet.autoHeight = false;
+                        portlet.setHeight(portlet.boxMaxHeight);
+                        portlet.doLayout();
+                    }
+                }
+            }
+        });
     }
 });
 

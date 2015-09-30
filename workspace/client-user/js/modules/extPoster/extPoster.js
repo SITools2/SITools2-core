@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  * 
  * This file is part of SITools2.
  * 
@@ -24,9 +24,7 @@ Ext.namespace('sitools.user.modules');
  * @class sitools.user.modules.extPoster
  * @extends Ext.Panel
  */
-Ext.define('sitools.user.modules.extPoster', {
-    extend : 'Ext.panel.Panel',
-    alias : 'sitools.user.modules.extPoster',
+sitools.user.modules.extPoster = Ext.extend(Ext.Panel, {
     
     initComponent : function () {
     
@@ -73,7 +71,7 @@ Ext.define('sitools.user.modules.extPoster', {
                 typeAhead : true,
                 triggerAction : 'all',
                 lazyRender : true,
-                queryMode : 'local',
+                mode : 'local',
                 name : "method",
                 xtype : "combo",
                 fieldLabel : i18n.get('label.method'),
@@ -191,7 +189,7 @@ Ext.define('sitools.user.modules.extPoster', {
                 typeAhead : true,
                 triggerAction : 'all',
                 lazyRender : true,
-                queryMode : 'local',
+                mode : 'local',
                 name : "method",
                 xtype : "combo",
                 fieldLabel : i18n.get('label.method'),
@@ -330,7 +328,12 @@ Ext.define('sitools.user.modules.extPoster', {
         };
 
     }
+    
+    
+
 });
+
+Ext.reg('sitools.user.modules.extPoster', sitools.user.modules.extPoster);
 
 /**
  * sitools.user.modules.extPoster.windowResult Window to display html or text
@@ -365,6 +368,9 @@ sitools.user.modules.extPoster.windowResult = Ext.extend(Ext.Window, {
             
             this.items = [ form ];
         }
+
         sitools.user.modules.extPoster.windowResult.superclass.initComponent.call(this);
+
     }
+
 });

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  * 
  * This file is part of SITools2.
  * 
@@ -28,9 +28,7 @@ Ext.namespace('sitools.user.component.dataviews.services');
  * @class sitools.user.component.dataviews.services.sorterService
  * @extends Ext.Window
  */
-Ext.define('sitools.user.component.dataviews.services.sorterService', {
-    extend : 'Ext.window.Window',
-    alias : 'sitools.user.component.dataviews.services.sorterService',
+sitools.user.component.dataviews.services.sorterService = Ext.extend(Ext.Window, {
     
     initComponent : function () {
         
@@ -147,7 +145,7 @@ Ext.define('sitools.user.component.dataviews.services.sorterService', {
             name : "field" + 1,
             triggerAction : 'all',
             lazyRender : true,
-            queryMode : 'local',
+            mode : 'local',
             store : this.storeCombo,
             valueField : 'dataIndex',
             displayField : 'columnHeader',
@@ -215,7 +213,7 @@ Ext.define('sitools.user.component.dataviews.services.sorterService', {
         }, this); 
     }
 });
-
+Ext.reg('sitools.user.component.dataviews.services.sorterService', sitools.user.component.dataviews.services.sorterService);
 sitools.user.component.dataviews.services.sorterService.getParameters = function () {
     return [];
 };

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  * 
  * This file is part of SITools2.
  * 
@@ -24,10 +24,7 @@ Ext.namespace('sitools.user.modules');
  * @class sitools.user.modules.addToCartModule
  * @extends Ext.Panel
  */
-Ext.define('sitools.user.modules.addToCartModule', {
-    extend : 'Ext.panel.Panel',
-    alias : 'sitools.user.modules.addToCartModule',
-    
+sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
     bodyBorder : false,
     initComponent : function () {
         (Ext.isEmpty(userLogin)) ? this.user = "public" : this.user = userLogin;
@@ -208,7 +205,7 @@ Ext.define('sitools.user.modules.addToCartModule', {
         this.gridPanel = new Ext.grid.GridPanel({
 //        this.gridPanel = new Ext.ux.PersistantSelectionGridPanel({
             region : 'center',
-            sm : Ext.create('Ext.selection.RowModel'),
+            sm : new Ext.grid.RowSelectionModel(),
             colModel : this.columnModel,
             store : this.store,
             view : new  Ext.grid.GridView({
@@ -548,7 +545,7 @@ Ext.define('sitools.user.modules.addToCartModule', {
         });
         
         this.containerArticlesDetailsPanel.add(detailsSelectionPanel);
-        this.containerArticlesDetailsPanel.setTitle(Ext.String.format(i18n.get('label.orderDetails'), selected.data.selectionName));
+        this.containerArticlesDetailsPanel.setTitle(String.format(i18n.get('label.orderDetails'), selected.data.selectionName));
         this.containerArticlesDetailsPanel.doLayout();
     },
     
@@ -619,7 +616,7 @@ Ext.define('sitools.user.modules.addToCartModule', {
         var selections = this.gridPanel.getSelectionModel().getSelections();
         
         if (selections.length == 0) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
         
         var collSelections = new Ext.util.MixedCollection();
@@ -677,9 +674,11 @@ Ext.define('sitools.user.modules.addToCartModule', {
     }
 });
 
+Ext.reg('sitools.user.modules.addToCartModule', sitools.user.modules.addToCartModule);
+
 sitools.user.modules.addToCartModule.getParameters = function () {
     var projectProp = Ext.getCmp(ID.COMPONENT_SETUP.PROJECT);
-    var projectId = projectProp.formProject.down('hidden[name=id]').getValue();
+    var projectId = projectProp.formProject.find('name', 'id')[0].getValue();
     
     this.urlParents = loadUrl.get('APP_URL') + loadUrl.get('APP_PROJECTS_URL');
     this.resourcesUrlPart = loadUrl.get('APP_RESOURCES_URL');
@@ -700,12 +699,14 @@ sitools.user.modules.addToCartModule.getParameters = function () {
             },
             grid1 : new Ext.grid.GridPanel({
                 width : 200,
-                forceFit : true,
                 margins : {
                     top : 0,
                     right : 2,
                     bottom : 0,
                     left : 0
+                },
+                viewConfig : {
+                    forceFit : true
                 },
                 store : new Ext.data.JsonStore({
                     fields : [ 'id', 'name', 'description', 'parameters' ],
@@ -714,21 +715,25 @@ sitools.user.modules.addToCartModule.getParameters = function () {
                     root : "data",
                     autoLoad : true
                 }),
-                columns : [{
-                    header : i18n.get('Project Services'),
-                    dataIndex : 'name',
-                    sortable : true
-                }]
+                colModel : new Ext.grid.ColumnModel({
+                    columns : [{
+                        header : i18n.get('Project Services'),
+                        dataIndex : 'name',
+                        sortable : true
+                    }]
+                })
             }),
-            grid2 : Ext.create('Ext.grid.Panel', {
-                selModel : Ext.create('Ext.selection.RowModel'),
+            grid2 : new Ext.grid.EditorGridPanel({
+                sm : new Ext.grid.RowSelectionModel(),
                 width : 200,
-                forceFit : true,
                 margins : {
                     top : 0,
                     right : 0,
                     bottom : 0,
                     left : 2
+                },
+                viewConfig : {
+                    forceFit : true,
                 },
                 store : new Ext.data.JsonStore({
                     fields : [ 'id', 'name', 'description', 'url', 'label' ],
@@ -745,19 +750,19 @@ sitools.user.modules.addToCartModule.getParameters = function () {
                         }
                     }
                 }),
-                columns : [{
-                    header : i18n.get('Order Services'),
-                    dataIndex : 'name',
-                    width : 80,
-                    sortable : true
-                }, {
-                    header : i18n.get('label.labelEditable') + ' <img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
-                    dataIndex : 'label',
-                    width : 80,
-                    editor :{
-                        xtype : 'textfield'
-                    }
-                }]
+                colModel : new Ext.grid.ColumnModel({
+                    columns : [{
+                        header : i18n.get('Order Services'),
+                        dataIndex : 'name',
+                        width : 80,
+                        sortable : true
+                    }, {
+                        header : i18n.get('label.labelEditable') + ' <img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
+                        dataIndex : 'label',
+                        width : 80,
+                        editor : new Ext.form.TextField()
+                    },]
+                })
             }),
             name : "orderServices",
             value : [],

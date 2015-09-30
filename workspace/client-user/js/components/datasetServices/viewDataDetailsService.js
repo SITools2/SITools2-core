@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  * 
  * This file is part of SITools2.
  * 
@@ -30,9 +30,7 @@ Ext.namespace('sitools.user.component.dataviews.services');
  */
 sitools.user.component.dataviews.services.viewDataDetailsService = {};
 
-Ext.define('sitools.user.component.dataviews.services.viewDataDetailsService', {
-    alias : 'sitools.user.component.dataviews.services.viewDataDetailsService'
-});
+Ext.reg('sitools.user.component.dataviews.services.viewDataDetailsService', sitools.user.component.dataviews.services.viewDataDetailsService);
 
 sitools.user.component.dataviews.services.viewDataDetailsService.getParameters = function () {
     return [];
@@ -51,7 +49,7 @@ sitools.user.component.dataviews.services.viewDataDetailsService.executeAsServic
 
 
     if (Ext.isEmpty(selections) || selections.length === 0) {
-        return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+        return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
     }
     
     var componentCfg = {

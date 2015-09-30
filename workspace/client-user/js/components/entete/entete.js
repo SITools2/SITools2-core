@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -174,7 +174,7 @@ sitools.user.component.entete.Entete = Ext.extend(Ext.Panel, {
 							this.getEl().fadeOut({
 							    easing: 'easeOut',
 							    duration: 1,
-							    opacity : 0,
+							    endOpacity : 0,
 							    useDisplay: false
 							});
 					    }, me);
@@ -212,7 +212,7 @@ sitools.user.component.entete.Entete = Ext.extend(Ext.Panel, {
 		userContEl.fadeOut({
 		    easing: 'easeOut',
 		    duration: 1,
-		    opacity : 0,
+		    endOpacity : 0,
 		    useDisplay: false
 		});
 //		this.userContainer.setVisible(! SitoolsDesk.desktopMaximizeMode);
@@ -231,9 +231,9 @@ sitools.user.component.entete.Entete = Ext.extend(Ext.Panel, {
 		}
 		else {
 			y = enteteEl.getHeight() - navBar.getHeight() - this.userContainer.getHeight();
-			if (!Ext.isEmpty(userContEl.getMargin())) {
-				y -= userContEl.getMargin().bottom;
-				y -= userContEl.getMargin().top;
+			if (!Ext.isEmpty(userContEl.getMargins())) {
+				y -= userContEl.getMargins().bottom;
+				y -= userContEl.getMargins().top;
 			}
 		}
 		return y;

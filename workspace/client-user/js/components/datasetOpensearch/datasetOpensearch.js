@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  * 
  * This file is part of SITools2.
  * 
@@ -20,6 +20,7 @@
  * @include "openSearchResultFeed.js"
  */
 Ext.namespace('sitools.user.component');
+// sitools.component.users.datasets.datasetOpensearch = function (config) {
 /**
  * A Panel to display OpenSearch queries and result.
  * 
@@ -30,160 +31,184 @@ Ext.namespace('sitools.user.component');
  * @extends Ext.Panel
  * @requires sitools.user.component.openSearchResultFeed
  */
-Ext.define('sitools.user.component.datasetOpensearch', {
-    extend : 'Ext.panel.Panel',
-    alias : 'sitools.user.component.datasetOpensearch',
-    componentType : "openSearch",
-    layout : {
-        type : 'vbox',
-        align : 'stretch',
-        pack : 'start'
-    },
+sitools.user.component.datasetOpensearch = function(config) {
 
-    initComponent : function () {
+	Ext.apply(this, config);
+	// set the uri for the opensearch engine
+	// exemple de requete avec pagination
+	// http://localhost:8182/sitools/solr/db?q=fu*&start=10&rows=20
+	var uri = config.dataUrl + "/opensearch/search";
+	var uriSuggest = config.dataUrl + "/opensearch/suggest";
 
-        var uri = config.dataUrl + "/opensearch/search";
-        var uriSuggest = config.dataUrl + "/opensearch/suggest";
+	/**
+	 * click handler for the search button gets the search query and update the
+	 * RSS feed URI to display the results
+	 */
+	function _clickOnSearch() {
+		// create the opensearch url
+		var searchQuery = formPanel.getForm().getValues().searchQuery;
+		result.updateStore(uri + "?q=" + searchQuery);
+	}
 
-        var search;
-        var ds = Ext.create('Ext.data.JsonStore', {
-            url : uriSuggest,
-            restful : true,
-            root : 'data',
-            fields : [ {
-                name : 'field',
-                type : 'string'
-            }, {
-                name : 'name',
-                type : 'string'
-            }, {
-                name : 'nb',
-                type : 'string'
-            } ]
-        });
+	var search;
+	var ds = new Ext.data.JsonStore({
+				url : uriSuggest,
+				restful : true,
+				root : 'data',
+				fields : [{
+							name : 'field',
+							type : 'string'
+						}, {
+							name : 'name',
+							type : 'string'
+						}, {
+							name : 'nb',
+							type : 'string'
+						}]
+			});
 
-        var resultTpl = new Ext.XTemplate('<tpl for="."><div class="search-item">', '<h3>{name}<span> ({field} / {nb} results ) </span></h3>', '</div></tpl>');
+	// Custom rendering Template
+	var resultTpl = new Ext.XTemplate('<tpl for="."><div class="search-item">',
+			'<h3>{name}<span> ({field} / {nb} results ) </span></h3>',
+			'</div></tpl>');
 
-        search = Ext.create('Ext.form.field.ComboBox', {
-            store : ds,
-            displayField : 'name',
-            typeAhead : false,
-            loadingText : i18n.get("label.searching"),
-            hideTrigger : true,
-            name : 'searchQuery',
-            anchor : "90%",
-            tpl : resultTpl,
-            itemSelector : 'div.search-item',
-            minChars : 2,
-            queryParam : 'q',
-            enableKeyEvents : true,
-            scope : this,
-            listeners : {
-                scope : this,
-                beforequery : function (queryEvent) {
-                    if (queryEvent.query.indexOf(" ") == -1) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                },
-                specialkey : function (field, e) {
-                    if (e.getKey() == e.ENTER) {
-                        _clickOnSearch();
-                    }
-                },
-                beforeselect : function (self, record, index) {
-                    var tabName = record.data.name.split(':');
-                    if (tabName.length > 1) {
-                        record.data.name = tabName[1];
-                    }
+	search = new Ext.form.ComboBox({
+				store : ds,
+				displayField : 'name',
+				typeAhead : false,
+				loadingText : i18n.get("label.searching"),
+				hideTrigger : true,
+				name : 'searchQuery',
+				anchor : "90%",
+				tpl : resultTpl,
+				itemSelector : 'div.search-item',
+				minChars : 2,
+				queryParam : 'q',
+				enableKeyEvents : true,
+				scope : this,
+				listeners : {
+					scope : this,
+					beforequery : function(queryEvent) {
+						if (queryEvent.query.indexOf(" ") == -1) {
+							return true;
+						} else {
+							return false;
+						}
+					},
+					specialkey : function(field, e) {
+						if (e.getKey() == e.ENTER) {
+							_clickOnSearch();
+						}
+					},
+					beforeselect : function(self, record, index) {
+						var tabName = record.data.name.split(':');
+						if (tabName.length > 1) {
+							record.data.name = tabName[1];
+						}
 
-                    record.data.name = record.data.field + ":" + record.data.name;
-                    return true;
-                }
-            }
-        });
+						record.data.name = record.data.field + ":"
+								+ record.data.name;
+						return true;
+					}
 
-        var link = Ext.create('Ext.button.Button', {
-            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/help.png',
-            scope : this,
-            handler : function () {
-                var helpModule = SitoolsDesk.app.findModule("helpWindow");
-                if (!Ext.isEmpty(helpModule.getWindow())) {
-                    helpModule.getWindow().close();
-                }
-                helpModule.openModule({
-                    activeNode : "Recherche_OpenSearch"
-                });
-            },
-            width : 20
+				}
 
-        });
+			});
 
-        var field = Ext.create('Ext.form.FieldContainer', {
-            fieldLabel : i18n.get("label.search"),
-            anchor : '100%',
-            defaults : {
-                flex : 1
-            },
-            items : [ search, link ]
-        });
+	var link = new Ext.Button({
+				icon : loadUrl.get('APP_URL')
+						+ '/common/res/images/icons/help.png',
+				scope : this,
+				handler : function() {
+					var helpModule = SitoolsDesk.app.findModule("helpWindow");
+					if (!Ext.isEmpty(helpModule.getWindow())) {
+						helpModule.getWindow().close();
+					}
+					helpModule.openModule({
+								activeNode : "Recherche_OpenSearch"
+							});
+				},
+				width : 20
 
-        var items = field;
+			});
+	var field = new Ext.form.CompositeField({
+				fieldLabel : i18n.get("label.search"),
+				anchor : '100%',
+				defaults : {
+					flex : 1
+				},
+				items : [search, link]
+			});
 
-        var buttonForm = [{
-            text : i18n.get("label.search"),
-            scope : this,
-            handler : this._clickOnSearch
-        }];
+	// set the items of the form
+	var items = field;
 
-        var formPanel = Ext.create('Ext.form.Panel', {
-            labelWidth : 75, // label settings here cascade unless
-            height : 75,
-            frame : true,
-            defaultType : 'textfield',
-            items : items,
-            buttons : buttonForm
+	// set the search button
+	var buttonForm = [{
+				text : i18n.get("label.search"),
+				scope : this,
+				handler : _clickOnSearch
+			}];
 
-        });
+	// set the search form
+	var formPanel = new Ext.FormPanel({
+				labelWidth : 75, // label settings here cascade unless
+									// overridden
+				height : 75,
+				frame : true,
+				defaultType : 'textfield',
+				items : items,
+				buttons : buttonForm
 
-        var result = Ext.create('sitools.user.component.openSearchResultFeed', {
-            input : search,
-            dataUrl : config.dataUrl,
-            pagging : true,
-            datasetName : config.datasetName,
-            datasetId : config.datasetId,
-            exceptionHttpHandler : function (proxy, type, action, options, response, args) {
-                // si on a un cookie de session et une erreur 403
-                if ((response.status == 403) && !Ext.isEmpty(Ext.util.Cookies.get('hashCode'))) {
-                    Ext.MessageBox.minWidth = 360;
-                    Ext.MessageBox.alert(i18n.get('label.session.expired'), response.responseText);
-                    return false;
-                }
-                return true;
-            }
-        });
+			});
 
-        this.items = [ formPanel, result ];
+	// instanciate the RSS feed component
+	var result = new sitools.user.component.openSearchResultFeed({
+				input : search,
+				dataUrl : config.dataUrl,
+				pagging : true,
+				datasetName : config.datasetName,
+				datasetId : config.datasetId,
+				exceptionHttpHandler : function(proxy, type, action, options,
+						response, args) {
+					// si on a un cookie de session et une erreur 403
+					if ((response.status == 403)
+							&& !Ext.isEmpty(Ext.util.Cookies.get('hashCode'))) {
+						Ext.MessageBox.minWidth = 360;
+						Ext.MessageBox.alert(i18n.get('label.session.expired'),
+								response.responseText);
+						return false;
+					}
+					return true;
+				}
+			});
 
-        sitools.user.component.datasetOpensearch.superclass.initComponent.call(this);
-    },
+	// instanciate the panel component
+	sitools.user.component.datasetOpensearch.superclass.constructor.call(this,
+			Ext.apply({
+						items : [formPanel, result],
+						layout : 'vbox',
+						datasetName : config.datasetName,
+						layoutConfig : {
+							align : 'stretch',
+							pack : 'start'
+						}
 
-    /**
-     * click handler for the search button gets the search query and update the
-     * RSS feed URI to display the results
-     */
-    _clickOnSearch : function () {
-        var searchQuery = formPanel.getForm().getValues().searchQuery;
-        result.updateStore(uri + "?q=" + searchQuery);
-    },
+					}, config));
 
-    _getSettings : function () {
-        return {
-            objectName : "datasetOpenSearch",
-            datasetName : this.datasetName,
-            preferencesPath : this.preferencesPath,
-            preferencesFileName : this.preferencesFileName
-        };
-    }
-});
+};
+
+Ext.extend(sitools.user.component.datasetOpensearch, Ext.Panel, {
+			componentType : "openSearch",
+			_getSettings : function() {
+				return {
+					objectName : "datasetOpenSearch",
+					datasetName : this.datasetName,
+					preferencesPath : this.preferencesPath,
+					preferencesFileName : this.preferencesFileName
+				};
+			}
+		});
+
+Ext.reg('sitools.user.component.datasetOpensearch',
+		sitools.user.component.datasetOpensearch);

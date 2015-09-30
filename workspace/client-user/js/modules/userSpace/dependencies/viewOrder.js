@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -22,7 +22,7 @@ Ext.namespace('sitools.user.modules.userSpaceDependencies');
 
 sitools.user.modules.userSpaceDependencies.viewOrderPanel = Ext.extend(Ext.grid.GridPanel, {
     border : false,
-    sm : Ext.create('Ext.selection.RowModel',),
+    sm : new Ext.grid.RowSelectionModel(),
     layout : {
         type : 'vbox',
         // flex : 1,
@@ -129,7 +129,7 @@ sitools.user.modules.userSpaceDependencies.viewOrderPanel = Ext.extend(Ext.grid.
     _onDetail : function () {
         var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
         var jsObj = sitools.user.modules.userSpaceDependencies.orderProp;
         var componentCfg = {

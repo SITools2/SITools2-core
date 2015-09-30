@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  * 
  * This file is part of SITools2.
  * 
@@ -32,7 +32,7 @@ sitools.user.modules.sitoolsFitsViewer = Ext.extend(Ext.Panel, {
         
         this.sliderTip = new Ext.slider.Tip({
             getText: function(thumb){
-                return Ext.String.format(i18n.get('label.fitsFrame'), thumb.value, thumb.slider.maxValue);
+                return String.format(i18n.get('label.fitsFrame'), thumb.value, thumb.slider.maxValue);
             }
         });
         
@@ -153,7 +153,7 @@ sitools.user.modules.sitoolsFitsViewer = Ext.extend(Ext.Panel, {
            region : 'center',
            name : 'canvasPanel',
            autoScroll : true,
-           bodyCls : 'canvas-background',
+           bodyCssClass : 'canvas-background',
            padding : '10px 15px 10px 10px',
            html : '<canvas class="shadow-canvas" style="float:left;" id="FITSimage"></canvas>'
         });
@@ -180,7 +180,7 @@ sitools.user.modules.sitoolsFitsViewer = Ext.extend(Ext.Panel, {
         this.processingWindow = new Ext.Window({
             title : 'Histogram',
             padding : '30px',
-            bodyCls : 'histogram-background',
+            bodyCssClass : 'histogram-background',
             autoWidth : true,
             autoHeight : true,
             closable : false,
@@ -314,7 +314,7 @@ sitools.user.modules.sitoolsFitsViewer = Ext.extend(Ext.Panel, {
                 this.addEvent(this.jsFits.canvas, "mousemove", function(e) {
                     var world = this.w.pix2sky(e.offsetX, this.jsFits.canvas.height - e.offsetY);
                     
-                    this.tipRaDec.update(Ext.String.format(this.tipRaDec.templ, world[0].toFixed(6), world[1].toFixed(6)));
+                    this.tipRaDec.update(String.format(this.tipRaDec.templ, world[0].toFixed(6), world[1].toFixed(6)));
                         this.tipRaDec.doLayout();
                     
                 }.bind(this));

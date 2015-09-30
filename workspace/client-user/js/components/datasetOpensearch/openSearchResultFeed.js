@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  * 
  * This file is part of SITools2.
  * 
@@ -224,8 +224,8 @@ sitools.user.component.openSearchResultFeed = function(config) {
 				loadMask : {
 					msg : i18n.get("label.loadingFeed")
 				},
-				sm : Ext.create('Ext.selection.RowModel',{
-							mode : 'SINGLE'
+				sm : new Ext.grid.RowSelectionModel({
+							singleSelect : true
 						}),
 				autoExpandColumn : 'title',
 				viewConfig : {
@@ -247,7 +247,6 @@ sitools.user.component.openSearchResultFeed = function(config) {
 };
 
 Ext.extend(sitools.user.component.openSearchResultFeed, Ext.grid.GridPanel, {
-	alias : 'sitools.user.component.openSearchResultFeed',
 	componentType : "feeds",
 	// within this function "this" is actually the GridView
 	applyRowClass : function(record, rowIndex, p, ds) {
@@ -314,3 +313,5 @@ Ext.extend(sitools.user.component.openSearchResultFeed, Ext.grid.GridPanel, {
 
 });
 
+Ext.reg('sitools.user.component.openSearchResultFeed',
+		sitools.user.component.openSearchResultFeed);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  * 
  * This file is part of SITools2.
  * 
@@ -24,12 +24,10 @@ Ext.namespace('sitools.user.component.dataviews.services');
  * @class sitools.user.component.dataviews.services.sitoolsFitsService
  * @extends Ext.Panel
  */
-Ext.define('sitools.user.component.dataviews.services.sitoolsFitsService', {
-    extend : 'Ext.panel.Panel',
-    alias : 'sitools.user.component.dataviews.services.sitoolsFitsService',
+sitools.user.component.dataviews.services.sitoolsFitsService = Ext.extend(Ext.Panel, {
     initComponent : function () {
 
-        this.bodyCls = 'canvas-background';
+        this.bodyCssClass = 'canvas-background';
         this.urlFits = this.record.data.fits;
         this.autoScroll = true;
         this.layout = 'fit';
@@ -71,7 +69,7 @@ Ext.define('sitools.user.component.dataviews.services.sitoolsFitsService', {
         
         this.sliderTip = new Ext.slider.Tip({
             getText: function(thumb){
-                return Ext.String.format(i18n.get('label.fitsFrame'), thumb.value, thumb.slider.maxValue);
+                return String.format(i18n.get('label.fitsFrame'), thumb.value, thumb.slider.maxValue);
             }
         });
         
@@ -193,7 +191,7 @@ Ext.define('sitools.user.component.dataviews.services.sitoolsFitsService', {
 //           region : 'center',
            name : 'canvasPanel',
            autoScroll : true,
-           bodyCls : 'canvas-background',
+           bodyCssClass : 'canvas-background',
            padding : '10px 15px 10px 10px',
            html : '<canvas class="shadow-canvas" style="float:left;" id="' + this.idFitsImage + '"></canvas>'
         });
@@ -496,6 +494,8 @@ Ext.define('sitools.user.component.dataviews.services.sitoolsFitsService', {
     
 });
 
+Ext.reg('sitools.user.component.dataviews.services.sitoolsFitsService', sitools.user.component.dataviews.services.sitoolsFitsService);
+
 sitools.user.component.dataviews.services.sitoolsFitsService.getDefaultParameters = function() {
     return [{
                 name : "featureType",
@@ -513,7 +513,7 @@ sitools.user.component.dataviews.services.sitoolsFitsService.getParameters = fun
             fieldLabel : i18n.get('headers.previewUrl'),
             width : 200,
             typeAhead : true,
-            queryMode : 'local',
+            mode : 'local',
             forceSelection : true,
             triggerAction : 'all',
             valueField : 'display',
@@ -544,9 +544,10 @@ sitools.user.component.dataviews.services.sitoolsFitsService.getParameters = fun
             fieldLabel : i18n.get('label.columnImage'),
             width : 200,
             typeAhead : true,
-            queryMode : 'local',
+            mode : 'local',
             forceSelection : true,
             triggerAction : 'all',
+            tpl : '<tpl for="."><div class="x-combo-list-item comboItem">{columnAlias}</div></tpl>',
             store : new Ext.data.JsonStore({
                         fields : ['columnAlias'],
                         url : Ext.getCmp("dsFieldParametersPanel").urlDataset,
@@ -554,9 +555,9 @@ sitools.user.component.dataviews.services.sitoolsFitsService.getParameters = fun
                         autoLoad : true,
                         listeners : {
                             load : function(store) {
-                                store.add({
-                                    columnAlias : ""
-                                });
+                                store.add(new Ext.data.Record({
+                                            'columnAlias' : ""
+                                        }));
                             }
 
                         }
@@ -598,7 +599,7 @@ sitools.user.component.dataviews.services.sitoolsFitsService.executeAsService = 
     var windowConfig = {
         layout : 'fit',
         title : i18n.get('label.fitsViewer'),
-        bodyCls : 'canvas-background',
+        bodyCssClass : 'canvas-background',
         iconCls : 'fitsService',
         autoScroll : true,
         saveToolbar : true,

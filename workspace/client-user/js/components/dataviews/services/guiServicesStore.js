@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -67,11 +67,10 @@ sitools.user.component.dataviews.services.GuiServicesStore = Ext.extend(Ext.data
                 type : 'int'
             }, {
                 name : 'dataSetSelection'
-            }/*, {
+            }, {
                 name : 'dependencies'
-            }*/, {
-                name : 'defaultVisibility',
-                type : 'boolean'
+            }, {
+                name : 'defaultVisibility'
             }, {
                 name : 'parametersMap'
             }]

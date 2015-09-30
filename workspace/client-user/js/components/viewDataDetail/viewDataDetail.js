@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -33,8 +33,8 @@ Ext.namespace('sitools.user.component');
  * @class sitools.user.component.viewDataDetail
  * @extends Ext.Panel
  */
-Ext.define('sitools.user.component.viewDataDetail', {
-    extend : 'Ext.Panel',
+sitools.user.component.viewDataDetail = Ext.extend(Ext.Panel, {
+//sitools.component.users.viewDataDetail = Ext.extend(Ext.Panel, {
 	datasetColumnModel : null,
     initComponent : function () {
         var rec;
@@ -96,9 +96,9 @@ Ext.define('sitools.user.component.viewDataDetail', {
 	            }),
 	        cls : 'linkImageDataView',
 	        itemSelector : 'li.img-link',
-	        overItemCls : 'nodes-hover',
+	        overClass : 'nodes-hover',
             selectedClass : '',
-	        mode : 'SINGLE',
+	        singleSelect : true,
 	        multiSelect : false,
 	        autoScroll : true,
 	        listeners : {
@@ -390,7 +390,7 @@ Ext.define('sitools.user.component.viewDataDetail', {
 	                                            item = new Ext.BoxComponent({
 		                                            fieldLabel : column.header,
 					                                labelSeparator : "", 
-		                                            html : Ext.String.format(html, value)
+		                                            html : String.format(html, value)
 		                                        });	                                         
 	                                            itemsForm.push(item);
 							                } else if (!Ext.isEmpty(columnRenderer.image)) {
@@ -429,7 +429,7 @@ Ext.define('sitools.user.component.viewDataDetail', {
 						                        imageUrl = this.findRecordValue(record, columnRenderer.columnAlias);            
 						                    }
 	                                        item = new Ext.BoxComponent({
-	                                            html : Ext.String.format(html, value, imageUrl),
+	                                            html : String.format(html, value, imageUrl),
                                                 tooltip : tooltip,
 	                                            cls : "x-form-item"
 	                                        });                                       
@@ -442,7 +442,7 @@ Ext.define('sitools.user.component.viewDataDetail', {
                                         item = new Ext.BoxComponent({
 	                                        fieldLabel : column.header,
 			                                labelSeparator : "", 
-	                                        html : Ext.String.format(html, value)
+	                                        html : String.format(html, value)
 	                                    });                                          
 	                                    itemsForm.push(item);
 	                                    break;

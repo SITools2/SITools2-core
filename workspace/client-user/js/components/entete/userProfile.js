@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -72,13 +72,13 @@ sitools.user.component.entete.UserProfile = Ext.extend(Ext.Window, {
 				name: i18n.get('label.userDiskSpace'), 
 				url : '/sitools/common/res/images/icons/menu/dataAccess.png', 
 				action : "showDisk", 
-				comment : Ext.String.format(i18n.get("label.userDiskUse"), freeDisk, totalDisk)
+				comment : String.format(i18n.get("label.userDiskUse"), freeDisk, totalDisk)
 			}, {
 				identifier : "tasks", 
 				name: i18n.get("label.Tasks"), 
 				url : "/sitools/common/res/images/icons/menu/applications2.png", 
 				action : "showTasks", 
-				comment : Ext.String.format(i18n.get("label.taskRunning"), userTasksRunning, userTotalTasks)
+				comment : String.format(i18n.get("label.taskRunning"), userTasksRunning, userTotalTasks)
 			}, {
 				identifier : "orders", 
 				name: i18n.get("label.orders"), 
@@ -108,7 +108,7 @@ sitools.user.component.entete.UserProfile = Ext.extend(Ext.Window, {
 	        autoHeight : true,
 	        width : this.userPublic ? 100 : this.width, 
 	        multiSelect: true,
-	        overItemCls: 'x-view-over',
+	        overClass: 'x-view-over',
 	        overCls : 'userButtonsPointer',
 	        emptyText: 'No images to display', 
 	        itemSelector: 'div.userButtons',
@@ -467,7 +467,7 @@ sitools.user.component.entete.UserProfile = Ext.extend(Ext.Window, {
 			    if (!Ext.isEmpty(cls)) {
                     str += "<span class='" + cls + "'>";
                 }
-			    str += Ext.String.format(i18n.get('label.diskSpace'), Ext.util.Format.round(pourcentage, 0), Ext.util.Format.fileSize(totalSpace));
+			    str += String.format(i18n.get('label.diskSpace'), Ext.util.Format.round(pourcentage, 0), Ext.util.Format.fileSize(totalSpace));
 			    if (!Ext.isEmpty(cls)) {
                     str += "</span>";
                 }
@@ -500,7 +500,7 @@ sitools.user.component.entete.UserProfile = Ext.extend(Ext.Window, {
 					totalTasks++;
 				});
                 if (runningTasks > 0) {
-				    el.update(Ext.String.format(i18n.get('label.taskRunning'), runningTasks));
+				    el.update(String.format(i18n.get('label.taskRunning'), runningTasks));
                 } else {
                     el.update("");
                 }

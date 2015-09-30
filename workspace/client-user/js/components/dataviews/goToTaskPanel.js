@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  * 
  * This file is part of SITools2.
  * 
@@ -80,16 +80,16 @@ sitools.user.component.dataviews.goToTaskPanel = Ext.extend(Ext.Panel, {
     
     createNewFormComponent : function (task) {
       
-        var html = Ext.String.format(i18n.get("label.taskLaunched"), task.status);
-        html += Ext.String.format("<a href='#'>{0}</a><br>", i18n.get("label.detail"));
+        var html = String.format(i18n.get("label.taskLaunched"), task.status);
+        html += String.format("<a href='#'>{0}</a><br>", i18n.get("label.detail"));
         
         if (!Ext.isEmpty(task.urlResult)) {
-			html += "<br>" + Ext.String.format(i18n.get("label.taskResult"), task.urlResult);	
-			html += Ext.String.format("<a href='#'>{0}</a><br>", i18n.get("label.result"));
+			html += "<br>" + String.format(i18n.get("label.taskResult"), task.urlResult);	
+			html += String.format("<a href='#'>{0}</a><br>", i18n.get("label.result"));
         }
         else {
 			html += "<br>" + i18n.get("label.refreshTaskWindow");	
-			html += Ext.String.format("<a href='#'>{0}</a><br>", i18n.get("label.refresh"));
+			html += String.format("<a href='#'>{0}</a><br>", i18n.get("label.refresh"));
         }
         
         var panel = new Ext.Panel({

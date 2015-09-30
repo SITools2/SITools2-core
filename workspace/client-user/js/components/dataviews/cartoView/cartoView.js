@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  * 
  * This file is part of SITools2.
  * 
@@ -69,223 +69,223 @@ Ext.ns("sitools.user.component.dataviews.cartoView");
  * 
  * 
  */
-Ext.define('sitools.user.component.dataviews.cartoView.cartoView', {
-    extend : 'Ext.panel.Panel',
-    alias : 'widget.sitoolsCartoView',
-    layout: "border",
-    dataviewUtils : sitools.user.component.dataviews.dataviewUtils, 
-    componentType : "data",
+sitools.user.component.dataviews.cartoView.cartoView = function (config) {
+    this.urlRecords = config.dataUrl + '/records';
+    this.origin = "sitools.user.component.dataviews.cartoView.cartoView";
     
-    initComponent : function () {
-        this.urlRecords = this.dataUrl + '/records';
-        this.origin = "sitools.user.component.dataviews.cartoView.cartoView";
-        
-        var dataviewConfig = sitoolsUtils.arrayProperties2Object(this.datasetViewConfig);
-        
-        //Définir le column Model.
-        var colModel;
-        if (!Ext.isEmpty(this.userPreference) && this.userPreference.datasetView === "Ext.ux.livegrid" && !Ext.isEmpty(this.userPreference.colModel)) {
-            colModel = this.userPreference.colModel;
-        }
-        else {
-            colModel = this.datasetCm; 
-        }
-        var cm = getColumnModel(colModel, this.dictionaryMappings, dataviewConfig);
-        /** 
-         * {String} sitoolsAttachementForUsers the attachment url of the dataset
-         */
-        this.sitoolsAttachementForUsers = this.dataUrl;
-        // create map panel
-        var mapPanel = new sitools.user.component.dataviews.cartoView.mapPanel(this);
-        
-        mapPanel.addListener("selectionmodelready", function () {
-            this.sm.locked = false;
-            if (!Ext.isEmpty(this.ranges)) {
-                if (!Ext.isEmpty(this.nbRecordsSelection) && (this.nbRecordsSelection == this.store.getTotalCount())) {
-                    this.getSelectionModel().onHdMouseDown(Ext.EventObject, this.getSelectionModel().headerCheckbox.dom.childNodes[1]);
-                    delete this.nbRecordsSelection;
-                    delete this.ranges;
-                } else {
-                    var ranges = Ext.util.JSON.decode(this.ranges);
-                    this.selectRangeDataview(ranges);
-                    delete this.ranges;
-                }
-            }
-        }, this);
-
-        var fields = sitools.user.component.dataviews.storeUtils.getFields(this.datasetCm);
-
-        var vecLayer = mapPanel.getFeaturesLayer();
-        
-        // create feature store, binding it to the vector layer using the specific objects to load totalProperty
-        this.store = new sitools.user.component.dataviews.cartoView.featureStore({
-            datasetCm : this.datasetCm,
-            userPreference : this.userPreference, 
-            bufferSize : DEFAULT_LIVEGRID_BUFFER_SIZE, 
-            formParams : this.formParams,
-            ranges : this.ranges,
-            startIndex : this.startIndex,
-            formMultiDsParams : this.formMultiDsParams, 
-            datasetId : this.datasetId,
-            remoteSort: true, 
-            layer: vecLayer,
-            fields: fields,
-            proxy: new sitools.user.data.ProtocolProxy({
-                totalProperty : "totalResults",
-                url : this.dataUrl + dataviewConfig.jeoResourceUrl
-            })
-        });
-        
-        if (!Ext.isEmpty(this.storeSort)) {
-            if (!Ext.isEmpty(this.storeSort.sorters)) {
-                this.store.hasMultiSort = true;
-                this.store.multiSortInfo = this.storeSort;
+    var dataviewConfig = sitoolsUtils.arrayProperties2Object(config.datasetViewConfig);
+    
+    //Définir le column Model.
+    var colModel;
+    if (!Ext.isEmpty(config.userPreference) && config.userPreference.datasetView === "Ext.ux.livegrid" && !Ext.isEmpty(config.userPreference.colModel)) {
+        colModel = config.userPreference.colModel;
+    }
+    else {
+        colModel = config.datasetCm; 
+    }
+    var cm = getColumnModel(colModel, config.dictionaryMappings, dataviewConfig);
+    /** 
+     * {String} sitoolsAttachementForUsers the attachment url of the dataset
+     */
+    this.sitoolsAttachementForUsers = config.dataUrl;
+    // create map panel
+    var mapPanel = new sitools.user.component.dataviews.cartoView.mapPanel(config);
+    
+    mapPanel.addListener("selectionmodelready", function () {
+        this.sm.locked = false;
+        if (!Ext.isEmpty(this.ranges)) {
+            if (!Ext.isEmpty(this.nbRecordsSelection) && (this.nbRecordsSelection == this.store.getTotalCount())) {
+                this.getSelectionModel().onHdMouseDown(Ext.EventObject, this.getSelectionModel().headerCheckbox.dom.childNodes[1]);
+                delete this.nbRecordsSelection;
+                delete this.ranges;
             } else {
-                this.store.sortInfo = this.storeSort;
+                var ranges = Ext.util.JSON.decode(this.ranges);
+                this.selectRangeDataview(ranges);
+                delete this.ranges;
             }
         }
-        
-        //list of events to consider that everything is loaded
-        this.allIsLoadedEvent = new Ext.util.MixedCollection();
-        this.allIsLoadedEvent.add("load", false);
-        this.allIsLoadedEvent.add("allservicesloaded", false);
-        
-        this.store.filters = new sitools.widget.FiltersCollection({
-            filters : this.filters 
-        });
-        
-        this.store.on("beforeload", function (store, options) {
-            //set the nocount param to false.
-            //before load is called only when a new action (sort, filter) is applied
-            var noCount;
-            
-            if (!store.isFirstCountDone || store.isNewFilter) {
-                options.params.nocount = false;
-            } else {
-                options.params.nocount = true;
-            }
+    }, this);
 
-            if (store.isNewFilter) {
-                options.params.start = 0;
-                options.params.limit = DEFAULT_LIVEGRID_BUFFER_SIZE;
-            }
-            
-            store.isNewFilter = false;        
-            
-            if (!Ext.isEmpty(store.filters)) {
-                var params = store.buildQuery(store.filters.getFilterData());
-                Ext.apply(options.params, params);
-            }
-            
-            this.store.storeOptions(options);
-            //this.el.mask(i18n.get('label.waitMessage'), "x-mask-loading");
-        }, this);
-        
-        this.store.on("load", function (store, records, options) {
-            this.topBar.updateContextToolbar();
-            this.removeLoadMask("load");
-        }, this);
-        
-        this.topBar =  new sitools.user.component.dataviews.services.menuServicesToolbar({
-            datasetUrl : this.sitoolsAttachementForUsers,
-            datasetId : this.datasetId,
-            dataview : this,
-            origin : this.origin,
-            columnModel : this.datasetCm,
-            listeners : {
-                scope : this,
-                allservicesloaded : function () {
-                    this.removeLoadMask("allservicesloaded");
-                }
-            }  
-        });
+    var fields = sitools.user.component.dataviews.storeUtils.getFields(config.datasetCm);
 
-        var bbar = new Ext.PagingToolbar({
-            pageSize : DEFAULT_LIVEGRID_BUFFER_SIZE,
-            store : this.store,
-            refreshText : i18n.get('label.refreshText'),
-            displayInfo : true,
-            displayMsg : i18n.get('paging.display')
-        });
+    var vecLayer = mapPanel.getFeaturesLayer();
+    
+    // create feature store, binding it to the vector layer using the specific objects to load totalProperty
+    this.store = new sitools.user.component.dataviews.cartoView.featureStore({
+        datasetCm : config.datasetCm,
+        userPreference : config.userPreference, 
+        bufferSize : DEFAULT_LIVEGRID_BUFFER_SIZE, 
+        formParams : config.formParams,
+        ranges : config.ranges,
+        startIndex : config.startIndex,
+        formMultiDsParams : config.formMultiDsParams, 
+        datasetId : config.datasetId,
+        remoteSort: true, 
+        layer: vecLayer,
+        fields: fields,
+        proxy: new sitools.user.data.ProtocolProxy({
+            totalProperty : "totalResults",
+            url : config.dataUrl + dataviewConfig.jeoResourceUrl
+        })
+    });
+    
+    if (!Ext.isEmpty(config.storeSort)) {
+        if (!Ext.isEmpty(config.storeSort.sorters)) {
+            this.store.hasMultiSort = true;
+            this.store.multiSortInfo = config.storeSort;
+        } else {
+            this.store.sortInfo = config.storeSort;
+        }
+    }
+    
+    //list of events to consider that everything is loaded
+    this.allIsLoadedEvent = new Ext.util.MixedCollection();
+    this.allIsLoadedEvent.add("load", false);
+    this.allIsLoadedEvent.add("allservicesloaded", false);
+    
+    this.store.filters = new sitools.widget.FiltersCollection({
+        filters : config.filters 
+    });
+    
+    this.store.on("beforeload", function (store, options) {
+        //set the nocount param to false.
+        //before load is called only when a new action (sort, filter) is applied
+        var noCount;
         
-        this.sm = new sitools.user.component.dataviews.cartoView.featureSelectionModel({
-            listeners : {
-                scope : this, 
-                gridFeatureSelected : function (g, rowIndex, e) {
-                    try {
-                        var row = g.getStore().getAt(rowIndex);
-                        var feature = row.getFeature();
-                        var featurePos = {
-                            lon : feature.geometry.x, 
-                            lat : feature.geometry.y
-                        };
-                        var lonlat = new OpenLayers.LonLat(feature.geometry.x, feature.geometry.y);
-                        mapPanel.getMap().panTo(lonlat);
-                    }
-                    catch (err) {
-                        return;
-                    }
+        if (!store.isFirstCountDone || store.isNewFilter) {
+            options.params.nocount = false;
+        } else {
+            options.params.nocount = true;
+        }
+
+        if (store.isNewFilter) {
+            options.params.start = 0;
+            options.params.limit = DEFAULT_LIVEGRID_BUFFER_SIZE;
+        }
+        
+        store.isNewFilter = false;        
+        
+        if (!Ext.isEmpty(store.filters)) {
+            var params = store.buildQuery(store.filters.getFilterData());
+            Ext.apply(options.params, params);
+        }
+        
+        
+        
+        this.store.storeOptions(options);
+        //this.el.mask(i18n.get('label.waitMessage'), "x-mask-loading");
+    }, this);
+    
+    this.store.on("load", function (store, records, options) {
+        this.topBar.updateContextToolbar();
+        this.removeLoadMask("load");
+    }, this);
+    
+    this.topBar =  new sitools.user.component.dataviews.services.menuServicesToolbar({
+        datasetUrl : this.sitoolsAttachementForUsers,
+        datasetId : this.datasetId,
+        dataview : this,
+        origin : this.origin,
+        columnModel : config.datasetCm,
+        listeners : {
+            scope : this,
+            allservicesloaded : function () {
+                this.removeLoadMask("allservicesloaded");
+            }
+        }  
+    });
+
+    var bbar = new Ext.PagingToolbar({
+        pageSize : DEFAULT_LIVEGRID_BUFFER_SIZE,
+        store : this.store,
+        refreshText : i18n.get('label.refreshText'),
+        displayInfo : true,
+        displayMsg : i18n.get('paging.display')
+    });
+    
+    this.sm = new sitools.user.component.dataviews.cartoView.featureSelectionModel({
+        listeners : {
+            scope : this, 
+            gridFeatureSelected : function (g, rowIndex, e) {
+                try {
+                    var row = g.getStore().getAt(rowIndex);
+                    var feature = row.getFeature();
+                    var featurePos = {
+                        lon : feature.geometry.x, 
+                        lat : feature.geometry.y
+                    };
+                    var lonlat = new OpenLayers.LonLat(feature.geometry.x, feature.geometry.y);
+                    mapPanel.getMap().panTo(lonlat);
                 }
-            },
-            isSelectionModel : true,
-            checkOnly : true        
-        });
-        
-        var gridWidth = 100 - dataviewConfig.mapWidth;
-        
-        //create a new columnModel with the selectionModel
-        var configCol = cm.config;
-        configCol.unshift(this.sm);
-        cm = new Ext.grid.ColumnModel({
-            columns : configCol
-        });
-        
-        
-        // create grid panel configured with feature store
-        this.gridPanel = new Ext.grid.GridPanel({
-            region : "west",
-            collapsible : true,
-            flotable : true,
-            split : true,
-            store : this.store,
-            width : "" + gridWidth + "%",
-            cm : cm,
-            sm : this.sm,
-            bbar : bbar,
-//            view : new Ext.ux.sitoolsGridView({
-            view : {
-                xtype : 'gridview',
-                nearLimit : DEFAULT_NEAR_LIMIT_SIZE, 
-                loadMask : {
-                    msg : i18n.get('label.waitMessage'),
-                    msgCls : "x-mask-loading"
-                }
-            },
-            listeners : {
-                scope : this,
-                cellclick : function (grid, rowIndex, columnIndex, e) {
-                    var columnModel = this.getColumnModel();
-                    var column = columnModel.columns[columnIndex];     
-                    if (Ext.isEmpty(column.columnRenderer)) {
-                        return;
-                    }
-                    var record = grid.getStore().getAt(rowIndex);  // Get the Record
-                    var controller = this.getTopToolbar().guiServiceController;
-                    sitools.user.component.dataviews.dataviewUtils.featureTypeAction(column, record, controller);
-                    
+                catch (err) {
+                    return;
                 }
             }
-        });
-        
-        this.store.load();
-        
-        this.items = [mapPanel, this.gridPanel];
-        this.tbar = this.topBar;
+        },
+        isSelectionModel : true,
+        checkOnly : true        
+    });
+    
+    var gridWidth = 100 - dataviewConfig.mapWidth;
+    
+    //create a new columnModel with the selectionModel
+    var configCol = cm.config;
+    configCol.unshift(this.sm);
+    cm = new Ext.grid.ColumnModel({
+        columns : configCol
+    });
+    
+    
+    // create grid panel configured with feature store
+    this.gridPanel = new Ext.grid.GridPanel({
+        region : "west",
+        collapsible : true,
+        flotable : true,
+        split : true,
+        store : this.store,
+//        plugins : [ gridFilters ],
+        width : "" + gridWidth + "%",
+        cm : cm,
+        sm : this.sm,
+        bbar : bbar,
+        view : new Ext.ux.sitoolsGridView({
+            nearLimit : DEFAULT_NEAR_LIMIT_SIZE, 
+            loadMask : {
+                msg : i18n.get('label.waitMessage'),
+                msgCls : "x-mask-loading"
+            }
+        }),
+        listeners : {
+            scope : this,
+            cellclick : function (grid, rowIndex, columnIndex, e) {
+                var columnModel = this.getColumnModel();
+                var column = columnModel.columns[columnIndex];     
+                if (Ext.isEmpty(column.columnRenderer)) {
+                    return;
+                }
+                var record = grid.getStore().getAt(rowIndex);  // Get the Record
+                var controller = this.getTopToolbar().guiServiceController;
+                sitools.user.component.dataviews.dataviewUtils.featureTypeAction(column, record, controller);
+                
+            }
+        }
+    });
+    
+    this.store.load();
 
-        // -- CONSTRUCTOR --
-        sitools.user.component.dataviews.cartoView.cartoView.superclass.initComponent.call(this);    
+    // -- CONSTRUCTOR --
+    sitools.user.component.dataviews.cartoView.cartoView.superclass.constructor.call(this, Ext.apply({
+        layout: "border",
+        dataviewUtils : sitools.user.component.dataviews.dataviewUtils, 
+        items: [mapPanel, this.gridPanel],
+        componentType : "data",
+        tbar : this.topBar
+    }, config));    
 
-    },
+};
+
+Ext.extend(sitools.user.component.dataviews.cartoView.cartoView, Ext.Panel, {
+    
     
     afterRender : function () {
         sitools.user.component.dataviews.cartoView.cartoView.superclass.afterRender.apply(this, arguments);
@@ -293,6 +293,7 @@ Ext.define('sitools.user.component.dataviews.cartoView.cartoView', {
         this._loadMaskAnchor = Ext.get(this.el.dom);
         this._loadMaskAnchor.mask(i18n.get('label.waitMessage'), "x-mask-loading");
     },
+    
     
     /**
      * @private
@@ -535,19 +536,34 @@ Ext.define('sitools.user.component.dataviews.cartoView.cartoView', {
  * @return {Array} the parameters to display into administration view. 
  */
 sitools.user.component.dataviews.cartoView.cartoView.getParameters = function () {
-    
-    var baseLayer = {
-        xtype : 'checkcolumn',
+    var baseLayer = new Ext.grid.CheckColumn({
         header : i18n.get('headers.baseLayer'),
         dataIndex : 'baseLayer',
         width : 80
-    };
+    });
+
+    var cm = new Ext.grid.ColumnModel({
+        columns: [{
+            header: 'Layer Name',
+            dataIndex: 'layerName',
+            width: 220,
+            // use shorthand alias defined above
+            editor: new Ext.form.TextField({
+                allowBlank: false
+            })
+        }, {
+            header: 'Wms Url',
+            dataIndex: 'url',
+            width: 270,
+            // use shorthand alias defined above
+            editor: new Ext.form.TextField({
+                allowBlank: false
+            })
+        }, baseLayer]
+    });
 
     // create the Data Store
-    var store = Ext.create('Ext.data.JsonStore', {
-        proxy : {
-            type : 'memory'
-        },
+    var store = new Ext.data.JsonStore({
         fields : [{
             name : "layerName",
             type : "string"
@@ -560,11 +576,6 @@ sitools.user.component.dataviews.cartoView.cartoView.getParameters = function ()
         }]
     });
 
-    var cellEditing = Ext.create('Ext.grid.plugin.RowEditing', {
-        pluginId : 'layerEditorId',
-        clicksToEdit: 1
-    });
-    
     return [{
         jsObj : "Ext.form.TextField", 
         config : {
@@ -574,59 +585,36 @@ sitools.user.component.dataviews.cartoView.cartoView.getParameters = function ()
             value : "/jeo/opensearch/search"
         }
     },{
-        jsObj : "Ext.form.field.Spinner", 
+        jsObj : "Ext.ux.form.SpinnerField", 
         config : {
             anchor : "100%", 
             parameterName : "mapWidth", 
-            fieldLabel : i18n.get("label.mapWidth"),
-            minValue : 0,
-            maxValue: 100,
-            value : 70
+            fieldLabel : i18n.get("label.mapWidth"), 
+            value : "70"
         }
     }, {
-        jsObj : "Ext.grid.Panel", 
+        jsObj : "Ext.grid.EditorGridPanel", 
         config : {
             title : i18n.get('label.Layers'),   
-            store : store,
-            forceFit : true,
-            columns : [{
-                header: 'Layer Name',
-                dataIndex: 'layerName',
-                width: 220,
-                editor : {
-                    xtype : 'textfield',
-                    allowBlank: false
-                }
-            }, {
-                header: 'Wms Url',
-                dataIndex: 'url',
-                width: 270,
-                // use shorthand alias defined above
-                editor: {
-                    xtype : 'textfield',
-                    allowBlank: false
-                }
-            }, baseLayer],
-            selModel : Ext.create('Ext.selection.RowModel', {}),
+            store: store,
+            cm: cm,
+            sm : new Ext.grid.RowSelectionModel(),
             anchor : "100%", 
             height: 200,
             autoScroll : true, 
-            plugins : [cellEditing],
+            plugins : [baseLayer], 
+            clicksToEdit: 2,
             listeners : {
                 scope : this,
                 afterrender : function (grid) {
                     if (grid.getStore().getCount() === 0) {
-//                        var TypeRec = grid.getStore().recordType;
-//                        var rec = new TypeRec({
-//                            layerName : "openstreetmap", 
-//                            url : "http://maps.opengeo.org/geowebcache/service/wms", 
-//                            baseLayer : true
-//                        });
-                        grid.getStore().add({
+                        var TypeRec = grid.getStore().recordType;
+                        var rec = new TypeRec({
                             layerName : "openstreetmap", 
                             url : "http://maps.opengeo.org/geowebcache/service/wms", 
                             baseLayer : true
                         });
+                        grid.getStore().add(rec);
                         grid.getView().refresh();
                     }
                 }
@@ -650,34 +638,37 @@ sitools.user.component.dataviews.cartoView.cartoView.getParameters = function ()
             }, 
             tbar: [{
                 text: i18n.get('label.addLayer'),
-                handler : function () {
-                    var grid = this.up('gridpanel');
-                    
-                    var editorPlugin = grid.getPlugin("layerEditorId");
-                    
-                    editorPlugin.completeEdit();
-                    
-                    grid.getStore().insert(0, {
+                handler : function (btn) {
+                    var grid = btn.ownerCt.ownerCt;
+
+                    var Layer = grid.getStore().recordType;
+                    var l = new Layer({
                         layerName: '',
                         url: ''
                     });
-                    
-                    editorPlugin.startEdit(0, 0);
+                    grid.stopEditing();
+                    store.insert(0, l);
+                    grid.startEditing(0, 0);
                 }
             }, {
                 text: i18n.get('label.deleteLayer'),
-                handler : function () {
-                    var grid = this.up('gridpanel');
-                    
-                    var rec = grid.getSelectionModel().getSelection()[0];
+                handler : function (btn) {
+                    var grid = btn.ownerCt.ownerCt;
+                    var rec = grid.getSelectionModel().getSelected();
                     if (Ext.isEmpty(rec)) {
                         Ext.Msg.alert(i18n.get('label.warning'), i18n.get('label.noRecordSelected'));
                         return;
                     }
+                    
                     grid.getStore().remove(rec);
+                    
                 }
             }], 
             parameterName : "layers"
         }
     }];
 };
+
+ 
+
+Ext.reg('sitoolsCartoView', sitools.user.component.dataviews.cartoView.cartoView);

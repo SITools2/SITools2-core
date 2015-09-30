@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  * 
  * This file is part of SITools2.
  * 
@@ -31,9 +31,8 @@ Ext.namespace('sitools.user.component.dataviews.services');
  * @class sitools.user.component.dataviews.services.addToCartService
  * @extends Ext.Window
  */
-Ext.define('sitools.user.component.dataviews.services.addToCartService', {
-    alias : 'sitools.user.component.dataviews.services.addToCartService',
-    
+sitools.user.component.dataviews.services.addToCartService = {
+
 	getCartSelectionFile : function(response) {
 
 		if (Ext.isEmpty(response.responseText)) {
@@ -149,6 +148,7 @@ Ext.define('sitools.user.component.dataviews.services.addToCartService', {
 		globalOrder.orderDate = orderDateStr;
 
 		globalOrder.colModel = colModel;
+		globalOrder.primaryKey = primaryKey;
 
 		this.createFilters(globalOrder, this.dataview);
 
@@ -240,11 +240,12 @@ Ext.define('sitools.user.component.dataviews.services.addToCartService', {
 			}
 		}
 	}
-});
+};
+Ext.reg('sitools.user.component.dataviews.services.addToCartService',
+		sitools.user.component.dataviews.services.addToCartService);
 
 sitools.user.component.dataviews.services.addToCartService.getParameters = function() {
-	var checkColumn = {
-	    xtype : 'checkcolumn',
+	var checkColumn = new Ext.grid.CheckColumn({
 		header : i18n.get('headers.exportData'),
 		tooltip : i18n.get('headers.helpExportData'),
 		dataIndex : 'isDataExported',
@@ -269,7 +270,7 @@ sitools.user.component.dataviews.services.addToCartService.getParameters = funct
 								v ? '-on' : '', cmp.createId(), this.id);
 			}
 		}
-	};
+	});
 	return [{
 		jsObj : "Ext.form.Label",
 		config : {
@@ -305,7 +306,9 @@ sitools.user.component.dataviews.services.addToCartService.getParameters = funct
 					bottom : 0,
 					left : 0
 				},
-				forceFit : true,
+				viewConfig : {
+					forceFit : true
+				},
 				store : new Ext.data.JsonStore({
 					fields : ['dataIndex', 'columnAlias', 'primaryKey',
 							'columnRenderer', 'featureType'],
@@ -318,22 +321,29 @@ sitools.user.component.dataviews.services.addToCartService.getParameters = funct
 							Ext.each(records, function(rec) {
 								var columnRenderer = rec.get("columnRenderer");
 								if (!Ext.isEmpty(columnRenderer)) {
-									rec.set("featureType", ColumnRendererEnum.getColumnRendererCategoryFromBehavior(columnRenderer.behavior));
+									rec
+											.set(
+													"featureType",
+													ColumnRendererEnum
+															.getColumnRendererCategoryFromBehavior(columnRenderer.behavior));
 								}
 							});
 
 						}
 					}
 				}),
-				columns : [{
-					header : i18n.get('label.selectColumns'),
-					dataIndex : 'columnAlias',
-					sortable : true
-				}, {
-					header : i18n.get('headers.previewUrl'),
-					dataIndex : 'featureType',
-					sortable : true
-				}]
+				colModel : new Ext.grid.ColumnModel({
+							columns : [{
+										header : i18n
+												.get('label.selectColumns'),
+										dataIndex : 'columnAlias',
+										sortable : true
+									}, {
+										header : i18n.get('headers.previewUrl'),
+										dataIndex : 'featureType',
+										sortable : true
+									}]
+						})
 			}),
 			grid2 : new Ext.grid.GridPanel({
 				width : 270,
@@ -343,7 +353,10 @@ sitools.user.component.dataviews.services.addToCartService.getParameters = funct
 					bottom : 0,
 					left : 10
 				},
-				forceFit : true,
+				viewConfig : {
+					forceFit : true
+					,
+				},
 				store : new Ext.data.JsonStore({
 					fields : ['dataIndex', 'columnAlias', 'primaryKey',
 							'columnRenderer', 'isDataExported'],
@@ -366,11 +379,15 @@ sitools.user.component.dataviews.services.addToCartService.getParameters = funct
 						}
 					}
 				}),
-				columns : [{
-					header : i18n.get('label.exportColumns'),
-					dataIndex : 'columnAlias',
-					sortable : true
-				}, checkColumn]
+				colModel : new Ext.grid.ColumnModel({
+							columns : [{
+										header : i18n
+												.get('label.exportColumns'),
+										dataIndex : 'columnAlias',
+										sortable : true
+									}, checkColumn]
+						}),
+				plugins : [checkColumn]
 			}),
 			name : "exportcolumns",
 			value : [],
@@ -392,8 +409,8 @@ sitools.user.component.dataviews.services.addToCartService.getParameters = funct
 			setValue : function(value) {
 				var columnsToExport = Ext.util.JSON.decode(value);
 				Ext.each(columnsToExport, function(column) {
-//							var recordColumn = new Ext.data.Record(column);
-							this.grid2.getStore().add(column);
+							var recordColumn = new Ext.data.Record(column);
+							this.grid2.getStore().add(recordColumn);
 						}, this);
 				this.value = value;
 			}

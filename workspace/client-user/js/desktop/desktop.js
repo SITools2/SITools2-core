@@ -1,5 +1,5 @@
 /***************************************
- * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  * 
  * This file is part of SITools2.
  * 
@@ -47,7 +47,7 @@ sitools.user.desktop.App = function () {
 		Ext.each(projectGlobal.modulesInDiv, function (module) {
 			var contentEl = Ext.get(module.divIdToDisplay);
 			if (Ext.isEmpty(contentEl)) {
-				Ext.Msg.alert(i18n.get('label.error'), Ext.String.format(i18n
+				Ext.Msg.alert(i18n.get('label.error'), String.format(i18n
 										.get('label.invalidModuleDivId'),
 								module.name, module.divIdToDisplay));
 			} else {
@@ -283,7 +283,7 @@ sitools.user.desktop.App = function () {
             Ext.each(errorModules, function (moduleName) {
                 moduleNames += "<br/> - " + moduleName;
             });
-            var msg = Ext.String.format(i18n.get("label.cannotLoadModules"), moduleNames);
+            var msg = String.format(i18n.get("label.cannotLoadModules"), moduleNames);
             Ext.Msg.alert(i18n.get("label.warning"), msg, function () {
                 onAllInit.call(this);
             }, this);
@@ -571,7 +571,7 @@ sitools.user.desktop.App = function () {
 					var module = createModule(configModule);
 					SitoolsDesk.app.modules.push(module);
 				} else {
-					Ext.Msg.alert(i18n.get('label.error'), Ext.String.format(i18n
+					Ext.Msg.alert(i18n.get('label.error'), String.format(i18n
 											.get('label.undefinedModule'),
 									config.name));
 					//if all includes are done, Add 1 to the modulesCharges 
@@ -617,7 +617,7 @@ sitools.user.desktop.App = function () {
 						SitoolsDesk.app.modules.push(module);
 					}
 					else {
-						Ext.Msg.alert(i18n.get('label.error'), Ext.String.format(i18n
+						Ext.Msg.alert(i18n.get('label.error'), String.format(i18n
 											.get('label.undefinedModule'),
 									projectModule.name));		
 									

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  * 
  * This file is part of SITools2.
  * 
@@ -33,7 +33,6 @@ Ext.namespace('sitools.user.component.dataviews.services');
  */
 sitools.user.component.dataviews.services.addSelectionService = Ext.extend(
 		Ext.Window, {
-			alias : 'sitools.user.component.dataviews.services.addSelectionService',
 			width : 300,
 			modal : true,
 			initComponent : function() {
@@ -129,7 +128,8 @@ sitools.user.component.dataviews.services.addSelectionService = Ext.extend(
 			}
 
 		});
-
+Ext.reg('sitools.user.component.dataviews.services.addSelectionService',
+		sitools.user.component.dataviews.services.addSelectionService);
 
 sitools.user.component.dataviews.services.addSelectionService.getParameters = function() {
 	return [];

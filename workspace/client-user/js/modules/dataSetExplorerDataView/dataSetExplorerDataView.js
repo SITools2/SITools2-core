@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -28,9 +28,7 @@ Ext.namespace('sitools.user.modules');
  * @class sitools.user.modules.datasetExplorerDataView
  * @extends Ext.tree.TreePanel
  */
-Ext.define('sitools.user.modules.datasetExplorerDataView', {
-    extend : 'Ext.panel.Panel',
-    alias : 'sitools.user.modules.datasetExplorerDataView',
+sitools.user.modules.datasetExplorerDataView = Ext.extend(Ext.Panel, {
     layout : "border",
     
     initComponent : function () {
@@ -89,7 +87,7 @@ Ext.define('sitools.user.modules.datasetExplorerDataView', {
             id : "datasetDataView",
             region : 'center',
             itemSelector : 'li.dataset',
-	        mode : 'SINGLE',
+	        singleSelect : true,
 	        multiSelect : false,
 	        autoScroll : true,
 	        tpl : new Ext.XTemplate(
@@ -318,3 +316,5 @@ Ext.define('sitools.user.modules.datasetExplorerDataView', {
     }
     
 });
+
+Ext.reg('sitools.user.modules.datasetExplorerDataView', sitools.user.modules.datasetExplorerDataView);

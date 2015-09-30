@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -48,516 +48,512 @@ var WARNING_NB_RECORDS_PLOT = 10000;
  * @class sitools.user.component.dataPlotter
  * @extends Ext.Panel
  */
-Ext.define('sitools.user.component.dataPlotter', {
-    alias : 'sitools.user.component.dataPlotter',
+sitools.user.component.dataPlotter = function (config) {
+//sitools.component.users.datasets.dataPlotter = function (config) {
+
+    Ext.apply(this, config);
     
-    constructor : function (config) {
-      //sitools.component.users.datasets.dataPlotter = function (config) {
+    this.dataUrl = config.dataUrl;
+    this.datasetName = config.datasetName;
+    this.datasetId = config.datasetId;
+	
+	/** Variable to know if the plot has been done once */
+    this.hasPlotted = false;
 
-        Ext.apply(this, config);
-        
-        this.dataUrl = config.dataUrl;
-        this.datasetName = config.datasetName;
-        this.datasetId = config.datasetId;
-        
-        /** Variable to know if the plot has been done once */
-        this.hasPlotted = false;
-
-        /** function to get numeric fields */
-        function getNumericFields(arrayFields) {
-            var numericFields = [];
-            var store = new Ext.data.JsonStore({
-                fields : [{
-                    name : "columnAlias", 
-                    type : "string"
-                }, {
-                    name : "sqlColumnType", 
-                    type : "string"
-                }]
-            });
-            Ext.each(arrayFields, function (field) {
-                if (!Ext.isEmpty(field.sqlColumnType)) {
-                    var extType = sql2ext.get(field.sqlColumnType);
-                    if (extType.match(/^(numeric)+[48]?$/gi) !== null && !field.hidden) {
-                        store.add(new Ext.data.Record(field));
-                    }
-                    if (extType.match(/dateAsString/gi) !== null && !field.hidden) {
-                        store.add(new Ext.data.Record(field));
-                    }
-                }  
-            }, this);
-            
-            return store;
-        }
-        
-        /** function to get numeric fields */
-        function getVisibleFields(arrayFields) {
-            var visibleFields = [];
-            Ext.each(arrayFields, function (field) {
-                if (!field.hidden) {
-                    visibleFields.push(field.columnAlias);
+    /** function to get numeric fields */
+    function getNumericFields(arrayFields) {
+        var numericFields = [];
+        var store = new Ext.data.JsonStore({
+			fields : [{
+				name : "columnAlias", 
+				type : "string"
+			}, {
+				name : "sqlColumnType", 
+				type : "string"
+			}]
+        });
+        Ext.each(arrayFields, function (field) {
+            if (!Ext.isEmpty(field.sqlColumnType)) {
+                var extType = sql2ext.get(field.sqlColumnType);
+                if (extType.match(/^(numeric)+[48]?$/gi) !== null && !field.hidden) {
+                    store.add(new Ext.data.Record(field));
                 }
-            }, this);
-            return visibleFields;
-        }
-
-        /**
-         * Buffer range for display in the bottom bar
-         */
-        this.bufferRange = 300;
-
-        /**
-         * Dataset url for data details
-         */
-        var dataUrl = config.dataUrl;
-
-        this.columnModel = config.columnModel;
-        
-        /** Initial fields list */
-        var initialFields = getNumericFields(this.columnModel);
-        /** Point tag field list */
-        var pointTagFields = getVisibleFields(this.columnModel);
-        /**
-         * Whether or not there was a selection
-         */
-        this.isSelection = !Ext.isEmpty(config.selections); 
-        
-        /** Initial data */
-//        var rawData = config.dataplot.data.items;
-
-        /** field for x axis label */
-        this.titleX = new Ext.form.Field({
-            fieldLabel : i18n.get('label.plot.form.xlabel'), 
-            anchor : "95%",
-            name : "titleX",
-            listeners : {
-                scope : this,
-                change : this.handlePlotLayout
-            }
-            
-        });
-        
-        /** field for x axis label */
-        this.xFormat = null;
-
-        /** field for y axis label */
-        this.titleY = new Ext.form.Field({
-            fieldLabel : i18n.get('label.plot.form.ylabel'), 
-            anchor : "95%",
-            name : "titleY",
-            listeners : {
-                scope : this,
-                change : this.handlePlotLayout
-            }
-        });
-        /** field for x axis label */
-        this.yFormat = null;
-
-        
-        /** combobox for x field */
-        this.comboX = new Ext.form.ComboBox({
-            store : initialFields, 
-            anchor : "95%",
-            name : "comboX",
-            allowBlank : false,
-            emptyText : i18n.get('label.plot.select.xaxis'),
-            fieldLabel : i18n.get('label.plot.select.xcolumn'),
-            selectOnFocus : true,
-            triggerAction : 'all',
-            valueField : "columnAlias", 
-            displayField : "columnAlias", 
-            editable : false,
-            queryMode : 'local',
-            listeners : {
-                scope : this, 
-                select : function (combo, record, index) {
-                    this.titleX.setValue(combo.getValue());
-                    var extType = sql2ext.get(record.get("sqlColumnType"));
-                    if (extType.match(/dateAsString/gi) !== null) {
-                        if (Ext.isEmpty(this.xFormat)) {
-                            this.xFormat = new Ext.form.Field({
-                                fieldLabel : i18n.get('label.plot.form.xFormat'), 
-                                anchor : "95%",
-                                name : "xFormat",
-                                value : config.userPreference && config.userPreference.xFormat ? config.userPreference.xFormat : SITOOLS_DEFAULT_IHM_DATE_FORMAT,
-                                listeners : {
-                                    scope : this,
-                                    change : this.handlePlotLayout
-                                }
-                            });
-                            this.fieldSetX.insert(1, this.xFormat);
-                        }
-                    }
-                    else {
-                        this.fieldSetX.remove(this.xFormat);
-                        this.xFormat = null;
-                    }
-                    this.fieldSetX.doLayout();
-                },
-                expand : function (combo) {
-                    combo.store.clearFilter(true);
-                    if (this.comboY.getValue() !== '' && this.comboY.getValue() !== null) {
-                        combo.store.filterBy(function (record, id) {
-                            return record.get('field1') !== this.comboY.getValue();
-                        }, this);
-                    }
-
+                if (extType.match(/dateAsString/gi) !== null && !field.hidden) {
+                    store.add(new Ext.data.Record(field));
                 }
-            }
-        });
-        
-        /** combo box for y data */
-        this.comboY = new Ext.form.ComboBox({
-            store : initialFields, 
-            name : "comboY",
-            allowBlank : false,
-            anchor : "95%",
-            emptyText : i18n.get('label.plot.select.yaxis'),
-            fieldLabel : i18n.get('label.plot.select.ycolumn'),
-            selectOnFocus : true,
-            editable : false,
-            valueField : "columnAlias", 
-            displayField : "columnAlias", 
-            triggerAction : 'all',
-            queryMode : 'local',
-            listeners : {
-                scope : this, 
-                select : function (combo, record, index) {
-                    this.titleY.setValue(combo.getValue());
-                    var extType = sql2ext.get(record.get("sqlColumnType"));
-                    if (extType.match(/dateAsString/gi) !== null) {
-                        if (Ext.isEmpty(this.yFormat)) {
-                            this.yFormat = new Ext.form.Field({
-                                fieldLabel : i18n.get('label.plot.form.yFormat'), 
-                                anchor : "95%",
-                                name : "yFormat",
-                                value : config.userPreference && config.userPreference.yFormat ? config.userPreference.yFormat : SITOOLS_DEFAULT_IHM_DATE_FORMAT,
-                                listeners : {
-                                    scope : this,
-                                    change : this.handlePlotLayout
-                                }
-                            });
-//                          if (Ext.isEmpty(xFormat)) {
-//                              this.leftPanel.insert(2, yFormat);
-//                          }
-//                          else {
-//                              this.leftPanel.insert(3, yFormat);
-//                          }
-                            this.fieldSetY.insert(1, this.yFormat);
-                        }
-                    }
-                    else {
-                        this.fieldSetY.remove(this.yFormat);
-                        this.yFormat = null;
-                    }
-                    this.fieldSetY.doLayout();
-                },
-                expand : function (combo) {
-                    combo.store.clearFilter(true);
-                    if (this.comboX.getValue() !== '' && this.comboX.getValue() !== null) {
-                        combo.store.filterBy(function (record, id) {
-                            return record.get('field1') !== this.comboX.getValue();
-                        }, this);
-                    }
-
-                }
-            }
-        });
-
-        /** field for x axis label */
-        this.titlePlot = new Ext.form.Field({
-            anchor : "95%",
-            fieldLabel : i18n.get('label.plot.form.title'), 
-            name : "titlePlot",
-            listeners : {
-                scope : this,
-                change : this.handlePlotLayout
-            }
-        });
-        
-         /** field for x axis label */
-        var numberRecords = new Ext.form.NumberField({
-            anchor : "95%",
-            fieldLabel : i18n.get('label.plot.form.nbRecords'), 
-            name : "nbRecords",
-            value : DEFAULT_LIVEGRID_BUFFER_SIZE,
-            disabled : this.isSelection,
-            allowBlank : false
-        });
-
-        /** checkbox for drawing line */
-        this.checkLine = new Ext.form.Checkbox({
-            fieldLabel : i18n.get('label.plot.form.drawline'), 
-            name : "checkLine",
-            scope : this,
-            listeners : {
-                scope : this,
-                check : this.handlePlotLayout            
-            }
-        });
-        
-       
-
-        /** Combo box for tag title */
-        this.comboTag = new Ext.form.ComboBox({
-            store : pointTagFields,
-            name : "this.comboTag",
-            anchor : "95%",
-            allowBlank : true,
-            emptyText : i18n.get('label.plot.select.tag'),
-            fieldLabel : i18n.get('label.plot.select.tagcolumn'),
-            selectOnFocus : true,
-            triggerAction : 'all',
-            queryMode : 'local',
-            scope : this,
-            listeners : {
-                scope : this,
-                select : this.handlePlotLayout
-            }
-        });
-        
-        this.comboXColor = new sitools.widget.colorField({
-            fieldLabel : i18n.get('label.plot.label.color'),
-            anchor : "95%",
-            name : "comboXColor",
-            value : "#000000",
-            listeners : {
-                scope : this,
-                select : this.handlePlotLayout
-            }
-        });
-        
-        this.comboYColor = new sitools.widget.colorField({
-            fieldLabel : i18n.get('label.plot.label.color'),
-            anchor : "95%",
-            name : "comboYColor", 
-            value : "#000000",
-            listeners : {
-                scope : this,
-                select : this.handlePlotLayout
-            }
-        });
-        this.fieldSetX = new Ext.form.FieldSet({
-            title : i18n.get('title.plot.xAxis'), 
-            items : [this.comboX, this.titleX, this.comboXColor], 
-            collapsible : true
-        });
-        this.fieldSetY = new Ext.form.FieldSet({
-            title : i18n.get('title.plot.yAxis'), 
-            items : [this.comboY, this.titleY, this.comboYColor], 
-            collapsible : true
-        });
-        
-       
-        
-        var urlRecords = config.dataUrl + '/records';
-        //if there was a selection let's add the selection string to the urlRecords
-        if (this.isSelection) {
-            urlRecords += "?1=1&" + decodeURIComponent(config.selections);   
-        }
-        var sitoolsAttachementForUsers = config.dataUrl;
-        
-        this.storeData = new sitools.user.component.dataviews.tplView.StoreTplView({
-            datasetCm : this.columnModel,         
-            urlRecords : urlRecords,
-            sitoolsAttachementForUsers : sitoolsAttachementForUsers,
-            userPreference : config.userPreference, 
-            formParams : (!this.isSelection ? config.formParams : undefined), 
-            formMultiDsParams : (!this.isSelection ? config.formMultiDsParams : undefined), 
-            mainView : this,
-            datasetId : config.datasetId,
-            isFirstCountDone : false,
-            autoLoad : false,
-            filters : config.filters,
-            sortInfo : config.sortInfo
-        });
-        
-        
-        this.storeData.addListener("load", function (store, records, options) {
-            this.displayPlot(records);
+            }  
         }, this);
         
-        
-        this.storeData.on("beforeload", function (store, options) {
-            //set the nocount param to false.
-            //before load is called only when a new action (sort, filter) is applied
-            var noCount;
-            
-            if (!store.isFirstCountDone) {
-                options.params.nocount = false;
-            } else {
-                options.params.nocount = true;
+        return store;
+    }
+    
+    /** function to get numeric fields */
+    function getVisibleFields(arrayFields) {
+        var visibleFields = [];
+        Ext.each(arrayFields, function (field) {
+            if (!field.hidden) {
+                visibleFields.push(field.columnAlias);
             }
-            
-            if (!Ext.isEmpty(store.filters)) {
-                var params = store.buildQuery(store.filters.getFilterData());
-                Ext.apply(options.params, params);
-            }
-            
-            this.storeData.storeOptions(options);
-            
         }, this);
+        return visibleFields;
+    }
+
+    /**
+     * Buffer range for display in the bottom bar
+     */
+    this.bufferRange = 300;
+
+    /**
+     * Dataset url for data details
+     */
+    var dataUrl = config.dataUrl;
+
+    this.columnModel = config.columnModel;
+    
+    /** Initial fields list */
+    var initialFields = getNumericFields(this.columnModel);
+    /** Point tag field list */
+    var pointTagFields = getVisibleFields(this.columnModel);
+    /**
+     * Whether or not there was a selection
+     */
+    this.isSelection = !Ext.isEmpty(config.selections); 
+    
+    /** Initial data */
+//    var rawData = config.dataplot.data.items;
+
+    /** field for x axis label */
+    this.titleX = new Ext.form.Field({
+        fieldLabel : i18n.get('label.plot.form.xlabel'), 
+        anchor : "95%",
+        name : "titleX",
+        listeners : {
+            scope : this,
+            change : this.handlePlotLayout
+        }
         
-        
-            /** button to draw the plot */
-        this.drawPlotButton = new Ext.Button({
-            text : i18n.get('label.plot.draw'),
-            disabled : true,
-            listeners : {
-                scope : this, 
-                click : function (button, e) {
-                    var form = this.leftPanel.getForm();
-                    var pageSize;
-                    if (!this.isSelection) {
-                        pageSize = form.findField("nbRecords").getValue();
-                    } else {
-                        pageSize = this.selectionSize;
+    });
+    
+    /** field for x axis label */
+    this.xFormat = null;
+
+    /** field for y axis label */
+    this.titleY = new Ext.form.Field({
+        fieldLabel : i18n.get('label.plot.form.ylabel'), 
+        anchor : "95%",
+        name : "titleY",
+        listeners : {
+            scope : this,
+            change : this.handlePlotLayout
+        }
+    });
+    /** field for x axis label */
+    this.yFormat = null;
+
+    
+    /** combobox for x field */
+    this.comboX = new Ext.form.ComboBox({
+        store : initialFields, 
+        anchor : "95%",
+        name : "comboX",
+        allowBlank : false,
+        emptyText : i18n.get('label.plot.select.xaxis'),
+        fieldLabel : i18n.get('label.plot.select.xcolumn'),
+        selectOnFocus : true,
+        triggerAction : 'all',
+        valueField : "columnAlias", 
+        displayField : "columnAlias", 
+        editable : false,
+        mode : 'local',
+        listeners : {
+            scope : this, 
+            select : function (combo, record, index) {
+                this.titleX.setValue(combo.getValue());
+                var extType = sql2ext.get(record.get("sqlColumnType"));
+                if (extType.match(/dateAsString/gi) !== null) {
+                    if (Ext.isEmpty(this.xFormat)) {
+						this.xFormat = new Ext.form.Field({
+	                        fieldLabel : i18n.get('label.plot.form.xFormat'), 
+					        anchor : "95%",
+							name : "xFormat",
+							value : config.userPreference && config.userPreference.xFormat ? config.userPreference.xFormat : SITOOLS_DEFAULT_IHM_DATE_FORMAT,
+                            listeners : {
+					            scope : this,
+					            change : this.handlePlotLayout
+					        }
+					    });
+	                    this.fieldSetX.insert(1, this.xFormat);
                     }
-                    
-                    if (pageSize > this.maxWarningRecords) {   
-                        Ext.Msg.show({
-                            title: i18n.get("label.warning"),
-                            msg : Ext.String.format(i18n.get("label.plot.toManyRecordsAsked"), pageSize, this.maxWarningRecords),
-                            buttons : {
-                                yes : i18n.get('label.yes'),
-                                no : i18n.get('label.no')
-                            },
-                            icon: Ext.MessageBox.WARNING,
-                            scope : this,
-                            fn : function (buttonId) {
-                                if (buttonId === 'yes') {
-                                    this.loadPlot(pageSize);
-                                }                       
+                }
+                else {
+					this.fieldSetX.remove(this.xFormat);
+					this.xFormat = null;
+                }
+                this.fieldSetX.doLayout();
+            },
+            expand : function (combo) {
+                combo.store.clearFilter(true);
+                if (this.comboY.getValue() !== '' && this.comboY.getValue() !== null) {
+                    combo.store.filterBy(function (record, id) {
+                        return record.get('field1') !== this.comboY.getValue();
+                    }, this);
+                }
+
+            }
+        }
+    });
+    
+    /** combo box for y data */
+    this.comboY = new Ext.form.ComboBox({
+        store : initialFields, 
+        name : "comboY",
+        allowBlank : false,
+        anchor : "95%",
+        emptyText : i18n.get('label.plot.select.yaxis'),
+        fieldLabel : i18n.get('label.plot.select.ycolumn'),
+        selectOnFocus : true,
+        editable : false,
+        valueField : "columnAlias", 
+        displayField : "columnAlias", 
+        triggerAction : 'all',
+        mode : 'local',
+        listeners : {
+            scope : this, 
+            select : function (combo, record, index) {
+                this.titleY.setValue(combo.getValue());
+                var extType = sql2ext.get(record.get("sqlColumnType"));
+                if (extType.match(/dateAsString/gi) !== null) {
+                    if (Ext.isEmpty(this.yFormat)) {
+						this.yFormat = new Ext.form.Field({
+	                        fieldLabel : i18n.get('label.plot.form.yFormat'), 
+					        anchor : "95%",
+							name : "yFormat",
+							value : config.userPreference && config.userPreference.yFormat ? config.userPreference.yFormat : SITOOLS_DEFAULT_IHM_DATE_FORMAT,
+                            listeners : {
+                                scope : this,
+                                change : this.handlePlotLayout
                             }
-                        });
-                    } else {
-                        this.loadPlot(pageSize);  
+					    });
+//	                    if (Ext.isEmpty(xFormat)) {
+//							this.leftPanel.insert(2, yFormat);
+//	                    }
+//	                    else {
+//							this.leftPanel.insert(3, yFormat);
+//	                    }
+					    this.fieldSetY.insert(1, this.yFormat);
                     }
                 }
+                else {
+					this.fieldSetY.remove(this.yFormat);
+					this.yFormat = null;
+                }
+                this.fieldSetY.doLayout();
+            },
+            expand : function (combo) {
+                combo.store.clearFilter(true);
+                if (this.comboX.getValue() !== '' && this.comboX.getValue() !== null) {
+                    combo.store.filterBy(function (record, id) {
+                        return record.get('field1') !== this.comboX.getValue();
+                    }, this);
+                }
+
             }
-        });
+        }
+    });
+
+    /** field for x axis label */
+    this.titlePlot = new Ext.form.Field({
+        anchor : "95%",
+        fieldLabel : i18n.get('label.plot.form.title'), 
+        name : "titlePlot",
+        listeners : {
+            scope : this,
+            change : this.handlePlotLayout
+        }
+    });
+    
+     /** field for x axis label */
+    var numberRecords = new Ext.form.NumberField({
+        anchor : "95%",
+        fieldLabel : i18n.get('label.plot.form.nbRecords'), 
+        name : "nbRecords",
+        value : DEFAULT_LIVEGRID_BUFFER_SIZE,
+        disabled : this.isSelection,
+        allowBlank : false
+    });
+
+    /** checkbox for drawing line */
+    this.checkLine = new Ext.form.Checkbox({
+        fieldLabel : i18n.get('label.plot.form.drawline'), 
+        name : "checkLine",
+        scope : this,
+        listeners : {
+            scope : this,
+            check : this.handlePlotLayout            
+        }
+    });
+    
+   
+
+    /** Combo box for tag title */
+    this.comboTag = new Ext.form.ComboBox({
+        store : pointTagFields,
+        name : "this.comboTag",
+        anchor : "95%",
+        allowBlank : true,
+        emptyText : i18n.get('label.plot.select.tag'),
+        fieldLabel : i18n.get('label.plot.select.tagcolumn'),
+        selectOnFocus : true,
+        triggerAction : 'all',
+        mode : 'local',
+        scope : this,
+        listeners : {
+            scope : this,
+            select : this.handlePlotLayout
+        }
+    });
+    
+    this.comboXColor = new sitools.widget.colorField({
+		fieldLabel : i18n.get('label.plot.label.color'),
+        anchor : "95%",
+		name : "comboXColor",
+        value : "#000000",
+        listeners : {
+            scope : this,
+            select : this.handlePlotLayout
+        }
+	});
+    
+    this.comboYColor = new sitools.widget.colorField({
+		fieldLabel : i18n.get('label.plot.label.color'),
+        anchor : "95%",
+		name : "comboYColor", 
+		value : "#000000",
+        listeners : {
+            scope : this,
+            select : this.handlePlotLayout
+        }
+	});
+	this.fieldSetX = new Ext.form.FieldSet({
+		title : i18n.get('title.plot.xAxis'), 
+		items : [this.comboX, this.titleX, this.comboXColor], 
+		collapsible : true
+	});
+	this.fieldSetY = new Ext.form.FieldSet({
+		title : i18n.get('title.plot.yAxis'), 
+		items : [this.comboY, this.titleY, this.comboYColor], 
+		collapsible : true
+	});
+    
+   
+    
+    var urlRecords = config.dataUrl + '/records';
+    //if there was a selection let's add the selection string to the urlRecords
+    if (this.isSelection) {
+        urlRecords += "?1=1&" + decodeURIComponent(config.selections);   
+    }
+    var sitoolsAttachementForUsers = config.dataUrl;
+    
+    this.storeData = new sitools.user.component.dataviews.tplView.StoreTplView({
+        datasetCm : this.columnModel,         
+        urlRecords : urlRecords,
+        sitoolsAttachementForUsers : sitoolsAttachementForUsers,
+        userPreference : config.userPreference, 
+        formParams : (!this.isSelection ? config.formParams : undefined), 
+        formMultiDsParams : (!this.isSelection ? config.formMultiDsParams : undefined), 
+        mainView : this,
+        datasetId : config.datasetId,
+        isFirstCountDone : false,
+        autoLoad : false,
+        filters : config.filters,
+        sortInfo : config.sortInfo
+    });
+    
+    
+    this.storeData.addListener("load", function (store, records, options) {
+        this.displayPlot(records);
+    }, this);
+    
+    
+    this.storeData.on("beforeload", function (store, options) {
+        //set the nocount param to false.
+        //before load is called only when a new action (sort, filter) is applied
+        var noCount;
         
-        var bbar;
-        if (this.isSelection) {
-            bbar = new Ext.Toolbar({
-                hidden : true,
-                items : [ '->', {
-                    id : 'plot-tb-text',
-                    xtype : 'tbtext'
-        //            text : 'Displaying ' + bufferSize + ' record' + (bufferSize > 1 ? 's' : '') + ' from ' + (bufferRange[0] + 1) + ' to ' + (bufferRange[1] + 1)
-                } ]
-            });
+        if (!store.isFirstCountDone) {
+            options.params.nocount = false;
         } else {
-            bbar = new Ext.PagingToolbar({
-                hidden : true,
-                store: this.storeData,       // grid and PagingToolbar using same store
-                displayInfo: true,
-                pageSize: DEFAULT_LIVEGRID_BUFFER_SIZE,
-                items : []
-            });        
+            options.params.nocount = true;
         }
         
+        if (!Ext.isEmpty(store.filters)) {
+            var params = store.buildQuery(store.filters.getFilterData());
+            Ext.apply(options.params, params);
+        }
         
+        this.storeData.storeOptions(options);
         
-        /** right panel is the plot place */
-        this.rightPanel = new Ext.Panel({
-            id : 'plot-right-panel',
-            title : i18n.get('title.plot.panel'),
-            region : 'center',
-            margins : '2 2 2 1',
+    }, this);
+    
+    
+        /** button to draw the plot */
+    this.drawPlotButton = new Ext.Button({
+        text : i18n.get('label.plot.draw'),
+        disabled : true,
+        listeners : {
+            scope : this, 
+			click : function (button, e) {
+                var form = this.leftPanel.getForm();
+                var pageSize;
+                if (!this.isSelection) {
+                    pageSize = form.findField("nbRecords").getValue();
+                } else {
+                    pageSize = this.selectionSize;
+                }
+                
+                if (pageSize > this.maxWarningRecords) {   
+                    Ext.Msg.show({
+						title: i18n.get("label.warning"),
+						msg : String.format(i18n.get("label.plot.toManyRecordsAsked"), pageSize, this.maxWarningRecords),
+						buttons : {
+                            yes : i18n.get('label.yes'),
+                            no : i18n.get('label.no')
+                        },
+						icon: Ext.MessageBox.WARNING,
+						scope : this,
+						fn : function (buttonId) {
+                            if (buttonId === 'yes') {
+                                this.loadPlot(pageSize);
+                            }						
+						}
+					});
+                } else {
+                    this.loadPlot(pageSize);  
+                }
+            }
+        }
+    });
+    
+    var bbar;
+    if (this.isSelection) {
+        bbar = new Ext.Toolbar({
+            hidden : true,
+	        items : [ '->', {
+	            id : 'plot-tb-text',
+	            xtype : 'tbtext'
+	//            text : 'Displaying ' + bufferSize + ' record' + (bufferSize > 1 ? 's' : '') + ' from ' + (bufferRange[0] + 1) + ' to ' + (bufferRange[1] + 1)
+	        } ]
+	    });
+    } else {
+        bbar = new Ext.PagingToolbar({
+            hidden : true,
+	        store: this.storeData,       // grid and PagingToolbar using same store
+	        displayInfo: true,
+	        pageSize: DEFAULT_LIVEGRID_BUFFER_SIZE,
+            items : []
+	    });        
+    }
+    
+    
+    
+    /** right panel is the plot place */
+    this.rightPanel = new Ext.Panel({
+        id : 'plot-right-panel',
+        title : i18n.get('title.plot.panel'),
+        region : 'center',
+        margins : '2 2 2 1',
+        scope : this,
+        listeners : {
             scope : this,
-            listeners : {
-                scope : this,
-                bodyresize : function (window, width, height) {
-                    if (this.isVisible() && this.hasPlotted) {
-                        if (!Ext.isEmpty(this.storeData.data)) {
-                            this.displayPlot(this.storeData.data.items);
-                        }
+            bodyresize : function (window, width, height) {
+                if (this.isVisible() && this.hasPlotted) {
+                    if (!Ext.isEmpty(this.storeData.data)) {
+	                    this.displayPlot(this.storeData.data.items);
                     }
-                },
-                afterRender : function () {
-                     // create a new loadingMask
-                    this.loadMask = new Ext.LoadMask(this.rightPanel.getEl(), {
-                        msg : i18n.get("label.plot.waitForPlot"),
-                        store : this.storeData
-                    });
-                    
                 }
             },
-            bbar : bbar
-        });
-        
-       
+            afterRender : function () {
+                 // create a new loadingMask
+		        this.loadMask = new Ext.LoadMask(this.rightPanel.getEl(), {
+		            msg : i18n.get("label.plot.waitForPlot"),
+                    store : this.storeData
+		        });
+                
+            }
+        },
+        bbar : bbar
+    });
+    
+   
 
-        /** left panel is a form */
-        this.leftPanel = new Ext.FormPanel({
-            title : i18n.get('title.plot.form'),
-            region : 'west',
-            split : true,
-            width : 300,
-            autoScroll : true, 
-            collapsible : true,
-            margins : '2 1 2 2',
-            cmargins : '2 2 2 2',
-            padding : '5',
-            monitorValid : true,
-            items : [ this.titlePlot, numberRecords, this.checkLine, this.comboTag, this.fieldSetX, this.fieldSetY],
-            buttons : [this.drawPlotButton],
-            listeners : {
-                scope : this,
-                clientvalidation : function (panel, valid) {
-                    if (valid && (this.comboX.getValue() !== this.comboY.getValue())) {
-                        this.drawPlotButton.setDisabled(false);
-                    } else {
-                        this.drawPlotButton.setDisabled(true);
-                    }
+    /** left panel is a form */
+    this.leftPanel = new Ext.FormPanel({
+        title : i18n.get('title.plot.form'),
+        region : 'west',
+        split : true,
+        width : 300,
+        autoScroll : true, 
+        collapsible : true,
+        margins : '2 1 2 2',
+        cmargins : '2 2 2 2',
+        padding : '5',
+        monitorValid : true,
+        items : [ this.titlePlot, numberRecords, this.checkLine, this.comboTag, this.fieldSetX, this.fieldSetY],
+        buttons : [this.drawPlotButton],
+        listeners : {
+            scope : this,
+            clientvalidation : function (panel, valid) {
+                if (valid && (this.comboX.getValue() !== this.comboY.getValue())) {
+                    this.drawPlotButton.setDisabled(false);
+                } else {
+                    this.drawPlotButton.setDisabled(true);
                 }
             }
-        });
-        
-        
-        /** Automatic plot refresh when buffering */
-//        rightPanel.addListener('buffer', 
-//          function (storage, rowindex, min, total) {
-//              if (this.isVisible() && this.hasPlotted) {
-//                  rawData = storage.data.items;
-//                  bufferSize = storage.bufferSize;
-//                  bufferRange = storage.bufferRange;
-//                  bbar.findById('plot-tb-text').setText(
-//                    'Displaying ' + bufferSize + ' record' + (bufferSize > 1 ? 's' : '') + ' from ' + (bufferRange[0] + 1) + ' to ' + (bufferRange[1] + 1));
-//                  var plotConfig = getPlotConfig(columnModel, rawData);
-//                  this.plot = Flotr.draw($(rightPanel.body.id), [ plotConfig.data ], plotConfig.config);
-//              }
-//          }, 
-//          this
-    //  );
+        }
+    });
+    
+    
+    /** Automatic plot refresh when buffering */
+//    rightPanel.addListener('buffer', 
+//		function (storage, rowindex, min, total) {
+//			if (this.isVisible() && this.hasPlotted) {
+//				rawData = storage.data.items;
+//				bufferSize = storage.bufferSize;
+//				bufferRange = storage.bufferRange;
+//				bbar.findById('plot-tb-text').setText(
+//                'Displaying ' + bufferSize + ' record' + (bufferSize > 1 ? 's' : '') + ' from ' + (bufferRange[0] + 1) + ' to ' + (bufferRange[1] + 1));
+//				var plotConfig = getPlotConfig(columnModel, rawData);
+//				this.plot = Flotr.draw($(rightPanel.body.id), [ plotConfig.data ], plotConfig.config);
+//			}
+//		}, 
+//		this
+//	);
 
-        
+    
 
-        // /** Function to transform log checks in plot styles */
-        // function scaleTypeFromCheckBox (checkbox) {
-        // var style = 'linear';
-        // if (checkbox.getValue()) {
-        // style = 'logarithmic';
-        // }
-        // return style;
-        // }
+    // /** Function to transform log checks in plot styles */
+    // function scaleTypeFromCheckBox (checkbox) {
+    // var style = 'linear';
+    // if (checkbox.getValue()) {
+    // style = 'logarithmic';
+    // }
+    // return style;
+    // }
 
-        
-        
-        /*
-         * Constructor call
-         */
-        sitools.user.component.dataPlotter.superclass.constructor.call(this, Ext.apply({
-            id : 'plot-panel',
-            datasetName : config.datasetName, 
-            layout : 'border',
-            items : [ this.leftPanel, this.rightPanel ]
-//            bbar : bbar
-        }, config));
-        
-    }
-});
+    
+    
+    /*
+     * Constructor call
+     */
+    sitools.user.component.dataPlotter.superclass.constructor.call(this, Ext.apply({
+        id : 'plot-panel',
+        datasetName : config.datasetName, 
+        layout : 'border',
+        items : [ this.leftPanel, this.rightPanel ]
+//        bbar : bbar
+    }, config));
+    
+};
 
 Ext.extend(sitools.user.component.dataPlotter, Ext.Panel, {
 	/** 
@@ -648,7 +644,7 @@ Ext.extend(sitools.user.component.dataPlotter, Ext.Panel, {
         this.hasPlotted = true;        
         
         if (this.isSelection) {
-            this.rightPanel.getBottomToolbar().findById('plot-tb-text').setText(Ext.String.format(i18n.get("label.plot.displayNbRecords"),
+            this.rightPanel.getBottomToolbar().findById('plot-tb-text').setText(String.format(i18n.get("label.plot.displayNbRecords"),
                     records.length));
             
         } 
@@ -995,6 +991,8 @@ Ext.extend(sitools.user.component.dataPlotter, Ext.Panel, {
     getTagValueFromObject : function (object) {
         var index = object.index;
         return object.series.data[index][3];
-    }
+    } 
 	
 });
+
+Ext.reg('sitools.user.component.dataPlotter', sitools.user.component.dataPlotter);

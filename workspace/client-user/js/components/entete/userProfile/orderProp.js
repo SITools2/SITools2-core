@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -65,7 +65,7 @@ sitools.user.component.entete.userProfile.orderProp = Ext.extend(Ext.Panel, {
             title : i18n.get('label.events'),
             store : eventsStore,
             cm : eventsCm,
-            rowSelectionModel : Ext.create('Ext.selection.RowModel',),
+            rowSelectionModel : new Ext.grid.RowSelectionModel(),
             autoScroll : true,
             collapsible : false, 
             viewConfig : {
@@ -102,7 +102,7 @@ sitools.user.component.entete.userProfile.orderProp = Ext.extend(Ext.Panel, {
             title : i18n.get('label.resourceCollection'),
             store : resourceCollectionStore,
             cm : resourceCollectionCm,
-            rowSelectionModel : Ext.create('Ext.selection.RowModel',),
+            rowSelectionModel : new Ext.grid.RowSelectionModel(),
             autoScroll : true, 
             viewConfig : {
 				forceFit : true

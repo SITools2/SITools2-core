@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  * 
  * This file is part of SITools2.
  * 
@@ -124,7 +124,7 @@ sitools.user.modules.datastorageUploadFile = Ext.extend(Ext.Window, {
 
                             },
                             failure : function (response) {
-                                Ext.Msg.alert(i18n.get('label.error'), response.responseText);
+                                Ext.Msg.alert(i18n.get('label.error'));
                             }
                         });
                     }

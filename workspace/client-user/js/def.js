@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -247,8 +247,7 @@ function extColModelToJsonColModel(ExtColModel) {
                 // datasetDetailId : column.datasetDetailId,
                 specificColumnType : column.specificColumnType,
                 javaSqlColumnType : column.javaSqlColumnType,
-                format : column.format,
-                category : column.category
+                format : column.format
             //			image : column.image,
             //			datasetDetailUrl : column.datasetDetailUrl
 
@@ -312,8 +311,7 @@ function extColModelToStorage(ExtColModel) {
 				specificColumnType : column.specificColumnType, 
 				javaSqlColumnType : column.javaSqlColumnType,
                 unit : column.unit,
-                format : column.format,
-                category : column.category
+                format : column.format
 //                image : column.image,
 //                datasetDetailUrl : column.datasetDetailUrl
             });
@@ -481,119 +479,117 @@ function includeCss(url) {
 	headID.appendChild(newCss);
 }
 
-//Ext.define('Ext.PagingToolbar', {
-//    extend : 'Ext.PagingToolbar',
-//    alias : 'widget.paging',
-//    
-//    initComponent : function () {
-//        var T = Ext.Toolbar;
-//        var pagingItems = [this.first = new T.Button({
-//            tooltip: this.firstText,
-//            overflowText: this.firstText,
-//            iconCls: 'x-tbar-page-first',
-//            disabled: true,
-//            handler: this.moveFirst,
-//            scope: this
-//        }), this.prev = new T.Button({
-//            tooltip: this.prevText,
-//            overflowText: this.prevText,
-//            iconCls: 'x-tbar-page-prev',
-//            disabled: true,
-//            handler: this.movePrevious,
-//            scope: this
-//        }), '-', this.beforePageText,
-//        this.inputItem = new Ext.form.NumberField({
-//            cls: 'x-tbar-page-number',
-//            allowDecimals: false,
-//            allowNegative: false,
-//            enableKeyEvents: true,
-//            selectOnFocus: true,
-//            submitValue: false,
-//            listeners: {
-//                scope: this,
-//                keydown: this.onPagingKeyDown,
-//                blur: this.onPagingBlur
-//            }
-//        }), this.afterTextItem = new T.TextItem({
-//            text: Ext.String.format(this.afterPageText, 1)
-//        }), '-', this.next = new T.Button({
-//            tooltip: this.nextText,
-//            overflowText: this.nextText,
-//            iconCls: 'x-tbar-page-next',
-//            disabled: true,
-//            handler: this.moveNext,
-//            scope: this
-//        }), this.last = new T.Button({
-//            tooltip: this.lastText,
-//            overflowText: this.lastText,
-//            iconCls: 'x-tbar-page-last',
-//            disabled: true,
-//            handler: this.moveLast,
-//            scope: this
-//        }), '-'];
-//
-//
-//        var userItems = this.items || this.buttons || [];
-//        if (this.prependButtons) {
-//            this.items = userItems.concat(pagingItems);
-//        } else {
-//            this.items = pagingItems.concat(userItems);
-//        }
-//        delete this.buttons;
-//        if (this.displayInfo) {
-//            this.items.push('->');
-//            this.items.push(this.displayItem = new T.TextItem({}));
-//        }
-//        Ext.PagingToolbar.superclass.initComponent.call(this);
-//        this.addEvents(
-//            /**
-//             * @event change
-//             * Fires after the active page has been changed.
-//             * @param {Ext.PagingToolbar} this
-//             * @param {Object} pageData An object that has these properties:<ul>
-//             * <li><code>total</code> : Number <div class="sub-desc">The total number of records in the dataset as
-//             * returned by the server</div></li>
-//             * <li><code>activePage</code> : Number <div class="sub-desc">The current page number</div></li>
-//             * <li><code>pages</code> : Number <div class="sub-desc">The total number of pages (calculated from
-//             * the total number of records in the dataset as returned by the server and the current {@link #pageSize})</div></li>
-//             * </ul>
-//             */
-//            'change',
-//            /**
-//             * @event beforechange
-//             * Fires just before the active page is changed.
-//             * Return false to prevent the active page from being changed.
-//             * @param {Ext.PagingToolbar} this
-//             * @param {Object} params An object hash of the parameters which the PagingToolbar will send when
-//             * loading the required page. This will contain:<ul>
-//             * <li><code>start</code> : Number <div class="sub-desc">The starting row number for the next page of records to
-//             * be retrieved from the server</div></li>
-//             * <li><code>limit</code> : Number <div class="sub-desc">The number of records to be retrieved from the server</div></li>
-//             * </ul>
-//             * <p>(note: the names of the <b>start</b> and <b>limit</b> properties are determined
-//             * by the store's {@link Ext.data.Store#paramNames paramNames} property.)</p>
-//             * <p>Parameters may be added as required in the event handler.</p>
-//             */
-//            'beforechange'
-//        );
-//        this.on('afterlayout', this.onFirstLayout, this, {single: true});
-//        this.cursor = 0;
-//        this.bindStore(this.store, true);
-//    }, 
-//    onFirstLayout : function () {
-//        this.refresh = new Ext.Toolbar.Button({
-//            tooltip: i18n.get('label.refreshText'),
-//            overflowText: i18n.get('label.refreshText'),
-//            iconCls: 'x-tbar-loading',
-//            handler: this.doRefresh,
-//            scope: this
-//        });
-//        this.insert(10, this.refresh);
-//        if (this.dsLoaded) {
-//            this.onLoad.apply(this, this.dsLoaded);
-//        }
-//    }
-//});
+
+Ext.override(Ext.PagingToolbar, {
+    initComponent : function () {
+        var T = Ext.Toolbar;
+        var pagingItems = [this.first = new T.Button({
+            tooltip: this.firstText,
+            overflowText: this.firstText,
+            iconCls: 'x-tbar-page-first',
+            disabled: true,
+            handler: this.moveFirst,
+            scope: this
+        }), this.prev = new T.Button({
+            tooltip: this.prevText,
+            overflowText: this.prevText,
+            iconCls: 'x-tbar-page-prev',
+            disabled: true,
+            handler: this.movePrevious,
+            scope: this
+        }), '-', this.beforePageText,
+        this.inputItem = new Ext.form.NumberField({
+            cls: 'x-tbar-page-number',
+            allowDecimals: false,
+            allowNegative: false,
+            enableKeyEvents: true,
+            selectOnFocus: true,
+            submitValue: false,
+            listeners: {
+                scope: this,
+                keydown: this.onPagingKeyDown,
+                blur: this.onPagingBlur
+            }
+        }), this.afterTextItem = new T.TextItem({
+            text: String.format(this.afterPageText, 1)
+        }), '-', this.next = new T.Button({
+            tooltip: this.nextText,
+            overflowText: this.nextText,
+            iconCls: 'x-tbar-page-next',
+            disabled: true,
+            handler: this.moveNext,
+            scope: this
+        }), this.last = new T.Button({
+            tooltip: this.lastText,
+            overflowText: this.lastText,
+            iconCls: 'x-tbar-page-last',
+            disabled: true,
+            handler: this.moveLast,
+            scope: this
+        }), '-'];
+
+
+        var userItems = this.items || this.buttons || [];
+        if (this.prependButtons) {
+            this.items = userItems.concat(pagingItems);
+        } else {
+            this.items = pagingItems.concat(userItems);
+        }
+        delete this.buttons;
+        if (this.displayInfo) {
+            this.items.push('->');
+            this.items.push(this.displayItem = new T.TextItem({}));
+        }
+        Ext.PagingToolbar.superclass.initComponent.call(this);
+        this.addEvents(
+            /**
+             * @event change
+             * Fires after the active page has been changed.
+             * @param {Ext.PagingToolbar} this
+             * @param {Object} pageData An object that has these properties:<ul>
+             * <li><code>total</code> : Number <div class="sub-desc">The total number of records in the dataset as
+             * returned by the server</div></li>
+             * <li><code>activePage</code> : Number <div class="sub-desc">The current page number</div></li>
+             * <li><code>pages</code> : Number <div class="sub-desc">The total number of pages (calculated from
+             * the total number of records in the dataset as returned by the server and the current {@link #pageSize})</div></li>
+             * </ul>
+             */
+            'change',
+            /**
+             * @event beforechange
+             * Fires just before the active page is changed.
+             * Return false to prevent the active page from being changed.
+             * @param {Ext.PagingToolbar} this
+             * @param {Object} params An object hash of the parameters which the PagingToolbar will send when
+             * loading the required page. This will contain:<ul>
+             * <li><code>start</code> : Number <div class="sub-desc">The starting row number for the next page of records to
+             * be retrieved from the server</div></li>
+             * <li><code>limit</code> : Number <div class="sub-desc">The number of records to be retrieved from the server</div></li>
+             * </ul>
+             * <p>(note: the names of the <b>start</b> and <b>limit</b> properties are determined
+             * by the store's {@link Ext.data.Store#paramNames paramNames} property.)</p>
+             * <p>Parameters may be added as required in the event handler.</p>
+             */
+            'beforechange'
+        );
+        this.on('afterlayout', this.onFirstLayout, this, {single: true});
+        this.cursor = 0;
+        this.bindStore(this.store, true);
+    }, 
+    onFirstLayout : function () {
+        this.refresh = new Ext.Toolbar.Button({
+            tooltip: i18n.get('label.refreshText'),
+            overflowText: i18n.get('label.refreshText'),
+            iconCls: 'x-tbar-loading',
+            handler: this.doRefresh,
+            scope: this
+        });
+        this.insert(10, this.refresh);
+        if (this.dsLoaded) {
+            this.onLoad.apply(this, this.dsLoaded);
+        }
+    }
+});
 
 
 
@@ -664,8 +660,7 @@ function getColumnModel(listeColonnes, dictionnaryMappings, dataviewConfig, data
 //	                image : item.image,
 //	                datasetDetailUrl : item.datasetDetailUrl,
 					menuDisabled : true,
-	                format : item.format,
-	                category : item.category
+	                format : item.format
 	            }));
             }
             
@@ -741,8 +736,8 @@ Ext.override(Ext.form.DateField,  {
             disabledDaysText : this.disabledDaysText,
             format : this.format,
             showToday : this.showToday,
-            minText : Ext.String.format(this.minText, this.formatDate(this.minValue)),
-            maxText : Ext.String.format(this.maxText, this.formatDate(this.maxValue))
+            minText : String.format(this.minText, this.formatDate(this.minValue)),
+            maxText : String.format(this.maxText, this.formatDate(this.maxValue))
         });
         this.menu.picker.setValue(this.getValue() || new Date());
         this.menu.show(this.el, "tl-bl?");
@@ -911,7 +906,7 @@ Ext.override(Ext.layout.BorderLayout.Region, {
 
 });
 
-Ext.namespace('sitools.public.utils');
+Ext.ns("sitools.user");
 
 /**
  * A méthod call when click on dataset Icon. Request the dataset, and open a window depending on type
@@ -973,7 +968,7 @@ sitools.user.clickDatasetIcone = function (url, type, extraCmpConfig) {
 	                    dictionaryMappings : dataset.dictionaryMappings,
 	                    datasetViewConfig : dataset.datasetViewConfig, 
 	                    preferencesPath : "/" + dataset.datasetName, 
-	                    preferencesFileName : "datasetOverview",
+	                    preferencesFileName : "datasetOverview", 
 	                    sitoolsAttachementForUsers : dataset.sitoolsAttachementForUsers
 	                };
                 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  * 
  * This file is part of SITools2.
  * 
@@ -24,10 +24,7 @@ Ext.namespace('sitools.user.modules');
  * @class sitools.user.modules.sitoolsFitsTable
  * @extends Ext.Panel
  */
-Ext.define('sitools.user.modules.sitoolsFitsTable', {
-    extend : 'Ext.panel.Panel',
-    alias : 'sitools.user.modules.sitoolsFitsTable',
-    
+sitools.user.modules.sitoolsFitsTable = Ext.extend(Ext.Panel, {
     layout : 'border',
     split : true,
     initComponent : function () {
@@ -52,8 +49,8 @@ Ext.define('sitools.user.modules.sitoolsFitsTable', {
                 fields : this.data.columns // only the columns names
             }),
             colModel : new Ext.grid.ColumnModel(columns),
-            selModel : Ext.create('Ext.selection.RowModel',{
-                mode : 'SINGLE'
+            selModel : new Ext.grid.RowSelectionModel({
+                singleSelect : true
             }),
             listeners : {
                 scope : this,
@@ -144,3 +141,4 @@ Ext.define('sitools.user.modules.sitoolsFitsTable', {
         SitoolsDesk.addDesktopWindow(windowConfig, config, jsObj);
     }
 });
+Ext.reg('sitools.user.modules.sitoolsFitsTable', sitools.user.modules.sitoolsFitsTable);

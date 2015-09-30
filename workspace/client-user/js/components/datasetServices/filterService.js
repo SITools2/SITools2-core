@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  * 
  * This file is part of SITools2.
  * 
@@ -24,10 +24,7 @@ Ext.namespace('sitools.user.component.dataviews.services');
  * @class sitools.widget.filterTool
  * @extends Ext.Window
  */
-Ext.define('sitools.user.component.dataviews.services.filterService', {
-    extend : 'Ext.window.Window',
-    alias : 'sitools.user.component.dataviews.services.filterService',
-    
+sitools.user.component.dataviews.services.filterService = Ext.extend(Ext.Window, {
     paramPrefix : 'filter', 
     
     initComponent : function () {
@@ -193,7 +190,7 @@ Ext.define('sitools.user.component.dataviews.services.filterService', {
             name : "field" + 1,
             triggerAction : 'all',
             lazyRender : true,
-            queryMode : 'local',
+            mode : 'local',
             store : this.storeCombo,
             valueField : 'columnAlias',
             displayField : 'columnHeader',
@@ -318,3 +315,5 @@ sitools.user.component.dataviews.services.filterService.executeAsService = funct
     var filterTool = new sitools.user.component.dataviews.services.filterService(config);
     filterTool.show();
 };
+
+Ext.reg('sitools.user.component.dataviews.services.filterService', sitools.user.component.dataviews.services.filterService);

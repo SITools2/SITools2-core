@@ -1,5 +1,5 @@
 /***************************************
- * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  * 
  * This file is part of SITools2.
  * 
@@ -222,7 +222,7 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
      */
     onResourceCallClick : function (resource, url, method, userSyncChoice, limit, userParameters, postParameter, callback) {
         if ((method === "POST" || method === "PUT" || method === "DELETE") && userSyncChoice === "TASK_RUN_SYNC") {
-            Ext.Msg.alert(i18n.get('label.error'), Ext.String.format(i18n.get("error.invalidMethodOrSyncRessourceCall"), method, userSyncChoice));
+            Ext.Msg.alert(i18n.get('label.error'), String.format(i18n.get("error.invalidMethodOrSyncRessourceCall"), method, userSyncChoice));
             return;
         }
 
@@ -232,7 +232,7 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
                 request = this.grid.getRequestParam();
             }
             catch (err) {
-                Ext.Msg.alert(i18n.get('label.error'), Ext.String.format(i18n.get('label.notImplementedService'), err));
+                Ext.Msg.alert(i18n.get('label.error'), String.format(i18n.get('label.notImplementedService'), err));
                 return false;
             }
         }

@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2015 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -21,7 +21,7 @@
 Ext.namespace('sitools.component');
 
 sitools.component.htmlModuleMapShup = Ext.extend(Ext.Panel, {
-	alias : 'sitools.component.htmlModuleMapShup',
+
     initComponent : function () {
         var htmlReaderCfg = {
             defaults : {
@@ -52,3 +52,4 @@ sitools.component.htmlModuleMapShup = Ext.extend(Ext.Panel, {
 
 });
 
+Ext.reg('sitools.component.htmlModuleMapShup', sitools.component.htmlModuleMapShup);
