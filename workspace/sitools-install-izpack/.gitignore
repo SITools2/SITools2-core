@@ -4,3 +4,4 @@ res/script/startSitools.bat
 res/script/startSitools.sh
 SITools2*.jar
 /build.num
+res/data/freemarker
