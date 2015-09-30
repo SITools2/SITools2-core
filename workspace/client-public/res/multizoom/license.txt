@@ -1,2 +1,0 @@
-Simple Javascript image viewer from www.spictrading.com/viewer is licensed under GNU GPL version 3.
-Read more about GPLv3 at http://www.gnu.org/licenses/
