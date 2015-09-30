@@ -133,7 +133,7 @@ public class LostPasswordResource extends SitoolsResource {
    */
   private String getResetPasswordUrl(User user) {
     String token = application.getChallengeToken().getToken(user.getIdentifier());
-    return getSitoolsSetting(Consts.APP_CLIENT_PUBLIC_URL) + "/resetPassword/index.html?cdChallengeMail=" + token;
+    return "/resetPassword/index.html?cdChallengeMail=" + token;
   }
 
   @Override

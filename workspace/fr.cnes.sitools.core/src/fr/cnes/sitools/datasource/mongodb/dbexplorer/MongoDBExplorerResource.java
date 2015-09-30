@@ -349,13 +349,9 @@ public class MongoDBExplorerResource extends SitoolsResource {
       if (isObject(value)) {
         BasicDBObject dbObjectValue = (BasicDBObject) value;
         attr.setChildren(getAttributeValue(dbObjectValue, withValue));
-        attr.setLeaf(false);
       }
       else if (withValue) {
         attr.setValue(dbObject.get(key));
-      }
-      else {
-        attr.setLeaf(true);
       }
 
       children.add(attr);
