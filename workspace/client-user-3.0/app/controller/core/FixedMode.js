@@ -30,7 +30,10 @@ Ext.define('sitools.user.controller.core.FixedMode', {
         });
 
         Ext.apply(windowConfig, this.getStatefullComponentConfig());
+
+        Ext.suspendLayouts();
         this.getApplication().getController('DesktopController').createPanel(view, windowConfig);
+        Ext.resumeLayouts(true);
     },
 
     openModule: function (view, module) {
@@ -44,7 +47,10 @@ Ext.define('sitools.user.controller.core.FixedMode', {
         };
 
         Ext.apply(windowConfig, this.getStatefullWindowConfig());
+
+        Ext.suspendLayouts();
         this.getApplication().getController('DesktopController').createPanel(view, windowConfig);
+        Ext.resumeLayouts(true);
     },
 
     getFormOpenMode: function () {

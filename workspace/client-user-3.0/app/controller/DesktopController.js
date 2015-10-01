@@ -135,6 +135,14 @@ Ext.define('sitools.user.controller.DesktopController', {
                 hideMode : 'offsets',
                 layout : 'fit',
                 items : [ view ],
+                listeners : {
+                    render : function (window) {
+                        window.getEl().mask(i18n.get("label.loading"));
+                    },
+                    boxready : function (window) {
+                        window.getEl().unmask();
+                    }
+                },
                 tools : [{
                 	type : 'prev',
                 	tooltip : i18n.get('label.alignLeftDesktop'),
