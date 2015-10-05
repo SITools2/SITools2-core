@@ -25,11 +25,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
@@ -215,7 +213,7 @@ public abstract class AbstractCartOrderResource extends AbstractOrderResource {
         List<Record> recs = getRecordListFromResponse(response);
 
         // ** ADD DATA TO SOURCE REFERENCES
-        Set<String> noDuplicateUrlSet = new HashSet<String>();
+        Map<String, List<String>> noDuplicateUrlSet = new HashMap<String, List<String>>();
 
         // ** PREPARE LIST FOR METADATA.XML
         List<Record> extractrecs = new ArrayList<Record>();
@@ -224,6 +222,7 @@ public abstract class AbstractCartOrderResource extends AbstractOrderResource {
 
         List<Column> exportableColumns = new ArrayList<Column>();
         List<Column> simpleColumns = new ArrayList<Column>();
+        Column primaryKeyColumn = null;
 
         // ** PREPARE COLUMNS LIST
         // - TO REMOVE "NO CLIENT ACCESS" COLUMNS
@@ -240,12 +239,26 @@ public abstract class AbstractCartOrderResource extends AbstractOrderResource {
           if (!exportable) {
             simpleColumns.add(column);
           }
+          if (column.getColumnAlias().equals(sel.getPrimaryKey())) {
+            primaryKeyColumn = column;
+          }
         }
 
         for (Record rec : recs) {
 
           List<AttributeValue> attributeValues = new ArrayList<AttributeValue>();
           Record extractrec = new Record();
+
+          String primaryKeyValue = null;
+
+          /* (0) Find primary key value */
+          for (AttributeValue attributeValue : rec.getAttributeValues()) {
+
+            if (attributeValue.getName().equals(primaryKeyColumn.getColumnAlias())) {
+              primaryKeyValue = (String) attributeValue.getValue();
+            }
+
+          }
 
           for (AttributeValue attributeValue : rec.getAttributeValues()) {
 
@@ -262,15 +275,16 @@ public abstract class AbstractCartOrderResource extends AbstractOrderResource {
               if (attributeValue.getName().equals(exportableColumn.getColumnAlias())) {
 
                 if (attributeValue.getValue().toString().startsWith(settings.getString(Consts.APP_URL))) {
-                  noDuplicateUrlSet.add(settings.getPublicHostDomain() + attributeValue.getValue().toString());
+                  addUrlToMap(primaryKeyValue, settings.getPublicHostDomain()
+                      + attributeValue.getValue().toString(), noDuplicateUrlSet);
                 }
                 else {
-                  noDuplicateUrlSet.add(attributeValue.getValue().toString());
+                  addUrlToMap(primaryKeyValue, attributeValue.getValue().toString(), noDuplicateUrlSet);
                 }
 
                 String[] segments = attributeValue.getValue().toString().split("/");
                 String lastsegment = segments[segments.length - 1];
-                attributeValue.setValue("data/" + sel.getDatasetName() + "/" + lastsegment);
+                attributeValue.setValue("data/" + sel.getDatasetName() + "/" + primaryKeyValue + "/" + lastsegment);
                 attributeValues.add(attributeValue);
 
               }
@@ -337,6 +351,15 @@ public abstract class AbstractCartOrderResource extends AbstractOrderResource {
 
     return listRef;
 
+  }
+
+  private void addUrlToMap(String primaryKey, String url, Map<String, List<String>> urlSet) {
+    List<String> urls = urlSet.get(primaryKey);
+    if (urls == null) {
+      urls = new ArrayList<String>();
+    }
+    urls.add(url);
+    urlSet.put(primaryKey, urls);
   }
 
   /**

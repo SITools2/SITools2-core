@@ -117,7 +117,7 @@ public class ZipOutputRepresentation extends OutputRepresentation {
       for (Reference reference : references) {
         if (reference.getLastSegment() != null) {
           try {
-            context.getLogger().log(Level.INFO, "WRITE : " + reference + " into zip file");
+            context.getLogger().log(Level.FINE, "WRITE : " + reference + " into zip file");
             // try to get the file
             Representation repr = OrderResourceUtils.getFile(reference, clientInfo, context);
             // create a new ZipEntry with the name of the entry
@@ -149,7 +149,7 @@ public class ZipOutputRepresentation extends OutputRepresentation {
 
             }
             catch (Exception e) {
-              context.getLogger().log(Level.SEVERE, e.getMessage(), e);
+              context.getLogger().log(Level.INFO, "File " + reference + "canno't be found", e);
             }
             finally {
               // close the entry and the file stream
