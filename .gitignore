@@ -21,6 +21,10 @@ workspace/client-user/js/modules/cartoModule/
 .idea/
 *.iml
 
+### JetBrains template
+*.iml
+.idea/
+
 node_modules/
 
 cots/

@@ -160,7 +160,8 @@ public final class RoleResource extends AbstractRoleResource {
 
   @Override
   public void describePut(MethodInfo info) {
-    info.setDocumentation("Method to modify a role sending its new representation. Users and Groups can't be modified that way");
+    info.setDocumentation(
+        "Method to modify a role sending its new representation. Users and Groups can't be modified that way");
     this.addStandardPostOrPutRequestInfo(info);
     ParameterInfo paramRoleId = new ParameterInfo("roleId", false, "xs:string", ParameterStyle.TEMPLATE,
         "Identifier of the role to modify.");
@@ -197,7 +198,6 @@ public final class RoleResource extends AbstractRoleResource {
           notification.setObservable(roleOutput.getId());
           notification.setEventSource(roleOutput);
           getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
-          
           // Response
           response = new Response(true, "role.delete.success");
           trace(Level.INFO, "Delete profile " + roleOutput.getName());
