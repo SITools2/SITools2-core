@@ -18,17 +18,6 @@
  ******************************************************************************/
 package fr.cnes.sitools.applications.basic;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import org.restlet.Context;
-import org.restlet.Request;
-import org.restlet.Response;
-import org.restlet.Restlet;
-import org.restlet.routing.Redirector;
-import org.restlet.routing.Router;
-import org.restlet.routing.Template;
-
 import fr.cnes.sitools.common.model.Category;
 import fr.cnes.sitools.common.validator.ConstraintViolation;
 import fr.cnes.sitools.common.validator.ConstraintViolationLevel;
@@ -37,12 +26,22 @@ import fr.cnes.sitools.plugins.applications.business.AbstractApplicationPlugin;
 import fr.cnes.sitools.plugins.applications.model.ApplicationPluginModel;
 import fr.cnes.sitools.plugins.applications.model.ApplicationPluginParameter;
 import fr.cnes.sitools.proxy.RedirectorProxy;
+import org.restlet.Context;
+import org.restlet.Request;
+import org.restlet.Response;
+import org.restlet.Restlet;
+import org.restlet.routing.Redirector;
+import org.restlet.routing.Router;
+import org.restlet.routing.Template;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Plugin Application to redirect client request to target template url in Redirector mode.
- * 
+ *
  * @author jp.boignard
- * 
+ *
  */
 public final class ProxyApp extends AbstractApplicationPlugin {
   /** PARAM_URLCLIENT */
@@ -56,7 +55,7 @@ public final class ProxyApp extends AbstractApplicationPlugin {
 
   /**
    * Default constructor
-   * 
+   *
    * @param context
    *          context
    */
@@ -76,7 +75,7 @@ public final class ProxyApp extends AbstractApplicationPlugin {
   /**
    * Constructor with context and model of the application configuration used when actually creating application
    * instance
-   * 
+   *
    * @param arg0
    *          Restlet context
    * @param model
@@ -94,8 +93,7 @@ public final class ProxyApp extends AbstractApplicationPlugin {
       }
       setCategory(category);
 
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       getLogger().severe(e.getMessage());
     }
 
@@ -122,7 +120,7 @@ public final class ProxyApp extends AbstractApplicationPlugin {
     ApplicationPluginParameter param3 = new ApplicationPluginParameter();
     param3.setName(PARAM_MODE);
     param3
-        .setDescription("CLIENT_PERMANENT=1 CLIENT_FOUND=2 CLIENT_SEE_OTHER=3 CLIENT_TEMPORARY=4 SERVER_OUTBOUND=6 SERVER_INBOUND=7");
+            .setDescription("CLIENT_PERMANENT=1 CLIENT_FOUND=2 CLIENT_SEE_OTHER=3 CLIENT_TEMPORARY=4 SERVER_OUTBOUND=6 SERVER_INBOUND=7");
     this.addParameter(param3);
 
     ApplicationPluginParameter param4 = new ApplicationPluginParameter();
@@ -141,7 +139,7 @@ public final class ProxyApp extends AbstractApplicationPlugin {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.restlet.Application#createInboundRoot()
    */
   @Override
@@ -151,15 +149,23 @@ public final class ProxyApp extends AbstractApplicationPlugin {
     Router router = new Router(getContext());
     router.setDefaultMatchingMode(Template.MODE_STARTS_WITH);
 
-    ApplicationPluginParameter param1 = this.getParameter("urlClient");
-    ApplicationPluginParameter param2 = this.getParameter("useProxy");
-    ApplicationPluginParameter param3 = this.getParameter("mode");
+    ApplicationPluginParameter urlClientParam = this.getParameter("urlClient");
+    ApplicationPluginParameter useProxy = this.getParameter("useProxy");
+    ApplicationPluginParameter modeParam = this.getParameter("mode");
 
-    if (Boolean.parseBoolean(param2.getValue())) {
-      redirector = new RedirectorProxy(getContext(), param1.getValue(), Integer.parseInt(param3.getValue()));
+    String urlClient = urlClientParam.getValue();
+
+
+    int mode = Integer.parseInt(modeParam.getValue());
+
+    if (Redirector.MODE_SERVER_OUTBOUND == mode) {
+      urlClient += "{rr}";
     }
-    else {
-      redirector = new Redirector(getContext(), param1.getValue(), Integer.parseInt(param3.getValue()));
+
+    if (Boolean.parseBoolean(useProxy.getValue())) {
+      redirector = new RedirectorProxy(getContext(), urlClient, mode);
+    } else {
+      redirector = new Redirector(getContext(), urlClient, mode);
     }
 
     // return redirector;
@@ -169,7 +175,7 @@ public final class ProxyApp extends AbstractApplicationPlugin {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.restlet.ext.wadl.WadlApplication#handle(org.restlet.Request, org.restlet.Response)
    */
   @Override
@@ -219,8 +225,7 @@ public final class ProxyApp extends AbstractApplicationPlugin {
             constraint.setValueName(param.getName());
             constraints.add(constraint);
           }
-        }
-        catch (NumberFormatException ex) {
+        } catch (NumberFormatException ex) {
           ConstraintViolation constraint = new ConstraintViolation();
           constraint.setMessage("This parameter must be from 1 to 7");
           constraint.setLevel(ConstraintViolationLevel.CRITICAL);

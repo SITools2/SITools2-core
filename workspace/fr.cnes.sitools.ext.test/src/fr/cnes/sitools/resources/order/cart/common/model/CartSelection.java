@@ -28,6 +28,7 @@ public class CartSelection implements IResource, Serializable {
   private String ranges;
   private String[] dataToExport;
   private int startIndex;
+  private String primaryKey;
 
   private List<Column> colModel;
 
@@ -162,6 +163,14 @@ public class CartSelection implements IResource, Serializable {
 
   public void setStartIndex(int startIndex) {
     this.startIndex = startIndex;
+  }
+
+  public String getPrimaryKey() {
+    return primaryKey;
+  }
+
+  public void setPrimaryKey(String primaryKey) {
+    this.primaryKey = primaryKey;
   }
 
 }
