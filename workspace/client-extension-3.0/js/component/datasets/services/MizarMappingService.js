@@ -219,7 +219,7 @@ Ext.define('sitools.extension.component.datasets.services.MizarMappingService', 
                     "minOrder": 5
                 });
 
-                if (config.fromProjectGraph == false) {
+                if (!config.fromProjectGraph) {
                     layer.subscribe("tile:removeFeatures", Ext.bind(this.removeFeatureFromGrid, this));
                     layer.subscribe("features:added", Ext.bind(this.synchronizeFeaturesGridMap, this));
                 }
