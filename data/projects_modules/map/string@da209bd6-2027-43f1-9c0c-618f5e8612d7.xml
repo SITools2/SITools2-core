@@ -1,0 +1,16 @@
+<projectModule>
+  <id>da209bd6-2027-43f1-9c0c-618f5e8612d7</id>
+  <name>DatasetExplorerOchart</name>
+  <description>Explore dataset through a graph</description>
+  <label>label.datasetExplorerOchart</label>
+  <author>IAS</author>
+  <version>1.0</version>
+  <title>label.datasetExplorerOchart</title>
+  <defaultWidth>600</defaultWidth>
+  <defaultHeight>500</defaultHeight>
+  <x>0</x>
+  <y>0</y>
+  <icon>datasetExplorerModule</icon>
+  <xtype>sitools.extension.modules.DatasetExplorerOchartModule</xtype>
+  <priority>6</priority>
+</projectModule>
