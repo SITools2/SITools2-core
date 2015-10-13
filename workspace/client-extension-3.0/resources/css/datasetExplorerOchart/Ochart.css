@@ -1,0 +1,194 @@
+/*Shuo DatasetExplorer Ochart*/
+
+.over-item-cls {
+    background-color: #ffedb3;
+    border-color: red !important;
+}
+.task-item {
+    border-color: green;
+    padding: 0;
+    text-align: left;
+}
+.task-item .item-title {
+    padding: 5px;
+    text-align: center;
+    font-weight: bold;
+}
+.task-item .item-title-rootnode {
+    font-size: 25px;
+}
+.task-item .item-title-node {
+    font-size: 15px;
+}
+.task-item .item-title-ds {
+    font-size: 11px;
+}
+
+.task-item > .item-body {
+    padding: 5px;
+}
+.task-item .item-img {
+    box-shadow: 0 0 3px 1px rgb(215, 215, 215);
+    height: 80px;
+    background-color: white;
+}
+.task-item .item-nb{
+    color: #999
+}
+.task-item {
+    box-shadow: 5px 5px 4px #888888;
+    border: none;
+}
+.task-item .item-icon{
+    background:url("/sitools/common/res/images/icons/tree_datasets_32.png") no-repeat center;
+    height:32px;
+}
+.x-ochart * {
+    background-attachment: scroll;
+    background-color: transparent;
+    background-image: none;
+    background-position: 0 0;
+    background-repeat: repeat-y;
+    border-collapse: collapse !important;
+    border-spacing: 0 !important;
+    box-sizing: content-box !important;
+    margin: 0;
+    padding: 0;
+}
+.x-ochart {
+    -moz-user-select: none;
+    text-align: center;
+}
+.x-ochart-wrap {
+    border-collapse: collapse !important;
+    border-spacing: 0 !important;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 2px;
+    white-space: nowrap;
+}
+.x-ochart-node {
+    vertical-align: top !important;
+}
+.x-ochart-expander-row {
+    display: none !important;
+    text-align: center !important;
+}
+.x-ochart-expander {
+    background: url("/sitools/client-extension/resources/img/datasetExplorerOchart/ochart-tree.png") no-repeat scroll center center rgba(0, 0, 0, 0);
+    cursor: pointer !important;
+    display: inline-block;
+    height: 16px;
+    margin-left: 4px;
+    margin-top: -2px !important;
+    width: 16px;
+}
+.x-ochart-add {
+    background: url("/sitools/client-extension/resources/img/datasetExplorerOchart/ochart-add.png") no-repeat scroll center center rgba(0, 0, 0, 0);
+    cursor: pointer !important;
+    display: inline-block;
+    height: 16px;
+    margin-left: 2px;
+    margin-top: -2px;
+    width: 16px;
+}
+.x-ochart-remove {
+    background: url("/sitools/client-extension/resources/img/datasetExplorerOchart/ochart-remove.png") no-repeat scroll center center rgba(0, 0, 0, 0);
+    cursor: pointer !important;
+    display: inline-block;
+    height: 16px;
+    margin-left: 4px;
+    margin-top: -2px;
+    width: 16px;
+}
+.x-ochart-node.x-item-collapsed > table > tbody > .x-ochart-lines.x-ochart-children-lines, .x-ochart-node.x-item-collapsed > table > tbody > .x-ochart-container {
+    display: none !important;
+}
+.x-ochart-node.x-item-collapsed > table > tbody > .x-ochart-expander-row {
+    display: table-row !important;
+}
+.x-ochart-node-row {
+    padding: 0;
+    vertical-align: top;
+}
+.x-ochart-node-row > td {
+    text-align: center;
+}
+.x-ochart-node-content {
+    background-color: #D8D8D8;
+    border: 0px solid #888888;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-block !important;
+    margin-top: -3px !important;
+    min-width: 48px;
+    padding: 0px;
+}
+.x-ochart-container {
+    vertical-align: top !important;
+}
+.x-ochart-left {
+    border-style: solid;
+    border-width: 0;
+    display: inline-block !important;
+    margin-top: -2px;
+    margin-bottom: 2px;
+    width: 50% !important;
+}
+.x-ochart-right {
+    border-style: solid;
+    border-width: 0;
+    display: inline-block !important;
+    margin-top: -2px;
+    margin-bottom: 2px;
+    width: 50% !important;
+}
+.x-ochart-lines.x-ochart-down .x-ochart-left, .x-ochart-lines.x-ochart-down .x-ochart-right {
+    border-top: 0 none;
+    margin-bottom: 2px;
+    margin-top: 0;
+}
+.x-ochart-lines > .x-ochart-first > .x-ochart-left {
+    border: 0 none;
+}
+.x-ochart-lines > .x-ochart-first > .x-ochart-right {
+    border-radius: 5px 0 0;
+}
+.x-ochart-lines > .x-ochart-last > .x-ochart-right {
+    border: 0 none;
+}
+.x-ochart-lines > .x-ochart-last > .x-ochart-left {
+    border-radius: 0 5px 0 0;
+    border-right: 2px solid black;
+}
+.x-ochart-node .x-item-selected {
+    !background-color: #b0eeff;
+}
+.x-ochart-ddindicator {
+    background: url("/sitools/client-extension/resources/img/datasetExplorerOchart/ochart-arrows.png") no-repeat scroll 0 0 transparent;
+    height: 16px;
+    width: 16px;
+}
+.x-ochart-ddindicator.before {
+    background-position: -48px center;
+}
+.x-ochart-ddindicator.after {
+    background-position: -16px center;
+}
+.x-ochart-ddindicator.append {
+    background-position: -32px center;
+}
+.x-ochart-over-node {
+    background-color: #ffedb3;
+    border-color: red !important;
+}
+.x-tip {
+    width: auto !important;
+}
+.x-tip-body {
+    width: auto !important;
+}
+.x-tip-body span {
+    width: auto !important;
+}
