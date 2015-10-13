@@ -7,12 +7,10 @@ then
     echo " ### Building tool for Mizar ###"
     echo ""
     echo ""
-    echo " If <mizar_git_repository> parameter is not set, the script will get Mizar from Github repository."
-    echo " If <mizar_git_repository> parameter is set, the script will get Mizar from the given repository parameter."
     echo ""
-    echo "    Usage : $0 <sitools_root_directory> (<mizar_git_repository>)"
+    echo "    Usage : $0 <sitools_root_directory>"
     echo ""
-    echo "              $0 /D/PROJECTS/SITOOLS/CNES-ULISSE-2.0-GIT /D/PROJECTS/SITOOLS/CNES-ULISSE-2.0-GIT/extensions/mizar"
+    echo "              $0 /D/PROJECTS/SITOOLS/CNES-ULISSE-2.0-GIT"
     echo ""
     echo "###"
     exit 0
@@ -22,28 +20,26 @@ fi
 TARGET=$1/workspace/client-extension-3.0/resources/libs/mizar
 SITOOLS_OVERRIDES=$1/workspace/client-extension-3.0/resources/libs/overrides/mizar
 
-MIZAR_PARAM=$2
 
 echo ""
 echo "Delete ${TARGET} directory."
 rm -rf ${TARGET}
 
-if [ -z ${MIZAR_PARAM} ]; then
-    echo ""
-    echo "Git clone Mizar."
-    rm -rf mizar
-    git clone https://github.com/SITools2/MIZAR.git mizar
+echo ""
+echo "Git clone Mizar."
+rm -rf mizar
+git clone https://github.com/SITools2/MIZAR.git mizar
+echo ""
+echo -e " -> Checkout revision 465c9608259cc5947a20529a557ab5b11a3dadf7"
+cd mizar
+git checkout 465c9608259cc5947a20529a557ab5b11a3dadf7
 
-    echo ""
-    echo "Get Mizar submodules."
-    cd mizar
-    git submodule init
-    git submodule update
-    cd ..
-    MIZAR=`pwd`/"mizar"
-else
-    MIZAR=${MIZAR_PARAM}
-fi
+echo ""
+echo "Get Mizar submodules."
+git submodule init
+git submodule update
+cd ..
+MIZAR=`pwd`/"mizar"
 
 echo ""
 echo "Deploy Mizar"
