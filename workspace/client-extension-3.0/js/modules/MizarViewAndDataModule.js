@@ -245,6 +245,7 @@ Ext.define('sitools.extension.modules.MizarViewAndDataModule', {
                     labelWidth: 170,
                     allowBlank: true,
                     width: 200,
+                    value : '/sitools/client-extension/resources/conf/mizarModule/sitools_mizar.json',
                     listeners: {
                         render: function (c) {
                             Ext.QuickTips.register({
