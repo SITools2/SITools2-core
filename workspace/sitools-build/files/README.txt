@@ -2,8 +2,8 @@
 ______________
 
 Identification                       : SITools2
-Date                                 : 2015-09-15
-Version                              : 3.0-beta2
+Date                                 : 2015-10-13
+Version                              : 3.0-beta3
 Owner                                : CNES
 Developer                            : AKKA Technologies
 Type                                 : Complete
@@ -12,10 +12,25 @@ Project page                         : http://sitools2.github.io/
 Classification                       : Not Confidential - Opensource GPL V3
 Characteristics                      : Standalone, Java, ExtJS
 Role/Function                        : Adaptable web interface for scientific data exposition.
-Reference tag                        : (3.0-beta2)
+Reference tag                        : (3.0-beta3)
 
 2/ Changes
+_________________
+-3.0-beta3 (2015-10-13)
 
+	This version fixes some bugs from the beta2.
+
+	* New features :
+		- Auto fit dataset column configurable
+
+	* Enhancements :
+		- Optimizing opening windows time
+
+	* Bug fixed :
+		- Scrolling project graph administration  #27
+		- Css editor pointing to wrong directory #2
+		- Problem to open several external pages #43
+		- Reset password did not working in ExtJs4
 _________________
 -3.0-beta2 (2015-09-15)
 
