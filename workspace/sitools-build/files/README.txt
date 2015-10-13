@@ -25,12 +25,15 @@ _________________
 
 	* Enhancements :
 		- Optimizing opening windows time
+		- Tree archive #38
+		- Downloading many products in zip format #40
 
 	* Bug fixed :
 		- Scrolling project graph administration  #27
 		- Css editor pointing to wrong directory #2
 		- Problem to open several external pages #43
 		- Reset password did not working in ExtJs4
+		- Problem with MODE_SERVER_OUTBOUND mode in ProxyApp.java #36
 _________________
 -3.0-beta2 (2015-09-15)
 
