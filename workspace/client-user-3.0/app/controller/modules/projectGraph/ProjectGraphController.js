@@ -49,10 +49,20 @@ Ext.define('sitools.user.controller.modules.projectGraph.ProjectGraphController'
                             if (Json.graph && Json.graph.nodeList) {
                                 treepanel.getRootNode().appendChild(Json.graph.nodeList);
                             }
+                        },
+                        callback : function () {
+                            var color;
+                            Ext.each(treepanel.view.getHeaderCt().items.items, function (columnHeader) {
+                                if (treepanel.columnsConfig.containsKey(columnHeader.name)) {
+                                    color = treepanel.columnsConfig.get(columnHeader.name).color;
+                                    columnHeader.textEl.setStyle('color', color);
+                                }
+                            }, this);
                         }
                     });
-                    
-                    
+
+                    //treepanel.view.getHeaderCt().items.items[2].textEl.setStyle('color', 'red');
+
                 }
             } 
         });

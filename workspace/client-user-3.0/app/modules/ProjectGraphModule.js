@@ -58,7 +58,7 @@ Ext.define('sitools.user.modules.ProjectGraphModule', {
                     padding : 5,
                     forceFit : true,
                     store : Ext.create("Ext.data.JsonStore", {
-                        fields : [ 'columnName', 'label', "selected" ],
+                        fields : [ 'columnName', 'label', 'selected', 'width', 'color' ],
                         proxy : {
                             type : 'memory'
                         },
@@ -117,12 +117,30 @@ Ext.define('sitools.user.modules.ProjectGraphModule', {
                         dataIndex : 'label',
                         sortable : true,
                     }, {
+                        xtype : 'numbercolumn',
+                        header : i18n.get('headers.width'),
+                        tooltip : i18n.get('label.projectGraphColumnWidth'),
+                        dataIndex : 'width',
+                        editor : Ext.create("Ext.form.field.Number"),
+                        width : 50
+                    }, {
+                        xtype : 'gridcolumn',
+                        header : i18n.get('headers.color')  + ' <img title="Info" height=14 widht=14 src="/sitools/common/res/images/icons/information.gif"/>',
+                        tooltip : i18n.get('label.projectGraphColorHeaderHelp'),
+                        dataIndex : 'color',
+                        editor : Ext.create("Ext.form.field.Text"),
+                        width : 50
+                    }, {
                         xtype : 'checkcolumn',
                         header : i18n.get('headers.visible'),
                         dataIndex : 'selected',
                         editable : true,
                         width : 50
                     } ],
+                    plugins : [Ext.create('Ext.grid.plugin.CellEditing', {
+                        clicksToEdit: 1,
+                        pluginId : 'cellEditing'
+                    })],
         	        getValue : function () {
         	            var columnsDefinition = [];
         	            var store = this.getStore();
@@ -131,6 +149,8 @@ Ext.define('sitools.user.modules.ProjectGraphModule', {
         	                var rec = {};
         	                rec.columnName = record.get("columnName");
         	                rec.selected = record.get("selected");
+        	                rec.width = record.get("width");
+        	                rec.color = record.get("color");
         	                columnsDefinition.push(rec);
         	            });
         	            var columnsString = Ext.JSON.encode(columnsDefinition);
@@ -139,7 +159,11 @@ Ext.define('sitools.user.modules.ProjectGraphModule', {
         	        setValue : function (value) {
         	            var columnsToExport = Ext.JSON.decode(value);
         	            Ext.each(columnsToExport, function (column) {
-        	                this.getStore().findRecord("columnName", column.columnName).set("selected", column.selected);
+                            var record = this.getStore().findRecord("columnName", column.columnName);
+                            record.set("selected", column.selected);
+                            record.set("width", column.width);
+                            record.set("color", column.color);
+
         	            }, this);
         	        }
 	            }

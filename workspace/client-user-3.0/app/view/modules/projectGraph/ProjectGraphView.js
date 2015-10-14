@@ -38,7 +38,7 @@ Ext.define('sitools.user.view.modules.projectGraph.ProjectGraphView', {
 	
 	initComponent : function () {
 	    this.store = Ext.create("sitools.user.store.ProjectGraphTreeStore");
-	    var columnsConfig = Ext.create("Ext.util.MixedCollection");
+	    this.columnsConfig = Ext.create("Ext.util.MixedCollection");
         var additionalColumns;
 	    
 	    this.moduleModel.listProjectModulesConfig().each(function (config) {
@@ -47,8 +47,12 @@ Ext.define('sitools.user.view.modules.projectGraph.ProjectGraphView', {
                 case "columns" :
                     var columnsConf = Ext.JSON.decode(config.get("value"));
                     Ext.each(columnsConf, function (column) {
-                        columnsConfig.add(column.columnName, column.selected);
-                    });
+                        this.columnsConfig.add(column.columnName, {
+                            selected : column.selected,
+                            color : column.color,
+                            width : column.width
+                        });
+                    }, this);
                     break;
                     case 'additionalColumns':
                         additionalColumns = Ext.JSON.decode(config.get("value"));
@@ -68,6 +72,7 @@ Ext.define('sitools.user.view.modules.projectGraph.ProjectGraphView', {
                 text : i18n.get("label.records"),
                 dataIndex : "nbRecord",
                 name : "records",
+                style : "color:red",
                 flex : 1,
                 renderer : function (value, metadata, record, rowIndex, colIndex, store, view) {
                     if (value == 0) {
@@ -150,7 +155,7 @@ Ext.define('sitools.user.view.modules.projectGraph.ProjectGraphView', {
                     if(me.isNodeADataset(record) && !Ext.isEmpty(value)) {
                         var url = record.get("url");
                         return me.getClickDatasetIconString(url, "openSearch", "toolbar_open_search.png");
-                    }                    
+                    }
                 }
             }],
             defaults : {
@@ -160,12 +165,17 @@ Ext.define('sitools.user.view.modules.projectGraph.ProjectGraphView', {
         };
 
 
-	    if(!Ext.isEmpty(columnsConfig)){
+	    if(!Ext.isEmpty(this.columnsConfig)){
 	        Ext.each(this.columns.items, function(column) {
-	            if (columnsConfig.containsKey(column.name)) {
-	                column.hidden = !columnsConfig.get(column.name);
+	            if (this.columnsConfig.containsKey(column.name)) {
+                    var configColumn = this.columnsConfig.get(column.name);
+	                column.hidden = !configColumn.selected;
+                    if (!Ext.isEmpty(configColumn.width)) {
+	                    column.width = configColumn.width;
+                        delete column.flex;
+                    }
 	            }
-	        });
+	        }, this);
 	    }
 
         Ext.each(additionalColumns, function(columnDefinition) {
