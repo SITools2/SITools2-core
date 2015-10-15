@@ -129,8 +129,21 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
         var array = [];
         var colMenu = this.headerCt.getColumnMenu(this.headerCt);
 
-        array.push({
-            itemId: 'columnItem',
+        var columnStore = Ext.create('Ext.data.JsonStore', {
+            fields : ['text', 'menuitem'],
+            remoteFilter : false
+        });
+
+        Ext.each(colMenu, function (menuitem) {
+            columnStore.add({
+                text : menuitem.text,
+                menuitem : menuitem
+            })
+        });
+
+        var columnItemId = 'columnItem-' + Ext.id();
+        var columnItem = {
+            itemId: columnItemId,
             text: this.headerCt.columnsText,
             cls: this.headerCt.menuColsIcon,
             hideOnClick: false,
@@ -142,7 +155,49 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
                 items: colMenu
             },
             name: "columnsButton"
+        };
+        array.push(columnItem);
+
+        var searchField = Ext.create('Ext.form.field.Text', {
+            emptyText : i18n.get('label.searchAColumn'),
+            enableKeyEvents : true,
+            store : columnStore,
+            columnItemId : columnItemId
         });
+
+        searchField.on('keyup', function (textfield, e) {
+            var value = textfield.getValue();
+            textfield.store.clearFilter(true);
+            var menu = Ext.ComponentQuery.query('#' + columnItemId + ' menu')[0];
+
+            if (value.length <= 1) {
+                Ext.each(menu.items.items, function (menuitemMenu) {
+                    menuitemMenu.setVisible(true);
+                });
+                return;
+            }
+
+            textfield.store.filter("text", new RegExp(value));
+
+            Ext.suspendLayouts();
+            Ext.each(menu.items.items, function (menuitemMenu) {
+                if (menuitemMenu.xtype != 'textfield') {
+                    menuitemMenu.setVisible(false);
+                }
+
+                textfield.store.each(function (menuitemData) {
+                    var menuitemStore = menuitemData.get('menuitem');
+                    if (menuitemStore.text == menuitemMenu.text) {
+                        menuitemMenu.setVisible(true);
+                    }
+                });
+            });
+            Ext.resumeLayouts(true);
+        }, this, {
+            delay : 0
+        });
+
+        colMenu.splice(0, 0, searchField);
 
         array.push({
             name: "tipsLivegrid",
