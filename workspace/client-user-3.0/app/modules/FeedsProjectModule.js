@@ -31,11 +31,15 @@ Ext.define('sitools.user.modules.FeedsProjectModule', {
     controllers : ['sitools.user.controller.modules.feedsProjectModule.FeedsProjectModuleController'],
 
     init : function () {
-        var view = Ext.create('sitools.user.view.modules.feedsProjectModule.FeedsProjectModuleView');
+        this.setViewCmp(Ext.create('sitools.user.view.modules.feedsProjectModule.FeedsProjectModuleView'));
         
-        this.show(view);
+        this.show(this.getViewCmp());
 
         this.callParent(arguments);
+    },
+
+    createViewForDiv : function () {
+        return Ext.create('sitools.user.view.modules.feedsProjectModule.FeedsProjectModuleView');
     },
 
     /**
