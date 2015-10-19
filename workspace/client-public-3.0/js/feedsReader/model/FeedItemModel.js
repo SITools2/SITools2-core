@@ -17,7 +17,7 @@
  ******************************************************************************/
 /*global Ext, sitools, window, SITOOLS_DATE_FORMAT */
 
-Ext.define('sitools.public.feedsReader.FeedItemModel', {
+Ext.define('sitools.public.feedsReader.model.FeedItemModel', {
     extend : 'Ext.data.Model',
 
     fields : 

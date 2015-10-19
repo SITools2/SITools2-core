@@ -26,23 +26,20 @@ Ext.namespace('sitools.public.feedsReader');
 Ext.define('sitools.public.feedsReader.RssFeedReader', {
     extend : 'Ext.grid.Panel',
     
-    requires : ['sitools.public.feedsReader.FeedItemModel'],
+    requires : ['sitools.public.feedsReader.model.FeedItemModel'],
     
     hideHeaders : false,
     forceFit : true,
     layout : 'fit',
     border : false,
     bodyBorder : false,
-    viewConfig : {
-//        getRowClass : this.applyRowClass
-    },
-    
+
     initComponent : function () {
 
         this.store = Ext.create('Ext.data.Store', {
             autoLoad : true,
             sorters : [{property : 'pubDate', direction : "DESC"}],
-            model : 'sitools.public.feedsReader.FeedItemModel',
+            model : 'sitools.public.feedsReader.model.FeedItemModel',
             proxy : {
                 type : 'ajax',
                 url : this.feedGrid.urlFeed,
@@ -63,7 +60,7 @@ Ext.define('sitools.public.feedsReader.RssFeedReader', {
             header : "Image",
             dataIndex : 'imageUrl',
             sortable : false,
-            width : 120 ,
+            width : 120,
             renderer : this.imageRenderer
         }, {
             id : 'title',
@@ -105,11 +102,6 @@ Ext.define('sitools.public.feedsReader.RssFeedReader', {
         this.callParent(arguments);
     },
     
-    loadData : function () {
-        this.loadFeed('http://feeds.feedburner.com/extblog');
-        this.doLayout();
-    },
-
     loadFeed : function (url) {
         this.store.baseParams = {
             feed : url
