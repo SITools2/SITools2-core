@@ -64,7 +64,6 @@
         <archive path="D:/CNES-ULISSE/workspace/libraries/org.xmlpull_3.1/xpp3-1.1.4c.jar"/>
         <archive path="D:/CNES-ULISSE/workspace/libraries/org.codehaus.jackson_1.8.0/jackson-all-1.8.0.jar"/>
         <archive path="D:/CNES-ULISSE/workspace/libraries/javax.measure_0.9.5/javax.measure_0.9.5.jar"/>
-        <archive path="D:/CNES-ULISSE/workspace/libraries/com.sun.syndication_1.0/com.sun.syndication.jar"/>
         <archive path="D:/CNES-ULISSE/workspace/libraries/fr.cnes.sitools.captcha_1.0/simplecaptcha-1.2.1.jar"/>
         <archive path="D:/CNES-ULISSE/workspace/libraries/com.mongodb/mongo-2.9.1.jar"/>
         <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.tika_1.0/apache-mime4j-core-0.7.jar"/>

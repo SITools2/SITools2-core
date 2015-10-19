@@ -19,7 +19,6 @@
         <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.apache.commons.fileupload_1.2/org.apache.commons.fileupload.jar"/>
         <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.apache.commons.pool_1.5/org.apache.commons.pool.jar"/>
         <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.junit_4.8/org.junit.jar"/>
-        <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/com.sun.syndication_1.0/com.sun.syndication.jar"/>
         <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.restlet.ext.xml.jar"/>
         <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.restlet.ext.xstream.jar"/>
         <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.restlet.jar"/>
