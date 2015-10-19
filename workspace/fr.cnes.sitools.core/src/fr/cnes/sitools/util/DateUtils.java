@@ -42,6 +42,8 @@ public final class DateUtils {
   /** ISO_8601 format without time zone */
   public static final String FORMAT_ISO_8601_WITHOUT_TIME_ZONE = "yyyy-MM-dd'T'HH:mm:ss";
 
+  public static final String FORMAT_RFC_822_FOUR_DIGIT_YEAR = "EEE, dd MMM yyyy HH:mm:ss Z";
+
   /**
    * Private constructor
    */

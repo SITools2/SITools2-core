@@ -33,6 +33,10 @@ import fr.cnes.sitools.common.model.Resource;
 @XStreamAlias("FeedModel")
 public final class FeedModel implements IResource {
 
+
+  public static final String RSS_2_0 = "rss_2.0";
+  public static final String ATOM_1_0 = "atom_1.0";
+
   /** Feed identifier */
   private String id = null;
 
