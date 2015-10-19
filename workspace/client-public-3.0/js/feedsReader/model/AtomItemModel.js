@@ -37,18 +37,9 @@ Ext.define('sitools.public.feedsReader.model.AtomItemModel', {
             mapping: 'content'
         }, 'content', {
             name: 'imageUrl',
-            createAccessor: function (data, field) {
-                var q = Ext.DomQuery;
-                // select node link with attribute type like image%
-                var node = q.selectNode("link[type^=image]", data);
-                var result = {};
-                if (Ext.isEmpty(node)) {
-                    return result;
-                }
-                Ext.each(node.attributes, function (attribute) {
-                    result[attribute.name] = attribute.value;
-                });
-                return result;
-            }
+            mapping: 'link[rel=enclosure]@href'
+        }, {
+            name: 'imageType',
+            mapping: 'link[rel=enclosure]@type'
         }]
 });

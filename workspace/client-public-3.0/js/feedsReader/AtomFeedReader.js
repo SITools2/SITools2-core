@@ -53,29 +53,21 @@ Ext.define('sitools.public.feedsReader.AtomFeedReader', {
                     scope : this,
                     exception : onRequestFeedException
                 }
-            },
-            listeners : {
-                load : function (store, records, ok, e) {
-                    debugger;
-                }
             }
         });
 
         var columns = [{
-            id : 'image',
             header : "Image",
             dataIndex : 'imageUrl',
             sortable : false,
             width : 120,
             renderer : this.imageRenderer
         }, {
-            id : 'title',
             header : "Title",
             dataIndex : 'title',
             sortable : true,
             width : 460,
             scope : this
-//            renderer : this.formatTitle
         }, {
             header : "Author",
             dataIndex : 'author',
@@ -83,7 +75,6 @@ Ext.define('sitools.public.feedsReader.AtomFeedReader', {
             hidden : true,
             sortable : true
         }, {
-            id : 'last',
             header : "Date",
             dataIndex : 'pubDate',
             width : 150,
