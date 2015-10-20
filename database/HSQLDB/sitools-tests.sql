@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS "sitools"."GROUPS" (
 
 INSERT INTO "sitools"."GROUPS" (name, description) VALUES
 ('register', 'Group of registered persons'),
-('administrateurs', 'Group of persons managing the archive system');
+('administrator', 'Group of persons managing the archive system');
 
 
 CREATE TABLE IF NOT EXISTS "sitools"."USER_GROUP" (
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS "sitools"."USER_GROUP" (
 --
 
 INSERT INTO "sitools"."USER_GROUP" (identifier, name) VALUES
-('admin', 'administrateurs');
+('admin', 'administrator');
 
 CREATE TABLE IF NOT EXISTS "sitools"."USER_PROPERTIES" (
   key varchar(64)  NOT NULL,
