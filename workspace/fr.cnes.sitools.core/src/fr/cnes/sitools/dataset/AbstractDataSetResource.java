@@ -231,7 +231,7 @@ public abstract class AbstractDataSetResource extends SitoolsResource {
       for (DataSet dataset : storedDatasets) {
         // if the attachment is empty it will be filled latter by a unique attachment
         // empty attachment must not be checked for unicity
-        if (!dataset.getSitoolsAttachementForUsers().equals("")) {
+        if (!Util.isEmpty(dataset.getSitoolsAttachementForUsers()) && !dataset.getId().equals(datasetInput.getId())) {
           storedDatasetUrlAttach.add(dataset.getSitoolsAttachementForUsers());
         }
       }

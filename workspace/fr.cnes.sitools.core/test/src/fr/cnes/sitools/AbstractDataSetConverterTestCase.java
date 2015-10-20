@@ -81,7 +81,7 @@ public class AbstractDataSetConverterTestCase extends AbstractDataSetManagerTest
   @Test
   public void test() throws InterruptedException {
     docAPI.setActive(false);
-    DataSet ds = CreateDatasetUtil.createDatasetFusePG(datasetId, "/fuse");
+    DataSet ds = CreateDatasetUtil.createDatasetFusePG(datasetId, "/fuse_for_converters");
     Column virtualColumn = new Column();
     virtualColumn.setId("virtual");
     virtualColumn.setHeader("virtual");

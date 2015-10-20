@@ -1110,6 +1110,10 @@ public class GetResponseUtils {
 
       if (isArray) {
         xstream.addImplicitCollection(Response.class, "data", dataClass);
+        if (media.equals(MediaType.APPLICATION_JSON)) {
+          xstream.addImplicitCollection(ResourceAuthorization.class, "authorizations",
+              RoleAndMethodsAuthorization.class);
+        }
       }
       else {
         xstream.alias("item", dataClass);

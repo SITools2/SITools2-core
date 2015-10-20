@@ -18,10 +18,6 @@
  ******************************************************************************/
 package fr.cnes.sitools;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -57,6 +53,8 @@ import fr.cnes.sitools.security.authorization.client.RoleAndMethodsAuthorization
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 import fr.cnes.sitools.utils.GetResponseUtils;
+
+import static org.junit.Assert.*;
 
 /**
  * 
@@ -127,7 +125,10 @@ public class DataSetTestCase extends AbstractSitoolsServerTestCase {
   public void testCRUDJson() {
     assertNone();
     DataSet item = createObject("10000012345648");
-    create(item);
+    create(item, true);
+    //try to create a dataset with the same attachment, should fail
+    DataSet item2 = createObject("10000012345648qsdmlqskd");
+    create(item2, false);
     retrieve(item);
     item.setName("name_modified");
     item.setDescription("description_modified");
@@ -167,7 +168,7 @@ public class DataSetTestCase extends AbstractSitoolsServerTestCase {
    * @param item
    *          DataSet
    */
-  public void create(DataSet item) {
+  public void create(DataSet item, boolean expectOk) {
     Representation rep = new JacksonRepresentation<DataSet>(item);
     ClientResource cr = new ClientResource(getBaseDatasetUrl());
     Representation result = cr.post(rep, MediaType.APPLICATION_JSON);
@@ -175,12 +176,17 @@ public class DataSetTestCase extends AbstractSitoolsServerTestCase {
     assertNotNull(result);
 
     Response response = getResponse(MediaType.APPLICATION_JSON, result, DataSet.class);
-    assertTrue(response.getSuccess());
-    assertNotNull(response.getItem());
+    if(expectOk) {
+      assertTrue(response.getMessage(), response.getSuccess());
+      assertNotNull(response.getItem());
 
-    DataSet rs = (DataSet) response.getItem();
-    assertEqualsDataSet(rs, item);
-    assertEquals("NEW", rs.getStatus());
+      DataSet rs = (DataSet) response.getItem();
+      assertEqualsDataSet(rs, item);
+      assertEquals("NEW", rs.getStatus());
+    }
+    else {
+      assertFalse(response.getMessage(), response.getSuccess());
+    }
     RIAPUtils.exhaust(result);
     cr.release();
   }
@@ -314,7 +320,7 @@ public class DataSetTestCase extends AbstractSitoolsServerTestCase {
     assertNotNull(result);
 
     Response response = getResponse(MediaType.APPLICATION_JSON, result, DataSet.class);
-    assertTrue(response.getSuccess());
+    assertTrue(response.getMessage(), response.getSuccess());
     assertNotNull(response.getItem());
     DataSet rs = (DataSet) response.getItem();
     assertEqualsDataSet(rs, item);

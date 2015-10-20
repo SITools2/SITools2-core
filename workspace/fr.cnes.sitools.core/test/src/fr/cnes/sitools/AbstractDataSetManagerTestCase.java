@@ -603,7 +603,7 @@ public abstract class AbstractDataSetManagerTestCase extends AbstractSitoolsServ
 
         Response response = getResponse(getMediaTest(), result, DataSet.class);
         assertNotNull(response);
-        assertTrue(response.getSuccess());
+        assertTrue(response.getMessage(), response.getSuccess());
         assertNotNull(response.getItem());
 
         DataSet ds = (DataSet) response.getItem();
