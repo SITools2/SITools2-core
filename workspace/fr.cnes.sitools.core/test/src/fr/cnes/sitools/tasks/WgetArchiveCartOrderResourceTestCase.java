@@ -97,7 +97,7 @@ public class WgetArchiveCartOrderResourceTestCase extends AbstractTaskResourceTe
       + "        \"selections\" : \"p%5B0%5D=LISTBOXMULTIPLE%7Cprop_id%7CA001%7CA002%7CA003%7CA004%7CA013\",\n"
       + "        \"ranges\" : \"[[0,3],[0,6]]\",\n" + "        \"dataToExport\" : [\"data_url\"],\n"
       + "    \"startIndex\" : 0,\n" + "        \"nbRecords\" : 5,\n"
-      + "        \"orderDate\" : \"2013-09-11T18:09:53.089\",\n" + "        \"primary_key\" : \"prop_id\",\n"
+      + "        \"orderDate\" : \"2013-09-11T18:09:53.089\",\n" + "        \"primaryKey\" : \"prop_id\",\n"
       + "        \"colModel\" : [{\n" + "      \"columnAlias\" : \"prop_id\",\n"
       + "          \"header\" : \"prop_id\"\n" + "    }, {\n" + "      \"columnAlias\" : \"cycle\",\n"
       + "          \"header\" : \"cycle\"\n" + "    }, {\n" + "      \"columnAlias\" : \"title\",\n"
