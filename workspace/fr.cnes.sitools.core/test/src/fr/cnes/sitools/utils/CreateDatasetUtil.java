@@ -496,7 +496,7 @@ public class CreateDatasetUtil {
 
     DataSet item = new DataSet();
     item.setId(id);
-    item.setName("Dataset_primary_key");
+    item.setName("Dataset_primary_key_mongodb");
     item.setDescription("Dataset_primary_key_description");
 
     Structure a = new Structure("", "table_tests");
@@ -749,7 +749,7 @@ public class CreateDatasetUtil {
   public static DataSet createDatasetFuseMongoDB(String id, String urlAttachment) {
     DataSet item = new DataSet();
     item.setId(id);
-    item.setName("Dataset_fuse");
+    item.setName("Dataset_fuse_mongodb");
     item.setDescription("Dataset_fuse_description");
 
     Structure a = new Structure();
@@ -928,7 +928,7 @@ public class CreateDatasetUtil {
 
     DataSet item = new DataSet();
     item.setId(id);
-    item.setName("Dataset_users");
+    item.setName("Dataset_users_mongodb");
     item.setDescription("Dataset_users_description");
 
     Structure a = new Structure("", "USERS");
@@ -1108,7 +1108,7 @@ public class CreateDatasetUtil {
   public static DataSet createDatasetHeadersSimpleMySQL(String id, String urlAttachment) {
     DataSet item = new DataSet();
     item.setId(id);
-    item.setName("Dataset_headers");
+    item.setName("Dataset_headers_mysql");
     item.setDescription("Dataset_headers_description");
 
     Structure a = new Structure("", "HEADERS");
@@ -1364,7 +1364,7 @@ public class CreateDatasetUtil {
   public static DataSet createDatasetHeadersJoinPG(String id, String urlAttachment, TypeJointure typeJointure) {
     DataSet item = new DataSet();
     item.setId(id);
-    item.setName("Dataset_headers");
+    item.setName("Dataset_headers_postgresql");
     item.setDescription("Dataset_headers_description");
 
     Structure a = new Structure("", "headers");
@@ -1631,7 +1631,7 @@ public class CreateDatasetUtil {
   public static DataSet createDatasetViewHeadersJoinPG(String id, String urlAttachment) {
     DataSet item = new DataSet();
     item.setId(id);
-    item.setName("Dataset_headers");
+    item.setName("Dataset_headers_PG");
     item.setDescription("Dataset_headers_description");
 
     Structure a = new Structure("", "view_headers");
@@ -1843,7 +1843,7 @@ public class CreateDatasetUtil {
   public static DataSet createDatasetJeoEntryMongoDB(String id, String urlAttachment) {
     DataSet item = new DataSet();
     item.setId(id);
-    item.setName("JeoEntry");
+    item.setName("JeoEntry_mongodb");
     item.setDescription("Dataset_jeo_entry_description");
 
     Structure a = new Structure();

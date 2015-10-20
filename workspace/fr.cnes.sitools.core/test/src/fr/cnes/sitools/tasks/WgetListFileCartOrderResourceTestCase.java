@@ -92,7 +92,43 @@ public class WgetListFileCartOrderResourceTestCase extends AbstractTaskResourceT
   private String cartFileName = "admin_CartSelections.json";
 
   /** The content of the file used for Resource */
-  private String urlFileContent = "{\"selections\":[{\"selectionName\":\"test mysdl\",\"selectionId\":\"test mysdl\",\"datasetId\":\"e6892ea4-680a-47d5-af82-c72908dea319\",\"dataUrl\":\"/testmysql\",\"datasetName\":\"test mysdl\",\"selections\":\"p%5B0%5D=LISTBOXMULTIPLE%7Cprop_id%7CA001%7CA002%7CA003%7CA004%7CA013\",\"ranges\":\"[[0,3],[0,6]]\",\"dataToExport\":[\"data_url\"],\"startIndex\":0,\"nbRecords\":5,\"orderDate\":\"2013-09-11T18:09:53.089\",\"colModel\":[{\"columnAlias\":\"prop_id\",\"header\":\"prop_id\"},{\"columnAlias\":\"cycle\",\"header\":\"cycle\"},{\"columnAlias\":\"title\",\"header\":\"title\"},{\"columnAlias\":\"fname\",\"header\":\"fname\"},{\"columnAlias\":\"lname\",\"header\":\"lname\"},{\"columnAlias\":\"data_url\",\"header\":\"data_url\"}]}]}";
+  private String urlFileContent = "{\n" +
+          "\t\"selections\" : [{\n" +
+          "\t\t\t\"selectionName\" : \"test mysdl\",\n" +
+          "\t\t\t\"selectionId\" : \"test mysdl\",\n" +
+          "\t\t\t\"datasetId\" : \"e6892ea4-680a-47d5-af82-c72908dea319\",\n" +
+          "\t\t\t\"dataUrl\" : \"/testmysql\",\n" +
+          "\t\t\t\"datasetName\" : \"test mysdl\",\n" +
+          "\t\t\t\"selections\" : \"p%5B0%5D=LISTBOXMULTIPLE%7Cprop_id%7CA001%7CA002%7CA003%7CA004%7CA013\",\n" +
+          "\t\t\t\"ranges\" : \"[[0,3],[0,6]]\",\n" +
+          "\t\t\t\"dataToExport\" : [\"data_url\"],\n" +
+          "\t\t\t\"startIndex\" : 0,\n" +
+          "\t\t\t\"nbRecords\" : 5,\n" +
+          "\t\t\t\"orderDate\" : \"2013-09-11T18:09:53.089\",\n" +
+          "\t\t\t\"primaryKey\" : \"prop_id\",\n" +
+          "\t\t\t\"colModel\" : [{\n" +
+          "\t\t\t\t\t\"columnAlias\" : \"prop_id\",\n" +
+          "\t\t\t\t\t\"header\" : \"prop_id\"\n" +
+          "\t\t\t\t}, {\n" +
+          "\t\t\t\t\t\"columnAlias\" : \"cycle\",\n" +
+          "\t\t\t\t\t\"header\" : \"cycle\"\n" +
+          "\t\t\t\t}, {\n" +
+          "\t\t\t\t\t\"columnAlias\" : \"title\",\n" +
+          "\t\t\t\t\t\"header\" : \"title\"\n" +
+          "\t\t\t\t}, {\n" +
+          "\t\t\t\t\t\"columnAlias\" : \"fname\",\n" +
+          "\t\t\t\t\t\"header\" : \"fname\"\n" +
+          "\t\t\t\t}, {\n" +
+          "\t\t\t\t\t\"columnAlias\" : \"lname\",\n" +
+          "\t\t\t\t\t\"header\" : \"lname\"\n" +
+          "\t\t\t\t}, {\n" +
+          "\t\t\t\t\t\"columnAlias\" : \"data_url\",\n" +
+          "\t\t\t\t\t\"header\" : \"data_url\"\n" +
+          "\t\t\t\t}\n" +
+          "\t\t\t]\n" +
+          "\t\t}\n" +
+          "\t]\n" +
+          "}\n";
 
   /** The fileName template to use */
   private String fileNameTemplate = "cart_order_${date:" + DateUtils.FORMAT_RFC_3339.get(0).replace(':', '_') + "}";

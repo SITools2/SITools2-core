@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
 
+import fr.cnes.sitools.util.Util;
 import org.restlet.data.Status;
 import org.restlet.ext.wadl.MethodInfo;
 import org.restlet.representation.Representation;
@@ -99,10 +100,12 @@ public final class DataSetCollectionResource extends AbstractDataSetResource {
         trace(Level.INFO, "Cannot create the dataset " + datasetInput.getName());
         return getRepresentation(response, variant);
       }
-      
-      String sitoolsAttachment = "/" + datasetInput.getName().toLowerCase().replaceAll(" ", "_");
-      datasetInput.setSitoolsAttachementForUsers(sitoolsAttachment);
-      
+
+      if (Util.isEmpty(datasetInput.getSitoolsAttachementForUsers())) {
+        String sitoolsAttachment = "/" + datasetInput.getName().toLowerCase().replaceAll(" ", "_");
+        datasetInput.setSitoolsAttachementForUsers(sitoolsAttachment);
+      }
+
       // Business service
       DataSet datasetOutput = store.create(datasetInput);
 

@@ -21,6 +21,7 @@ package fr.cnes.sitools.project;
 import java.util.List;
 import java.util.logging.Level;
 
+import fr.cnes.sitools.util.Util;
 import org.restlet.data.Status;
 import org.restlet.ext.wadl.MethodInfo;
 import org.restlet.representation.Representation;
@@ -78,10 +79,12 @@ public final class ProjectCollectionResource extends AbstractProjectResource {
         trace(Level.INFO, "Cannot create the project " + projectInput.getName());
         return getRepresentation(response, variant);
       }
-      
-      String sitoolsAttachment = "/" + projectInput.getName().toLowerCase().replaceAll(" ", "_");
-      projectInput.setSitoolsAttachementForUsers(sitoolsAttachment);
-      
+
+      if (Util.isEmpty(projectInput.getSitoolsAttachementForUsers())) {
+        String sitoolsAttachment = "/" + projectInput.getName().toLowerCase().replaceAll(" ", "_");
+        projectInput.setSitoolsAttachementForUsers(sitoolsAttachment);
+      }
+
       // Business service
       Project projectOutput = getStore().create(projectInput);
 
