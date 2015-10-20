@@ -17,6 +17,28 @@ Reference tag                        : (2.5)
 2/ Changes
 
 _________________
+-2.6 (2015-10-22)
+
+    This version fixes some bugs from the 2.6 version.
+
+    * New features :
+        - Delete all authorizations associated to a role when deleting a role
+
+	* Enhancements :
+	    - Use real column name (alias or table name and column name) for sorting
+	    - Cart order creates a folder for each record in the generated archive
+
+	* Bug Fixed :
+	    - Problem with MODE_SERVER_OUTBOUND mode in ProxyApp.java #36
+        - Sort by alias dataset #23
+        - Tri colonne requête multiples jointures #18
+        - Reconnexion source de données MySQL #17
+        - Suppression d'un rôle #16
+        - Creation Dataset avec Criteria #6
+        - Scroll bar graph projet #5
+        - La mise en forme des forms de type desktop n'est pas respectée en 2.4.1 #3
+        - Authorizations are not removed when a role is deleted
+_________________
 -2.5 (2015-01-12)
 	* New features :
 		- Set all columns visible/invisible in the dataset configuration
