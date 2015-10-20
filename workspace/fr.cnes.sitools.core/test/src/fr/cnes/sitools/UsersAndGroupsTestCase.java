@@ -226,7 +226,7 @@ public class UsersAndGroupsTestCase extends AbstractSitoolsTestCase {
    */
   @Test
   public void testGetUsersByGroup() {
-    ClientResource cr = new ClientResource(getBaseUrl() + "/groups/administrateurs/users");
+    ClientResource cr = new ClientResource(getBaseUrl() + "/groups/administrator/users");
     Representation result = cr.get(MediaType.APPLICATION_JSON);
     assertNotNull(result);
     assertTrue(cr.getStatus().isSuccess());

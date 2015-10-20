@@ -129,7 +129,7 @@ public class JDBCUsersAndGroupsStoreTestCase extends AbstractSitoolsTestCase {
    */
   @Test
   public void testGetUsersByGroup() {
-    String groupName = "administrateurs";
+    String groupName = "administrator";
     try {
       List<User> users = store.getUsersByGroup(groupName);
       if ((users == null) || (users.size() == 0)) {
@@ -194,7 +194,7 @@ public class JDBCUsersAndGroupsStoreTestCase extends AbstractSitoolsTestCase {
    */
   @Test
   public void testGetGroupById() {
-    String groupName = "administrateurs";
+    String groupName = "administrator";
     try {
 
       Group group = store.getGroupById(groupName);

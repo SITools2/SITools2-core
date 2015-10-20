@@ -146,6 +146,13 @@ public final class DataSetResource extends AbstractDataSetResource {
           return getRepresentation(response, variant);
         }
 
+        // check for dataset unicity
+        Response response = checkUnicity(datasetInput, true);
+        if (response != null && !response.getSuccess()) {
+          trace(Level.INFO, "Cannot update the dataset " + datasetInput.getName());
+          return getRepresentation(response, variant);
+        }
+
         // Business service
         datasetInput.setStatus("INACTIVE");
         datasetInput.setExpirationDate(new Date(new GregorianCalendar().getTime().getTime()));

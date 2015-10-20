@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.cnes.sitools.util.Util;
 import org.restlet.data.MediaType;
 import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.ext.xstream.XstreamRepresentation;
@@ -49,7 +50,7 @@ import fr.cnes.sitools.util.RIAPUtils;
 
 /**
  * Base class for DataSet management resources
- * 
+ *
  * @author jp.boignard (AKKA Technologies)
  */
 public abstract class AbstractDataSetResource extends SitoolsResource {
@@ -80,7 +81,7 @@ public abstract class AbstractDataSetResource extends SitoolsResource {
 
   /**
    * Encode a response into a Representation according to the given media type.
-   * 
+   *
    * @param response
    *          Response
    * @param media
@@ -108,7 +109,7 @@ public abstract class AbstractDataSetResource extends SitoolsResource {
 
   /**
    * Gets DataSet object from Representation
-   * 
+   *
    * @param representation
    *          of a DataSet
    * @return DataSet
@@ -137,7 +138,7 @@ public abstract class AbstractDataSetResource extends SitoolsResource {
 
   /**
    * Register an observer
-   * 
+   *
    * @param input
    *          the project as input
    */
@@ -167,7 +168,7 @@ public abstract class AbstractDataSetResource extends SitoolsResource {
 
   /**
    * Unregister an observer
-   * 
+   *
    * @param input
    *          the project to unregister
    */
@@ -188,27 +189,27 @@ public abstract class AbstractDataSetResource extends SitoolsResource {
 
   /**
    * Gets the datasetId value
-   * 
+   *
    * @return the datasetId
    */
   public String getDatasetId() {
     return datasetId;
   }
-  
+
   /**
    * Get the store associated to the application
-   * 
+   *
    * @return the store available for this resource
    */
   public final DataSetStoreInterface getStore() {
     return this.store;
   }
-  
+
   /**
-   * Check that the dataset name and the sitoolsUserAttachment are unique over the dataset collection includeDatasetInput is
+   * Check that the sitoolsUserAttachment is unique over the dataset collection includeDatasetInput is
    * used to specify whether or not to include datasetInput in the verification process ( for example when updating a
    * project )
-   * 
+   *
    * @param datasetInput
    *          the dataset to check with the collection
    * @param includeDatasetInput
@@ -218,7 +219,6 @@ public abstract class AbstractDataSetResource extends SitoolsResource {
   public final Response checkUnicity(DataSet datasetInput, boolean includeDatasetInput) {
     Response response = null;
     List<DataSet> storedDatasets = getStore().getList();
-    List<String> storedDatasetNames = new ArrayList<String>();
     List<String> storedDatasetUrlAttach = new ArrayList<String>();
 
     if (datasetInput.getName() == null || "".equals(datasetInput.getName())) {
@@ -226,26 +226,16 @@ public abstract class AbstractDataSetResource extends SitoolsResource {
       response.setMessage("dataset.name.mandatory");
       return response;
     }
-    
+
     if (storedDatasets != null) {
       for (DataSet dataset : storedDatasets) {
-        if (includeDatasetInput || (!includeDatasetInput && !datasetInput.getId().equals(dataset.getId()))) {
-          storedDatasetNames.add(dataset.getName());
-        }
-        
         // if the attachment is empty it will be filled latter by a unique attachment
         // empty attachment must not be checked for unicity
         if (!dataset.getSitoolsAttachementForUsers().equals("")) {
           storedDatasetUrlAttach.add(dataset.getSitoolsAttachementForUsers());
         }
       }
-      
-      if (storedDatasetNames.contains(datasetInput.getName())) {
-        response = new Response(false, datasetInput, DataSet.class, "dataset");
-        response.setMessage("dataset.name.already.assigned");
-        return response;
-      }
-      
+
       if (storedDatasetUrlAttach.contains(datasetInput.getSitoolsAttachementForUsers())) {
         response = new Response(false, datasetInput, DataSet.class, "dataset");
         response.setMessage("dataset.attachment.already.assigned");

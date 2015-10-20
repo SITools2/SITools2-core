@@ -94,6 +94,11 @@ public final class DataSetCollectionResource extends AbstractDataSetResource {
         }
       }
 
+      if (Util.isEmpty(datasetInput.getSitoolsAttachementForUsers())) {
+        String sitoolsAttachment = "/" + datasetInput.getName().toLowerCase().replaceAll(" ", "_");
+        datasetInput.setSitoolsAttachementForUsers(sitoolsAttachment);
+      }
+
       // check for dataset unicity
       response = checkUnicity(datasetInput, true);
       if (response != null && !response.getSuccess()) {
@@ -101,10 +106,6 @@ public final class DataSetCollectionResource extends AbstractDataSetResource {
         return getRepresentation(response, variant);
       }
 
-      if (Util.isEmpty(datasetInput.getSitoolsAttachementForUsers())) {
-        String sitoolsAttachment = "/" + datasetInput.getName().toLowerCase().replaceAll(" ", "_");
-        datasetInput.setSitoolsAttachementForUsers(sitoolsAttachment);
-      }
 
       // Business service
       DataSet datasetOutput = store.create(datasetInput);

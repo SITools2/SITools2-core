@@ -640,7 +640,7 @@ public class CreateDatasetUtil {
   public static DataSet createDatasetFusePG(String id, String urlAttachment) {
     DataSet item = new DataSet();
     item.setId(id);
-    item.setName("Dataset_fuse");
+    item.setName("Dataset_fuse_for_pg");
     item.setDescription("Dataset_fuse_description");
 
     Structure a = new Structure("", "fuse_prg_id");
