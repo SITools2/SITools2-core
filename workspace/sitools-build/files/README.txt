@@ -2,8 +2,8 @@
 ______________
 
 Identification                       : SITools2
-Date                                 : 2015-10-13
-Version                              : 3.0-beta3
+Date                                 : 2015-10-22
+Version                              : 3.0
 Owner                                : CNES
 Developer                            : AKKA Technologies
 Type                                 : Complete
@@ -12,9 +12,22 @@ Project page                         : http://sitools2.github.io/
 Classification                       : Not Confidential - Opensource GPL V3
 Characteristics                      : Standalone, Java, ExtJS
 Role/Function                        : Adaptable web interface for scientific data exposition.
-Reference tag                        : (3.0-beta3)
+Reference tag                        : (3.0)
 
 2/ Changes
+
+_________________
+-3.0 (2015-10-22)
+
+	This version fixes some bugs from the beta3.
+
+	* Enhancements :
+		- Fix RSS and ATOM validity
+		- Searching in dataset columns #45
+		- Customisation project graph #46
+
+	* API changes :
+    		- com.sun.syndication removed
 _________________
 -3.0-beta3 (2015-10-13)
 
