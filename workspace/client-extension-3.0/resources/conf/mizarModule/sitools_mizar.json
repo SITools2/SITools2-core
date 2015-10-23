@@ -1,422 +1,292 @@
 [
-	/**
-     * Coordinate grids
-	 */
-	{
-		"category": "Coordinate systems",
-		"type": "coordinateGrid",
-		"name": "Equatorial grid",
-		"visible": false,
-		"coordSystem": "EQ",
-		"color": "white",
-		"latFormat": "DMS",
-		"longFormat": "HMS"
-	},
-	{
-		"category": "Coordinate systems",
-		"type": "coordinateGrid",
-		"name": "Galactic grid",
-		"visible": false,
-		"coordSystem": "GAL",
-		"color": "red",
-		"latFormat": "Deg",
-		"longFormat": "Deg"
-	},
-	/**
-	 *	Alasky healpix sources
-	 *
-	 *	Plugin: Proxy Healpix Image cache
-	 *	urlClient: http://alasky.u-strasbg.fr or http://healpix.ias.u-psud.fr/
-	 */
-	{
-		"type": "healpix",
-		"name": "WISE RGB",
-		"baseUrl": "http://demonstrator.telespazio.com/sitools/Alasky/WISE/RGB/",
-		"description": "WISE color",			
-		"visible": false,
-		"background": true,	
-        "coordSystem": "GAL",
-        "attribution":"<a href=\"http://irsa.ipac.caltech.edu/Missions/wise.html\" target=\"_blank\"><img src=\"http://demonstrator.telespazio.com/sitools/upload/wise.svg\" width='24' height='16'/></a> color background provided by <a href=\"http://cdsweb.u-strasbg.fr/index-fr.gml\" target=\"_blank\"><object width='24' height='16' data=\"http://demonstrator.telespazio.com/mizar/css/images/cds.svg\" type=\"image/svg+xml\"></object></a>",
-		"numberOfLevels": 5
-	},
-	{
-		"type": "healpix",
-		"name": "SpitzerI1I2I4color",
-		"baseUrl": "http://demonstrator.telespazio.com/sitools/Alasky/SpitzerI1I2I4color",
-		"description": "Spitzer color",			
-		"visible": false,
-		"background": true,	
-        "coordSystem": "GAL",
-        "attribution":"<object width='24' height='16' data=\"http://demonstrator.telespazio.com/upload/spitzer.svg\" type=\"image/svg+xml\"></object> color background provided by <a href=\"http://cdsweb.u-strasbg.fr/index-fr.gml\" target=\"_blank\"><object width='24' height='16' data=\"http://demonstrator.telespazio.com/mizar/css/images/cds.svg\" type=\"image/svg+xml\"></object></a>",
-		"numberOfLevels": 9
-	},
-	{
-		"type": "healpix",
-		"name": "IRIS",
-		"baseUrl": "http://demonstrator.telespazio.com/sitools/Alasky/IRISColor",
-		"description": "IRIS color",
-		"icon": "http://demonstrator.telespazio.com/mizar/css/images/star_icon.png",
-		"visible": false,
-		"background": true,
-		"coordSystem": "GAL",
-        "attribution": "IRIS background from <img width='24' height='16' src=\"http://demonstrator.telespazio.com/mizar/css/images/cds.svg\" />",
-		"numberOfLevels": 1
-	},
-	{ 
-		"type": "healpix",
-		"name": "Deep CFHTLS",
-		"baseUrl": "http://demonstrator.telespazio.com/sitools/Alasky/CFHTLS-T0007b/Deep/RGB-UGIm",
-		"description": "Deep CFHTLS from CDS",
-		"attribution": "Deep CFHTLS background from <a href=\"http://cdsweb.u-strasbg.fr/index-fr.gml\" target=\"_blank\"><img width='24' height='16' src=\"http://demonstrator.telespazio.com/mizar/css/images/cds.svg\" /></a>",
-		"visible": false,
-		"background": true,
-		"numberOfLevels": 11
-	},
-	{ 
-		"type": "healpix",
-		"name": "CFHTLS Wide",
-		"baseUrl": "http://demonstrator.telespazio.com/sitools/Alasky/CFHTLS-T0007b/Wide/RGB-UGIm",
-		"description": "CFHTLS-W-Colored (UGI)",
-        "attribution": "TERAPIX - Healpixed by <a href=\"http://cdsweb.u-strasbg.fr/index-fr.gml\" target=\"_blank\"><img width='24' height='16' src=\"http://demonstrator.telespazio.com/mizar/css/images/cds.svg\" /></a>",
-		"visible": false,
-		"background": true,
-		"numberOfLevels": 10
-	},
-	{ 
-		"type": "healpix",
-		"name": "2MASS",
-		"baseUrl": "http://demonstrator.telespazio.com/sitools/Alasky/2MASS/Color",
-		"description": "Infrared 2MASS colored survey from NASA, healpixed by CDS",
-		"attribution": "2MASS background from <a href=\"http://cdsweb.u-strasbg.fr/index-fr.gml\" target=\"_blank\"><img width='24' height='16' src=\"http://demonstrator.telespazio.com/mizar/css/images/cds.svg\" /></a>",
-		"visible": false,
-		"background": true,
-		"numberOfLevels": 8
-	},
-	{ 
-		"type": "healpix",
-		"name": "RASS",
-		"baseUrl": "http://demonstrator.telespazio.com/sitools/Alasky/RASS",
-		"description": "RASS-ROSAT X-Ray All-Sky Survey",
-		"attribution": "Distributed by MPE - Healpixed by <a href=\"http://cdsweb.u-strasbg.fr/index-fr.gml\" target=\"_blank\"><img width='24' height='16' src=\"http://demonstrator.telespazio.com/mizar/css/images/cds.svg\" /></a>",
-		"visible": false,
-		"background": true,
-		"numberOfLevels": 3
-	},
-	{ 
-		"type": "healpix",
-		"name": "NVSS",
-		"baseUrl": "http://demonstrator.telespazio.com/sitools/Alasky/NVSS/intensity",
-		"description": "NVSS intensity maps (1.4GHz)",
-		"visible": false,
-		"background": true,
-		"numberOfLevels": 4
-	},
-	{ 
-		"type": "healpix",
-		"name": "DSS",
-		"baseUrl": "http://demonstrator.telespazio.com/sitools/Alasky/DssColor",
-		"description": "Digital Sky Survey from CDS",
-		"attribution": "DSS background from <a href=\"http://cdsweb.u-strasbg.fr/index-fr.gml\" target=\"_blank\"><img width='24' height='16' src=\"http://demonstrator.telespazio.com/mizar/css/images/cds.svg\" /></a>",
-		"visible": true,
-		"background": true,
-		"numberOfLevels": 8
-	},
-	{			
-		"type": "healpix",
-		"name": "SDSS",
-		"baseUrl": "http://demonstrator.telespazio.com/sitools/Alasky/SDSS/DR7/Color",
-		"description": "Sloan Digital Sky Survey from CDS",
-		"attribution": "SDSS background from <a href=\"http://cdsweb.u-strasbg.fr/index-fr.gml\" target=\"_blank\"><img width='24' height='16' src=\"http://demonstrator.telespazio.com/mizar/css/images/cds.svg\" /></a>",
-		"icon": "http://demonstrator.telespazio.com/mizar/css/images/star_icon.png",
-		"visible": false,
-		"background": true
-	},
-	/**
-	 *	Plack FITS supported surveys
-	 */
-	// Background
-	{
-		"type": "healpix",
-		"name": "PlanckCMB",
-		"baseUrl" : "http://demonstrator.telespazio.com/sitools/Alasky/PLANCK/CMB",
-		"description": "Planck survey from CDS",
-		"visible": false,
-		"background": true,
-		"format": "jpg",
-		"fitsSupported": true,
-		"coordSystem": "GAL",
-		//"availableServices": [ { "name": "HEALPixCut", "fileName": "HFI_SkyMap_857_2048_R1.10_nominal.fits"	} ],
-		"numberOfLevels": 1,
-        "attribution":"<a href=\"http://irsa.ipac.caltech.edu/data/Planck/release_1/all-sky-maps/\" target=\"_blank\"><img src=\"http://demonstrator.telespazio.com/sitools/upload/planck.svg\" width='20' height='20'/></a> data provided by <a href=\"http://cdsweb.u-strasbg.fr/index-fr.gml\" target=\"_blank\"><img width='24' height='16' src=\"http://demonstrator.telespazio.com/mizar/css/images/cds.svg\" /></a>"
-	},
-    {
-		"type": "healpix",
-		"name": "Planck-HFI-857",
-		"baseUrl": "http://demonstrator.telespazio.com/sitools/Alasky/PLANCK/HFI857",
-		"description": "PLANCK HFI 857 from CDS",
-		"visible": false,
-		"background": true,
-		"coordSystem": "GAL",
-		"fitsSupported": true,
-		"format": "jpg",
-		//"availableServices": [ { "name": "HEALPixCut", "fileName": "HFI_SkyMap_857_2048_R1.10_nominal.fits"	} ],
-		"numberOfLevels": 1,
-        "attribution":"<a href=\"http://irsa.ipac.caltech.edu/data/Planck/release_1/all-sky-maps/\" target=\"_blank\"><img src=\"http://demonstrator.telespazio.com/sitools/upload/planck.svg\" width='20' height='20'/></a> data provided by <a href=\"http://cdsweb.u-strasbg.fr/index-fr.gml\" target=\"_blank\"><img width='24' height='16' src=\"http://demonstrator.telespazio.com/mizar/css/images/cds.svg\" /></a>"
+  /**
+   * Coordinate grids
+   */
+  {
+    "category": "Coordinate systems",
+    "type": "coordinateGrid",
+    "name": "Equatorial grid",
+    "visible": false,
+    "coordSystem": "EQ",
+    "color": "white",
+    "latFormat": "DMS",
+    "longFormat": "HMS"
+  },
+  {
+    "category": "Coordinate systems",
+    "type": "coordinateGrid",
+    "name": "Galactic grid",
+    "visible": false,
+    "coordSystem": "GAL",
+    "color": "red",
+    "latFormat": "Deg",
+    "longFormat": "Deg"
+  },
+  /**
+   *	Alasky healpix sources
+   *
+   *	Plugin: Proxy Healpix Image cache
+   *	urlClient: http://alasky.u-strasbg.fr or http://healpix.ias.u-psud.fr/
+   */
+  {
+    "type": "healpix",
+    "name": "AllWISE color",
+    "baseUrl": "http://healpix.ias.u-psud.fr/AllWISE",
+    "description": "All WISE color (Red=W4, Green=W2, Blue=W1) from raw Atlas\nImages.  NASA's Wide-field Infrared Survey Explorer (WISE; Wright et al.\n2010) mapped the sky at 3.4, 4.6, 12, and 22 \\u03bcm (W1, W2, W3, W4)\nin 2010 with an angular resolution of 6.1\", 6.4\", 6.5\", & 12.0\"\nin the four bands. WISE achieved 5\\u03c3 point source sensitivities\nbetter than 0.08, 0.11, 1 and 6 mJy in unconfused regions on the\necliptic in the four bands. Sensitivity improves toward the ecliptic\npoles due to denser coverage and lower zodiacal background.\nResampled in HEALPix by Thomas Boch [CDS]",
+    "visible": false,
+    "background": true,
+    "coordSystem": "GAL",
+    "attribution": "<a href=\"http://wise2.ipac.caltech.edu/docs/release/allsky/\" target=\"_blank\"> WISE acknowledgment</a>",
+    "numberOfLevels": 8
+  },
+  {
+    "type": "healpix",
+    "name": "IRAC HEALPix survey, color",
+    "baseUrl": "http://healpix.ias.u-psud.fr/SPITZERColor",
+    "description": "Composite color map from Spitzer Legacy Programs\nGLIMPSE: Galactic Legacy Infrared Mid-Plane Survey Extraordinaire (Churchwell E. + Benjamin R.)\nSAGE: Spitzer Survey of the Large Magellanic Cloud: Surveying the Agents of a Galaxy's Evolution (Meixner M.)\nSAGE-SMC: Surveying the Agents of Galaxy Evolution in the Tidally- Disrupted, Low-Metallicity Small Magellanic Cloud (Gordon K.)\nSINGS: The Spitzer Infrared Nearby Galaxies Survey - Physics of the Star-Forming ISM and Galaxy Evolution (Kennicutt R.)",
+    "visible": false,
+    "background": true,
+    "coordSystem": "GAL",
+    "attribution": "Spitzer mission - JPL/NASA",
+    "numberOfLevels": 9
+  },
+  {
+    "type": "healpix",
+    "name": "IRIS colored",
+    "baseUrl": "http://healpix.ias.u-psud.fr/IRISColor",
+    "description": "IRIS color",
+    "icon": "http://demonstrator.telespazio.com/mizar/css/images/star_icon.png",
+    "visible": false,
+    "background": true,
+    "coordSystem": "GAL",
+    "attribution": "Healpixed by CDS",
+    "numberOfLevels": 8
+  },
+  {
+    "type": "healpix",
+    "name": "2MASS colored",
+    "baseUrl": "http://healpix.ias.u-psud.fr/2MASSColor",
+    "description": "2MASS colored (from J-H-K bands)",
+    "attribution": "<a href=\"http://www.ipac.caltech.edu/2mass/\" target=\"_blank\">2MASS colored (from J-H-K bands)</a>",
+    "visible": false,
+    "background": true,
+    "numberOfLevels": 9
+  },
+  {
+    "type": "healpix",
+    "name": "DSS colored",
+    "baseUrl": "http://healpix.ias.u-psud.fr/DSSColorNew",
+    "description": "Color composition generated by CDS. This HiPS survey is based on 2 others HiPS surveys, respectively DSS2-red and DSS2-blue HiPS, both of them directly generated from original scanned plates downloaded from STScI site. The red component has been built from POSS-II F, AAO-SES,SR and SERC-ER plates. The blue component has been build from POSS-II J and SERC-J,EJ. The green component is based on the mean of other components. Three missing plates from red survey (253, 260, 359) has been replaced by pixels from the DSSColor STScI jpeg survey. The 11 missing blue plates (mainly in galactic plane) have not been replaced (only red component).",
+    "attribution": "<a href=\"http://archive.stsci.edu/dss/acknowledging.html\" target=\"_blank\">Digitized Sky Survey - STScI/NASA, Colored & Healpixed by CDS</a>",
+    "visible": true,
+    "background": true,
+    "numberOfLevels": 9
+  },
+  {
+    "type": "healpix",
+    "name": "SDSS9 colored",
+    "baseUrl": "http://healpix.ias.u-psud.fr/SDSS9Color",
+    "description": "Sloan Digital Sky Survey from CDS",
+    "attribution": "<a href=\"http://www.sdss.org/\" target=\"_blank\">SLOAN Digitized Sky Survey - Healpixed by CDS</a>",
+    "icon": "http://demonstrator.telespazio.com/mizar/css/images/star_icon.png",
+    "visible": false,
+    "background": true,
+    "numberOfLevels": 10
+  },
+  /**
+   *	Plack FITS supported surveys
+   */
+  // Background
+  {
+    "type": "healpix",
+    "name": "PLANCK HFI color composition 353-545-857 GHz",
+    "baseUrl": "http://alasky.u-strasbg.fr/PLANCK/HFIColor353-545-857",
+    "description": "The Planck mission will collect and characterise radiation from the Cosmic Microwave Background (CMB) using sensitive radio receivers operating at extremely low temperatures. These receivers will determine the black body equivalent temperature of the background radiation and will be capable of distinguishing temperature variations of about one microkelvin. These measurements will be used to produce the best ever maps of anisotropies in the CMB radiation field.",
+    "visible": false,
+    "background": true,
+    "coordSystem": "GAL",
+    "fitsSupported": true,
+    "format": "jpg",
+    //"availableServices": [ { "name": "HEALPixCut", "fileName": "HFI_SkyMap_857_2048_R1.10_nominal.fits"	} ],
+    "numberOfLevels": 3,
+    "attribution": "<a href=\"http://pla.esac.esa.int/pla/\" target=\"_blank\">PLANCK HFI color composition 353-545-857 GHz</a>"
+  },
+  // Overlay
+  /**
+   *	Healpix grid
+   */
+  {
+    "category": "Other",
+    "type": "healpixGrid",
+    "name": "Healpix grid",
+    "outline": true
+  },
+  {
+    "category": "Solar system",
+    "type": "GeoJSON",
+    "name": "Planets",
+    "description": "Planets",
+    "data": {
+      "type": "planets"
     },
-    {
-		"type": "healpix",
-		"name": "Planck-HFI-545",
-		"baseUrl": "http://demonstrator.telespazio.com/sitools/Alasky/PLANCK/HFI545",
-		"description": "PLANCK HFI 545 from CDS",
-		"visible": false,
-		"background": true,
-		"coordSystem": "GAL",
-		"fitsSupported": true,
-		"format": "jpg",
-		//"availableServices": [ { "name": "HEALPixCut", "fileName": "HFI_SkyMap_545_2048_R1.10_nominal.fits"	} ],
-		"numberOfLevels": 1,
-        "attribution":"<a href=\"http://irsa.ipac.caltech.edu/data/Planck/release_1/all-sky-maps/\" target=\"_blank\"><img src=\"http://demonstrator.telespazio.com/sitools/upload/planck.svg\" width='20' height='20'/></a> data provided by <a href=\"http://cdsweb.u-strasbg.fr/index-fr.gml\" target=\"_blank\"><img width='24' height='16' src=\"http://demonstrator.telespazio.com/mizar/css/images/cds.svg\" /></a>"
+    "visible": true,
+    "opacity": 100,
+    "pickable": true
+  },
+  /**
+   *	OpenSearch ConeSearch IMCCE layer
+   *
+   *	Plugin: VO OpenSearch Application for Cone Search
+   *	mocUrl: http://alasky.u-strasbg.fr/footprints/tables/vizier/II_306_sdss8/MOC
+   *	coneSearchUrl: http://vo.imcce.fr/webservices/skybot/skybotconesearch_query.php?from=SITools2&EPOCH=now&
+   */
+  {
+    "category": "Solar system",
+    "type": "DynamicOpenSearch",
+    "dataType": "point",
+    "name": "IMCCE",
+    "serviceUrl": "http://demonstrator.telespazio.com/sitools/solar",
+    "minOrder": 7
+  },
+  /**
+   *	OpenSearch ConeSearch exoplanet layer
+   *
+   *	Plugin: VO OpenSearch Application
+   *	coneSearchUrl: http://exoplanet.eu/catalog/conesearch?
+   */
+  {
+    "category": "Solar system",
+    "type": "DynamicOpenSearch",
+    "dataType": "point",
+    "name": "Exoplanets",
+    "description": "The Extrasolar Planets Encyclopaedia (http://exoplanet.eu)",
+    "serviceUrl": "http://demonstrator.telespazio.com/sitools/exoplanet",
+    "visible": false,
+    "minOrder": 3
+  },
+  /**
+   *	OpenSearch ConeSearch COROT exo
+   *
+   *	Plugin: VO OpenSearch Application
+   *	coneSearchUrl: http://vizier.u-strasbg.fr/viz-bin/votable/-A?-source=B/corot/exo&
+   */
+  {
+    "category": "Corot",
+    "type": "DynamicOpenSearch",
+    "dataType": "point",
+    "name": "Corot exo",
+    "description": "CoRoT observation log Release 13 (CoRoT, 2009-2013). Stars observed in the exoplanet detection program",
+    "serviceUrl": "http://demonstrator.telespazio.com/sitools/corot/exo",
+    "visible": false,
+    "minOrder": 5,
+    "availableServices": [
+      "Moc",
+      "XMatch"
+    ],
+    "attribution": "<img width='28' height='16' src=\"http://demonstrator.telespazio.com/sitools/upload/corot.svg\"> data provided by <a href=\"http://cdsweb.u-strasbg.fr/index-fr.gml\" target=\"_blank\"><img width='24' height='16' src=\"http://demonstrator.telespazio.com/mizar/css/images/cds.svg\" /></a>"
+  },
+  /**
+   *	OpenSearch ConeSearch COROT exo
+   *
+   *	Plugin: VO OpenSearch Application
+   *	coneSearchUrl: http://vizier.u-strasbg.fr/viz-bin/votable/-A?-source=B/corot/astero&
+   */
+  {
+    "category": "Corot",
+    "type": "DynamicOpenSearch",
+    "dataType": "point",
+    "name": "Corot astero",
+    "description": "CoRoT observation log Release 13 (CoRoT, 2009-2013). Stars observed in the asterosismology program",
+    "serviceUrl": "http://demonstrator.telespazio.com/sitools/corot/astero",
+    "visible": false,
+    "minOrder": 5,
+    "availableServices": [
+      "Moc",
+      "XMatch"
+    ],
+    "attribution": "<img width='28' height='16' src=\"http://demonstrator.telespazio.com/sitools/upload/corot.svg\"> data provided by <a href=\"http://cdsweb.u-strasbg.fr/index-fr.gml\" target=\"_blank\"><img width='24' height='16' src=\"http://demonstrator.telespazio.com/mizar/css/images/cds.svg\" /></a>"
+  },
+  /**
+   *	Planet layers
+   */
+  {
+    "category": "Planets",
+    "type": "Planet",
+    "name": "Mars",
+    "nameResolverURL": "http://demonstrator.telespazio.com/mizar/data/mars_resolver.json",
+    "elevation": {
+      "baseUrl": "http://demonstrator.telespazio.com/wcspub",
+      "coverage": "MARSTOPO_16",
+      "version": "1.0.0",
+      "minElevation": -32000,
+      "scale": 2
+      // Enhance a little bit the elevation of Mars
     },
-    {
-		"type": "healpix",
-		"name": "Planck-HFI-353",
-		"baseUrl": "http://demonstrator.telespazio.com/sitools/Alasky/PLANCK/HFI353",
-		"description": "PLANCK HFI 353 from CDS",
-		"visible": false,
-		"background": true,
-		"coordSystem": "GAL",
-		"fitsSupported": true,
-		"format": "jpg",
-		//"availableServices": [ { "name": "HEALPixCut", "fileName": "HFI_SkyMap_353_2048_R1.10_nominal.fits"	} ],
-		"numberOfLevels": 1,
-        "attribution":"<a href=\"http://irsa.ipac.caltech.edu/data/Planck/release_1/all-sky-maps/\" target=\"_blank\"><img src=\"http://demonstrator.telespazio.com/sitools/upload/planck.svg\" width='20' height='20'/></a> data provided by <a href=\"http://cdsweb.u-strasbg.fr/index-fr.gml\" target=\"_blank\"><img width='24' height='16' src=\"http://demonstrator.telespazio.com/mizar/css/images/cds.svg\" /></a>"
+    "baseImageries": [
+      {
+        "name": "Viking",
+        "baseUrl": "http://demonstrator.telespazio.com/mars",
+        "layers": "Viking",
+        "description": "Red planet",
+        "attribution": "Color background provided by <a href=\"http://www.mars.asu.edu/data/\" target=\"_blank\">Mars Dataset</a>"
+      },
+      {
+        "name": "THEMIS",
+        "baseUrl": "http://demonstrator.telespazio.com/mars",
+        "layers": "THEMIS",
+        "description": "Thermis",
+        "attribution": "Color background provided by <a href=\"http://www.mars.asu.edu/data/\" target=\"_blank\">Mars Dataset</a>"
+      },
+      {
+        "name": "MOLA",
+        "baseUrl": "http://demonstrator.telespazio.com/ms-mars",
+        "layers": "MOLA_Color",
+        "format": "image/png",
+        "attribution": "Color background provided by <a href=\"http://www.mars.asu.edu/data/\" target=\"_blank\">Mars Dataset</a>"
+      },
+      {
+        "name": "MOC Atlas",
+        "baseUrl": "http://demonstrator.telespazio.com/ms-mars",
+        "layers": "MOC_Atlas_256ppd",
+        "description": "MOC Atlas",
+        "format": "image/png",
+        "attribution": "Color background provided by <a href=\"http://www.mars.asu.edu/data/\" target=\"_blank\">Mars Dataset</a>"
+      },
+      {
+        "name": "pyroxene",
+        "baseUrl": "http://demonstrator.telespazio.com/mars",
+        "layers": "pyroxene",
+        "description": "Pyroxene",
+        "attribution": "Color background provided by <a href=\"http://www.mars.asu.edu/data/\" target=\"_blank\">Mars Dataset</a>"
+      },
+      {
+        "name": "MOLA roughness",
+        "baseUrl": "http://demonstrator.telespazio.com/ms-mars",
+        "layers": "mola_roughness",
+        "description": "MOLA roughness",
+        "format": "image/png",
+        "attribution": "Color background provided by <a href=\"http://www.mars.asu.edu/data/\" target=\"_blank\">Mars Dataset</a>"
+      }
+    ],
+    "visible": false
+  },
+  {
+    "category": "Planets",
+    "type": "Planet",
+    "name": "Earth",
+    "elevation": {
+      "baseUrl": "http://demonstrator.telespazio.com/wcspub",
+      "coverage": "GTOPO",
+      "version": "1.0.0"
     },
-    {
-		"type": "healpix",
-		"name": "Planck-HFI-217",
-		"baseUrl": "http://demonstrator.telespazio.com/sitools/Alasky/PLANCK/HFI217",
-		"description": "PLANCK HFI 217 from CDS",
-		"visible": false,
-		"background": true,
-		"coordSystem": "GAL",
-		"fitsSupported": true,
-		"format": "jpg",
-		//"availableServices": [ { "name": "HEALPixCut", "fileName": "HFI_SkyMap_217_2048_R1.10_nominal.fits"	} ],
-		"numberOfLevels": 1,
-        "attribution":"<a href=\"http://irsa.ipac.caltech.edu/data/Planck/release_1/all-sky-maps/\" target=\"_blank\"><img src=\"http://demonstrator.telespazio.com/sitools/upload/planck.svg\" width='20' height='20'/></a> data provided by <a href=\"http://cdsweb.u-strasbg.fr/index-fr.gml\" target=\"_blank\"><img width='24' height='16' src=\"http://demonstrator.telespazio.com/mizar/css/images/cds.svg\" /></a>"
-    },
-    {
-		"type": "healpix",
-		"name": "Planck-HFI-143",
-		"baseUrl": "http://demonstrator.telespazio.com/sitools/Alasky/PLANCK/HFI143",
-		"description": "PLANCK HFI 143 from CDS",
-		"visible": false,
-		"background": true,
-		"coordSystem": "GAL",
-		"fitsSupported": true,
-		"format": "jpg",
-		//"availableServices": [ { "name": "HEALPixCut", "fileName": "HFI_SkyMap_143_2048_R1.10_nominal.fits"	} ],
-		"numberOfLevels": 1,
-        "attribution":"<a href=\"http://irsa.ipac.caltech.edu/data/Planck/release_1/all-sky-maps/\" target=\"_blank\"><img src=\"http://demonstrator.telespazio.com/sitools/upload/planck.svg\" width='20' height='20'/></a> data provided by <a href=\"http://cdsweb.u-strasbg.fr/index-fr.gml\" target=\"_blank\"><img width='24' height='16' src=\"http://demonstrator.telespazio.com/mizar/css/images/cds.svg\" /></a>"
-    },
-    {
-		"type": "healpix",
-		"name": "Planck-HFI-100",
-		"baseUrl": "http://demonstrator.telespazio.com/sitools/Alasky/PLANCK/HFI100",
-		"description": "PLANCK HFI 100 from CDS",
-		"visible": false,
-		"background": true,
-		"coordSystem": "GAL",
-		"fitsSupported": true,
-		"format": "jpg",
-		//"availableServices": [ { "name": "HEALPixCut", "fileName": "HFI_SkyMap_100_2048_R1.10_nominal.fits"	} ],
-		"numberOfLevels": 1,
-        "attribution":"<a href=\"http://irsa.ipac.caltech.edu/data/Planck/release_1/all-sky-maps/\" target=\"_blank\"><img src=\"http://demonstrator.telespazio.com/sitools/upload/planck.svg\" width='20' height='20'/></a> data provided by <a href=\"http://cdsweb.u-strasbg.fr/index-fr.gml\" target=\"_blank\"><img width='24' height='16' src=\"http://demonstrator.telespazio.com/mizar/css/images/cds.svg\" /></a>"
-    },
-
-	// Overlay
-	{
-		"category": "Image",
-		"type": "healpix",
-		"name": "PlanckCMB",
-		"baseUrl" : "http://demonstrator.telespazio.com/sitools/Alasky/PLANCK/CMB",
-		"description": "Planck survey from CDS",
-		"visible": false,
-		"background": false,
-		"format": "jpg",
-		"fitsSupported": true,
-		"coordSystem": "GAL",
-        "attribution":"<a href=\"http://irsa.ipac.caltech.edu/data/Planck/release_1/all-sky-maps/\" target=\"_blank\"><img src=\"http://demonstrator.telespazio.com/sitools/upload/planck.svg\" width='20' height='20'/></a> data provided by <a href=\"http://cdsweb.u-strasbg.fr/index-fr.gml\" target=\"_blank\"><img width='24' height='16' src=\"http://demonstrator.telespazio.com/mizar/css/images/cds.svg\" /></a>"
-	},
-	/**
-	 *	Healpix grid
-	 */
-	{
-		"category": "Other",
-		"type": "healpixGrid",
-		"name": "Healpix grid",
-		"outline": true
-	},
-	{
-        "category": "Solar system",
-        "type": "GeoJSON",
-        "name": "Planets",
-        "description": "Planets",
-        "data": {
-            "type": "planets"
-        },
-        "visible": true,
-        "opacity": 100,
-        "pickable" : true
-    },
-
-	/**
-	 *	OpenSearch ConeSearch IMCCE layer
-	 *
-	 *	Plugin: VO OpenSearch Application for Cone Search
-	 *	mocUrl: http://alasky.u-strasbg.fr/footprints/tables/vizier/II_306_sdss8/MOC
-	 *	coneSearchUrl: http://vo.imcce.fr/webservices/skybot/skybotconesearch_query.php?from=SITools2&EPOCH=now&
-	 */
-	{
-		"category": "Solar system",
-		"type": "DynamicOpenSearch",
-		"dataType": "point",
-		"name": "IMCCE",
-		"serviceUrl": "http://demonstrator.telespazio.com/sitools/solar",
-		"minOrder": 7
-	},
-	/**
-	 *	OpenSearch ConeSearch exoplanet layer
-	 *
-	 *	Plugin: VO OpenSearch Application
-	 *	coneSearchUrl: http://exoplanet.eu/catalog/conesearch?
-	 */
-	{
-		"category": "Solar system",
-		"type": "DynamicOpenSearch",
-		"dataType": "point",
-		"name": "Exoplanets",
-		"description":"The Extrasolar Planets Encyclopaedia (http://exoplanet.eu)",
-		"serviceUrl": "http://demonstrator.telespazio.com/sitools/exoplanet",
-		"visible": false,
-		"minOrder": 3
-	},
-	/**
-	 *	OpenSearch ConeSearch COROT exo
-	 *
-	 *	Plugin: VO OpenSearch Application
-	 *	coneSearchUrl: http://vizier.u-strasbg.fr/viz-bin/votable/-A?-source=B/corot/exo&
-	 */
-	{
-		"category": "Corot",
-		"type": "DynamicOpenSearch",
-		"dataType": "point",
-		"name": "Corot exo",
-		"description":"CoRoT observation log Release 13 (CoRoT, 2009-2013). Stars observed in the exoplanet detection program",
-		"serviceUrl": "http://demonstrator.telespazio.com/sitools/corot/exo",
-		"visible": false,
-		"minOrder": 5,
-		"availableServices" : [ "Moc", "XMatch" ],
-        "attribution":"<img width='28' height='16' src=\"http://demonstrator.telespazio.com/sitools/upload/corot.svg\"> data provided by <a href=\"http://cdsweb.u-strasbg.fr/index-fr.gml\" target=\"_blank\"><img width='24' height='16' src=\"http://demonstrator.telespazio.com/mizar/css/images/cds.svg\" /></a>"
-	},
-	/**
-	 *	OpenSearch ConeSearch COROT exo
-	 *
-	 *	Plugin: VO OpenSearch Application
-	 *	coneSearchUrl: http://vizier.u-strasbg.fr/viz-bin/votable/-A?-source=B/corot/astero&
-	 */
-	{
-		"category": "Corot",
-		"type": "DynamicOpenSearch",
-		"dataType": "point",
-		"name": "Corot astero",
-		"description":"CoRoT observation log Release 13 (CoRoT, 2009-2013). Stars observed in the asterosismology program",
-		"serviceUrl": "http://demonstrator.telespazio.com/sitools/corot/astero",
-		"visible": false,
-		"minOrder": 5,
-		"availableServices" : [ "Moc", "XMatch" ],
-        "attribution":"<img width='28' height='16' src=\"http://demonstrator.telespazio.com/sitools/upload/corot.svg\"> data provided by <a href=\"http://cdsweb.u-strasbg.fr/index-fr.gml\" target=\"_blank\"><img width='24' height='16' src=\"http://demonstrator.telespazio.com/mizar/css/images/cds.svg\" /></a>"
-	},
-	/**
-	 *	Planet layers
-	 */
-	{
-		"category": "Planets",
-		"type": "Planet",
-		"name": "Mars",
-		"nameResolverURL": "http://demonstrator.telespazio.com/mizar/data/mars_resolver.json",
-		"elevation": {
-			"baseUrl": "http://demonstrator.telespazio.com/wcspub",
-			"coverage": "MARSTOPO_16",
-			"version": "1.0.0",
-			"minElevation": -32000,
-			"scale": 2 // Enhance a little bit the elevation of Mars
-		},
-		"baseImageries": [
-			{
-				"name": "Viking",
-				"baseUrl": "http://demonstrator.telespazio.com/mars",
-				"layers": "Viking",
-				"description": "Red planet",
-		        "attribution":"Color background provided by <a href=\"http://www.mars.asu.edu/data/\" target=\"_blank\">Mars Dataset</a>"
-			},
-			{
-				"name": "THEMIS",
-				"baseUrl": "http://demonstrator.telespazio.com/mars",
-				"layers": "THEMIS",
-				"description": "Thermis",
-		        "attribution":"Color background provided by <a href=\"http://www.mars.asu.edu/data/\" target=\"_blank\">Mars Dataset</a>"
-			},
-			{
-				"name": "MOLA",
-				"baseUrl": "http://demonstrator.telespazio.com/ms-mars",
-				"layers": "MOLA_Color",
-				"format": "image/png",
-		        "attribution":"Color background provided by <a href=\"http://www.mars.asu.edu/data/\" target=\"_blank\">Mars Dataset</a>"
-			},
-			{
-				"name": "MOC Atlas",
-				"baseUrl": "http://demonstrator.telespazio.com/ms-mars",
-				"layers": "MOC_Atlas_256ppd",
-				"description": "MOC Atlas",
-				"format": "image/png",
-		        "attribution":"Color background provided by <a href=\"http://www.mars.asu.edu/data/\" target=\"_blank\">Mars Dataset</a>"
-			},
-			{
-				"name": "pyroxene",
-				"baseUrl": "http://demonstrator.telespazio.com/mars",
-				"layers": "pyroxene",
-				"description": "Pyroxene",
-		        "attribution":"Color background provided by <a href=\"http://www.mars.asu.edu/data/\" target=\"_blank\">Mars Dataset</a>"
-			},
-			{
-				"name": "MOLA roughness",
-				"baseUrl": "http://demonstrator.telespazio.com/ms-mars",
-				"layers": "mola_roughness",
-				"description": "MOLA roughness",
-				"format": "image/png",
-		        "attribution":"Color background provided by <a href=\"http://www.mars.asu.edu/data/\" target=\"_blank\">Mars Dataset</a>"
-			}
-		],
-		"visible": false
-	},
-	{
-		"category": "Planets",
-		"type": "Planet",
-		"name": "Earth",
-		"elevation": {
-			"baseUrl":"http://demonstrator.telespazio.com/wcspub",
-			"coverage": "GTOPO",
-			"version": "1.0.0"
-		},
-		"baseImageries": [
-			{
-				"type": "WMS",
-				"name": "Blue Marble",
-				"baseUrl": "http://demonstrator.telespazio.com/wmspub",
-				"layers": "BlueMarble"
-			}
-		],
-		"visible": false
-	}
+    "baseImageries": [
+      {
+        "type": "WMS",
+        "name": "Blue Marble",
+        "baseUrl": "http://demonstrator.telespazio.com/wmspub",
+        "layers": "BlueMarble"
+      }
+    ],
+    "visible": false
+  }
 ]
