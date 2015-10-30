@@ -30,6 +30,7 @@ import fr.cnes.sitools.datasource.jdbc.model.Record;
 import fr.cnes.sitools.util.Util;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonGenerator;
+import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.restlet.Context;
 import org.restlet.data.MediaType;
@@ -39,6 +40,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 /**
@@ -175,8 +177,6 @@ public class GeoJsonRepresentation extends WriterRepresentation {
         Record rec;// Features
         jGenerator.writeArrayFieldStart("features");
 
-        Object geometry = null;
-        Object primaryKeyValue = null;
         Object downloadUrl = null;
         Object mimeType = null;
 
@@ -185,61 +185,40 @@ public class GeoJsonRepresentation extends WriterRepresentation {
             if (Util.isSet(converterChained)) {
                 rec = converterChained.getConversionOf(rec);
             }
+          GeoJsonFeatureDTO geojson = new GeoJsonFeatureDTO();
 
-            // feature
-            jGenerator.writeStartObject();
-            jGenerator.writeStringField("type", "Feature");
-
-            // properties
-            jGenerator.writeObjectFieldStart("properties");
+          Map<String,Object> properties = geojson.getProperties();
 
             for (Iterator<AttributeValue> it = rec.getAttributeValues().iterator(); it.hasNext(); ) {
                 AttributeValue attr = it.next();
                 if (attr.getName().equals(geometryColName)) {
-                    geometry = attr.getValue();
+                    JsonNode geo = mapper.readTree(attr.getValue().toString());
+                    geojson.setGeometry(geo);
                 } else if (attr.getName().equals(this.primaryKey)) {
-                    primaryKeyValue = attr.getValue();
-                    this.doWriteValue(jGenerator, attr.getName(), attr.getValue());
+                    geojson.setId(attr.getValue().toString());
+                    properties.put(attr.getName(), attr.getValue());
                 } else if (attr.getName().equals(this.downloadColumn)) {
-                    downloadUrl = attr.getValue();
+                  downloadUrl = attr.getValue();
                 } else if (attr.getName().equals(this.mimeTypeColumn)) {
-                    mimeType = attr.getValue();
+                  mimeType = attr.getValue();
                 } else if (attr.getName().equals(this.thumbnailColumn)) {
-                    this.doWriteValue(jGenerator, "thumbnail", attr.getValue());
+                    properties.put("thumbnail", attr.getValue());
                 } else if (attr.getName().equals(this.quicklookColumn)) {
-                    this.doWriteValue(jGenerator, "quicklook", attr.getValue());
+                  properties.put("quicklook", attr.getValue());
                 } else {
-                    this.doWriteValue(jGenerator, attr.getName(), attr.getValue());
+                  properties.put(attr.getName(), attr.getValue());
                 }
             }
-            jGenerator.writeEndObject();
             // end properties
 
-            if (Util.isSet(primaryKeyValue)) {
-                // id
-                jGenerator.writeFieldName("id");
-                mapper.writeValue(jGenerator, primaryKeyValue);
-            }
-            if (Util.isSet(geometry)) {
-                // geometry
-                jGenerator.writeFieldName("geometry");
-                jGenerator.writeRawValue(geometry.toString());
-            }
+          if(downloadUrl!=null && mimeType!=null) {
+            DownloadServiceDTO downloadServiceDTO = new DownloadServiceDTO();
+            downloadServiceDTO.setUrl(downloadUrl.toString());
+            downloadServiceDTO.setMimetype(mimeType.toString());
+            geojson.getServices().put("download", downloadServiceDTO);
+          }
 
-            if (Util.isSet(downloadUrl) && Util.isSet(mimeType)) {
-                //start services
-                jGenerator.writeObjectFieldStart("services");
-                //start download
-                jGenerator.writeObjectFieldStart("download");
-                this.doWriteValue(jGenerator, "mimetype", mimeType);
-                this.doWriteValue(jGenerator, "url", downloadUrl);
-                //end download
-                jGenerator.writeEndObject();
-                //end services
-                jGenerator.writeEndObject();
-            }
-
-            jGenerator.writeEndObject();
+          mapper.writeValue(jGenerator, geojson);
             // end feature
         }
 
