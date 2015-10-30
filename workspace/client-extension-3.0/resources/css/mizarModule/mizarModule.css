@@ -9,3 +9,7 @@
 #searchForm fieldset > input {
     top: 8px;
 }
+
+.ui-selectmenu-menu {
+    z-index : 100000;
+}

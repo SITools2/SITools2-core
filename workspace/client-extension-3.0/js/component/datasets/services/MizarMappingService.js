@@ -268,6 +268,7 @@ Ext.define('sitools.extension.component.datasets.services.MizarMappingService', 
                 Ext.Ajax.request({
                     url: geojsonUrl,
                     method: 'GET',
+                    timeout : 500000,
                     success: function (ret) {
                         var response = Ext.decode(ret.responseText);
                         MizarGlobal.jsonProcessor.handleFeatureCollection(geoJsonLayer, response);
