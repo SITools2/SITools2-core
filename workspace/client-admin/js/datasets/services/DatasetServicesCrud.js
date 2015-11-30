@@ -40,6 +40,7 @@ Ext.define('sitools.admin.datasets.services.DatasetServicesCrud', {
     conflictWarned : false,
     clicksToEdit: 1,
     forceFit : true,
+    isDatasetCrudRendered : false,
     mixins : {
         utils : "sitools.admin.utils.utils"
     },
@@ -108,13 +109,15 @@ Ext.define('sitools.admin.datasets.services.DatasetServicesCrud', {
                 }
             },
             autoLoad : true,
+            pageSize : 10,
             listeners : {
             	scope : this,
             	load : function (store, records) {
-            		if (this.comboParents.rendered) {
+            		if (this.comboParents.rendered && !this.isDatasetCrudRendered) {
             			record = this.comboParents.getStore().getAt(0);
             			this.comboParents.setValue(record.get(this.comboParents.valueField), true);
             			this.comboParents.fireEvent('select', this.comboParents, [record]);
+                        this.isDatasetCrudRendered = true;
             		}
             	}
             }
@@ -122,14 +125,14 @@ Ext.define('sitools.admin.datasets.services.DatasetServicesCrud', {
         
         this.comboParents = Ext.create("Ext.form.ComboBox", {
             store : this.storeParents,
+            width : 268,
             displayField : 'name',
             valueField : 'id',
-            typeAhead : true,
-            queryMode : 'local',
+            minChars: 0,
             forceSelection : true,
-            triggerAction : 'all',
-            emptyText : i18n.get('label.select' + this.parentType + 's'),
-            selectOnFocus : true,            
+            triggerAction : 'query',
+            pageSize : true,
+            emptyText : i18n.get('label.selectOrSearchDatasets'),
             listeners : {
                 scope : this,
                 select : function (combo, records, index) {
@@ -317,6 +320,7 @@ Ext.define('sitools.admin.datasets.services.DatasetServicesCrud', {
             defaults : {
                 scope : this
             },
+            enableOverflow : true,
             items : [ this.comboParents, '-', {
                 text : i18n.get('label.addServiceIhm'),
                 icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_create_serviceIhm.png',

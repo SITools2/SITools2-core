@@ -38,6 +38,7 @@ Ext.define('sitools.admin.rssFeed.RssFeedCrud', {
     modify : false,
     forceFit : "true",
     id : ID.BOX.RSSFEED,
+    isDatasetCrudRendered: false,
 
     requires : ['sitools.admin.rssFeed.RssFeedProp'],
     
@@ -80,12 +81,11 @@ Ext.define('sitools.admin.rssFeed.RssFeedCrud', {
 
         var storeCombo = Ext.create('Ext.data.JsonStore', {
             autoLoad : true,
-            fields : ['id', 'name'],
+            fields : ['id', 'name', 'type'],
+            pageSize: 10,
             proxy : {
                 type : 'ajax',
                 url : this.url,
-                limitParam : undefined,
-                startParam : undefined,
                 reader : {
                     type : 'json',
                     root : "data"
@@ -94,10 +94,11 @@ Ext.define('sitools.admin.rssFeed.RssFeedCrud', {
             listeners : {
             	scope : this,
             	load : function (store, records) {
-            		if (this.combobox.rendered) {
+            		if (this.combobox.rendered && !this.isDatasetCrudRendered) {
             			record = this.combobox.getStore().getAt(0);
             			this.combobox.setValue(record.get(this.combobox.valueField), true);
             			this.combobox.fireEvent('select', this.combobox, [record]);
+                        this.isDatasetCrudRendered = true;
             		}
             	}
             }
@@ -105,14 +106,14 @@ Ext.define('sitools.admin.rssFeed.RssFeedCrud', {
 
         this.combobox = Ext.create('Ext.form.field.ComboBox', {
             store : storeCombo,
-            displayField : 'name',
-            valueField : 'id',
-            typeAhead : true,
-            queryMode : 'local',
-            forceSelection : true,
-            triggerAction : 'all',
-            emptyText : this.label,
-            selectOnFocus : true,
+            width: 268,
+            displayField: 'name',
+            valueField: 'id',
+            minChars: 0,
+            forceSelection: true,
+            triggerAction: 'query',
+            pageSize: true,
+            emptyText: i18n.get('label.selectOrSearchDatasets'),
             listeners : {
                 scope : this,
                 select : function (combo, rec, index) {
@@ -180,7 +181,6 @@ Ext.define('sitools.admin.rssFeed.RssFeedCrud', {
             emptyText : i18n.get('label.search'),
             store : this.store,
             pageSize : this.pageSize,
-            disabled : true,
             id : "s-filter"
         }];
 

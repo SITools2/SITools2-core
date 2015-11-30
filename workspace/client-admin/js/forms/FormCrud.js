@@ -41,6 +41,7 @@ Ext.define('sitools.admin.forms.FormCrud', {
         utils : "sitools.admin.utils.utils"
     },
     id : ID.BOX.FORMS,
+    isDatasetCrudRendered: false,
     
     requires : ['sitools.admin.forms.FormProp'],
 
@@ -53,35 +54,36 @@ Ext.define('sitools.admin.forms.FormCrud', {
             proxy : {
                 type : 'ajax',
                 url : this.urlDatasets,
-                limitParam : undefined,
-                startParam : undefined,
                 reader : {
                     type :'json',
                     root : "data"
                 }
             },
             autoLoad : true,
+            pageSize: 10,
             listeners : {
             	scope : this,
             	load : function (store, records) {
-            		if (this.comboDatasets.rendered) {
+            		if (this.comboDatasets.rendered && !this.isDatasetCrudRendered) {
             			record = this.comboDatasets.getStore().getAt(0);
             			this.comboDatasets.setValue(record.get(this.comboDatasets.valueField), true);
             			this.comboDatasets.fireEvent('select', this.comboDatasets, [record]);
+                        this.isDatasetCrudRendered = true;
             		}
             	}
             }
         });
+
         this.comboDatasets = Ext.create("Ext.form.ComboBox", {
             store : storeDatasets,
-            displayField : 'name',
-            valueField : 'id',
-            typeAhead : true,
-            queryMode : 'local',
-            forceSelection : true,
-            triggerAction : 'all',
-            emptyText : i18n.get('label.selectDatasets'),
-            selectOnFocus : true,
+            width: 268,
+            displayField: 'name',
+            valueField: 'id',
+            minChars: 0,
+            forceSelection: true,
+            triggerAction: 'query',
+            pageSize: true,
+            emptyText: i18n.get('label.selectOrSearchDatasets'),
             listeners : {
                 scope : this,
                 select : function (combo, records, index) {
