@@ -29,7 +29,9 @@ import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
 import fr.cnes.sitools.resources.geojson.representations.GeoJsonRepresentation;
 import org.restlet.Context;
 import org.restlet.data.Disposition;
+import org.restlet.data.Form;
 import org.restlet.data.MediaType;
+import org.restlet.data.Parameter;
 import org.restlet.ext.wadl.MethodInfo;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
@@ -88,6 +90,16 @@ public class GeoJSONPostGisResource extends SitoolsParameterizedResource {
      * @return the HTML representation
      */
     private Representation execute() {
+        Form response_headers = (Form) getResponse().getAttributes().get("org.restlet.http.headers");
+        if(response_headers == null) {
+            response_headers = new Form();
+        }
+        Parameter param = new Parameter();
+        param.setName("Access-Control-Allow-Origin");
+        param.setValue("*");
+        response_headers.add(param);
+        getResponse().getAttributes().put("org.restlet.http.headers", response_headers);
+
         Representation repr = null;
 
         // Get context

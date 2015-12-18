@@ -32,6 +32,8 @@ import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.SerializationConfig;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.restlet.Context;
 import org.restlet.data.MediaType;
 import org.restlet.representation.WriterRepresentation;
@@ -126,6 +128,7 @@ public class GeoJsonRepresentation extends WriterRepresentation {
 
         JsonFactory jFactory = new JsonFactory();
         JsonGenerator jGenerator = null;
+        mapper.getSerializationConfig().setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
 
         jGenerator = jFactory.createJsonGenerator(writer);
 
