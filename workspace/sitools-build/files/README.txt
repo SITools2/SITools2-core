@@ -2,8 +2,8 @@
 ______________
 
 Identification                       : SITools2
-Date                                 : 2015-10-22
-Version                              : 3.0
+Date                                 : 2015-12-18
+Version                              : 3.0.1
 Owner                                : CNES
 Developer                            : AKKA Technologies
 Type                                 : Complete
@@ -15,7 +15,17 @@ Role/Function                        : Adaptable web interface for scientific da
 Reference tag                        : (3.0)
 
 2/ Changes
+______________
+-3.0.1 (2015-12-18)
 
+	This version fixes some bugs from the version 3.0.
+
+	* Bug fixed :
+		- Fixing bug limit dataset services #50
+		- Fix GeoJSON generation speed
+
+	* API changes :
+        - Increase max number of rows returned to 100000
 _________________
 -3.0 (2015-10-22)
 
