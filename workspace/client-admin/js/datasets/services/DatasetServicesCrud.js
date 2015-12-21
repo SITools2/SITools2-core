@@ -135,6 +135,26 @@ Ext.define('sitools.admin.datasets.services.DatasetServicesCrud', {
             emptyText : i18n.get('label.selectOrSearchDatasets'),
             listeners : {
                 scope : this,
+                render: function (combo) {
+                    combo.triggerEl.on('click', function () {
+                        if (!Ext.isEmpty(combo.getValue())) {
+                            var record = combo.getStore().getById(combo.getValue());
+                            if (!Ext.isEmpty(combo.tmpValue)) {
+                                if (combo.tmpValue.get('id') != combo.getValue()) {
+                                    combo.tmpValue = record;
+                                }
+                            } else {
+                                combo.tmpValue = record;
+                            }
+                        }
+                        combo.clearValue();
+                    }, combo);
+                },
+                blur: function (combo) {
+                    if (Ext.isEmpty(combo.getValue())) {
+                        combo.setValue(combo.tmpValue);
+                    }
+                },
                 select : function (combo, records, index) {
                     var rec = records[0];
                     this.parentId = rec.get("id");
@@ -143,7 +163,9 @@ Ext.define('sitools.admin.datasets.services.DatasetServicesCrud', {
                     }    
                     this.savePropertiesBtn.removeCls('not-save-textfield');
                     var url = this.urlDatasetAllServices.replace('{idDataset}', this.parentId);
-                    
+
+                    combo.tmpValue = rec;
+
                     this.getStore().setProxy({
                         type :'ajax',
                         url : url,

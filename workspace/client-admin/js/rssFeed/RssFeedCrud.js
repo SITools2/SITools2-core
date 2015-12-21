@@ -113,11 +113,34 @@ Ext.define('sitools.admin.rssFeed.RssFeedCrud', {
             forceSelection: true,
             triggerAction: 'query',
             pageSize: true,
-            emptyText: i18n.get('label.selectOrSearchDatasets'),
+            emptyText: i18n.get('label.selectOrSearch'),
             listeners : {
                 scope : this,
+                render: function (combo) {
+                    combo.triggerEl.on('click', function () {
+                        if (!Ext.isEmpty(combo.getValue())) {
+                            var record = combo.getStore().getById(combo.getValue());
+                            if (!Ext.isEmpty(combo.tmpValue)) {
+                                if (combo.tmpValue.get('id') != combo.getValue()) {
+                                    combo.tmpValue = record;
+                                }
+                            } else {
+                                combo.tmpValue = record;
+                            }
+                        }
+                        combo.clearValue();
+                    }, combo);
+                },
+                blur: function (combo) {
+                    if (Ext.isEmpty(combo.getValue())) {
+                        combo.setValue(combo.tmpValue);
+                    }
+                },
                 select : function (combo, rec, index) {
                     this.dataId = rec[0].data.id;
+
+                    combo.tmpValue = rec[0];
+
                     this.loadRss();
                 }
             }

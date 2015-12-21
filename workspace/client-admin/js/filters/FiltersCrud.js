@@ -103,8 +103,30 @@ Ext.define('sitools.admin.filters.FiltersCrud', {
             emptyText: i18n.get('label.selectOrSearchDatasets'),
             listeners: {
                 scope: this,
+                render: function (combo) {
+                    combo.triggerEl.on('click', function () {
+                        if (!Ext.isEmpty(combo.getValue())) {
+                            var record = combo.getStore().getById(combo.getValue());
+                            if (!Ext.isEmpty(combo.tmpValue)) {
+                                if (combo.tmpValue.get('id') != combo.getValue()) {
+                                    combo.tmpValue = record;
+                                }
+                            } else {
+                                combo.tmpValue = record;
+                            }
+                        }
+                        combo.clearValue();
+                    }, combo);
+                },
+                blur: function (combo) {
+                    if (Ext.isEmpty(combo.getValue())) {
+                        combo.setValue(combo.tmpValue);
+                    }
+                },
                 select: function (combo, rec, index) {
                     this.datasetId = rec[0].data.id;
+
+                    combo.tmpValue = rec[0];
 
                     this.getStore().setProxy({
                         type: 'ajax',
