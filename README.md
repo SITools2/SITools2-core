@@ -7,6 +7,8 @@ For more information : [http://sourceforge.net/projects/sitools2/](http://source
 
 Release notes : [README.txt](workspace/sitools-build/files/README.txt)
 
+Documentation : [http://sourceforge.net/projects/sitools2/files/Documentation/V3.0/DG-SITOOLS2-V3-1.0.pdf/download] "Documentation"
+
 ## Building SITools2
 
 ### Getting the sources
