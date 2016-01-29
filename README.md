@@ -1,4 +1,4 @@
-![](workspace/client-public/res/images/logo_01_petiteTaille.png)
+![](workspace/client-public-3.0/res/images/logo_01_petiteTaille.png)
 # SITools2
 ## Description
 SITools2 is a new CNES generic tool performed by a joint effort between CNES and scientific laboratories. The aim of SITools is to provide a self-manageable data access layer deployed on already existing scientific laboratory databases.
