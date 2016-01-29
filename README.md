@@ -1,4 +1,4 @@
-![](workspace/client-public/res/images/logo_01_petiteTaille.png)
+![](workspace/client-public-3.0/res/images/logo_01_petiteTaille.png)
 # SITools2
 ## Description
 SITools2 is a new CNES generic tool performed by a joint effort between CNES and scientific laboratories. The aim of SITools is to provide a self-manageable data access layer deployed on already existing scientific laboratory databases.
@@ -6,6 +6,14 @@ SITools2 is a new CNES generic tool performed by a joint effort between CNES and
 For more information : [http://sourceforge.net/projects/sitools2/](http://sourceforge.net/projects/sitools2/ "SITools2 Web Site")
 
 Release notes : [README.txt](workspace/sitools-build/files/README.txt)
+
+Documentation : [http://sourceforge.net/projects/sitools2/files/Documentation/V3.0/DG-SITOOLS2-V3-1.0.pdf/download](http://sourceforge.net/projects/sitools2/files/Documentation/V3.0/DG-SITOOLS2-V3-1.0.pdf/download) 
+
+## Building SITools2
+
+### Getting the sources
+
+	$ git clone https://github.com/SITools2/core-v2.git sitools2-v2
 
 ## Building SITools2
 
