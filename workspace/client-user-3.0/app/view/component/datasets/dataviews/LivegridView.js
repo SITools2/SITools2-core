@@ -53,7 +53,7 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
         leadingBufferZone: 50  // Keep 50 rows rendered in the table ahead of scroll,
     },
     viewConfig: {
-    	enableTextSelection: true,
+        enableTextSelection: true,
         getRowClass: function (record, index) {
             if (Ext.isEmpty(this.gridId)) {
                 var grid = this.up('livegridView');
@@ -77,16 +77,19 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
             Ext.util.CSS.createStyleSheet(css, this.id);
         }
 
-        if (JSON.parse(this.dataviewConfig.autoFitColumn)) {
-            Ext.apply(this.viewConfig, {
-                listeners: {
-                    refresh: function(dataview) {
-                        Ext.each(dataview.panel.columns, function(column) {
-                            column.autoSize();
-                        });
+        if (!Ext.isEmpty(this.dataviewConfig.autoFitColumn)) {
+            if (JSON.parse(this.dataviewConfig.autoFitColumn)) {
+                Ext.apply(this.viewConfig, {
+                    listeners: {
+                        refresh: function (dataview) {
+                            Ext.each(dataview.panel.columns, function (column) {
+                                column.autoSize();
+                            });
+                        }
                     }
-                }
-            });
+                });
+            }
+
         }
 
         this.selModel = new Ext.create("sitools.user.view.component.datasets.dataviews.selectionModel.SitoolsCheckboxModel", {
@@ -130,14 +133,14 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
         var colMenu = this.headerCt.getColumnMenu(this.headerCt);
 
         var columnStore = Ext.create('Ext.data.JsonStore', {
-            fields : ['text', 'menuitem'],
-            remoteFilter : false
+            fields: ['text', 'menuitem'],
+            remoteFilter: false
         });
 
         Ext.each(colMenu, function (menuitem) {
             columnStore.add({
-                text : menuitem.text,
-                menuitem : menuitem
+                text: menuitem.text,
+                menuitem: menuitem
             })
         });
 
@@ -159,10 +162,10 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
         array.push(columnItem);
 
         var searchField = Ext.create('Ext.form.field.Text', {
-            emptyText : i18n.get('label.searchAColumn'),
-            enableKeyEvents : true,
-            store : columnStore,
-            columnItemId : columnItemId
+            emptyText: i18n.get('label.searchAColumn'),
+            enableKeyEvents: true,
+            store: columnStore,
+            columnItemId: columnItemId
         });
 
         searchField.on('keyup', function (textfield, e) {
@@ -194,7 +197,7 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
             });
             Ext.resumeLayouts(true);
         }, this, {
-            delay : 0
+            delay: 0
         });
 
         colMenu.splice(0, 0, searchField);
