@@ -29,14 +29,14 @@ Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.DateBetween', {
     extend : 'sitools.admin.forms.componentsAdminDef.oneParam.Abstract', 
     height : 480,
     
-    require : ['sitools.public.widget.item.DateFieldWithToday'],
+    require : ['sitools.public.widget.date.DateFieldWithToday'],
 
     initComponent : function () {
         //formattage de extraParams : 
         this.winPropComponent.specificHeight = this.height;
         this.winPropComponent.specificWidth = 400;
         this.callParent(arguments);
-        this.componentDefaultValueFrom = Ext.create("Ext.ux.date.form.DateTimeField", {
+        this.componentDefaultValueFrom = Ext.create("sitools.public.widget.date.DateFieldWithToday", {
             fieldLabel : i18n.get('label.defaultValueFrom'),
             name : 'componentDefaultValueFrom',
             anchor : '100%', 
@@ -44,7 +44,7 @@ Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.DateBetween', {
             showTime : true, 
             tooltip : i18n.get('label.explainDateDefault')
         });
-        this.componentDefaultValueTo = Ext.create("Ext.ux.date.form.DateTimeField", {
+        this.componentDefaultValueTo = Ext.create("sitools.public.widget.date.DateFieldWithToday", {
             fieldLabel : i18n.get('label.defaultValueTo'),
             name : 'componentDefaultValueTo',
             anchor : '100%', 
