@@ -356,9 +356,9 @@ Ext.define('sitools.admin.filtersPlugins.FiltersPluginsSingle', {
         }
     },
 
-    onClassClick : function (self, rowIndex, e) {
+    onClassClick : function (self, rec, e) {
         if (this.action == "create") {
-            var rec = this.getLastSelectedRecord(this.gridfilterPlugin);
+            //var rec = this.getLastSelectedRecord(this.gridfilterPlugin);
             if (!rec) {
                 return false;
             }
