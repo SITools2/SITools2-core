@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
+import fr.cnes.sitools.security.filter.DataStorageAuthenticatorFilter;
 import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.Response;
@@ -49,7 +50,7 @@ import fr.cnes.sitools.util.RIAPUtils;
 
 /**
  * Application for managing directories for data storage in SITools.
- * 
+ *
  * @author jp.boignard (AKKA Technologies)
  */
 public final class StorageApplication extends SitoolsApplication {
@@ -68,7 +69,7 @@ public final class StorageApplication extends SitoolsApplication {
 
   /**
    * Constructor
-   * 
+   *
    * @param context
    *          the RESTlet context must contain a <code>DataStorageStore</code> attribute for APP_STORE key
    */
@@ -120,7 +121,7 @@ public final class StorageApplication extends SitoolsApplication {
 
   /**
    * Attach a directory in the application at start
-   * 
+   *
    * @param storageDirectory
    *          the directory to attach
    */
@@ -151,6 +152,8 @@ public final class StorageApplication extends SitoolsApplication {
             getSettings().getString(Consts.APP_PLUGINS_FILTERS_INSTANCES_URL), getContext(),
             SitoolsMediaType.APPLICATION_JAVA_OBJECT_SITOOLS_MODEL);
 
+
+
         Filter filter = null;
         // if the filterModel is null no specific filter defined.
         if (filterModel != null) {
@@ -177,7 +180,7 @@ public final class StorageApplication extends SitoolsApplication {
         // Insert a TemplateFilter before secureDir
         TemplateFilter tf = new TemplateFilter();
         tf.getConfiguration().setCustomAttribute("directory", storageDirectory);
-        tf.setNext(secureDir);
+
 
         // if (secureDir == directory) {
         // route.attach(storageDirectory.getAttachUrl(), tf, Router.MODE_FIRST_MATCH);
@@ -185,6 +188,11 @@ public final class StorageApplication extends SitoolsApplication {
         // else {
         // route.attach(storageDirectory.getAttachUrl(), tf, Router.MODE_BEST_MATCH);
         // }
+
+        // Check user authorization before accessing storage
+        DataStorageAuthenticatorFilter dataStorageAuthenticatorFilter = new DataStorageAuthenticatorFilter(getContext());
+        dataStorageAuthenticatorFilter.setNext(secureDir);
+        tf.setNext(dataStorageAuthenticatorFilter);
 
         route.attach(storageDirectory.getAttachUrl(), tf);
 
@@ -216,7 +224,7 @@ public final class StorageApplication extends SitoolsApplication {
 
   /**
    * Detach directory from application
-   * 
+   *
    * @param storageDirectory
    *          the directory to detach
    */
@@ -228,7 +236,7 @@ public final class StorageApplication extends SitoolsApplication {
 
   /**
    * Start a directory by attaching it to the route
-   * 
+   *
    * @param storageDirectory
    *          the initial StorageDirectory
    */
@@ -277,10 +285,14 @@ public final class StorageApplication extends SitoolsApplication {
         secureDir = directoryAuthorizer;
       }
 
-      // Insert a TemplateFilter before secureDir
+//       Insert a TemplateFilter before secureDir
       TemplateFilter tf = new TemplateFilter();
       tf.getConfiguration().setCustomAttribute("directory", storageDirectory);
-      tf.setNext(secureDir);
+
+      // Check user authorization before accessing storage
+      DataStorageAuthenticatorFilter dataStorageAuthenticatorFilter = new DataStorageAuthenticatorFilter(getContext());
+      dataStorageAuthenticatorFilter.setNext(secureDir);
+      tf.setNext(dataStorageAuthenticatorFilter);
 
       route.attach(storageDirectory.getAttachUrl(), tf); // tf
 
@@ -306,7 +318,7 @@ public final class StorageApplication extends SitoolsApplication {
 
   /**
    * Stop a directory resource
-   * 
+   *
    * @param storageDirectory
    *          the directory to stop
    */
@@ -346,7 +358,7 @@ public final class StorageApplication extends SitoolsApplication {
 
   /**
    * Get the store associated to the application
-   * 
+   *
    * @return the store
    */
   public DataStorageStoreInterface getStore() {
