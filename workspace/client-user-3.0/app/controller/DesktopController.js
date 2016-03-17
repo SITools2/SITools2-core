@@ -422,10 +422,7 @@ Ext.define('sitools.user.controller.DesktopController', {
         if (!Ext.isEmpty(Desktop.getModulesInDiv())) {
             Ext.Array.each(Desktop.getModulesInDiv(), function (moduleInDiv) {
                 var parent = Ext.get(moduleInDiv.getEl().findParentNode('div'));
-                console.log("width : " + parent.getWidth());
-                console.log("height : " + parent.getHeight());
                 moduleInDiv.setSize(parent.getWidth(), parent.getHeight());
-                //console.dir(moduleInDiv);
             });
         }
 	}
