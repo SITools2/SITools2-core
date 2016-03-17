@@ -25,10 +25,13 @@ import fr.cnes.sitools.server.Starter;
 import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.Response;
+import org.restlet.data.MediaType;
+import org.restlet.data.Preference;
 import org.restlet.data.Status;
 import org.restlet.routing.Filter;
 import org.restlet.routing.Redirector;
 
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -58,13 +61,27 @@ public class DataStorageAuthenticatorFilter extends Filter {
 
   @Override
   protected void afterHandle(Request request, Response response) {
+//  protected int beforeHandle(Request request, Response response) {
+
+    List<Preference<MediaType>> listMediaType = request.getClientInfo().getAcceptedMediaTypes();
+
+    for (Preference p : listMediaType) {
+      if (p.getMetadata().getName().equals("application/json+sitools-directory")) {
+        return;
+      }
+    }
 
     // 401 User not authenticated
-    if (!request.getClientInfo().isAuthenticated() && response.getStatus().equals(Status.CLIENT_ERROR_FORBIDDEN)) {
+    if (response.getStatus().equals(Status.CLIENT_ERROR_FORBIDDEN) && !request.getClientInfo().isAuthenticated()) {
       // redirect to login page
+      response.setStatus(Status.CLIENT_ERROR_UNAUTHORIZED);
       String target = settings.getString(Consts.APP_URL) + "/loginPageRedirect/index.html?redirect=" + request.getResourceRef().getIdentifier();
       Redirector redirector = new Redirector(getContext(), target, Redirector.MODE_CLIENT_TEMPORARY);
       redirector.handle(request, response);
+    }
+
+    if (response.getStatus().equals(Status.CLIENT_ERROR_FORBIDDEN)) {
+      response.setStatus(Status.CLIENT_ERROR_FORBIDDEN);
     }
   }
 
