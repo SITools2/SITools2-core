@@ -353,8 +353,8 @@ Ext.define('sitools.user.view.component.personal.DiskSpaceView', {
             modal : true,
             iconCls : 'dataDetail'
         };
-    
-        sitools.user.component.dataviews.dataviewUtils.showDisplayableUrl(panel.frameEl.src, true, customConfig);
+
+        sitools.user.utils.DataviewUtils.showDisplayableUrl(panel.frameEl.src, true, customConfig);
     },
     
     reloadNode : function (node) {
