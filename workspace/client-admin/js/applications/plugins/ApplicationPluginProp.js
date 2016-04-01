@@ -270,10 +270,10 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginProp', {
             }],
             listeners : {
                 scope : this,
-                celldblclick : function (view, td, cellIndex, storeRecord, tr, rowIndex) {
+                cellclick : function (view, td, cellIndex, storeRecord, tr, rowIndex) {
                     var rec = storeRecord.data;
                     
-                    if (this.gridFieldMapping.columns[cellIndex].text == "Value") {
+                    if (this.gridFieldMapping.columns[cellIndex].text.startsWith("Value")) {
                         if (rec.valueType == "xs:dictionary") {
                             var selectDictionaryWin = new sitools.admin.dictionary.SelectDictionary({
                                 field : "value",
