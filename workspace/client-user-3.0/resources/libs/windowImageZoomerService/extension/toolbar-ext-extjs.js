@@ -158,7 +158,7 @@ viewer.toolbarextjs = function (viewer) {
                 //text : 'copy',
                 handler : function () {
                     var img = viewer.frameElement.firstChild;
-                    sitools.user.component.dataviews.dataviewUtils.copyImageToClipboard(img.src);
+                    sitools.user.utils.DataviewUtils.copyImageToClipboard(img.src);
                 }
             },*/
             {

@@ -613,11 +613,11 @@ function viewFileContent(url, title) {
                     });
                 }
                 else if (headerFile == "image") {
-                    sitools.user.component.dataviews.dataviewUtils.showPreview(url, title);
+                    sitools.user.utils.DataviewUtils.showPreview(url, title);
 
                 }
                 else {
-                    sitools.user.component.dataviews.dataviewUtils.downloadFile(url);
+                    sitools.user.utils.DataviewUtils.downloadFile(url);
                 }
             } catch (err) {
                 Ext.Msg.alert(i18n.get('label.error'), err);
