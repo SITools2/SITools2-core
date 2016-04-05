@@ -35,14 +35,15 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Specific filter to control user access on datastorage resources (directories, files...)
+ * Specific filter to control user access on resources
  *
  * @author b.fiorito (AKKA Technologies)
- *
  */
-public class DataStorageAuthenticatorFilter extends Filter {
+public class AuthenticatorFilter extends Filter {
 
-  /** The Context */
+  /**
+   * The Context
+   */
   private Context context;
 
   private SitoolsSettings settings;
@@ -50,21 +51,19 @@ public class DataStorageAuthenticatorFilter extends Filter {
   /**
    * Default Constructor
    *
-   * @param context
-   *          the Context
+   * @param context the Context
    */
-  public DataStorageAuthenticatorFilter(Context context) {
+  public AuthenticatorFilter(Context context) {
     super(context);
     this.context = context;
     this.settings = (SitoolsSettings) context.getAttributes().get(ContextAttributes.SETTINGS);
   }
 
-  @Override
-  protected void afterHandle(Request request, Response response) {
-//  protected int beforeHandle(Request request, Response response) {
+  @Override protected void afterHandle(Request request, Response response) {
 
     List<Preference<MediaType>> listMediaType = request.getClientInfo().getAcceptedMediaTypes();
 
+    // Specific for Datastorage
     for (Preference p : listMediaType) {
       if (p.getMetadata().getName().equals("application/json+sitools-directory")) {
         return;
@@ -73,15 +72,14 @@ public class DataStorageAuthenticatorFilter extends Filter {
 
     // 401 User not authenticated
     if (response.getStatus().equals(Status.CLIENT_ERROR_FORBIDDEN) && !request.getClientInfo().isAuthenticated()) {
-      // redirect to login page
       response.setStatus(Status.CLIENT_ERROR_UNAUTHORIZED);
-      String target = settings.getString(Consts.APP_URL) + "/loginPageRedirect/index.html?redirect=" + request.getResourceRef().getIdentifier();
+
+      // redirect to login page
+      String target =
+          settings.getString(Consts.APP_URL) + "/loginPageRedirect/index.html?redirect=" + request.getResourceRef()
+              .getIdentifier();
       Redirector redirector = new Redirector(getContext(), target, Redirector.MODE_CLIENT_TEMPORARY);
       redirector.handle(request, response);
-    }
-
-    if (response.getStatus().equals(Status.CLIENT_ERROR_FORBIDDEN)) {
-      response.setStatus(Status.CLIENT_ERROR_FORBIDDEN);
     }
   }
 
@@ -97,8 +95,7 @@ public class DataStorageAuthenticatorFilter extends Filter {
   /**
    * Sets the value of context
    *
-   * @param context
-   *          the context to set
+   * @param context the context to set
    */
   public void setContext(Context context) {
     this.context = context;

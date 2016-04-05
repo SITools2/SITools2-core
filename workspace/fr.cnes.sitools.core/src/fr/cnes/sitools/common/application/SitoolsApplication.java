@@ -29,6 +29,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
+import fr.cnes.sitools.security.filter.AuthenticatorFilter;
 import org.restlet.Application;
 import org.restlet.Context;
 import org.restlet.Request;
@@ -400,13 +401,16 @@ public abstract class SitoolsApplication extends ExtendedWadlApplication {
       this.getLogger().warning("No security configuration for " + this.getName());
       this.authorizationSecure = false;
 
+      AuthenticatorFilter authenticatorFilter = new AuthenticatorFilter(getContext());
       // attach a filter to block bad authentication
       NotAuthenticatedFilter notAuthenticatedFilter = new NotAuthenticatedFilter();
-      notAuthenticatedFilter.setNext(restlet);
+      notAuthenticatedFilter.setNext(authenticatorFilter);
 
       // attach a filter to block bad authentication
       UserBlackListFilter userBlackListFilter = new UserBlackListFilter(getContext());
       userBlackListFilter.setNext(notAuthenticatedFilter);
+
+      authenticatorFilter.setNext(restlet);
 
       return addSecurityFilter(getContext(), userBlackListFilter);
     }
@@ -420,11 +424,15 @@ public abstract class SitoolsApplication extends ExtendedWadlApplication {
       // attach a filter to block bad authentication
       UserBlackListFilter userBlackListFilter = new UserBlackListFilter(getContext());
 
+      AuthenticatorFilter authenticatorFilter = new AuthenticatorFilter(getContext());
+
       authenticator.setNext(userBlackListFilter);
 
       userBlackListFilter.setNext(notAuthenticatedFilter);
 
-      notAuthenticatedFilter.setNext(authorizer);
+      notAuthenticatedFilter.setNext(authenticatorFilter);
+
+      authenticatorFilter.setNext(authorizer);
 
       authorizer.setNext(restlet);
 
@@ -669,11 +677,14 @@ public abstract class SitoolsApplication extends ExtendedWadlApplication {
         UserBlackListFilter userBlackListFilter = new UserBlackListFilter(getContext());
         auth.setNext(userBlackListFilter);
 
+        AuthenticatorFilter authenticatorFilter = new AuthenticatorFilter(getContext());
+
         // attach a filter to block bad authentication
         NotAuthenticatedFilter notAuthenticatedFilter = new NotAuthenticatedFilter();
         userBlackListFilter.setNext(notAuthenticatedFilter);
 
-        notAuthenticatedFilter.setNext(application);
+        notAuthenticatedFilter.setNext(authenticatorFilter);
+        authenticatorFilter.setNext(application);
       }
       else {
         auth.setNext(application);
@@ -699,8 +710,11 @@ public abstract class SitoolsApplication extends ExtendedWadlApplication {
         // attach a filter to block bad authentication
         NotAuthenticatedFilter notAuthenticatedFilter = new NotAuthenticatedFilter();
 
+        AuthenticatorFilter authenticatorFilter = new AuthenticatorFilter(getContext());
+
         userBlackListFilter.setNext(notAuthenticatedFilter);
-        notAuthenticatedFilter.setNext(localAuthorizer);
+        notAuthenticatedFilter.setNext(authenticatorFilter);
+        authenticatorFilter.setNext(localAuthorizer);
       }
 
       localAuthorizer.setNext(application);

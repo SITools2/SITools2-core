@@ -22,7 +22,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
-import fr.cnes.sitools.security.filter.DataStorageAuthenticatorFilter;
 import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.Response;
@@ -152,8 +151,6 @@ public final class StorageApplication extends SitoolsApplication {
             getSettings().getString(Consts.APP_PLUGINS_FILTERS_INSTANCES_URL), getContext(),
             SitoolsMediaType.APPLICATION_JAVA_OBJECT_SITOOLS_MODEL);
 
-
-
         Filter filter = null;
         // if the filterModel is null no specific filter defined.
         if (filterModel != null) {
@@ -180,7 +177,7 @@ public final class StorageApplication extends SitoolsApplication {
         // Insert a TemplateFilter before secureDir
         TemplateFilter tf = new TemplateFilter();
         tf.getConfiguration().setCustomAttribute("directory", storageDirectory);
-
+        tf.setNext(secureDir);
 
         // if (secureDir == directory) {
         // route.attach(storageDirectory.getAttachUrl(), tf, Router.MODE_FIRST_MATCH);
@@ -188,11 +185,6 @@ public final class StorageApplication extends SitoolsApplication {
         // else {
         // route.attach(storageDirectory.getAttachUrl(), tf, Router.MODE_BEST_MATCH);
         // }
-
-        // Check user authorization before accessing storage
-        DataStorageAuthenticatorFilter dataStorageAuthenticatorFilter = new DataStorageAuthenticatorFilter(getContext());
-        dataStorageAuthenticatorFilter.setNext(secureDir);
-        tf.setNext(dataStorageAuthenticatorFilter);
 
         route.attach(storageDirectory.getAttachUrl(), tf);
 
@@ -285,14 +277,10 @@ public final class StorageApplication extends SitoolsApplication {
         secureDir = directoryAuthorizer;
       }
 
-//       Insert a TemplateFilter before secureDir
+      // Insert a TemplateFilter before secureDir
       TemplateFilter tf = new TemplateFilter();
       tf.getConfiguration().setCustomAttribute("directory", storageDirectory);
-
-      // Check user authorization before accessing storage
-      DataStorageAuthenticatorFilter dataStorageAuthenticatorFilter = new DataStorageAuthenticatorFilter(getContext());
-      dataStorageAuthenticatorFilter.setNext(secureDir);
-      tf.setNext(dataStorageAuthenticatorFilter);
+      tf.setNext(secureDir);
 
       route.attach(storageDirectory.getAttachUrl(), tf); // tf
 
