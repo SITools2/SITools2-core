@@ -2,8 +2,8 @@
 ______________
 
 Identification                       : SITools2
-Date                                 : 2015-12-18
-Version                              : 3.0.1
+Date                                 : 2016-05-10
+Version                              : 3.0.2
 Owner                                : CNES
 Developer                            : AKKA Technologies
 Type                                 : Complete
@@ -18,7 +18,7 @@ Reference tag                        : (3.0)
 ______________
 -3.0.2 (2016-05-10)
 
-	This version fixes some bugs from the version 3.0.1
+	This version fixes some bugs from the version 3.0
 
 	* Bug fixed :
 		- Fix Problem of DatasetLink #60
@@ -29,7 +29,7 @@ ______________
 ______________
 -3.0.1 (2015-12-18)
 
-	This version fixes some bugs from the version 3.0.
+	This version fixes some bugs from the version 3.0
 
 	* Bug fixed :
 		- Fixing bug limit dataset services #50
