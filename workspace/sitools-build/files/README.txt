@@ -16,6 +16,17 @@ Reference tag                        : (3.0)
 
 2/ Changes
 ______________
+-3.0.2 (2016-05-10)
+
+	This version fixes some bugs from the version 3.0.1
+
+	* Bug fixed :
+		- Fix Problem of DatasetLink #60
+		- Fix Footer link #58
+		- Fix enumerated parameters Admin #57
+		- Fix Error cart downloading #62
+		- Fix RegExp {TODAY} Date Between
+______________
 -3.0.1 (2015-12-18)
 
 	This version fixes some bugs from the version 3.0.
