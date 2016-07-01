@@ -501,7 +501,7 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginProp', {
         if (this.action == "create") {
             rec = this.getLastSelectedRecord(this.gridapplicationPlugin);
             if (!rec) {
-                return popupMessage("", i18n.get('warning.noselection'), null, 'x-info');
+                popupMessage("", i18n.get('warning.noselection'), null, 'x-info');
                 return false;
             }
             jsonReturn.name = rec.data.name;

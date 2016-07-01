@@ -29,16 +29,17 @@ Ext.define('sitools.admin.projects.resourcesPlugins.ProjectResourcesCrud', {
     extend : 'sitools.admin.resourcesPlugins.ResourcesPluginsCrud',
     alias : 'widget.s-project_resources',
     border : false,
-    height : ADMIN_PANEL_HEIGHT,    
     layout : 'fit',
     
     initComponent : function () {
+    	
         Ext.apply(this, {
             urlParents : loadUrl.get('APP_URL') + loadUrl.get('APP_PROJECTS_URL'),
             resourcesUrlPart : loadUrl.get('APP_RESOURCES_URL'),
             urlResources : loadUrl.get('APP_URL') + loadUrl.get('APP_PLUGINS_RESOURCES_URL') + '/classes',
             parentType : "project",
-            appClassName : "fr.cnes.sitools.project.ProjectApplication" 
+            appClassName : "fr.cnes.sitools.project.ProjectApplication",
+            height : ADMIN_PANEL_HEIGHT
         });
         this.callParent(arguments);
     }

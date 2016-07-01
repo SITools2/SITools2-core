@@ -28,8 +28,6 @@ Ext.namespace('sitools.admin.datasets');
 Ext.define('sitools.admin.datasets.RssFeedDataset', { 
 	alias : 'widget.s-rssFeedDatasets',
     border : false,
-    height : ADMIN_PANEL_HEIGHT,
-    id : ID.BOX.RSSPROJECT,
     layout : 'fit',
     
     extend : 'sitools.admin.rssFeed.RssFeedCrud',
@@ -38,7 +36,9 @@ Ext.define('sitools.admin.datasets.RssFeedDataset', {
         Ext.apply(this, {
             url : loadUrl.get('APP_URL') + loadUrl.get('APP_DATASETS_URL'),
             label : i18n.get("label.selectDatasets"),
-            urlRef : loadUrl.get('APP_FEEDS_URL')
+            urlRef : loadUrl.get('APP_FEEDS_URL'),
+            height : ADMIN_PANEL_HEIGHT,
+            id : ID.BOX.RSSPROJECT
         });        
         this.callParent(arguments);
     }

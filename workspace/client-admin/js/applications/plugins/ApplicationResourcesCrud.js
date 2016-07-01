@@ -18,17 +18,15 @@
 ***************************************/
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, loadUrl, ADMIN_PANEL_HEIGHT*/
 Ext.namespace('sitools.admin.applications.plugins');
-
 /**
  * @class sitools.admin.applications.plugins.ApplicationResourcesCrud
  * @extends Ext.Panel
  * @requires sitools.admin.resourcesPlugins.ResourcesPluginsCrud
  */
-Ext.define('sitools.admin.applications.plugins.ApplicationResourcesCrud', { 
+Ext.define('sitools.admin.applications.plugins.ApplicationResourcesCrud',{ 
     extend : 'sitools.admin.resourcesPlugins.ResourcesPluginsCrud', 
     alias : 'widget.s-application_resources',
     border : false,
-    height : ADMIN_PANEL_HEIGHT,    
     layout : 'fit',
 
     initComponent : function () {
@@ -37,7 +35,8 @@ Ext.define('sitools.admin.applications.plugins.ApplicationResourcesCrud', {
             urlParentsParams : '?customizable=true',
             resourcesUrlPart : loadUrl.get('APP_RESOURCES_URL'),
             urlResources : loadUrl.get('APP_URL') + loadUrl.get('APP_PLUGINS_RESOURCES_URL') + '/classes',
-            parentType : "application"            
+            parentType : "application",
+            height : ADMIN_PANEL_HEIGHT
         });
         this.callParent(arguments);
     }
