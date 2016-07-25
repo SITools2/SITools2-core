@@ -30,8 +30,7 @@ Ext.define('sitools.admin.fileEditor.CssEditorCrud', {
     extend : 'Ext.grid.Panel',
     alias : 'widget.s-cssEditor',
     border : false,
-    height : ADMIN_PANEL_HEIGHT,
-    id : ID.BOX.FILEEDITORCSS,
+    
     selModel : Ext.create('Ext.selection.RowModel',{
         mode : 'SINGLE'
     }),
@@ -46,6 +45,9 @@ Ext.define('sitools.admin.fileEditor.CssEditorCrud', {
     initComponent : function () {
         
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_ADMINISTRATOR_URL');
+        
+        this.height = ADMIN_PANEL_HEIGHT;
+        this.id = ID.BOX.FILEEDITORCSS;
 
         this.store = Ext.create("Ext.data.JsonStore", {
             pageSize : this.pageSize,

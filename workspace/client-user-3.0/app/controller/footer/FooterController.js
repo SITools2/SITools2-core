@@ -39,25 +39,12 @@ Ext.define("sitools.user.controller.footer.FooterController", {
     
     statics : {
         showFooterLink : function (url, linkName) {
-//            var windowConfig = {
-//                title : i18n.get(linkName),
-//                id : linkName,
-//                iconCls : "version"
-//            };
-//
-//            var jsObj = Ext.ux.ManagedIFrame.Panel;
-//            var componentCfg = {
-//                defaults : {
-//                    padding : 10
-//                },
-//                layout : 'fit',
-//                region : 'center',
-//                defaultSrc : url
-//            };
-//
-//            SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, jsObj);
-            
-            alert("todo open window with link " + url + " with name : " + linkName);
+            var nameIframe = (!Ext.isEmpty(i18n.get(linkName))) ? i18n.get(linkName) : linkName;
+
+            sitools.user.utils.DataviewUtils.showDisplayableUrl(url, true, {
+                name : nameIframe,
+                title : nameIframe
+            });
         }
     },
 

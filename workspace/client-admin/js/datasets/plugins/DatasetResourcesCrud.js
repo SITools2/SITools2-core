@@ -32,7 +32,6 @@ Ext.define('sitools.admin.datasets.plugins.DatasetResourcesCrud', {
     extend : 'Ext.Panel',
     alias : 'widget.s-dataset_resources',
     border : false,
-    height : ADMIN_PANEL_HEIGHT,    
     layout : 'fit',
     
     requires : ['sitools.admin.resourcesPlugins.ResourcesPluginsCrud'],
@@ -43,7 +42,8 @@ Ext.define('sitools.admin.datasets.plugins.DatasetResourcesCrud', {
             resourcesUrlPart : loadUrl.get('APP_RESOURCES_URL'),
             urlResources : loadUrl.get('APP_URL') + loadUrl.get('APP_PLUGINS_RESOURCES_URL') + '/classes',
             parentType : "dataset",
-            appClassName : "fr.cnes.sitools.dataset.DataSetApplication"
+            appClassName : "fr.cnes.sitools.dataset.DataSetApplication",
+            height : ADMIN_PANEL_HEIGHT
         });
 
         this.items = [ resourcePlugindataset ];

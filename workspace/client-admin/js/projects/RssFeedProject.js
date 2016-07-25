@@ -23,17 +23,16 @@ Ext.namespace('sitools.admin.projects');
 Ext.define('sitools.admin.projects.RssFeedProject', { 
 	alias : 'widget.s-rssFeedProjects',
     border : false,
-    height : ADMIN_PANEL_HEIGHT,
-    id : ID.BOX.RSSPROJECT,
     layout : 'fit',
-    
     extend : 'sitools.admin.rssFeed.RssFeedCrud',
 
     constructor : function () {
         Ext.apply(this, {
             url : loadUrl.get('APP_URL') + loadUrl.get('APP_PROJECTS_URL'),
             label : i18n.get("label.selectProject"),
-            urlRef : loadUrl.get('APP_FEEDS_URL')
+            urlRef : loadUrl.get('APP_FEEDS_URL'),
+            height : ADMIN_PANEL_HEIGHT,
+            id : ID.BOX.RSSPROJECT
         });
         
         this.callParent(arguments);

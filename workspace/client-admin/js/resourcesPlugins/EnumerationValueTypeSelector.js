@@ -42,7 +42,6 @@ Ext.define('sitools.admin.resourcesPlugins.EnumerationValueTypeSelector', {
     pageSize : ADMIN_PANEL_NB_ELEMENTS,
 	editable : false,
     layout : 'fit',
-	
     initComponent : function () {
         this.title = i18n.get('title.select' + this.type);
         
@@ -78,13 +77,14 @@ Ext.define('sitools.admin.resourcesPlugins.EnumerationValueTypeSelector', {
             };
         
         if (this.editable) {
+        	if (!column.editor) {
 			Ext.apply(column, {
                 editor : {
-                    xtype : 'textfield',
-		            disabled : !this.editable
-                }
+                	xtype : 'textfield',
+		        	disabled : !this.editable
+                 }
 			});
-        }
+        }}
         
         var tbar = {
             xtype : 'sitools.public.widget.grid.GridSorterToolbar',
@@ -97,12 +97,14 @@ Ext.define('sitools.admin.resourcesPlugins.EnumerationValueTypeSelector', {
                 icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_create.png',
                 handler : this.onAddValue,
                 xtype : 's-menuButton'
-            }, {
-                text : i18n.get('label.modify'),
-                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_edit.png',
-                handler : this.onModifyValue,
-                xtype : 's-menuButton'
-            }, {
+            }, 
+//            {
+//                text : i18n.get('label.modify'),
+//                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_edit.png',
+//                handler : this.onModifyValue,
+//                xtype : 's-menuButton'
+//            }, 
+            {
                 text : i18n.get('label.delete'),
                 icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_delete.png',
                 handler : this.onDeleteValue,
@@ -125,7 +127,12 @@ Ext.define('sitools.admin.resourcesPlugins.EnumerationValueTypeSelector', {
             listeners : {
 				scope : this, 
 				viewready : this.showSelectedRecords
-            }
+            },
+            plugins: [
+                      Ext.create('Ext.grid.plugin.CellEditing', {
+                          clicksToEdit: 2
+                     })        
+            ]
         });
 
         this.items = [{
@@ -211,11 +218,22 @@ Ext.define('sitools.admin.resourcesPlugins.EnumerationValueTypeSelector', {
         this.gridSelect.getView().refresh();
     },
     
+    
+    /**
+     * Add a new line to the enumeration
+     */
+    onModifyValue : function () {
+    	//var recs = this.gridSelect.getSelectionModel().getSelection();
+    	
+        this.gridSelect.getView().refresh();
+    },
+    
+    
     /**
      * Delete a value enumeration
      */
     onDeleteValue : function () {
-		var recs = this.gridSelect.getSelectionModel().getSelections();
+		var recs = this.gridSelect.getSelectionModel().getSelection();
 		if (Ext.isEmpty(recs)) {
 			return;
 		}

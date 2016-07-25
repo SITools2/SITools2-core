@@ -353,7 +353,8 @@ Ext.define('sitools.user.component.datasets.services.AddToCartService', {
 				dataToExport : dataToExport,
 				nbRecords : this.dataview.getNbRowsSelected(),
 				orderDate : orderDateStr,
-				colModel : colModel
+				colModel : colModel,
+                primaryKey : primaryKey
 		};
 		
 		var sortersAndFilters = this.createSortersAndFilters(this.dataview);

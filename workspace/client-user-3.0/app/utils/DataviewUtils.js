@@ -425,7 +425,7 @@ Ext.define('sitools.user.utils.DataviewUtils', {
         
         if (isDisplayable) {
             
-            var windowConfig;
+            var windowConfig = {};
             
             // in case customConfig comes from HTML link (content Editor)
             if (typeof customConfig == "string") {

@@ -270,10 +270,10 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginProp', {
             }],
             listeners : {
                 scope : this,
-                celldblclick : function (view, td, cellIndex, storeRecord, tr, rowIndex) {
+                cellclick : function (view, td, cellIndex, storeRecord, tr, rowIndex) {
                     var rec = storeRecord.data;
                     
-                    if (this.gridFieldMapping.columns[cellIndex].text == "Value") {
+                    if (this.gridFieldMapping.columns[cellIndex].text.startsWith("Value")) {
                         if (rec.valueType == "xs:dictionary") {
                             var selectDictionaryWin = new sitools.admin.dictionary.SelectDictionary({
                                 field : "value",
@@ -501,7 +501,7 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginProp', {
         if (this.action == "create") {
             rec = this.getLastSelectedRecord(this.gridapplicationPlugin);
             if (!rec) {
-                return popupMessage("", i18n.get('warning.noselection'), null, 'x-info');
+                popupMessage("", i18n.get('warning.noselection'), null, 'x-info');
                 return false;
             }
             jsonReturn.name = rec.data.name;

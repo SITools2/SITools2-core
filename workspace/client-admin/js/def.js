@@ -17,7 +17,6 @@
  * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
  ***************************************/
 /*global Ext, sitools, ID, i18n, document, Digest, window*/
-
 Ext.define("sitools.admin.def", {
     singleton: true,
     require: ["sitools.public.utils.LoginDef"],

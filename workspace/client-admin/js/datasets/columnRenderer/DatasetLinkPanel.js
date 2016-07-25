@@ -85,7 +85,8 @@ Ext.define('sitools.admin.datasets.columnRenderer.DatasetLinkPanel', {
         });
         
         var storeDatasets = Ext.create('Ext.data.JsonStore', {
-            autoLoad : true, 
+            autoLoad : true,
+            pageSize: 10,
             proxy : {
                 type : 'ajax',
                 url : this.urlDatasets,
@@ -103,7 +104,7 @@ Ext.define('sitools.admin.datasets.columnRenderer.DatasetLinkPanel', {
                         var index = this.comboDatasets.getStore().find("sitoolsAttachementForUsers", datasetLinkUrl);
                         if (index != -1) {
                             this.comboDatasets.setValue(datasetLinkUrl);
-                            var record = this.comboDatasets.getStore().getAt(index);            
+                            var record = this.comboDatasets.getStore().getAt(index);
                             this.comboDatasets.fireEvent("select", this.comboDatasets, record, index);
                         }
                     }
@@ -112,6 +113,7 @@ Ext.define('sitools.admin.datasets.columnRenderer.DatasetLinkPanel', {
         });
         
         this.comboDatasets = Ext.create('Ext.form.ComboBox', {
+            width: 330,
             store : storeDatasets,
             name : "comboDatasets",
             displayField : 'name',
@@ -119,14 +121,37 @@ Ext.define('sitools.admin.datasets.columnRenderer.DatasetLinkPanel', {
             typeAhead : true,
             queryMode : 'local',
             forceSelection : true,
-            triggerAction : 'all',
+            triggerAction : 'query',
+            minChars: 0,
             emptyText : i18n.get("label.selectADataset"),
             selectOnFocus : true,
-            anchor : "100%",
+            //anchor : "200%",
             fieldLabel : i18n.get('label.dataset'),
+            labelWidth : 60,
             allowBlank : false,
+            pageSize: true,
             listeners : {
                 scope : this,
+                render: function (combo) {
+                    combo.triggerEl.on('click', function () {
+                        if (!Ext.isEmpty(combo.getValue())) {
+                            var record = combo.getStore().getById(combo.getValue());
+                            if (!Ext.isEmpty(combo.tmpValue)) {
+                                if (combo.tmpValue.get('id') != combo.getValue()) {
+                                    combo.tmpValue = record;
+                                }
+                            } else {
+                                combo.tmpValue = record;
+                            }
+                        }
+                        combo.clearValue();
+                    }, combo);
+                },
+                blur: function (combo) {
+                    if (Ext.isEmpty(combo.getValue())) {
+                        combo.setValue(combo.tmpValue);
+                    }
+                },
                 select : function (combo, recs, index) {
                     var id;
                     if (Ext.isArray(recs)) {

@@ -71,11 +71,11 @@ Ext.define('sitools.user.view.component.personal.DiskSpaceView', {
             tooltip : i18n.get('label.downloadFile'),
             scope : this,
             handler : function (button) {
-                var record = view.tree.getSelectionModel().getSelection()[0];
+                var record = this.tree.getSelectionModel().getSelection()[0];
                 
                 if (!Ext.isEmpty(record)) {
                     if (record.isLeaf()) {
-                        sitools.user.component.dataviews.dataviewUtils.downloadFile(record.get('url'));
+                        sitools.user.utils.DataviewUtils.downloadFile(record.get('url'));
                     }
                 } else {
                     Ext.Msg.alert(i18n.get('label.warning'), i18n.get('label.noneNodeSelected'));
@@ -353,8 +353,8 @@ Ext.define('sitools.user.view.component.personal.DiskSpaceView', {
             modal : true,
             iconCls : 'dataDetail'
         };
-    
-        sitools.user.component.dataviews.dataviewUtils.showDisplayableUrl(panel.frameEl.src, true, customConfig);
+
+        sitools.user.utils.DataviewUtils.showDisplayableUrl(panel.frameEl.src, true, customConfig);
     },
     
     reloadNode : function (node) {
