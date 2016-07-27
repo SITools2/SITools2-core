@@ -153,6 +153,10 @@ Ext.define('sitools.admin.datasets.GridFieldSetup', {
             displayField : 'display',
             emptyText : " ",
             listConfig: {
+            	// Custom rendering template for each item
+                getInnerTpl: function() {
+                    return '<div title="{tooltip}">{value}</div>';
+                },
                 listeners: {
                     scope : this,
                     beforeitemclick : function (list, record, item) {
@@ -178,7 +182,8 @@ Ext.define('sitools.admin.datasets.GridFieldSetup', {
                             scope : this
                         });
                         colWindow.show();
-                    }
+                    },
+                    
                 }
             },
             listeners : {
@@ -305,10 +310,11 @@ Ext.define('sitools.admin.datasets.GridFieldSetup', {
                 width : 70,
                 editor : comboOrderBy,
                 helpUrl : loadUrl.get('APP_URL') + "/client-admin/res/help/" + LOCALE + "/dataset/orderBy.html"
-            }, primaryKey, {
+            }, 
+            primaryKey, {
                 header : i18n.get('headers.previewUrl'),
                 dataIndex : 'columnRendererCategory',
-                width : 120,
+                width : 150,
                 editor : comboColumnRenderer,
                 helpUrl : loadUrl.get('APP_URL') + "/client-admin/res/help/" + LOCALE + "/dataset/previewUrl.html"
             }, {
