@@ -60,6 +60,14 @@ public enum BehaviorEnum {
   /**
    * Column can not be displayed to the client
    */
-  noClientAccess
+  noClientAccess,
+  /**
+   * Column is a datasetIconLinkColumn
+   */
+  datasetLinkColumn,
+  /**
+   * Column is a datasetIconLinkColumnIcon
+   */
+  datasetLinkColumnIcon
 
 }
