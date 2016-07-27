@@ -433,7 +433,7 @@ Ext.define('sitools.admin.converters.ConvertersCrud', {
             success: function (ret) {
                 if (showResponse(ret)) {
                     this.getStore().reload();
-                    Ext.Msg.alert(i18n.get("label.information"), i18n.get("label.restartDsNeededConvDelete"));
+                    Ext.Msg.alert(i18n.get("label.information"), i18n.get("label.restartDsNeededConv"));
                 }
             }
         });
@@ -468,7 +468,7 @@ Ext.define('sitools.admin.converters.ConvertersCrud', {
                 if (showResponse(ret)) {
                     this.getStore().removeAll();
                     this.getStore().reload();
-                    Ext.Msg.alert(i18n.get("label.information"), i18n.get("label.restartDsNeededConvDelete"));
+                    Ext.Msg.alert(i18n.get("label.information"), i18n.get("label.restartDsNeededConv"));
                 }
             }
         });
@@ -485,6 +485,7 @@ Ext.define('sitools.admin.converters.ConvertersCrud', {
             scope: this,
             success: function (ret) {
                 if (showResponse(ret)) {
+                    Ext.Msg.alert(i18n.get("label.information"), i18n.get("label.restartDsNeededConv"));
                     this.store.reload();
                 }
             },
@@ -504,6 +505,7 @@ Ext.define('sitools.admin.converters.ConvertersCrud', {
             scope: this,
             success: function (ret) {
                 if (showResponse(ret)) {
+                    Ext.Msg.alert(i18n.get("label.information"), i18n.get("label.restartDsNeededConv"));
                     this.store.reload();
                 }
             },

@@ -453,7 +453,7 @@ Ext.define('sitools.admin.filters.FiltersCrud', {
             success: function (ret) {
                 if (showResponse(ret)) {
                     this.getStore().reload();
-                    Ext.Msg.alert(i18n.get("label.information"), i18n.get("label.restartDsNeededFilterDelete"));
+                    Ext.Msg.alert(i18n.get("label.information"), i18n.get("label.restartDsNeededFilter"));
                 }
 
             }
@@ -490,7 +490,7 @@ Ext.define('sitools.admin.filters.FiltersCrud', {
                 if (showResponse(ret)) {
                     this.getStore().removeAll();
                     this.getStore().reload();
-                    Ext.Msg.alert(i18n.get("label.information"), i18n.get("label.restartDsNeededFilterDelete"));
+                    Ext.Msg.alert(i18n.get("label.information"), i18n.get("label.restartDsNeededFilter"));
                 }
 
             }
@@ -508,6 +508,7 @@ Ext.define('sitools.admin.filters.FiltersCrud', {
             scope: this,
             success: function (ret) {
                 if (showResponse(ret)) {
+                    Ext.Msg.alert(i18n.get("label.information"), i18n.get("label.restartDsNeededFilter"));
                     this.store.reload();
                 }
             },
@@ -527,6 +528,7 @@ Ext.define('sitools.admin.filters.FiltersCrud', {
             scope: this,
             success: function (ret) {
                 if (showResponse(ret)) {
+                    Ext.Msg.alert(i18n.get("label.information"), i18n.get("label.restartDsNeededFilter"));
                     this.store.reload();
                 }
             },

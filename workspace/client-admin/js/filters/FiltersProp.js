@@ -498,7 +498,7 @@ Ext.define('sitools.admin.filters.FiltersProp', {
                     return false;
                 }
                 popupMessage(i18n.get('label.information'), i18n.get('label.filterSaved'), null, 'x-info');
-
+                Ext.Msg.alert(i18n.get("label.information"), i18n.get("label.restartDsNeededFilter"));
                 this.parent.getStore().reload();                
                 this.close();
                 

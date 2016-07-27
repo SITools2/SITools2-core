@@ -512,7 +512,7 @@ Ext.define('sitools.admin.converters.ConvertersProp', {
                     return false;
                 }
                 popupMessage(i18n.get('label.information'), i18n.get('label.converterSaved'), null, 'x-info');
-
+                Ext.Msg.alert(i18n.get("label.information"), i18n.get("label.restartDsNeededConv"));
                 this.parent.getStore().reload();
                 this.close();
                 
