@@ -77,12 +77,12 @@ Ext.define('sitools.admin.datasets.columnRenderer.ImagePanel', {
             break;
         }
 
-        sitools.admin.datasets.columnRenderer.ImagePanel.superclass.initComponent.call(this);
+        this.callParent(arguments);
 
     },
 
     afterRender : function () {
-        sitools.admin.datasets.columnRenderer.ImagePanel.superclass.afterRender.apply(this, arguments);
+    	this.callParent(arguments);
         if (!Ext.isEmpty(this.columnRenderer) && this.columnRenderer.behavior == this.behaviorType) {
             switch (this.behaviorType) {
             case ColumnRendererEnum.IMAGE_NO_THUMB:

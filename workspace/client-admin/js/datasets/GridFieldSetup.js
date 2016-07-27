@@ -136,6 +136,7 @@ Ext.define('sitools.admin.datasets.GridFieldSetup', {
                     [ 'Image', 'Image', i18n.get("label.image.tooltip") ], 
                     [ 'URL', 'URL', i18n.get("label.url.tooltip") ],
                     [ 'DataSetLink', 'DataSetLink', i18n.get("label.datasetlink.tooltip") ],
+                    [ 'DataSetLinkColumn', 'DataSetLinkColumn', i18n.get("label.datasetlinkColumn.tooltip") ],
                     [ 'Other', 'Other', i18n.get("label.other.tooltip") ]]                
         });
 

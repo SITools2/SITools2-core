@@ -81,6 +81,19 @@ Ext.define('sitools.public.widget.datasets.columnRenderer.BehaviorEnum', {
 	 * @type String
 	 */
 	NO_CLIENT_ACCESS : "noClientAccess",
+	
+	/**
+	 * DATASET_LINK_COLUMN constant
+	 * @static
+	 * @type String
+	 */
+	DATASET_LINK_COLUMN : "datasetLinkColumn" ,
+	/**
+	 * DATASET_LINK_COLUMN_ICON constant
+	 * @static
+	 * @type String
+	 */
+	DATASET_LINK_COLUMN_ICON : "datasetLinkColumnIcon",
     
     
     getColumnRendererCategoryFromBehavior : function (behavior) {
@@ -100,6 +113,10 @@ Ext.define('sitools.public.widget.datasets.columnRenderer.BehaviorEnum', {
         case ColumnRendererEnum.DATASET_ICON_LINK:
             category = "DataSetLink";
             break;
+        case ColumnRendererEnum.DATASET_LINK_COLUMN:
+        case ColumnRendererEnum.DATASET_LINK_COLUMN_ICON:
+        	category = "DataSetLinkColumn";
+        	break;
         case ColumnRendererEnum.NO_CLIENT_ACCESS:
             category = "Other";
             break;

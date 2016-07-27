@@ -46,7 +46,9 @@ Ext.define('sitools.admin.datasets.ColumnRendererWin', {
 
     requires : ['sitools.admin.datasets.columnRenderer.UrlPanel',
                 'sitools.admin.datasets.columnRenderer.ImagePanel',
-                'sitools.admin.datasets.columnRenderer.DatasetLinkPanel'],
+                'sitools.admin.datasets.columnRenderer.DatasetLinkPanel',
+                'sitools.admin.datasets.columnRenderer.DatasetLinkColumnPanel'
+                ],
     
     initComponent : function () {
         
@@ -68,6 +70,10 @@ Ext.define('sitools.admin.datasets.ColumnRendererWin', {
 		case "DataSetLink" :
             behaviorData = [[i18n.get("label.dataset_link"), ColumnRendererEnum.DATASET_LINK],
 						[i18n.get("label.dataset_icon_link"), ColumnRendererEnum.DATASET_ICON_LINK]];
+			break;
+		case "DataSetLinkColumn" :
+			behaviorData = [[i18n.get("label.dataset_link_column"), ColumnRendererEnum.DATASET_LINK_COLUMN],
+			                [i18n.get("label.dataset_link_column_icon"), ColumnRendererEnum.DATASET_LINK_COLUMN_ICON]];
 			break;
         case "Other" :
             behaviorData = [[i18n.get("label.noClientAccess"), ColumnRendererEnum.NO_CLIENT_ACCESS]];
@@ -130,6 +136,14 @@ Ext.define('sitools.admin.datasets.ColumnRendererWin', {
                             columnRenderer : columnRenderer
                         });                     
 				        break;
+				    case "DataSetLinkColumn" :
+				    	this.panelDetails = Ext.create('sitools.admin.datasets.columnRenderer.DatasetLinkColumnPanel', {
+				    		behaviorType : value,
+				    		title : i18n.get("label.behaviorDetails"),
+				    		columnRenderer : columnRenderer,
+				    		datasetColumnStore : this.datasetColumnStore
+				    	});                     
+				    	break;
 				    default :
 				        break;
 				    }
