@@ -246,6 +246,8 @@ function onClickOption(urloption) {
             'Authorization': 'none'
         },
         method: "GET",
+        //Do not display error page
+        doNotHandleRequestexception : true,
         success: function (response) {
             if (response.status == 200) {
                 var OpenWindow = window.open(urltunnel);
