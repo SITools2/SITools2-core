@@ -642,5 +642,20 @@ Ext.define('sitools.user.utils.DataviewUtils', {
     
     copyImageToClipboard : function CopyToClip(img) {
        
+    },
+    
+    calcPrimaryKey : function (dataset) {
+        var listeColonnes = dataset.columnModel;
+        var i = 0, primaryKey = "";
+        if (!Ext.isEmpty(listeColonnes)) {
+            Ext.each(listeColonnes, function (item, index, totalItems) {
+                if (!Ext.isEmpty(item.primaryKey)) {
+                    if (item.primaryKey) {
+                        primaryKey = item.columnAlias;
+                    }
+                }
+            }, this);
+        }
+        return primaryKey;
     }
 });

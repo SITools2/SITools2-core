@@ -136,18 +136,7 @@ Ext.define('sitools.user.component.datasets.dataviews.CartoView', {
      * @returns {String} The columnAlias of the primaryKey
      */
     calcPrimaryKey: function (dataset) {
-        var listeColonnes = dataset.columnModel;
-        var i = 0, primaryKey = "";
-        if (!Ext.isEmpty(listeColonnes)) {
-            Ext.each(listeColonnes, function (item, index, totalItems) {
-                if (!Ext.isEmpty(item.primaryKey)) {
-                    if (item.primaryKey) {
-                        primaryKey = item.columnAlias;
-                    }
-                }
-            }, this);
-        }
-        return primaryKey;
+        return sitools.user.utils.DataviewUtils.calcPrimaryKey(dataset);
     },
 
     /**
