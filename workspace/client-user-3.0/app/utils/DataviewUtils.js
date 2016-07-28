@@ -130,6 +130,7 @@ Ext.define('sitools.user.utils.DataviewUtils', {
                 case ColumnRendererEnum.URL_EXT_DESKTOP :
                
                 case ColumnRendererEnum.DATASET_ICON_LINK :
+                case ColumnRendererEnum.DATASET_LINK_COLUMN_ICON :
                     if (!Ext.isEmpty(columnRenderer.linkText)) {
                         tplString += Ext.String.format("<tpl if=\"this.isNotEmpty({0})\">", col.columnAlias);              
                         value = Ext.String.format(html, "{" + col.columnAlias + "}");
@@ -232,10 +233,12 @@ Ext.define('sitools.user.utils.DataviewUtils', {
                 break;
                 
             case ColumnRendererEnum.DATASET_LINK :
+            case ColumnRendererEnum.DATASET_LINK_COLUMN :
                 html = "<span data-qtip='{0}' class='link featureType' sitools:column='"+item.columnAlias+"'>{0}</span>";
                 break;
                 
             case ColumnRendererEnum.DATASET_ICON_LINK :
+            case ColumnRendererEnum.DATASET_LINK_COLUMN_ICON :
                 if (!Ext.isEmpty(columnRenderer.image)) {
                     imageUrl = columnRenderer.image.url;                    
                 }
@@ -315,6 +318,57 @@ Ext.define('sitools.user.utils.DataviewUtils', {
             case ColumnRendererEnum.DATASET_ICON_LINK :
                 sitools.user.utils.DataviewUtils.showDetailsData(value, columnRenderer.columnAlias, columnRenderer.datasetLinkUrl); 
                 break;
+            case ColumnRendererEnum.DATASET_LINK_COLUMN :
+            case ColumnRendererEnum.DATASET_LINK_COLUMN_ICON :
+            	var datasetLinkColumn = record.get(columnRenderer.columnAlias);
+            	if(Ext.isEmpty(datasetLinkColumn)) {
+            		Ext.Msg.alert(i18n.get('label.error'), Ext.String.format(i18n.get("label.errorEmptyDatasetLinkColumnValue"), columnRenderer.columnAlias ));
+            		return;
+            	}
+            	
+            	var strings = datasetLinkColumn.split("||");
+            	var datasetName = strings[0]; 
+            	var columnName = strings[1];
+            	
+            	var project = Ext.getStore('ProjectStore').getProject();
+            	
+            	Ext.Ajax.request({
+                    url : project.get('sitoolsAttachementForUsers') + '/datasets',
+                    method : 'GET',
+                    scope : this,
+                    success : function (response) {
+                    	var datasets = Ext.decode(response.responseText).data;
+                    	var ds;
+                    	Ext.each(datasets, function(dataset, index) {
+                    		if(dataset.name == datasetName) {
+                    			ds = dataset;
+                    			return;
+                    		}
+                     	});
+                    	
+                    	if(Ext.isEmpty(ds)) {
+                    		Ext.Msg.alert(i18n.get('label.error'), Ext.String.format(i18n.get("label.errorCannotFindDataset"), datasetName));
+                    	}
+                    	
+                    	if(Ext.isEmpty(columnName)) {
+                			// Lets find the primary key for the target dataset if not configured
+                    		Ext.Ajax.request({
+                                url : ds.url,
+                                method : 'GET',
+                                scope : this,
+                                success : function (response) {
+                                	var dataset = Ext.decode(response.responseText).dataset;
+                                	var columnName = sitools.user.utils.DataviewUtils.calcPrimaryKey(dataset);
+                                	sitools.user.utils.DataviewUtils.showDetailsData(value, columnName, ds.url);
+                                }
+                    		});
+                    	}
+                		else {
+                			sitools.user.utils.DataviewUtils.showDetailsData(value, columnName, ds.url); 
+                		}
+                    }
+                });
+            	break;
             default : 
                 break;
             }
