@@ -16,7 +16,6 @@ Ext.define('sitools.clientportal.Application', {
         'sitools.public.utils.loadUrl',
         'sitools.public.utils.i18n',
         'sitools.public.utils.sql2ext',
-        'sitools.public.utils.console',
         'sitools.public.utils.LoginUtils',
         'sitools.public.utils.Logout',
         'sitools.public.utils.Locale',

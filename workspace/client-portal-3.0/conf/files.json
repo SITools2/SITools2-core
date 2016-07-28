@@ -4,7 +4,6 @@
   "../client-public-3.0/js/utils/def.js",
   "../client-public-3.0/js/utils/loadUrl.js",
   "../client-public-3.0/js/utils/sql2ext.js",
-  "../client-public-3.0/js/utils/console.js",
   "../client-public-3.0/js/utils/Logout.js",
   "../client-public-3.0/js/utils/Locale.js",
   "../client-public-3.0/js/utils/UserStorage.js",

@@ -101,7 +101,9 @@
 	<script type="text/javascript" src="dist/app.withPlugins.min.js"></script>	
 END PROD -->
 
+	<!--
 	<script type="text/javascript" data-main="${appUrl}/client-extension/js/controller/modules/mizarModule/sitoolsMizarMain" src="${appUrl}/client-extension/resources/libs/mizar/src/mizar/js/require.min.js"></script>
+	-->
 
 	<!-- Opensearch list -->
 	<#list appDsOsDTOs as appDsOsDTO>
