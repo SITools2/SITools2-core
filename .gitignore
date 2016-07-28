@@ -71,6 +71,7 @@ tmp/
 local.properties
 .settings/
 .loadpath
+.recommanders
 
 # Eclipse Core
 .project
