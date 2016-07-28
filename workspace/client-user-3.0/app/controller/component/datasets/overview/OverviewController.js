@@ -91,6 +91,13 @@ Ext.define('sitools.user.controller.component.datasets.overview.OverviewControll
 
         overviewView.down("splitter#eastSplitter").setVisible(false);
         overviewView.down("splitter#westSplitter").setVisible(true);
+        
+        
+//        var form = forms[0];
+//        overviewView.down("container#westPanel").setWidth(form.width + 25);
+        
+        
+        
     },
 
     displayDatasetWithoutForm: function (overviewView) {
