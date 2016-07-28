@@ -1,21 +1,21 @@
-    /*******************************************************************************
- * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
- *
- * This file is part of SITools2.
- *
- * SITools2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * SITools2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
+/*******************************************************************************
+* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+*
+* This file is part of SITools2.
+*
+* SITools2 is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SITools2 is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
+******************************************************************************/
 package fr.cnes.sitools.project;
 
 import java.util.ArrayList;
@@ -69,8 +69,7 @@ public final class ProjectListDatasetsResource extends AbstractProjectResource {
     ArrayList<Resource> dsListOutput = new ArrayList<Resource>();
     AppRegistryApplication appManager = ((SitoolsApplication) getApplication()).getSettings().getAppRegistry();
     if (dsList != null) {
-      for (Iterator<Resource> iterator = dsList.iterator(); iterator.hasNext();) {
-        Resource ds = iterator.next();
+      for (Resource ds : dsList) {
         // pour l'instant on ne renvoi que les datasets authorisés, à voir s'il
         // faut aussi filtrer sur le statut
         // retrouver l'objet application
@@ -79,16 +78,16 @@ public final class ProjectListDatasetsResource extends AbstractProjectResource {
 
         if (authorized || (ds.getVisible() != null && ds.getVisible())) {
           ds.setAuthorized(Boolean.valueOf(authorized).toString());
-          dsListOutput.add(ds);          
+          dsListOutput.add(ds);
         }
       }
 
     }
     Response response = new Response(true, dsListOutput, Resource.class, "datasets");
     return getRepresentation(response, variant);
-    
+
   }
-  
+
   @Override
   public void describeGet(MethodInfo info) {
     info.setDocumentation("Method to retrieve the list of datasets associated to the project.");
