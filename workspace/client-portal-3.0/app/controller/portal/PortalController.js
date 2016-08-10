@@ -41,7 +41,7 @@ Ext.define('sitools.clientportal.controller.portal.PortalController', {
     preferences : null,
     autoChainAjaxRequest : true,
     
-    views : ['sitools.clientportal.view.portal.PortalView'],
+    views : ['sitools.clientportal.view.portal.PortalView', 'sitools.clientportal.view.portal.PortalContact'],
     
     init : function () {
 
@@ -57,10 +57,86 @@ Ext.define('sitools.clientportal.controller.portal.PortalController', {
                     var callback = Ext.Function.bind(this.onEditProfile, this, [button.identifier, button.edit]);
                     sitools.public.utils.LoginUtils.editProfile(callback);
                 }
+            },
+            'button[name="contactSubmitBtn"]' : {
+                click : this.checkContactForm
             }
         });
     },
     
+    checkContactForm: function (button, event) {
+        var window = button.up('window');
+        var formpanel = window.down('form');
+        var form = formpanel.getForm();
+        if (form.isValid()) {
+            var cook = Ext.util.Cookies.get('captcha');
+            var capt = form.findField('captcha').getValue();
+            window.getEl().mask();
+            window.down('statusbar').showBusy();
+            this.sendContactForm(formpanel);
+        } else {
+            window.down('statusbar').setStatus({
+                text : i18n.get('warning.checkForm'),
+                iconCls: 'x-status-error'
+            });
+        }
+    },
+    
+    sendContactForm: function (formpanel) {
+        var window = formpanel.up('window');
+        var form = formpanel.getForm();
+        contact = {};
+        contact.name = form.findField('name').getRawValue();
+        contact.email = form.findField('email').getRawValue();
+        contact.body = form.findField('message').getRawValue();
+        
+        window.getEl().mask();
+        window.down('statusbar').showBusy();
+        
+        var cook = Ext.util.Cookies.get('captcha');
+        var capt = form.findField('captcha').getValue();
+        
+        Ext.Ajax.request({
+            scope: window,
+            url: loadUrl.get('APP_URL') + '/contact',
+            method: 'PUT',
+            params: {
+                "captcha.id" : cook,
+                "captcha.key" : capt
+            },
+            jsonData: Ext.encode(contact),
+            success: function(response) {
+                var window = this;
+                window.close();
+                popupMessage({
+                    iconCls : 'x-icon-information',
+                    title : i18n.get('label.contact'),
+                    html : i18n.get('label.contact.send.success'),
+                    autoDestroy : true,
+                    hideDelay : 1000
+                });
+                //Ext.Msg.alert(i18n.get('label.contact'), i18n.get('label.contact.send.success'));
+            },
+            failure: function(response) {
+                var window = this;
+                var txt;
+                if (response.status == 200) {
+                    var ret = Ext.decode(response.responseText).message;
+                    txt = i18n.get('msg.error') + ': ' + ret;
+                } else if (response.status == 403){
+                    txt = i18n.get('msg.wrongCaptcha');                 
+                } else {
+                    txt = i18n.get('warning.serverError') + ': ' + response.statusText;
+                }
+                window.getEl().unmask();
+                window.down('statusbar').setStatus({
+                    text : txt,
+                    iconCls: 'x-status-error'
+                });
+                window.reloadCaptcha();
+            }
+        });
+    },
     openProject : function (dataView, record, item, index, node, e) {
         // get the projectId
         

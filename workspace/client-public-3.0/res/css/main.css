@@ -636,6 +636,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	background-size : 15px 15px;
 }
 
+.contactIcon {
+    background-image: url(/sitools/client-user/resources/images/icons/session/contact.png) !important;
+}
+
 .x-column-header-inner {
 	text-align: center;
     padding: 3px 10px 3px 10px;

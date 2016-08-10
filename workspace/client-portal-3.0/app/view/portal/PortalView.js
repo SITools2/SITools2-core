@@ -244,19 +244,8 @@ Ext.define('sitools.clientportal.view.portal.PortalView', {
             items : [ panelFluxPortal ]
         };
 
-        var footerPanel = Ext.create('Ext.container.Container', {
-            autoScroll : false,
-            layout: 'fit',
-            items : [{
-                xtype : 'component',
-                autoEl: {
-                    tag: 'iframe',
-                    border : false,
-                    bodyBorder : false,
-                    src: loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PORTAL_URL') + "/resources/html/" + locale.getLocale() + "/footer.html"
-                }
-            }]
-        });
+        
+        var footerPanel = Ext.create('sitools.clientportal.view.portal.PortalFooter', {});
         
         Ext.create('Ext.fx.Animator', {
             target: footerPanel,
@@ -350,6 +339,7 @@ Ext.define('sitools.clientportal.view.portal.PortalView', {
             height : 70,
             margin : 10,
             autoScroll : false,
+            layout:'border',
             items : [footerPanel]
         };
         
