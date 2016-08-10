@@ -41,6 +41,7 @@ import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.exception.SitoolsException;
 import fr.cnes.sitools.common.model.Category;
+import fr.cnes.sitools.contact.ContactResource;
 import fr.cnes.sitools.login.LoginDetailsResource;
 import fr.cnes.sitools.login.LostPasswordResource;
 import fr.cnes.sitools.login.ResetPasswordResource;
@@ -157,6 +158,9 @@ public final class PublicApplication extends SitoolsApplication {
     // Captcha resource for unlock account and reset password resource
     router.attach("/captcha", CaptchaResource.class);
 
+    CaptchaFilter captchaFilterContact = new CaptchaFilter(getContext());
+    captchaFilterContact.setNext(ContactResource.class);
+    router.attach("/contact", captchaFilterContact);
     router.setDefaultMatchingMode(Template.MODE_STARTS_WITH);
 
     // TODO REMOVE REDIRECTOR AFTER DEMO
