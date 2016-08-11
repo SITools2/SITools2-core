@@ -45,6 +45,7 @@ import org.restlet.resource.Post;
 import org.restlet.resource.Put;
 import org.restlet.resource.ResourceException;
 
+import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.application.SitoolsParameterizedApplication;
 import fr.cnes.sitools.common.model.IResource;
@@ -52,6 +53,9 @@ import fr.cnes.sitools.common.model.Resource;
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
 import fr.cnes.sitools.common.model.ResourceComparator;
 import fr.cnes.sitools.common.model.Response;
+import fr.cnes.sitools.common.store.SitoolsStore;
+import fr.cnes.sitools.plugins.applications.ApplicationPluginStoreInterface;
+import fr.cnes.sitools.plugins.applications.model.ApplicationPluginModel;
 import fr.cnes.sitools.registry.model.AppRegistry;
 
 /**
@@ -277,11 +281,8 @@ public final class AppRegistryResource extends AppRegistryAbstractResource {
 
   /**
    * Unregister an application
-   * 
-   * @param representation
-   *          Representation of a resource
-   * @param variant
-   *          required Variant (if negotiated)
+   * @param representation Representation of a resource
+   * @param variant required Variant (if negotiated)
    * @return Representation
    */
   @Delete
@@ -292,6 +293,10 @@ public final class AppRegistryResource extends AppRegistryAbstractResource {
       response = new Response(false, "RESOURCE_UNKNOWN");
     }
     else {
+      ApplicationPluginModel appOutput = getPluginStore().retrieve(getResourceId());
+      if (appOutput != null) {
+        getPluginStore().delete(appOutput.getId());
+      }
       AppRegistry resourceManager = getAppRegistryApplication().getResourceManager();
       boolean updated = false;
       List<Resource> resources = resourceManager.getResources();
@@ -330,11 +335,8 @@ public final class AppRegistryResource extends AppRegistryAbstractResource {
 
   /**
    * Action on an application
-   * 
-   * @param representation
-   *          Representation of a resource
-   * @param variant
-   *          required Variant (if negotiated)
+   * @param representation Representation of a resource
+   * @param variant required Variant (if negotiated)
    * @return Representation
    */
   @Put
@@ -438,11 +440,8 @@ public final class AppRegistryResource extends AppRegistryAbstractResource {
 
   /**
    * Filters a list by query and sorts it.
-   * 
-   * @param filter
-   *          for Query
-   * @param list
-   *          source
+   * @param filter for Query
+   * @param list source
    * @return List<Resource>
    */
   private List<Resource> getList(ResourceCollectionFilter filter, List<Resource> list) {
@@ -474,11 +473,8 @@ public final class AppRegistryResource extends AppRegistryAbstractResource {
 
   /**
    * Filters a list according to the pagination
-   * 
-   * @param filter
-   *          for pagination
-   * @param result
-   *          source
+   * @param filter for pagination
+   * @param result source
    * @return ArrayList<Resource>
    */
   private List<Resource> getPage(ResourceCollectionFilter filter, List<Resource> result) {
@@ -498,11 +494,8 @@ public final class AppRegistryResource extends AppRegistryAbstractResource {
 
   /**
    * Sort the list (by default on the name)
-   * 
-   * @param result
-   *          list to be sorted
-   * @param filter
-   *          ResourceCollectionFilter with sort properties.
+   * @param result list to be sorted
+   * @param filter ResourceCollectionFilter with sort properties.
    */
   private void sort(List<Resource> result, ResourceCollectionFilter filter) {
     if ((filter != null) && (filter.getSort() != null) && !filter.getSort().equals("")) {

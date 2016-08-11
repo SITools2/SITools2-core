@@ -37,6 +37,7 @@ import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.model.Category;
 import fr.cnes.sitools.common.model.Resource;
+import fr.cnes.sitools.plugins.applications.ApplicationPluginStoreInterface;
 import fr.cnes.sitools.registry.model.AppRegistry;
 
 /**
@@ -82,6 +83,11 @@ public final class AppRegistryApplication extends SitoolsApplication {
   private ApplicationStoreInterface store = null;
 
   /**
+   * Plugin Store
+   */
+  private ApplicationPluginStoreInterface pluginStore = null;
+
+  /**
    * Application instances (not stored)
    */
   private Map<String, SitoolsApplication> applications = new ConcurrentHashMap<String, SitoolsApplication>();
@@ -98,15 +104,13 @@ public final class AppRegistryApplication extends SitoolsApplication {
 
   /**
    * Constructor
-   * 
-   * @param context
-   *          Restlet Host context
+   * @param context Restlet Host context
    */
   @SuppressWarnings("unchecked")
   public AppRegistryApplication(Context context) {
     super(context);
     this.store = (ApplicationStoreInterface) context.getAttributes().get(ContextAttributes.APP_STORE);
-
+    this.pluginStore = (ApplicationPluginStoreInterface) context.getAttributes().get(ContextAttributes.APP_PLUGIN_STORE);
     if ((store.getList() != null) && (store.getList().size() >= 1)) {
       resourceManager = store.getList().get(0);
     }
@@ -145,7 +149,6 @@ public final class AppRegistryApplication extends SitoolsApplication {
 
   /**
    * Gets the store value
-   * 
    * @return the store
    */
   public ApplicationStoreInterface getStore() {
@@ -153,8 +156,15 @@ public final class AppRegistryApplication extends SitoolsApplication {
   }
 
   /**
+   * Gets the store value
+   * @return the store
+   */
+  public ApplicationPluginStoreInterface getPluginStore() {
+    return pluginStore;
+  }
+
+  /**
    * Gets the resourceManager value
-   * 
    * @return the resourceManager
    */
   public AppRegistry getResourceManager() {
@@ -163,9 +173,7 @@ public final class AppRegistryApplication extends SitoolsApplication {
 
   /**
    * Sets the value of resourceManager
-   * 
-   * @param resourceManager
-   *          the resourceManager to set
+   * @param resourceManager the resourceManager to set
    */
   public void setResourceManager(AppRegistry resourceManager) {
     this.resourceManager = resourceManager;
@@ -173,7 +181,6 @@ public final class AppRegistryApplication extends SitoolsApplication {
 
   /**
    * Gets the applications value
-   * 
    * @return the applications
    */
   public Map<String, SitoolsApplication> getApplications() {
@@ -182,9 +189,7 @@ public final class AppRegistryApplication extends SitoolsApplication {
 
   /**
    * Adds an application into the registry
-   * 
-   * @param application
-   *          a SitoolsApplication
+   * @param application a SitoolsApplication
    */
   private void addApplication(SitoolsApplication application) {
     getLogger().info(this.getClass().getName() + ".addApplication(" + application.getId() + ")");
@@ -193,9 +198,7 @@ public final class AppRegistryApplication extends SitoolsApplication {
 
   /**
    * Gets an application by id
-   * 
-   * @param appId
-   *          application unique identifier
+   * @param appId application unique identifier
    * @return SitoolsApplication
    */
   public SitoolsApplication getApplication(String appId) {
@@ -205,9 +208,7 @@ public final class AppRegistryApplication extends SitoolsApplication {
 
   /**
    * Attach application
-   * 
-   * @param app
-   *          the application to attach
+   * @param app the application to attach
    */
   public void attachApplication(SitoolsApplication app) {
     Restlet secureApp = app.getSecure();
@@ -245,13 +246,9 @@ public final class AppRegistryApplication extends SitoolsApplication {
 
   /**
    * Attach application
-   * 
-   * @param app
-   *          the application to attach
-   * @param start
-   *          if the application needs to be started or not
-   * @throws Exception
-   *           if there is an Exception while starting the application
+   * @param app the application to attach
+   * @param start if the application needs to be started or not
+   * @throws Exception if there is an Exception while starting the application
    */
   public void attachApplication(SitoolsApplication app, boolean start) throws Exception {
     Restlet secureApp = app.getSecure();
@@ -268,9 +265,7 @@ public final class AppRegistryApplication extends SitoolsApplication {
 
   /**
    * Detach application
-   * 
-   * @param app
-   *          the application to detach
+   * @param app the application to detach
    */
   public void detachApplication(SitoolsApplication app) {
     if (app == null) {
@@ -319,9 +314,7 @@ public final class AppRegistryApplication extends SitoolsApplication {
 
   /**
    * reattach all started applications (case of default authorization modification for example)
-   * 
-   * @param basedOnDefault
-   *          set to true to use default settings
+   * @param basedOnDefault set to true to use default settings
    */
   public void reattachAllApplications(boolean basedOnDefault) {
     for (SitoolsApplication application : applications.values()) {
@@ -336,9 +329,7 @@ public final class AppRegistryApplication extends SitoolsApplication {
 
   /**
    * To detach and attach if application was active using new defined autorizations.
-   * 
-   * @param app
-   *          the sitools application to re-attach
+   * @param app the sitools application to re-attach
    */
   public void reattachApplication(SitoolsApplication app) {
     if (app == null) {
@@ -395,11 +386,8 @@ public final class AppRegistryApplication extends SitoolsApplication {
 
   /**
    * To detach and attach if application was active using new defined autorizations.
-   * 
-   * @param app
-   *          the sitools application to re-attach
-   * @param stop
-   *          false to do not stop the application if it is active
+   * @param app the sitools application to re-attach
+   * @param stop false to do not stop the application if it is active
    */
   public void reattachApplication(SitoolsApplication app, boolean stop) {
     if (app == null) {
@@ -458,7 +446,6 @@ public final class AppRegistryApplication extends SitoolsApplication {
 
   /**
    * Gets the host value
-   * 
    * @return the host
    */
   public VirtualHost getHost() {
@@ -467,9 +454,7 @@ public final class AppRegistryApplication extends SitoolsApplication {
 
   /**
    * Sets the value of host
-   * 
-   * @param host
-   *          the host to set
+   * @param host the host to set
    */
   public void setHost(VirtualHost host) {
     this.host = host;

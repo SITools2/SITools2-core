@@ -518,12 +518,16 @@ public final class Starter {
     ApplicationStoreInterface storeApp = (ApplicationStoreInterface) settings.getStores()
         .get(Consts.APP_STORE_REGISTRY);
 
+    ApplicationPluginStoreInterface appPluginStore = (ApplicationPluginStoreInterface) settings.getStores().get(
+        Consts.APP_STORE_PLUGINS_APPLICATIONS);
+
     // Context
     appContext = host.getContext().createChildContext();
     appReference = baseUrl + settings.getString(Consts.APP_APPLICATIONS_URL);
     appContext.getAttributes().put(ContextAttributes.SETTINGS, settings);
     appContext.getAttributes().put(ContextAttributes.APP_ATTACH_REF, appReference);
     appContext.getAttributes().put(ContextAttributes.APP_STORE, storeApp);
+    appContext.getAttributes().put(ContextAttributes.APP_PLUGIN_STORE, appPluginStore);
 
     // Application
     appManager = new AppRegistryApplication(appContext);
@@ -974,9 +978,8 @@ public final class Starter {
     // Gestion des plugins d'application
     // Et exposition des plugins d'ApplicationPlugin
 
-    // Store
-    ApplicationPluginStoreInterface appPluginStore = (ApplicationPluginStoreInterface) settings.getStores().get(
-        Consts.APP_STORE_PLUGINS_APPLICATIONS);
+    // Store (defined upper)
+    //ApplicationPluginStoreInterface appPluginStore = (ApplicationPluginStoreInterface) settings.getStores().get(Consts.APP_STORE_PLUGINS_APPLICATIONS);
 
     // Reference
     appReference = baseUrl + settings.getString(Consts.APP_PLUGINS_APPLICATIONS_URL);

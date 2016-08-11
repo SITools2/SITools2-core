@@ -29,13 +29,12 @@ import com.thoughtworks.xstream.XStream;
 import fr.cnes.sitools.common.SitoolsResource;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Response;
+import fr.cnes.sitools.plugins.applications.ApplicationPluginStoreInterface;
 import fr.cnes.sitools.registry.model.AppRegistry;
 
 /**
  * Base class for resources
- * 
  * @author jp.boignard (AKKA Technologies)
- * 
  */
 public abstract class AppRegistryAbstractResource extends SitoolsResource {
 
@@ -44,6 +43,9 @@ public abstract class AppRegistryAbstractResource extends SitoolsResource {
 
   /** Store */
   private ApplicationStoreInterface store = null;
+
+  /** Plugin Store */
+  private ApplicationPluginStoreInterface pluginStore = null;
 
   /** Resource id in the request */
   private String resourceId = null;
@@ -58,6 +60,7 @@ public abstract class AppRegistryAbstractResource extends SitoolsResource {
 
     application = (AppRegistryApplication) getApplication();
     store = application.getStore();
+    pluginStore = application.getPluginStore();
     resourceId = (String) this.getRequest().getAttributes().get("resourceId");
   }
 
@@ -87,7 +90,6 @@ public abstract class AppRegistryAbstractResource extends SitoolsResource {
 
   /**
    * Get the resource identifier
-   * 
    * @return the resource identifier
    */
   public final String getResourceId() {
@@ -96,16 +98,23 @@ public abstract class AppRegistryAbstractResource extends SitoolsResource {
 
   /**
    * Get the store associated to the Application registry application
-   * 
    * @return the store
    */
   public final ApplicationStoreInterface getStore() {
     return this.store;
   }
+  
+  /**
+   * Get the plugin store associated to the Application registry application
+   * @return the store
+   */
+  public final ApplicationPluginStoreInterface getPluginStore() {
+    return this.pluginStore;
+  }
+
 
   /**
    * Get the Application registry application
-   * 
    * @return the application
    */
   public final AppRegistryApplication getAppRegistryApplication() {

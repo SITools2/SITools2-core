@@ -43,6 +43,9 @@ public interface ContextAttributes {
   /** Attribute object for specific application Store. */
   String APP_STORE = "APP_STORE";
 
+  /** Attribute object for specific application Plugin Store. */
+  String APP_PLUGIN_STORE = "APP_PLUGIN_STORE";
+
   /** Attribute object for SitoolsRealm. */
   String APP_REALM = "APP_REALM";
 
