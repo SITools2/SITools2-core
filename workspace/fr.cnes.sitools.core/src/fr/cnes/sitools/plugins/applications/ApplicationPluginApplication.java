@@ -63,13 +63,8 @@ public final class ApplicationPluginApplication extends SitoolsApplication {
 
   /**
    * Constructor
-   * 
-   * @param parentRouter
-   *          the parent Router
-   * 
-   * @param context
-   *          Restlet Host Context
-   * 
+   * @param parentRouter the parent Router
+   * @param context Restlet Host Context
    */
   public ApplicationPluginApplication(Router parentRouter, Context context) {
     super(context);
@@ -152,7 +147,6 @@ public final class ApplicationPluginApplication extends SitoolsApplication {
 
   /**
    * Gets the store value
-   * 
    * @return the store
    */
   public ApplicationPluginStoreInterface getStore() {
@@ -161,13 +155,9 @@ public final class ApplicationPluginApplication extends SitoolsApplication {
 
   /**
    * Create and attach a DataSetApplication according to the given DataSet object
-   * 
-   * @param model
-   *          the model
-   * @param start
-   *          indicates if the application has to be started
-   * @throws Exception
-   *           when attach fails
+   * @param model the model
+   * @param start indicates if the application has to be started
+   * @throws Exception when attach fails
    */
   public void attachApplication(ApplicationPluginModel model, boolean start) throws Exception {
 
@@ -199,9 +189,7 @@ public final class ApplicationPluginApplication extends SitoolsApplication {
 
   /**
    * Detach the application according to the given ApplicationPluginModel object
-   * 
-   * @param model
-   *          ApplicationPluginModel object
+   * @param model ApplicationPluginModel object
    */
   public void detachApplication(ApplicationPluginModel model) {
 
@@ -225,9 +213,7 @@ public final class ApplicationPluginApplication extends SitoolsApplication {
 
   /**
    * Detach definitively the application according to the given ApplicationPluginModel object
-   * 
-   * @param appOutput
-   *          the ApplicationPluginModel
+   * @param appOutput the ApplicationPluginModel
    */
   public void detachApplicationDefinively(ApplicationPluginModel appOutput) {
     this.detachApplication(appOutput);

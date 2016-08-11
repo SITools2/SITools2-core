@@ -41,7 +41,6 @@ import fr.cnes.sitools.plugins.applications.model.ApplicationPluginModel;
 
 /**
  * Resource for single class of application plug-in model get/update/delete
- * 
  * @author m.gond (AKKA Technologies)
  */
 public final class ApplicationPluginResource extends AbstractApplicationPluginResource {
@@ -54,9 +53,7 @@ public final class ApplicationPluginResource extends AbstractApplicationPluginRe
 
   /**
    * Get on DataSet
-   * 
-   * @param variant
-   *          client preferred media type
+   * @param variant client preferred media type
    * @return Representation
    */
   @Get
@@ -107,11 +104,8 @@ public final class ApplicationPluginResource extends AbstractApplicationPluginRe
 
   /**
    * Update / Validate existing DataSet
-   * 
-   * @param representation
-   *          DataSet Representation
-   * @param variant
-   *          Variant client preferred media type
+   * @param representation DataSet Representation
+   * @param variant Variant client preferred media type
    * @return Representation
    */
   @Put
@@ -185,9 +179,7 @@ public final class ApplicationPluginResource extends AbstractApplicationPluginRe
 
   /**
    * Delete ApplicationPluginModel
-   * 
-   * @param variant
-   *          client preferred media type
+   * @param variant client preferred media type
    * @return Representation
    */
   @Delete
