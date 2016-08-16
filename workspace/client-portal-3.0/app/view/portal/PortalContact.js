@@ -88,10 +88,10 @@ Ext.define('sitools.clientportal.view.portal.PortalContact', {
                 xtype: 'toolbar',
                 style : 'background-color:white;',
                 items : [{
-                    text: 'Submit',
+                    text: i18n.get('label.submit'),
                     name: 'contactSubmitBtn'
                 },{
-                    text: 'Cancel',
+                    text: i18n.get('label.cancel'),
                     handler: function() {
                         this.up('window').close();
                     }
