@@ -25,7 +25,7 @@ body,a,p,span,div,td,input,select,label,th,button,dt,em {
 	font-size: 11px;
 }
 
-body,a,p,div,td,input,select,label,th,button,dt,em {
+body,p,div,td,input,select,label,th,button,dt,em {
 	color : #19191A;
 }
 
