@@ -464,20 +464,22 @@
 	</target>
 	
 	<!-- Supprime le texte de licence au début de chaque fichier -->
-	<target name="change_copyright" description="Change the copyright year values in all the files of the workspace">
-		<echo message="Replace 'Copyright 2010-2014 CNES' with 'Copyright 2010-2014 CNES'"></echo>
+	<target name="change_copyright_year" description="Change the copyright year values in all the files of the workspace">
+		<echo message="Replace '${sitools.old.year}' with '${sitools.year}'"></echo>
 			<replace 
-	    		value="Copyright 2010-2014 CNES"
-				token="Copyright 2010-2016 CNES"
+	    		value="${sitools.year}"
+				token="${sitools.old.year}"
 	    		failOnNoReplacements="true"
-	    		summary="true"
-	    		encoding="UTF-8">
-				<fileset dir="../..">
+	    		summary="true">
+				<fileset dir="..">
 					<include name="**/*.java" />
 					<include name="**/*.js" />
 					<include name="**/*.css" />
 					<include name="**/*.xml" />
 					<include name="**/*.properties" />
+					<!--Exclude current file and its build.properties-->
+					<exclude name="sitools-build/build.xml"/>
+					<exclude name="sitools-build/build.properties"/>
 				</fileset>
 			</replace>
 	</target>
