@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2016 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -17,7 +17,7 @@
 * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
 ***************************************/
 //
-// Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+// Copyright 2010-2016 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 //
 // This file is part of SITools2.
 //
