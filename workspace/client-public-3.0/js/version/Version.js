@@ -40,7 +40,7 @@ Ext.define('sitools.public.version.Version', {
         this.credits = Ext.create('Ext.form.Label', {});
         
         var website = Ext.create('Ext.form.Label', {
-            html : '<a style="color:blue;" target="_blank" href="http://www.sitools2.sourceforge.net">sitools2.sourceforge.net</>'
+            html : '<a style="color:blue;" target="_blank" href="https://github.com/SITools2">https://github.com/SITools2</>'
         });
         
         this.versionLabel = Ext.create('Ext.form.Label', {});
