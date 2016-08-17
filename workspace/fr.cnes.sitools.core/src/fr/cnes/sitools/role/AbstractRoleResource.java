@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2016 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  * <p/>
  * This file is part of SITools2.
  * <p/>
