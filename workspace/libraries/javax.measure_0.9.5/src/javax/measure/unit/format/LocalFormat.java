@@ -1,5 +1,5 @@
  /*******************************************************************************
- * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2016 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -57,7 +57,7 @@ import javax.measure.unit.UnitFormat;
  *   <tr valign="top">
  *     <td>&lt;superscript_digit&gt;</td>
  *     <td>:=</td>
- *     <td>"‚Å∞" | "¬π" | "¬≤" | "¬≥" | "‚Å¥" | "‚Åµ" | "‚Å∂" | "‚Å∑" | "‚Å∏" | "‚Åπ"</td>
+ *     <td>"‚?∞" | "¬π" | "¬≤" | "¬≥" | "‚?¥" | "‚?µ" | "‚?∂" | "‚?∑" | "‚?∏" | "‚?π"</td>
  *   </tr>
  *   <tr valign="top">
  *     <td>&lt;integer&gt;</td>
@@ -77,7 +77,7 @@ import javax.measure.unit.UnitFormat;
  *   <tr valign="top">
  *     <td>&lt;initial_char&gt;</td>
  *     <td>:=</td>
- *     <td>? Any Unicode character excluding the following: ASCII control & whitespace (&#92;u0000 - &#92;u0020), decimal digits '0'-'9', '(' (&#92;u0028), ')' (&#92;u0029), '*' (&#92;u002A), '+' (&#92;u002B), '-' (&#92;u002D), '.' (&#92;u002E), '/' (&#92;u005C), ':' (&#92;u003A), '^' (&#92;u005E), '¬≤' (&#92;u00B2), '¬≥' (&#92;u00B3), '¬∑' (&#92;u00B7), '¬π' (&#92;u00B9), '‚Å∞' (&#92;u2070), '‚Å¥' (&#92;u2074), '‚Åµ' (&#92;u2075), '‚Å∂' (&#92;u2076), '‚Å∑' (&#92;u2077), '‚Å∏' (&#92;u2078), '‚Åπ' (&#92;u2079) ?</td>
+ *     <td>? Any Unicode character excluding the following: ASCII control & whitespace (&#92;u0000 - &#92;u0020), decimal digits '0'-'9', '(' (&#92;u0028), ')' (&#92;u0029), '*' (&#92;u002A), '+' (&#92;u002B), '-' (&#92;u002D), '.' (&#92;u002E), '/' (&#92;u005C), ':' (&#92;u003A), '^' (&#92;u005E), '¬≤' (&#92;u00B2), '¬≥' (&#92;u00B3), '¬∑' (&#92;u00B7), '¬π' (&#92;u00B9), '‚?∞' (&#92;u2070), '‚?¥' (&#92;u2074), '‚?µ' (&#92;u2075), '‚?∂' (&#92;u2076), '‚?∑' (&#92;u2077), '‚?∏' (&#92;u2078), '‚?π' (&#92;u2079) ?</td>
  *   </tr>
  *   <tr valign="top">
  *     <td>&lt;unit_identifier&gt;</td>
