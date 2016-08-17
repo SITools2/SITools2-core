@@ -40,11 +40,14 @@ Ext.define('sitools.user.view.component.form.FormView', {
     autoScroll: true,
     bodyBorder: false,
     border: false,
+    
 
     initComponent: function () {
 
-        this.height = this.formHeight;
         this.width = this.formWidth;
+        this.height = this.formHeight;
+        this.css = this.formCss;
+        this.formId = this.formId;
 
         var panelIdObject = {};
 
@@ -75,7 +78,7 @@ Ext.define('sitools.user.view.component.form.FormView', {
                 css: this.formCss,
                 formId: this.formId,
                 formWidth: this.formWidth,
-                height: this.formHeight
+                formHeight: this.formHeight
             });
 
             if (!Ext.isEmpty(this.formZones)) {
@@ -89,16 +92,6 @@ Ext.define('sitools.user.view.component.form.FormView', {
 
             items.push(componentList);
         }, this);
-
-        this.zonesPanel = Ext.create('Ext.panel.Panel', {
-            autoScroll: true,
-            border: false,
-            width: this.formWidth,
-            height: this.formHeight,
-            css: this.formCss,
-            formId: this.formId,
-            items: items
-        });
 
         if (Ext.isEmpty(this.dataset)) {
             Ext.Ajax.request({
@@ -156,7 +149,7 @@ Ext.define('sitools.user.view.component.form.FormView', {
             itemId : 'formStatusBar'
         });
 
-        this.items = [this.zonesPanel];
+        this.items = items;
 
         this.callParent(arguments);
     },

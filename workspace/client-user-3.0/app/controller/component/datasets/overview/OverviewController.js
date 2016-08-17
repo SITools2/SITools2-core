@@ -51,7 +51,13 @@ Ext.define('sitools.user.controller.component.datasets.overview.OverviewControll
                         this.displayDatasetWithForm(overviewView, forms);
                     }
                 }
-            }
+            },
+            "overviewView tabpanel#tabPanel" : {
+            	tabchange : function ( tabPanel, newCard, oldCard, eOpts ) {
+            		this.fitCurrentFormWidth(tabPanel.up("overviewView"));
+            	}
+            	
+            } 
         });
     },
 
@@ -92,12 +98,7 @@ Ext.define('sitools.user.controller.component.datasets.overview.OverviewControll
         overviewView.down("splitter#eastSplitter").setVisible(false);
         overviewView.down("splitter#westSplitter").setVisible(true);
         
-        
-//        var form = forms[0];
-//        overviewView.down("container#westPanel").setWidth(form.width + 25);
-        
-        
-        
+        this.fitCurrentFormWidth(overviewView);
     },
 
     displayDatasetWithoutForm: function (overviewView) {
@@ -117,7 +118,8 @@ Ext.define('sitools.user.controller.component.datasets.overview.OverviewControll
 
         var tabPanel = Ext.create("Ext.tab.Panel", {
             layout : 'fit',
-            flex : 1
+            flex : 1,
+            itemId : 'tabPanel'
         });
 
         //if a form is given as a parameter we must show it
@@ -264,5 +266,10 @@ Ext.define('sitools.user.controller.component.datasets.overview.OverviewControll
 
         overviewView.down("splitter#eastSplitter").setVisible(false);
         overviewView.down("splitter#westSplitter").setVisible(true);
+    },
+    
+    fitCurrentFormWidth : function(overviewView) {
+    	var tabPanel = overviewView.down("tabpanel#tabPanel");
+		overviewView.down("container#westPanel").setWidth(tabPanel.getActiveTab().form.width + 30);
     }
 });

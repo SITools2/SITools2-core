@@ -122,35 +122,9 @@ Ext.define('sitools.user.controller.component.form.FormController', {
     },
 
     afterRenderFormContainer: function (formContainer) {
-        try {
-            var cmpChildSize = formContainer.getSize();
-            var size = formContainer.ownerCt.ownerCt.body.getSize();
-            var xpos = 0, ypos = 0;
-            if (size.height > cmpChildSize.height) {
-                ypos = (size.height - cmpChildSize.height) / 2;
-            }
-            if (size.width > cmpChildSize.width) {
-                xpos = (size.width - cmpChildSize.width) / 2;
-            }
-            formContainer.setPosition(xpos, ypos);
-        } catch (err) {
-            return;
-        }
     },
 
     resizeForm: function (form) {
-        if (!Ext.isEmpty(form.zonesPanel.getEl())) {
-            var cmpChildSize = form.zonesPanel.getSize();
-            var size = form.body.getSize();
-            var xpos = 0, ypos = 0;
-            if (size.height > cmpChildSize.height) {
-                ypos = (size.height - cmpChildSize.height) / 2;
-            }
-            if (size.width > cmpChildSize.width) {
-                xpos = (size.width - cmpChildSize.width) / 2;
-            }
-            form.zonesPanel.setPosition(xpos, ypos);
-        }
     },
 
     resetSearchForm: function (btn) {

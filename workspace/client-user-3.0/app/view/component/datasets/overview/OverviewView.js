@@ -112,13 +112,8 @@ Ext.define('sitools.user.view.component.datasets.overview.OverviewView', {
 
       //if(this.getFormsPanelWidth() && !this.getForceShowDataset()){
         if(this.form && !this.getForceShowDataset()){
-        	westPanelConf.width = this.form.width + 25;
-        	westPanelConf.layout = 'fit';
+        	westPanelConf.width = this.form.width + 30;
             eastPanel.flex = 1;
-        }
-        else {
-            westPanelConf.flex = 1;
-            westPanelConf.layout = 'fit';
         }
 
         var westPanel = Ext.create("Ext.panel.Panel", westPanelConf);
