@@ -468,10 +468,10 @@
 		<echo message="Replace 'Copyright 2010-2014 CNES' with 'Copyright 2010-2014 CNES'"></echo>
 			<replace 
 	    		value="Copyright 2010-2014 CNES"
-				token="Copyright 2010-2014 CNES"
+				token="Copyright 2010-2016 CNES"
 	    		failOnNoReplacements="true"
 	    		summary="true"
-	    		encoding="ISO-8859-1">
+	    		encoding="UTF-8">
 				<fileset dir="../..">
 					<include name="**/*.java" />
 					<include name="**/*.js" />
