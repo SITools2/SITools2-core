@@ -21,9 +21,9 @@
 Ext.namespace('sitools.admin.datasets');
 
 /**
- * @cfg Ext.data.Record recordColumn The record to edit
- * @cfg Ext.grid.View viewColumn The grid view to refresh
- * @cfg string urlDimension The Url of the dimension to get all the units. 
+ * @cfg {Ext.data.Model} recordColumn The record to edit.
+ * @cfg {Ext.grid.View} viewColumn The grid view to refresh.
+ * @cfg {String} urlDimension The Url of the dimension to get all the units.
  * @class sitools.admin.datasets.UnitWin
  * @extends Ext.Window
  */
