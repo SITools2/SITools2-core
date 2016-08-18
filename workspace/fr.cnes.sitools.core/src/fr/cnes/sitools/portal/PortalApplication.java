@@ -75,6 +75,9 @@ public final class PortalApplication extends SitoolsApplication {
     // Attach the resources to the router
     router.attachDefault(PortalResource.class);
 
+    // datasets
+    router.attach("/dataset/name/{name}", PortalDatasetResource.class);
+    
     router.attach("/projects", PortalProjectsCollectionResource.class, Router.MODE_FIRST_MATCH);
     router.attach("/projects/{projectId}", PortalProjectResource.class);
 
