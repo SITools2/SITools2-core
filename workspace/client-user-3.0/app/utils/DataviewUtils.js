@@ -331,42 +331,28 @@ Ext.define('sitools.user.utils.DataviewUtils', {
             	var columnName = strings[1];
             	
             	var project = Ext.getStore('ProjectStore').getProject();
-            	
+            	if (Ext.isEmpty(datasetName)) {
+            	    Ext.Msg.alert(i18n.get('label.error'), Ext.String.format(i18n.get("label.errorCannotFindDataset"), datasetName));
+            	    return;
+            	}
             	Ext.Ajax.request({
-                    url : project.get('sitoolsAttachementForUsers') + '/datasets',
+                    url : loadUrl.get('APP_URL') + loadUrl.get('APP_PORTAL_URL') + '/dataset/name/' + datasetName,
                     method : 'GET',
                     scope : this,
                     success : function (response) {
-                    	var datasets = Ext.decode(response.responseText).data;
-                    	var ds;
-                    	Ext.each(datasets, function(dataset, index) {
-                    		if(dataset.name == datasetName) {
-                    			ds = dataset;
-                    			return;
-                    		}
-                     	});
-                    	
-                    	if(Ext.isEmpty(ds)) {
-                    		Ext.Msg.alert(i18n.get('label.error'), Ext.String.format(i18n.get("label.errorCannotFindDataset"), datasetName));
-                    	}
-                    	
-                    	if(Ext.isEmpty(columnName)) {
-                			// Lets find the primary key for the target dataset if not configured
-                    		Ext.Ajax.request({
-                                url : ds.url,
-                                method : 'GET',
-                                scope : this,
-                                success : function (response) {
-                                	var dataset = Ext.decode(response.responseText).dataset;
-                                	var columnName = sitools.user.utils.DataviewUtils.calcPrimaryKey(dataset);
-                                	sitools.user.utils.DataviewUtils.showDetailsData(value, columnName, ds.url);
-                                }
-                    		});
-                    	}
-                		else {
-                			sitools.user.utils.DataviewUtils.showDetailsData(value, columnName, ds.url); 
-                		}
-                    }
+                        var res = Ext.decode(response.responseText);
+                        if (res.success && !Ext.isEmpty(res.data)) {
+                            var dataSet = res.data;
+                            var colName = columnName;
+                            if(Ext.isEmpty(colName)) {
+                                colName = sitools.user.utils.DataviewUtils.calcPrimaryKey(dataSet);
+                            }
+                            sitools.user.utils.DataviewUtils.showDetailsData(value, colName, dataSet.sitoolsAttachementForUsers);
+                        } else {
+                            Ext.Msg.alert(i18n.get('label.error'), Ext.String.format(i18n.get("label.errorCannotFindDataset"), datasetName));
+                        }
+                    },
+                    failure: alertFailure
                 });
             	break;
             default : 
@@ -551,8 +537,6 @@ Ext.define('sitools.user.utils.DataviewUtils', {
      * @param {string} datasetUrl
      */
     showDetailsData : function (value, columnAlias, datasetUrl) {
-        var desktop = getDesktop();
-    
         var config = {
             forceShowDataset : true
         };
