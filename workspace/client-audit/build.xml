@@ -20,7 +20,7 @@
 	
 	<property name="jslint" location="${cots.dir}/audit/jslint4java" />
 	
-	<property name="client-user.dir" location="${ROOT_DIRECTORY}/workspace/client-user" />
+	<property name="client-user.dir" location="${ROOT_DIRECTORY}/workspace/client-user-3.0" />
 	<property name="client-admin.dir" location="${ROOT_DIRECTORY}/workspace/client-admin" />
 	
 	<property name="report-client-user.dir" location="report-client-user" />
