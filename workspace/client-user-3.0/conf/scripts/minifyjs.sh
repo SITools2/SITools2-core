@@ -18,7 +18,8 @@ fi
 
 cd ${1}
 echo "install gulp into client-user"
-npm install gulp gulp-concat gulp-uglifyjs
+npm install gulp gulp-concat gulp-uglify pump gulp-rename
 echo "build client-user javascript files"
 ## build des fichiers javascripts
 gulp
+gulp build-with-plugins
