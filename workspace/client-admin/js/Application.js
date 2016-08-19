@@ -38,6 +38,7 @@ Ext.define('sitools.admin.Application', {
         'sitools.admin.def',
         'sitools.admin.id',
         'sitools.admin.gui',
+        'sitools.public.utils.PackagingUtils',
         
         /* QUICKSTART MENU */
         'sitools.admin.quickstart.Qs',

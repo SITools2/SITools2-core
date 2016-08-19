@@ -43,6 +43,7 @@ Ext.define('sitools.user.Application', {
         'sitools.public.version.Version',
         'sitools.user.utils.I18nRegistry',
         'sitools.user.utils.ScriptLoader',
+        'sitools.public.utils.PackagingUtils',
 
         /* UTILS USER */
         'sitools.user.utils.FormUtils',

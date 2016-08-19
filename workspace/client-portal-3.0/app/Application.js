@@ -21,6 +21,7 @@ Ext.define('sitools.clientportal.Application', {
         'sitools.public.utils.Locale',
         'sitools.public.utils.UserStorage',
         'sitools.public.utils.PopupMessage',
+        'sitools.public.utils.PackagingUtils',
 
         /* WIDGETS */
         'sitools.public.widget.StatusBar',
@@ -28,8 +29,6 @@ Ext.define('sitools.clientportal.Application', {
         'sitools.public.version.Version',
 
     ],
-
-    controllers : ['sitools.clientportal.controller.portal.PortalController'],
 
     init: function () {
 
