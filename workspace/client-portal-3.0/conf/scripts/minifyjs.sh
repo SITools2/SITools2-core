@@ -18,7 +18,7 @@ fi
 
 cd ${1}
 echo "install gulp into client-portal"
-npm install gulp gulp-concat gulp-uglifyjs
+npm install gulp gulp-concat gulp-uglify pump gulp-rename
 echo "build client-portal javascript files"
 ## build des fichiers javascripts
 gulp

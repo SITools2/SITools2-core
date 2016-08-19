@@ -6,10 +6,11 @@ if "%1"=="" goto usage
 
 cd %1
 echo "install gulp into client-portal"
-call npm install gulp gulp-concat gulp-uglifyjs
+call npm install gulp gulp-concat gulp-uglify pump gulp-rename
 echo "build of client-portal javascript files"
 :: build des fichiers javascripts de client-portal
 call gulp
+EXIT /B
 
 
 :usage
