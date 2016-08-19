@@ -1,6 +1,8 @@
 var gulp = require('gulp');
 var concat = require('gulp-concat');
-var uglify = require('gulp-uglifyjs');
+var uglify = require('gulp-uglify');
+var rename = require('gulp-rename');
+var pump = require('pump');
 var fs = require("fs");
 
 gulp.task('default', function() {
@@ -16,14 +18,17 @@ gulp.task('default', function() {
          // parse the file list as a JSON Object
          data = JSON.parse(_data);
          
-         // Build the sources
-        gulp.src(data)
+        // Build the sources
+        pump([
+              gulp.src(data),
             // concatenate all files into admin.all.js
-            .pipe(concat("app.all.js"))
-            .pipe(gulp.dest("dist/"))
+            concat("app.all.js"),
+            gulp.dest("dist/"),
+            rename("app.min.js"),
             // uglify all files into admin.min.js
-            .pipe(uglify("app.min.js"))
-            .pipe(gulp.dest("dist/"));
+            uglify(),
+            gulp.dest("dist/")
             // both files are created into the dist folder
+        ]);
     });
 });
