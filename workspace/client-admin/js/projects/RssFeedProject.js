@@ -31,8 +31,7 @@ Ext.define('sitools.admin.projects.RssFeedProject', {
             url : loadUrl.get('APP_URL') + loadUrl.get('APP_PROJECTS_URL'),
             label : i18n.get("label.selectProject"),
             urlRef : loadUrl.get('APP_FEEDS_URL'),
-            height : ADMIN_PANEL_HEIGHT,
-            id : ID.BOX.RSSPROJECT
+            height : ADMIN_PANEL_HEIGHT
         });
         
         this.callParent(arguments);

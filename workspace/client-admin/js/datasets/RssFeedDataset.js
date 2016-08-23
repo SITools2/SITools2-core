@@ -37,8 +37,7 @@ Ext.define('sitools.admin.datasets.RssFeedDataset', {
             url : loadUrl.get('APP_URL') + loadUrl.get('APP_DATASETS_URL'),
             label : i18n.get("label.selectDatasets"),
             urlRef : loadUrl.get('APP_FEEDS_URL'),
-            height : ADMIN_PANEL_HEIGHT,
-            id : ID.BOX.RSSPROJECT
+            height : ADMIN_PANEL_HEIGHT
         });        
         this.callParent(arguments);
     }

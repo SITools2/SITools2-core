@@ -38,7 +38,6 @@ Ext.define('sitools.admin.rssFeed.RssFeedCrud', {
     modify : false,
     forceFit : "true",
     id : ID.BOX.RSSFEED,
-    isDatasetCrudRendered: false,
 
     requires : ['sitools.admin.rssFeed.RssFeedProp'],
     
@@ -94,12 +93,11 @@ Ext.define('sitools.admin.rssFeed.RssFeedCrud', {
             listeners : {
             	scope : this,
             	load : function (store, records) {
-            		if (this.combobox.rendered && !this.isDatasetCrudRendered) {
             			record = this.combobox.getStore().getAt(0);
-            			this.combobox.setValue(record.get(this.combobox.valueField), true);
-            			this.combobox.fireEvent('select', this.combobox, [record]);
-                        this.isDatasetCrudRendered = true;
-            		}
+            			if (!Ext.isEmpty(record)) {
+	            			this.combobox.setValue(record.get(this.combobox.valueField), true);
+	            			this.combobox.fireEvent('select', this.combobox, [record]);
+            			}
             	}
             }
         });
@@ -224,8 +222,14 @@ Ext.define('sitools.admin.rssFeed.RssFeedCrud', {
             mode : "SINGLE"
         });
         
-        sitools.admin.rssFeed.RssFeedCrud.superclass.initComponent.call(this);
+        this.callParent(arguments);
 
+    },
+    
+    afterRender : function () {
+        this.callParent(arguments);
+        this.combobox.getStore().load();
+    	
     },
 
     /**
