@@ -46,7 +46,7 @@ Ext.define('sitools.clientportal.view.portal.PortalFooter', {
                 icon : loadUrl.get('APP_URL') + '/client-public/res/images/icons/logo_fav_icone.png',
                 textAlign: 'left',
                 handler: function (button, event) {
-                    Ext.util.openLink('/sitools/client-portal/resources/html/fr/link.html');
+                    Ext.util.openLink(loadUrl.get('APP_URL')+ loadUrl.get("APP_CLIENT_PORTAL_URL") +'/resources/html/fr/link.html');
                 }
             }, {
                 xtype: 'button',
@@ -54,7 +54,7 @@ Ext.define('sitools.clientportal.view.portal.PortalFooter', {
                 icon : loadUrl.get('APP_URL') + '/client-public/res/images/icons/wadl.png',
                 textAlign: 'left',
                 handler: function (button, event) {
-                    Ext.util.openLink('/sitools/client-portal/resources/html/fr/help.html');
+                    Ext.util.openLink(loadUrl.get('APP_URL')+ loadUrl.get("APP_CLIENT_PORTAL_URL") +'/resources/html/fr/help.html');
                 }
             }]
         }];

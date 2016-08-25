@@ -171,6 +171,16 @@ var clientAdmin = {
 					Ext.create('sitools.public.version.Version').show();
                 }
             },
+            {
+                tooltip : 'Portal',
+				text : 'Portal',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/logo_fav_icone.png',
+                style : 'padding:2px',
+                cls : 'x-custom-button-color',
+                handler : function () {
+					window.open(loadUrl.get('APP_URL')+ loadUrl.get("APP_CLIENT_PORTAL_URL"));
+                }
+            },
 		    "|", menuLogout
 	        ]
 	    };
