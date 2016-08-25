@@ -178,7 +178,7 @@ var clientAdmin = {
                 style : 'padding:2px',
                 cls : 'x-custom-button-color',
                 handler : function () {
-					window.open(loadUrl.get('APP_URL')+ loadUrl.get("APP_CLIENT_PORTAL_URL"));
+					window.open(loadUrl.get('APP_URL')+ loadUrl.get("APP_CLIENT_PORTAL_URL") + "/");
                 }
             },
 		    "|", menuLogout
