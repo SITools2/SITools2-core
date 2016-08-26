@@ -50,6 +50,14 @@ body,p,div,td,input,select,label,th,button,dt,em {
 	font-size: 11px;
 }
 
+.x-mask {
+	z-index: 50000;
+}
+
+.x-mask-msg {
+	z-index: 50001;
+}
+
 .x-mask-msg-text {
 	background-image: url(/sitools/common/res/images/icons/sitoolsLoading.gif);
 }
