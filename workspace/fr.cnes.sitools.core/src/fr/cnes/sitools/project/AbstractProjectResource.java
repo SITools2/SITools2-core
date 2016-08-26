@@ -35,8 +35,10 @@ import fr.cnes.sitools.common.SitoolsResource;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Resource;
 import fr.cnes.sitools.common.model.Response;
+import fr.cnes.sitools.dataset.DataSetStoreInterface;
 import fr.cnes.sitools.dataset.model.DataSet;
 import fr.cnes.sitools.dataset.opensearch.model.OpensearchColumn;
+import fr.cnes.sitools.form.dataset.FormStoreInterface;
 import fr.cnes.sitools.notification.business.NotificationManager;
 import fr.cnes.sitools.notification.model.RestletObserver;
 import fr.cnes.sitools.project.graph.model.GraphNodeComplete;
@@ -59,6 +61,12 @@ public abstract class AbstractProjectResource extends SitoolsResource {
 
   /** store */
   private ProjectStoreInterface store = null;
+  
+  /** dataset store **/
+  private DataSetStoreInterface dataSetStore = null;
+  
+  /** form store **/
+  private FormStoreInterface formStore = null;
 
   /** project identifier parameter */
   private String projectId = null;
@@ -81,17 +89,16 @@ public abstract class AbstractProjectResource extends SitoolsResource {
 
     application = (AbstractProjectApplication) getApplication();
     store = application.getStore();
+    dataSetStore = application.getDataSetStore();
+    formStore = application.getFormStore();
 
     projectId = (String) this.getRequest().getAttributes().get("projectId");
   }
 
   /**
    * Response to Representation
-   * 
-   * @param response
-   *          the response to treat
-   * @param media
-   *          the media to use
+   * @param response the response to treat
+   * @param media the media to use
    * @return Representation
    */
   public Representation getRepresentation(Response response, MediaType media) {
@@ -116,11 +123,8 @@ public abstract class AbstractProjectResource extends SitoolsResource {
 
   /**
    * Get the object from the representation
-   * 
-   * @param representation
-   *          the representation to use
-   * @param variant
-   *          the variant to use
+   * @param representation the representation to use
+   * @param variant the variant to use
    * @return a project
    */
   public final Project getObject(Representation representation, Variant variant) {
@@ -145,11 +149,8 @@ public abstract class AbstractProjectResource extends SitoolsResource {
   
   /**
    * Get the object from the representation
-   * 
-   * @param representation
-   *          the representation to use
-   * @param variant
-   *          the variant to use
+   * @param representation the representation to use
+   * @param variant the variant to use
    * @return a project
    */
   public final ProjectPriorityDTO getListObject(Representation representation, Variant variant) {
@@ -173,14 +174,10 @@ public abstract class AbstractProjectResource extends SitoolsResource {
 
   /**
    * Get the object from the representation
-   * 
-   * @param representation
-   *          the representation to use
-   * @param variant
-   *          the variant to use
+   * @param representation the representation to use
+   * @param variant the variant to use
    * @return a project
-   * @throws IOException
-   *           if there is an error while deserializing a Java Object
+   * @throws IOException if there is an error while deserializing a Java Object
    */
   public final Resource getObjectResource(Representation representation, Variant variant) throws IOException {
     Resource resourceInput = null;
@@ -209,9 +206,7 @@ public abstract class AbstractProjectResource extends SitoolsResource {
 
   /**
    * Register an observer
-   * 
-   * @param input
-   *          the project as input
+   * @param input the project as input
    */
   public final void registerObserver(Project input) {
     NotificationManager notificationManager = application.getSettings().getNotificationManager();
@@ -238,9 +233,7 @@ public abstract class AbstractProjectResource extends SitoolsResource {
 
   /**
    * Unregister an observer
-   * 
-   * @param input
-   *          the project to unregister
+   * @param input the project to unregister
    */
   public final void unregisterObserver(Project input) {
     NotificationManager notificationManager = application.getSettings().getNotificationManager();
@@ -259,18 +252,16 @@ public abstract class AbstractProjectResource extends SitoolsResource {
 
   /**
    * Get the dataset object with the given id
-   * 
-   * @param id
-   *          the id of the dataset
+   * @param id the id of the dataset
    * @return a dataset object corresponding to the given id
    */
   public final DataSet getDataset(String id) {
-    return RIAPUtils.getObject(id, getSitoolsSetting(Consts.APP_DATASETS_URL), getContext());
+    //return RIAPUtils.getObject(id, getSitoolsSetting(Consts.APP_DATASETS_URL), getContext());
+    return dataSetStore.retrieve(id);
   }
 
   /**
    * Get the project identifier
-   * 
    * @return the project ID
    */
   public final String getProjectId() {
@@ -279,16 +270,29 @@ public abstract class AbstractProjectResource extends SitoolsResource {
 
   /**
    * Get the store associated to the application
-   * 
    * @return the store available for this resource
    */
   public final ProjectStoreInterface getStore() {
     return this.store;
   }
-
+  
+  /**
+   * Get the dataset store associated to the application
+   * @return the dataset store available for this resource
+   */
+  public final DataSetStoreInterface getDataSetStore() {
+    return this.dataSetStore;
+  }
+  
+  /**
+   * Get the form store associated to the application
+   * @return the form store available for this resource
+   */
+  public final FormStoreInterface getFormStore() {
+    return this.formStore;
+  }
   /**
    * Get the project application object
-   * 
    * @return the project application
    */
   public final AbstractProjectApplication getProjectApplication() {
@@ -299,11 +303,8 @@ public abstract class AbstractProjectResource extends SitoolsResource {
    * Check that the name and the sitoolsUserAttachment are unique over the project collection includeProjectInput is
    * used to specify whether or not to include projectInput in the verification process ( for example when updating a
    * project )
-   * 
-   * @param projectInput
-   *          the project to check with the collection
-   * @param includeProjectInput
-   *          true to include the project in the verification, false otherwise
+   * @param projectInput the project to check with the collection
+   * @param includeProjectInput true to include the project in the verification, false otherwise
    * @return a Response with the error message if the checking fail, null otherwise
    */
   public final Response checkUnicity(Project projectInput, boolean includeProjectInput) {

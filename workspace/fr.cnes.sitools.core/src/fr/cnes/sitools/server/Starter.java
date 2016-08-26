@@ -66,6 +66,7 @@ import fr.cnes.sitools.common.exception.SitoolsException;
 import fr.cnes.sitools.common.model.Category;
 import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.dataset.DataSetAdministration;
+import fr.cnes.sitools.dataset.DataSetStoreInterface;
 import fr.cnes.sitools.dataset.converter.ConverterApplication;
 import fr.cnes.sitools.dataset.converter.ConverterStoreInterface;
 import fr.cnes.sitools.dataset.filter.FilterApplication;
@@ -1367,7 +1368,9 @@ public final class Starter {
 
     // Store
     ProjectStoreInterface storePrj = (ProjectStoreInterface) settings.getStores().get(Consts.APP_STORE_PROJECT);
-
+    DataSetStoreInterface dataSetStore = (DataSetStoreInterface) settings.getStores().get(Consts.APP_STORE_DATASET);
+    FormStoreInterface formStore = (FormStoreInterface) settings.getStores().get(Consts.APP_STORE_FORM);
+    
     clientUserApp.setStore(storePrj);
 
     // Reference
@@ -1379,6 +1382,8 @@ public final class Starter {
     appContext.getAttributes().put(ContextAttributes.APP_ATTACH_REF, appReference);
     appContext.getAttributes().put(ContextAttributes.APP_REGISTER, true);
     appContext.getAttributes().put(ContextAttributes.APP_STORE, storePrj);
+    appContext.getAttributes().put(ContextAttributes.APP_STORE_DATASET, dataSetStore);
+    appContext.getAttributes().put(ContextAttributes.APP_STORE_FORM, formStore);
 
     // gestion des graphs
     // SitoolsStore<Graph> storeGraph = (SitoolsStore<Graph>) settings.getStores().get(Consts.APP_STORE_GRAPH);

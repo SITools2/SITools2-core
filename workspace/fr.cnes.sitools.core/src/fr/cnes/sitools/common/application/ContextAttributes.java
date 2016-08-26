@@ -18,6 +18,8 @@
  ******************************************************************************/
 package fr.cnes.sitools.common.application;
 
+import fr.cnes.sitools.server.Consts;
+
 /**
  * Commons attributes for SitoolsApplications.
  * 
@@ -45,6 +47,12 @@ public interface ContextAttributes {
 
   /** Attribute object for specific application Plugin Store. */
   String APP_PLUGIN_STORE = "APP_PLUGIN_STORE";
+  
+  /** Attribute object for specific application Dataset Store. */
+  String APP_STORE_DATASET = Consts.APP_STORE_DATASET;
+  
+  /** Attribute object for specific application Form Store. */
+  String APP_STORE_FORM = Consts.APP_STORE_FORM;
 
   /** Attribute object for SitoolsRealm. */
   String APP_REALM = "APP_REALM";

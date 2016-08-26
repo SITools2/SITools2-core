@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
 
 import org.restlet.Request;
 import org.restlet.data.MediaType;
@@ -38,6 +39,7 @@ import org.restlet.security.User;
 
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.model.Resource;
+import fr.cnes.sitools.common.model.ResourceCollectionFilter;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.dataset.model.DataSet;
 import fr.cnes.sitools.form.dataset.dto.FormDTO;
@@ -85,11 +87,12 @@ public final class ProjectListFormsResource extends AbstractProjectResource {
     Project proj = application.getProject();
     List<Resource> dsList = proj.getDataSets();
 
-    ArrayList<FormDTO> formListOutput = new ArrayList<FormDTO>();
-    Response resp;
+    //ArrayList<FormDTO> formListOutput = new ArrayList<FormDTO>();
+    List<FormDTO> formsDTO = new ArrayList<FormDTO>();
+    //Response resp;
     
     if (dsList == null) {
-      Response response = new Response(true, formListOutput, Form.class);
+      Response response = new Response(true, formsDTO, Form.class);
       return getRepresentation(response, variant);
     }
 
@@ -105,54 +108,80 @@ public final class ProjectListFormsResource extends AbstractProjectResource {
       DataSet dsModel = this.getDataset(ds.getId());
       boolean visible = dsModel.isVisible();
       if (authorized || visible) {
-        resp = getFormResponse(ds.getId());
-
-        if (resp != null && resp.getTotal() > 0) {
-          ArrayList<Object> formList = resp.getData();
-          for (Iterator<Object> iterator2 = formList.iterator(); iterator2.hasNext();) {
-            FormDTO object = (FormDTO) iterator2.next();
-            object.setAuthorized(Boolean.valueOf(authorized).toString());
-            formListOutput.add(object);
+        List<Form> forms = getFormsByDatasetId(ds.getId());
+        if (forms != null) {
+          FormDTO dto = null;
+          for (Form form : forms) {
+            dto = FormDTO.formToDTO(form);
+            dto.setAuthorized(Boolean.valueOf(authorized).toString());
+            formsDTO.add(dto);
           }
         }
       }
     }
 
-    Response response = new Response(true, formListOutput, Form.class);
+    Response response = new Response(true, formsDTO, Form.class);
     rep = getRepresentation(response, variant);
 
     return rep;
   }
 
-  /**
-   * Get the list of forms for a dataset
-   * 
-   * @param id
-   *          the id of the dataset
-   * @return a Response containing the list of Forms
-   */
-  private Response getFormResponse(String id) {
-
-    Request reqGET = new Request(Method.GET, RIAPUtils.getRiapBase()
-        + application.getSettings().getString(Consts.APP_DATASETS_URL) + "/" + id + "/forms");
-    ArrayList<Preference<MediaType>> objectMediaType = new ArrayList<Preference<MediaType>>();
-    objectMediaType.add(new Preference<MediaType>(MediaType.APPLICATION_JAVA_OBJECT));
-    reqGET.getClientInfo().setAcceptedMediaTypes(objectMediaType);
-    org.restlet.Response response = getContext().getClientDispatcher().handle(reqGET);
-
-    if (response == null || Status.isError(response.getStatus().getCode())) {
-      throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
-    }
-
-    @SuppressWarnings("unchecked")
-    ObjectRepresentation<Response> or = (ObjectRepresentation<Response>) response.getEntity();
+  private List<Form> getFormsByDatasetId(String datasetId) {
     try {
-      return or.getObject();
-    }
-    catch (IOException e) { // marshalling error
+      if (datasetId == null) {
+        datasetId = "None";
+        throw new IllegalArgumentException();
+      }
+      //ResourceCollectionFilter filter = new ResourceCollectionFilter(0,0,"");
+      //filter.setParent(datasetId);
+      List<Form> befforms = getFormStore().getList();
+      List<Form> forms = new ArrayList<Form>();
+      for (Form form : befforms) {
+        if (form.getParent().equals(datasetId)) {
+          forms.add(form);
+        }
+      }
+      return forms;
+      
+    } catch (ResourceException e) {
+      trace(Level.FINE, "Cannot view available query forms for the dataset - id : " + datasetId);
+      getLogger().log(Level.INFO, null, e);
+      throw e;
+    } catch (Exception e) {
+      trace(Level.FINE, "Cannot view available query forms for the dataset - id : " + datasetId);
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
+
+//  /**
+//   * Get the list of forms for a dataset
+//   * @param id the id of the dataset
+//   * @return a Response containing the list of Forms
+//   */
+//  private Response getFormResponse(String id) {
+//    //getFormStore().retrieve()
+//    
+//    Request reqGET = new Request(Method.GET, RIAPUtils.getRiapBase()
+//        + application.getSettings().getString(Consts.APP_DATASETS_URL) + "/" + id + "/forms");
+//    ArrayList<Preference<MediaType>> objectMediaType = new ArrayList<Preference<MediaType>>();
+//    objectMediaType.add(new Preference<MediaType>(MediaType.APPLICATION_JAVA_OBJECT));
+//    reqGET.getClientInfo().setAcceptedMediaTypes(objectMediaType);
+//    org.restlet.Response response = getContext().getClientDispatcher().handle(reqGET);
+//
+//    if (response == null || Status.isError(response.getStatus().getCode())) {
+//      throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
+//    }
+//
+//    @SuppressWarnings("unchecked")
+//    ObjectRepresentation<Response> or = (ObjectRepresentation<Response>) response.getEntity();
+//    try {
+//      return or.getObject();
+//    }
+//    catch (IOException e) { // marshalling error
+//      throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
+//    }
+//  }
 
   @Override
   public void describeGet(MethodInfo info) {

@@ -23,6 +23,8 @@ import org.restlet.Context;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.application.SitoolsParameterizedApplication;
 import fr.cnes.sitools.common.model.Category;
+import fr.cnes.sitools.dataset.DataSetStoreInterface;
+import fr.cnes.sitools.form.dataset.FormStoreInterface;
 import fr.cnes.sitools.project.graph.GraphStoreInterface;
 import fr.cnes.sitools.project.model.Project;
 import fr.cnes.sitools.server.Consts;
@@ -42,27 +44,31 @@ public abstract class AbstractProjectApplication extends SitoolsParameterizedApp
 
   /** store for graph **/
   private GraphStoreInterface graphStore = null;
+  
+  /** store for dataset **/
+  private DataSetStoreInterface dataSetStore = null;
+  
+  /** store for forms **/
+  private FormStoreInterface formStore = null;
 
   /**
    * Constructor
-   * 
-   * @param context
-   *          Restlet Host Context
+   * @param context Restlet Host Context
    */
   @SuppressWarnings("unchecked")
   public AbstractProjectApplication(Context context) {
     super(context);
     this.store = (ProjectStoreInterface) context.getAttributes().get(ContextAttributes.APP_STORE);
     this.graphStore = (GraphStoreInterface) context.getAttributes().get(Consts.APP_STORE_GRAPH);
+    this.dataSetStore = (DataSetStoreInterface) context.getAttributes().get(ContextAttributes.APP_STORE_DATASET);
+    this.formStore = (FormStoreInterface) context.getAttributes().get(ContextAttributes.APP_STORE_FORM);
   }
 
   /**
    * Constructor
    * 
-   * @param context
-   *          Restlet Host Context
-   * @param projectId
-   *          the project identifier
+   * @param context Restlet Host Context
+   * @param projectId the project identifier
    */
   @SuppressWarnings("unchecked")
   public AbstractProjectApplication(Context context, String projectId) {
@@ -70,12 +76,13 @@ public abstract class AbstractProjectApplication extends SitoolsParameterizedApp
     this.projectId = projectId;
     this.store = (ProjectStoreInterface) context.getAttributes().get(ContextAttributes.APP_STORE);
     this.graphStore = (GraphStoreInterface) context.getAttributes().get(Consts.APP_STORE_GRAPH);
+    this.dataSetStore = (DataSetStoreInterface) context.getAttributes().get(ContextAttributes.APP_STORE_DATASET);
+    this.formStore = (FormStoreInterface) context.getAttributes().get(ContextAttributes.APP_STORE_FORM);
     setCategory(Category.USER);
   }
 
   /**
    * Gets the project store value
-   * 
    * @return the ProjectStore
    */
   public final ProjectStoreInterface getStore() {
@@ -84,9 +91,7 @@ public abstract class AbstractProjectApplication extends SitoolsParameterizedApp
 
   /**
    * Sets the value of graphStore
-   * 
-   * @param graphStore
-   *          the graphStore to set
+   * @param graphStore the graphStore to set
    */
   public final void setGraphStore(GraphStoreInterface graphStore) {
     this.graphStore = graphStore;
@@ -94,7 +99,6 @@ public abstract class AbstractProjectApplication extends SitoolsParameterizedApp
 
   /**
    * Gets the graphStore value
-   * 
    * @return the graphStore
    */
   public final GraphStoreInterface getGraphStore() {
@@ -102,43 +106,65 @@ public abstract class AbstractProjectApplication extends SitoolsParameterizedApp
   }
 
   /**
+   * Sets the value of graphStore
+   * @param graphStore the graphStore to set
+   */
+  public final void setDataSetStore(DataSetStoreInterface dataSetStore) {
+    this.dataSetStore = dataSetStore;
+  }
+
+  /**
+   * Gets the DataSet store
+   * @return the DataSet store
+   */
+  public final DataSetStoreInterface getDataSetStore() {
+    return dataSetStore;
+  }
+  
+  /**
+   * Sets the value of formStore
+   * @param formStore the formStore to set
+   */
+  public final void setFormStore(FormStoreInterface formStore) {
+    this.formStore = formStore;
+  }
+  
+  /**
+   * Gets the DataSet store
+   * @return the DataSet store
+   */
+  public final FormStoreInterface getFormStore () {
+    return formStore;
+  }
+  
+  /**
    * Create and attach a new ProjectApplication
-   * 
-   * @param ds
-   *          Project object
+   * @param ds Project object
    */
   public abstract void attachProject(Project ds);
 
   /**
    * Detach the ProjectApplication corresponding with the Project given object
-   * 
-   * @param ds
-   *          Project object
+   * @param ds Project object
    */
   public abstract void detachProject(Project ds);
 
   /**
    * Detach the ProjectApplication corresponding with the Project given object
-   * 
-   * @param ds
-   *          Project object
+   * @param ds Project object
    */
   public abstract void detachProjectDefinitif(Project ds);
 
   /**
    * Detach the ProjectApplication corresponding with the Project given object
+   * @param ds Project object
    * 
-   * @param ds
-   *          Project object
-   * 
-   * @param isSynchro
-   *          true not to update the store when detaching the project
+   * @param isSynchro true not to update the store when detaching the project
    */
   public abstract void detachProjectDefinitif(Project ds, boolean isSynchro);
 
   /**
    * Gets the projectId value
-   * 
    * @return the projectId
    */
   public final String getProjectId() {
@@ -147,21 +173,15 @@ public abstract class AbstractProjectApplication extends SitoolsParameterizedApp
 
   /**
    * Detach the ProjectApplication corresponding with the Project given object
-   * 
-   * @param project
-   *          Project object
-   * @param isSynchro
-   *          true not to update the store when detaching the project
+   * @param project Project object
+   * @param isSynchro true not to update the store when detaching the project
    */
   public abstract void detachProject(Project project, boolean isSynchro);
 
   /**
    * Create and attach a new ProjectApplication
-   * 
-   * @param project
-   *          Project object
-   * @param isSynchro
-   *          true not to update the store when detaching the project
+   * @param projectProject object
+   * @param isSynchro true not to update the store when detaching the project
    */
   public abstract void attachProject(Project project, boolean isSynchro);
 
