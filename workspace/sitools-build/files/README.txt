@@ -2,8 +2,8 @@
 ______________
 
 Identification                       : SITools2
-Date                                 : 2016-05-10
-Version                              : 3.0.2
+Date                                 : 2016-08-30
+Version                              : 3.0.3
 Owner                                : CNES
 Developer                            : AKKA Technologies
 Type                                 : Complete
@@ -16,9 +16,29 @@ Reference tag                        : (3.0)
 
 2/ Changes
 ______________
+-3.0.3 (2016-05-10)
+
+	This version adds some new features and fixes some bugs from the version 3.0.2
+	
+	* New features :
+		- New "featureType" to have a column behave as a datasetLink but configured with a column from the dataset. 
+		This column should contain the name of the dataset to link and the name of the column using the format : datasetName||columnName
+		of the column is not specified the primaryKey of the target dataset is used  
+		- Contact page from the portal to send email to the SITools2 administrator
+	
+	* Enhancements :
+		- Better error handling from the datastorage
+		- Login page pops up when a 401 status is sent by the server	
+
+	* Bug fixed :
+		- Link layout problem from the livegrid view #68
+		- Legal information problem #67
+		- Form width not used in fixed desktop mode #65
+		- Delete an application from the applications list removes the according application plugin #56
+______________
 -3.0.2 (2016-05-10)
 
-	This version fixes some bugs from the version 3.0
+	This version fixes some bugs from the version 3.0.1
 
 	* Bug fixed :
 		- Fix Problem of DatasetLink #60
