@@ -16,20 +16,53 @@
  * SITools2. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-/*global Ext, sitools, i18n, projectGlobal, alertFailure, showResponse */
+/* global Ext, sitools, i18n, projectGlobal, alertFailure, showResponse */
 
 Ext.namespace('sitools.user.modules');
 /**
  * datasetExplorer Module
- * 
  * @class sitools.user.modules.datasetExplorer
  * @extends Ext.Panel
  */
 Ext.define('sitools.user.modules.FormAsMenuModule', {
     extend : 'sitools.user.core.Module',
-    
-    controllers : ['sitools.user.controller.modules.formModule.FormAsMenuModuleController'],
 
+    controllers : [ 'sitools.user.controller.modules.formModule.FormAsMenuModuleController' ],
+    areSingleDatasetFormsLoaded : false,
+    areMultiDatasetFormsLoaded : false,
+    isLoaded : function () {
+        return this.areSingleDatasetFormsLoaded && this.areMultiDatasetFormsLoaded;
+    },
+    load : function () {
+        this.prepareStores();
+    },
+    prepareStores : function () {
+        var project = Ext.getStore('ProjectStore').getProject();
+        this.formStore = Ext.create('sitools.user.store.FormStore', {
+            autoLoad : false,
+            storeId : 'formAsMenuModule_FormStore',
+            listeners : {
+                scope : this,
+                load : function () {
+                    this.areSingleDatasetFormsLoaded = true;
+                }
+            }
+        });
+        this.formStore.setCustomUrl(project.get('sitoolsAttachementForUsers') + '/forms');
+        this.formStore.load();
+        this.formMultiDsStore = Ext.create('sitools.user.store.FormProjectStore', {
+            autoLoad : false,
+            storeId : 'formAsMenuModule_MultiDsFormStore',
+            listeners : {
+                scope : this,
+                load : function () {
+                    this.areMultiDatasetFormsLoaded = true;
+                }
+            }
+        });
+        this.formMultiDsStore.setCustomUrl(project.get('sitoolsAttachementForUsers') + '/formsProject');
+        this.formMultiDsStore.load();
+    },
     init : function (componentConfig) {
         var event = componentConfig.event;
         var triggerComponent = componentConfig.triggerComponent;
@@ -42,11 +75,9 @@ Ext.define('sitools.user.modules.FormAsMenuModule', {
         }
         this.callParent(arguments);
     },
-
     show : function (view, x, y) {
-    	view.showAt(x, y);
+        view.showAt(x, y);
     },
-    
     /**
      * method called when trying to save preference
      * 
@@ -58,80 +89,22 @@ Ext.define('sitools.user.modules.FormAsMenuModule', {
             preferencesFileName : this.id
         };
     },
-    
-    openMe : function (dataview, module, event) {
-    	
-    	this.storeDataview = dataview.store;
-    	this.storeDataview.removeAll();
-    	
-    	var project = Ext.getStore('ProjectStore').getProject();
-        
-        this.formStore = Ext.create('sitools.user.store.FormStore', {
-    		 autoLoad : true, 
-        	 listeners : {
-     			scope : this, 
-     			load : this.onLoadDatasetsForms
-     		}
-        });
-        this.formStore.setCustomUrl(project.get('sitoolsAttachementForUsers') + '/forms');
-   	
-        this.formMultiDsStore = Ext.create('sitools.user.store.FormStore', {
-        	autoLoad : true, 
-            listeners : {
-    			scope : this, 
-    			load : this.onLoadMultiDSForms
-    		}
-        });
-        this.formMultiDsStore.setCustomUrl(project.get('sitoolsAttachementForUsers') + '/formsProject');
-    	
-//    	this.formAsMenu = Ext.create('sitools.user.view.modules.formModule.FormAsMenuModuleView', {
-//    		storeDataview : store,
-//    		moduleXtype : this.$className
-//    	});
-	},
-	
-	openMyComponent : function (moduleRecord, event) {
-		
-		if (moduleRecord.get('formType') == 'simpleDs') {
-			this.showDetail(moduleRecord);
-		}
-		else if (moduleRecord.get('formType') == 'multiDs') {
-			this.showDetailMultiDs(moduleRecord);
-		}
-		
-	},
-	
-	onLoadDatasetsForms : function (store, records, successful) {
-		var menuItems = [];
-		
-		Ext.each(records, function (record) {
-			record.set('type', 'component');
-			record.set('formType', 'simpleDs');
-			record.set('xtype', this.$className);
-			record.set('icon', 'formIcon');
-			
-			this.storeDataview.add(record);
-		}, this);
-	},
-	
-	onLoadMultiDSForms : function (store, records, successful) {
-		var menuItems = [];
-		
-		Ext.each(records, function (record) {
-			record.set('type', 'component');
-			record.set('formType', 'multiDs'); // used to open form from moduleDataview
-			record.set('xtype', this.$className);
-			record.set('icon', 'formIcon');
-			
-			this.storeDataview.add(record);
-		}, this);
-	},
-	
-	showDetail : function (rec) {
-   	 if (rec.get('authorized') === "false") {
+
+    openMyComponent : function (moduleRecord, event) {
+
+        if (moduleRecord.get('formType') == 'simpleDs') {
+            this.showDetail(moduleRecord);
+        } else if (moduleRecord.get('formType') == 'multiDs') {
+            this.showDetailMultiDs(moduleRecord);
+        }
+
+    },
+
+    showDetail : function (rec) {
+        if (rec.get('authorized') === "false") {
             return;
         }
-        
+
         Ext.Ajax.request({
             url : rec.get('parentUrl'),
             method : 'GET',
@@ -139,40 +112,38 @@ Ext.define('sitools.user.modules.FormAsMenuModule', {
             success : function (response) {
                 try {
                     var json = Ext.decode(response.responseText);
-                    if (! json.success) {
+                    if (!json.success) {
                         Ext.Msg.alert(i18n.get('label.error'), json.message);
                         return;
                     }
 
                     var dataset = json.dataset;
-                    
+
                     var formComponent = Ext.create('sitools.user.component.form.FormComponent');
                     formComponent.create(Desktop.getApplication());
                     formComponent.init(rec.getData(true), dataset);
-                    
+
                     return;
-                }
-                catch (err) {
+                } catch (err) {
                     Ext.Msg.alert(i18n.get('label.error'), err);
                     return;
                 }
-            }, 
+            },
             failure : function () {
                 Ext.Msg.alert(i18n.get('label.error'), i18n.get('label.noActiveDatasetFound'));
                 return;
             }
         });
-   },
-   
-   showDetailMultiDs : function (rec) {
-   	 if (Ext.isEmpty(rec)) {
+    },
+
+    showDetailMultiDs : function (rec) {
+        if (Ext.isEmpty(rec)) {
             return;
         }
 
         var formComponent = Ext.create('sitools.user.component.form.FormComponent');
         formComponent.create(Desktop.getApplication());
         formComponent.openProjectForm(rec.getData(true));
-   }
-	
-});
+    }
 
+});

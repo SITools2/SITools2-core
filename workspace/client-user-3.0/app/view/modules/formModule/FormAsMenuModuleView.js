@@ -42,115 +42,88 @@ Ext.define('sitools.user.view.modules.formModule.FormAsMenuModuleView', {
     formMultiDsLoaded : false,
     plain : true,
     border : false,
-    
     initComponent : function () {
-        
     	var project = Ext.getStore('ProjectStore').getProject();
         
-        this.formStore = Ext.create('sitools.user.store.FormStore', {
-    		 autoLoad : true, 
-        	 listeners : {
-     			scope : this, 
-     			load : this.onLoadDatasetsForms
-     		}
-        });
-        this.formStore.setCustomUrl(project.get('sitoolsAttachementForUsers') + '/forms');
-   	
-        this.formMultiDsStore = Ext.create('sitools.user.store.FormProjectStore', {
-        	autoLoad : true,
-            listeners : {
-    			scope : this, 
-    			load : this.onLoadMultiDSForms
-    		}
-        });
-        this.formMultiDsStore.setCustomUrl(project.get('sitoolsAttachementForUsers') + '/formsProject');
+    	this.formStore = Ext.StoreManager.lookup('formAsMenuModule_FormStore');
+    	this.formMultiDsStore = Ext.StoreManager.lookup('formAsMenuModule_MultiDsFormStore');
     	
+    	if (!Ext.isEmpty(this.formStore) && !Ext.isEmpty(this.formMultiDsStore)) {
+    	    this.items = this.getMenuItems();
+    	}
+
         this.callParent(arguments);
     },
-    
     onLoadDatasetsForms : function (store, records, successful) {
-		var menuItems = [];
-		
-//		Ext.each(records, function (record) {
-//			record.set('type', 'component');
-//			record.set('formType', 'simpleDs');
-//			record.set('xtype', this.moduleXtype);
-//			
-//			this.storeDataview.add(record);
-//		}, this);
-		
-		this.formStore.each(function (rec) {
-			menuItems.push(Ext.create('Ext.menu.Item', {
-				text : rec.get("name"),
-				cls : 'menuItemCls',
-				iconCls : 'form',
-				sitoolsType : 'datasetForm',
-				rec : rec
-			}), {
-            	xtype : 'menuseparator',
-            	separatorCls : 'customMenuSeparator'
-    		});
-		}, this);
-
-		if (menuItems.length > 0) {
-		    menuItems.unshift(Ext.create('Ext.menu.Item', {
-		        text : i18n.get('label.forms'),
-		        cls : 'userMenuCls',
-		        plain : false,
-	        	canActivate : false
-		    }), {
-            	xtype : 'menuseparator',
-            	separatorCls : 'customMenuSeparator'
-    		});
-		}
-		
-		this.add(menuItems);
+		var itemsArray = Ext.Array.toArray(this.items);
+        this.removeAll();
+        this.add(this.getFormMenuItems());
+        this.add(itemsArray);
 	},
-	
 	onLoadMultiDSForms : function (store, records, successful) {
-		var menuItems = [];
-		
-//		Ext.each(records, function (record) {
-//			record.set('type', 'component');
-//			record.set('formType', 'multiDs'); // used to open form from moduleDataview
-//			record.set('xtype', this.moduleXtype);
-//			this.storeDataview.add(record);
-//		}, this);
-		
-		this.formMultiDsStore.each(function (rec) {
-			menuItems.push(Ext.create('Ext.menu.Item', {
-				text : rec.get("name"), 
-				cls : 'menuItemCls',
-				iconCls : 'form',
-				rec : rec,
-				sitoolsType : 'projectForm'
-			}), {
-            	xtype : 'menuseparator',
-            	separatorCls : 'customMenuSeparator'
-    		});
-		}, this);
-
-		if (menuItems.length > 0) {
-			menuItems.unshift(Ext.create('Ext.menu.Item', {
-		        text : i18n.get('label.projectForm'),
-		        cls : 'userMenuCls',
-		        plain : false,
-	        	canActivate : false
-		    }), {
-            	xtype : 'menuseparator',
-            	separatorCls : 'customMenuSeparator'
-    		});
-		}
-		
-		this.add(menuItems);
-		this.formsLoaded = true;
-		this.menuMultiDsFormLoaded = true;	
-		
+	    this.add(this.getMultiDsFormMenuItems());
 	},
-	
+	getMenuItems: function () {
+	    return Ext.Array.union(this.getFormMenuItems(), this.getMultiDsFormMenuItems());
+	},
+	getFormMenuItems: function () {
+	    var menuItems = [];
+	    this.formStore.each(function (rec) {
+            menuItems.push(Ext.create('Ext.menu.Item', {
+                text : rec.get("name"),
+                cls : 'menuItemCls',
+                iconCls : 'form',
+                sitoolsType : 'datasetForm',
+                rec : rec
+            }), {
+                xtype : 'menuseparator',
+                separatorCls : 'customMenuSeparator'
+            });
+        }, this);
+
+        if (menuItems.length > 0) {
+            menuItems.unshift(Ext.create('Ext.menu.Item', {
+                text : i18n.get('label.forms'),
+                cls : 'userMenuCls',
+                plain : false,
+                canActivate : false
+            }), {
+                xtype : 'menuseparator',
+                separatorCls : 'customMenuSeparator'
+            });
+        }
+        return menuItems;
+	},
+	getMultiDsFormMenuItems: function () {
+	    var menuItems = [];
+	    this.formMultiDsStore.each(function (rec) {
+            menuItems.push(Ext.create('Ext.menu.Item', {
+                text : rec.get("name"), 
+                cls : 'menuItemCls',
+                iconCls : 'form',
+                rec : rec,
+                sitoolsType : 'projectForm'
+            }), {
+                xtype : 'menuseparator',
+                separatorCls : 'customMenuSeparator'
+            });
+        }, this);
+
+        if (menuItems.length > 0) {
+            menuItems.unshift(Ext.create('Ext.menu.Item', {
+                text : i18n.get('label.projectForm'),
+                cls : 'userMenuCls',
+                plain : false,
+                canActivate : false
+            }), {
+                xtype : 'menuseparator',
+                separatorCls : 'customMenuSeparator'
+            });
+        }
+        return menuItems;
+	},
     /**
      * method called when trying to save preference
-     * 
      * @returns
      */
     _getSettings : Ext.emptyFn

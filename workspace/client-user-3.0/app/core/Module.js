@@ -28,19 +28,19 @@ Ext.define('sitools.user.core.Module', {
         observable: 'Ext.util.Observable',
         plugin : 'sitools.user.core.SitoolsPlugin'
     },
-    
     config : {
         moduleModel : null,
         viewCmp : null,
         application : null,
         controllers : [] 
     },
-    
+    /**
+     * Method to override to initialize the module
+     */
+    init : Ext.emptyFn,
     /**
      * Show the given view
-     * 
-     * @param view
-     *            the view to show
+     * @param view the view to show
      */
     show : function (view) {
         this.setViewCmp(view);
@@ -51,12 +51,6 @@ Ext.define('sitools.user.core.Module', {
         navMode.openModule(view, this.getModuleModel());
         view.fireEvent("registermodule", this, view);
     },
-    
-    /**
-     * Method to override to initialize the module
-     */
-    init : Ext.emptyFn,
-
     /**
      * Initialize the module
      *
@@ -79,27 +73,21 @@ Ext.define('sitools.user.core.Module', {
         //load javascripts, then css then internationalization
         this.loadJs(callback, scope);
     },
-
     /**
      * Method called when a module is opened into a static DIV.
      */
     createViewForDiv : Ext.emptyFn,
-    
     /**
      * method called when trying to save preference
      * @returns
      */
     _getSettings : Ext.emptyFn,
-    
     /**
      * use to open a component linked to the module
      */
     openMyComponent : null,
-    
     /**
      * use to delegate opening to the module itself
      */
     openMe : null
-
-
 });

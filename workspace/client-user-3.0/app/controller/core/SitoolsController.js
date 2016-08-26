@@ -21,8 +21,6 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
     extend : 'Ext.app.Controller',
 
     stores : [ 'ProjectStore', 'ModulesStore' ],
-    
-    
 
     init : function () {
         var me = this, desktopCfg;
@@ -33,10 +31,8 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
 				click : function (btn) {
 					btn.toggle();
 					Ext.create('sitools.user.view.header.ModuleDataView').show();
-//					this.dvModules.show();
 				}
 			},
-			
             'moduleToolbar > toolbar >button' : {
                 click : function (btn, event) {
                     var moduleRecord = btn.module;
@@ -49,7 +45,6 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
                     }
                 }
             },
-            
             'moduleToolbar > toolbar > button > menu > menuitem' : {
                 click : function (btn, event) {
                     var moduleRecord = btn.module;
@@ -62,7 +57,6 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
                     }
                 }
             },
-            
 			"component [type='module']" : {
 			    registermodule : function (module, view) {
 			        module.moduleModel.set("instantiated", true);
@@ -86,7 +80,6 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
 			}
         });
         
-        
         this.getApplication().on('projectInitialized', this.loadProject, this);
         this.getApplication().on('footerLoaded', Desktop.loadPreferences, this);
         this.getApplication().on('footerLoaded', Desktop.loadModulesInDiv, this);
@@ -107,13 +100,21 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
     
     // 9
     loadModules : function () {
-    	var store = this.getStore("ModulesStore");
-    	var url = Project.getSitoolsAttachementForUsers() + loadUrl.get('APP_PROJECTS_MODULES_URL');
+        var store = this.getStore("ModulesStore");
+        var url = Project.getSitoolsAttachementForUsers() + loadUrl.get('APP_PROJECTS_MODULES_URL');
         store.setCustomUrl(url);
-        
         store.load({
-        	scope : this,
-        	callback : function (modules, operation, success) {
+            scope : this,
+            callback : function (modules, operation, success) {
+                Ext.each(modules, function (module) {
+                   // The formAsMenuModule is a specific module
+                    // that loads its forms once at the beginning.
+                    var controller = this;
+                    if (module.get('xtype') === 'sitools.user.modules.FormAsMenuModule') {
+                        controller.formModule = Ext.create(module.data.xtype);
+                        controller.formModule.load();
+                    }
+                }, this);
                 this.getApplication().noticeProjectLoaded();
             }
         })
@@ -123,13 +124,49 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
         if (moduleModel.get("instantiated")) {
             var module = moduleModel.get("instance");
             module.show(module.getViewCmp());
+        } else {
+            var module = null;
+            var ready = true;
+            var xtype = moduleModel.get('xtype')
+            if (xtype === 'sitools.user.modules.FormAsMenuModule') {
+                module = this.formModule;
+                ready = module.isLoaded();
+            } else {
+                module = Ext.create(xtype);
+            }
+            if (ready) {
+                this.createModule(module, moduleModel, componentConfig);
+            } else {
+                var mask = new Ext.LoadMask(Ext.getBody(), {msg:i18n.get('label.wait')});
+                mask.show();
+                Ext.util.TaskManager.start({
+                    run: function (module, moduleModel, componentConfig, mask) {
+                        if (this.formModule.isLoaded()) {
+                            if (!Ext.isEmpty(mask)) {
+                                mask.hide();
+                                Ext.getBody().unmask();
+                            }
+                            this.createModule(module, moduleModel, componentConfig);
+                            return false;
+                        }
+                    },
+                    onError: function () {
+                        Ext.getBody().unmask();
+                        Ext.MessageBox.alert(i18n.get('label.unknownError'), i18n.get('label.unknownError'));
+                    },
+                    args: [module, moduleModel, componentConfig, mask],
+                    scope: this,
+                    interval: 300,
+                    duration: 120000
+                });
+            }
         }
-        else {
-            var module = Ext.create(moduleModel.data.xtype);
-            module.create(this.getApplication(), moduleModel, function() {
-                this.init(componentConfig);
-            }, module);
-        }
+    },
+    
+    createModule: function (module, moduleModel, componentConfig) {
+        module.create(this.getApplication(), moduleModel, function() {
+            this.init(componentConfig);
+        }, module);
     },
     
     openComponent : function (componentClazz, componentConfig, windowConfig) {
