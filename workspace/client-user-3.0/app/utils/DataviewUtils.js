@@ -95,7 +95,7 @@ Ext.define('sitools.user.utils.DataviewUtils', {
             };
         } else {
             renderer = function (value) {
-                var htmlFormat = "<span data-qtip='{0}'>{0}</span>";
+                var htmlFormat = "<span data-qtip='{0}'>{1}</span>";
                 var valueFormat = value;
                 if (sql2ext.get(item.sqlColumnType) == 'dateAsString') {
                     valueFormat = sitools.user.utils.DataviewUtils.formatDate(value, item);
@@ -103,7 +103,7 @@ Ext.define('sitools.user.utils.DataviewUtils', {
                 if (sql2ext.get(item.sqlColumnType) == 'boolean') {
                     valueFormat = value ? i18n.get('label.true') : i18n.get('label.false');
                 }
-                return Ext.String.format(htmlFormat, valueFormat);;
+                return Ext.String.format(htmlFormat, valueFormat.replace(new RegExp("'", 'g'), "\""), valueFormat);;
             };
         }
         return renderer;
