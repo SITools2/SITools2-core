@@ -1,8 +1,11 @@
 package fr.cnes.sitools.contact;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.restlet.Request;
 import org.restlet.data.Method;
@@ -14,15 +17,17 @@ import org.restlet.representation.Variant;
 import org.restlet.resource.Put;
 import org.restlet.resource.ResourceException;
 
+import fr.cnes.sitools.common.SitoolsSettings;
+import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.mail.model.Mail;
 import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.util.MailUtils;
 import fr.cnes.sitools.util.RIAPUtils;
+import fr.cnes.sitools.util.TemplateUtils;
 
 public class ContactResource extends AbstractContactResource {
 
-  private final static String BR = "<BR />";
-  
   @Override
   public void sitoolsDescribe() {
     setName("ContactResource");
@@ -66,20 +71,28 @@ public class ContactResource extends AbstractContactResource {
   private Mail prepareMail(Contact contact, String recipient) {
     Mail mail = new Mail();
     mail.setSubject("SITools2 - Someone has contacted you");
-    mail.setBody(buildBody(contact));
+    mail.setBody(buildBodyWithTemplate(contact, mail));
     String[] toList = new String[] {recipient};
     mail.setToList(Arrays.asList(toList));
     
     return mail;
   }
   
-  private String buildBody(Contact contact) {
-    StringBuilder message = new StringBuilder();
-    message.append("Dear administrator,").append(BR);
-    message.append(contact.getName() + " has sent you a message using the contact form:").append(BR).append(BR);
-    message.append(contact.getBody()).append(BR);
-    message.append(contact.getName()).append(" ("+contact.getEmail()+")").append(BR);
-    return message.toString();
+  private String buildBodyWithTemplate(Contact contact, Mail mail) {
+    SitoolsSettings settings = ((SitoolsApplication) getApplication()).getSettings();
+    // use a freemarker template for email body with Mail object
+    String templatePath = settings.getRootDirectory() + settings.getString(Consts.TEMPLATE_DIR)
+        + "mail.contact.ftl";
+    contact.setBody(StringEscapeUtils.escapeHtml(contact.getBody()));
+    Map<String, Object> root = new HashMap<String, Object>();
+    root.put("contact", contact);
+    //MailUtils.addDefaultParameters(root, getSettings(), mail);
+    root.put("sitoolsUrl", settings.getPublicHostDomain() + settings.getString(Consts.APP_URL) + settings.getString(Consts.APP_CLIENT_USER_URL) + "/");
+    TemplateUtils.describeObjectClassesForTemplate(templatePath, root);
+
+    root.put("context", getContext());
+
+    return TemplateUtils.toString(templatePath, root);
   }
 
   private void send(Mail mail) {

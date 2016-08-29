@@ -12,12 +12,12 @@ Dear administrator,
 </p>
 
 <p>
-${inscription.firstName} ${inscription.lastName} is asking for registration. <br/>
-Please connect to <a href="${sitoolsUrl}">SITools2</a> to validate his registration.
+${contact.name} has sent you a message using the contact form:<br/>
+<blockquote><pre>${contact.body}</pre></blockquote><br/><br/>
+${contact.name} (${contact.email})
 </p>
 
 <#include "mail.bottom.simple.ftl">
-
 
 </body>
 </html>
