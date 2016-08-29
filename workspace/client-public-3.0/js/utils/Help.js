@@ -38,7 +38,7 @@ Ext.define('sitools.public.utils.Help', {
     
     initComponent : function () {
         this.setTitle(i18n.get('label.help'));
-        this.url = loadUrl.get('APP_URL') + i18n.get('path.help.userguide');
+        this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_USER_URL') + '/resources/help/' + i18n.get('iso.lang') + '/User_Guide.html';
         this.layout = "border";
         var htmlReaderCfg = {
             defaults : {
