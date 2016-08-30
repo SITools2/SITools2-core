@@ -110,5 +110,8 @@ public interface ContextAttributes {
 
   /** Attribute to store the custom authorizer for an application. */
   String CUSTOM_AUTHORIZER = "CUSTOM_AUTHORIZER";
+  
+  /** Attribute for adding a filter to redirect to a login page if not authenticated. */
+  String AUTHENTICATED_FILTER = "AUTHENTICATED_FILTER";
 
 }

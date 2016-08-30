@@ -83,8 +83,8 @@ public class SecurityAuthorizationTestCase extends SitoolsServerTestCase {
       response = client.handle(request);
 
       assertNotNull(response);
-      assertTrue(response.getStatus().isError());
-      assertEquals(Status.CLIENT_ERROR_FORBIDDEN, response.getStatus());
+      assertTrue("Status returned : "+ response.getStatus(), response.getStatus().isError());
+      assertEquals("Status returned : "+ response.getStatus(),Status.CLIENT_ERROR_FORBIDDEN, response.getStatus());
 
     }
     finally {

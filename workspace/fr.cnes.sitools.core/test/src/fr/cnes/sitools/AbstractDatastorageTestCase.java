@@ -304,7 +304,7 @@ public abstract class AbstractDatastorageTestCase extends SitoolsServerTestCase 
   }
 
   /**
-   * Query the storage at the specified url and assert that it is forbiden
+   * Query the storage at the specified url and assert that it is returns a redirection
    * 
    * @param storage
    *          the storage to query
@@ -318,8 +318,8 @@ public abstract class AbstractDatastorageTestCase extends SitoolsServerTestCase 
     org.restlet.Response response = client.handle(request);
     try {
       assertNotNull(response);
-      assertTrue(response.getStatus().isError());
-      assertEquals(Status.CLIENT_ERROR_FORBIDDEN, response.getStatus());
+      assertTrue(response.getStatus().isRedirection());
+      assertEquals(Status.REDIRECTION_TEMPORARY, response.getStatus());
     }
     finally {
       RIAPUtils.exhaust(response);

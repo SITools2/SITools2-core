@@ -83,6 +83,8 @@ public final class StorageApplication extends SitoolsApplication {
     if (this.store == null) {
       getLogger().warning("Missing APP_STORE in StorageApplication context");
     }
+    
+    context.getAttributes().put(ContextAttributes.AUTHENTICATED_FILTER, "TRUE");
 
   }
 
