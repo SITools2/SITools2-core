@@ -276,7 +276,10 @@ Ext.define('sitools.public.userProfile.Login', {
                                     }
                                 });
                             }
-                        } else {
+                        } if (this.redirect) {
+                            window.location.href = this.redirect;
+                        }
+                        else {
                             window.location.reload();
                         }
 

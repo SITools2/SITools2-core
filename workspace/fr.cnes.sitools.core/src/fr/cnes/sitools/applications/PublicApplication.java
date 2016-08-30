@@ -1,25 +1,35 @@
 /*******************************************************************************
  * Copyright 2010-2016 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
- *
+ * <p/>
  * This file is part of SITools2.
- *
+ * <p/>
  * SITools2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p/>
  * SITools2 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p/>
  * You should have received a copy of the GNU General Public License
  * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package fr.cnes.sitools.applications;
 
-import java.io.File;
-
+import fr.cnes.sitools.client.*;
+import fr.cnes.sitools.common.SitoolsSettings;
+import fr.cnes.sitools.common.application.SitoolsApplication;
+import fr.cnes.sitools.common.exception.SitoolsException;
+import fr.cnes.sitools.common.model.Category;
+import fr.cnes.sitools.login.*;
+import fr.cnes.sitools.security.EditUserProfileResource;
+import fr.cnes.sitools.security.FindRoleResource;
+import fr.cnes.sitools.security.captcha.CaptchaFilter;
+import fr.cnes.sitools.security.captcha.CaptchaResource;
+import fr.cnes.sitools.security.challenge.ChallengeToken;
+import fr.cnes.sitools.server.Consts;
 import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.Response;
@@ -32,6 +42,7 @@ import org.restlet.routing.Redirector;
 import org.restlet.routing.Router;
 import org.restlet.routing.Template;
 
+import java.io.File;
 import fr.cnes.sitools.client.ProxyRestlet;
 import fr.cnes.sitools.client.ResetPasswordIndex;
 import fr.cnes.sitools.client.SitoolsVersionResource;
@@ -56,9 +67,9 @@ import fr.cnes.sitools.server.Consts;
 
 /**
  * PublicApplication to expose commons files and cots.
- * 
+ *
  * @author jp.boignard (AKKA Technologies)
- * 
+ *
  */
 public final class PublicApplication extends SitoolsApplication {
 
@@ -68,9 +79,12 @@ public final class PublicApplication extends SitoolsApplication {
   /** The resetPassword index page url. */
   private String resetPasswordIndexUrl;
 
+  /** The resetPassword index page url. */
+  private String loginPageRedirectIndexUrl;
+
   /**
    * Constructor.
-   * 
+   *
    * @param context
    *          Restlet {@code Context}
    * @throws SitoolsException
@@ -86,18 +100,28 @@ public final class PublicApplication extends SitoolsApplication {
 
     // Application settings
 
-    resetPasswordIndexUrl = getSettings().getRootDirectory() + getSettings().getString(Consts.TEMPLATE_DIR)
-        + getSettings().getString("Starter.resetPassword.resetPasswordIndex");
+    resetPasswordIndexUrl =
+        getSettings().getRootDirectory() + getSettings().getString(Consts.TEMPLATE_DIR) + getSettings()
+            .getString("Starter.resetPassword.resetPasswordIndex");
 
     File resetPasswordIndexFile = new File(resetPasswordIndexUrl);
     if (resetPasswordIndexFile == null || !resetPasswordIndexFile.exists()) {
       getLogger().warning("Template file for resetPassword/index.html not found :" + resetPasswordIndexUrl);
     }
 
+    // Login Page Redirect
+    loginPageRedirectIndexUrl =
+        getSettings().getRootDirectory() + getSettings().getString(Consts.TEMPLATE_DIR) + getSettings()
+            .getString("Starter.loginPageRedirect");
+
+    File loginPageRedirectIndexFile = new File(loginPageRedirectIndexUrl);
+    if (loginPageRedirectIndexFile == null || !loginPageRedirectIndexFile.exists()) {
+      getLogger().warning("Template file for loginPageRedirect/index.html not found :" + loginPageRedirectIndexUrl);
+    }
+
   }
 
-  @Override
-  public void sitoolsDescribe() {
+  @Override public void sitoolsDescribe() {
     setCategory(Category.USER);
     setName("Public");
     setDescription("web client application for public resources used by other sitools client applications "
@@ -106,8 +130,7 @@ public final class PublicApplication extends SitoolsApplication {
         + "PUT authorization is used to reset User password");
   }
 
-  @Override
-  public Restlet createInboundRoot() {
+  @Override public Restlet createInboundRoot() {
 
     Router router = new Router(getContext());
 
@@ -155,6 +178,10 @@ public final class PublicApplication extends SitoolsApplication {
     router.attach("/unlockAccount/index.html", UnlockAccountIndex.class).getTemplate()
         .setMatchingMode(Template.MODE_EQUALS);
 
+    // Attach index pages to login page redirect
+    router.attach("/loginPageRedirect/index.html", LoginPageRedirectIndex.class).getTemplate()
+        .setMatchingMode(Template.MODE_EQUALS);
+
     // Captcha resource for unlock account and reset password resource
     router.attach("/captcha", CaptchaResource.class);
 
@@ -174,10 +201,9 @@ public final class PublicApplication extends SitoolsApplication {
     // router.attach("/cots", redirectorCots);
     //
     // router.attach("/", redirectorCommon);
- // Expose single welcome page
+    // Expose single welcome page
     router.attachDefault(new Restlet() {
-      @Override
-      public void handle(Request arg0, Response arg1) {
+      @Override public void handle(Request arg0, Response arg1) {
         SitoolsSettings settings = SitoolsSettings.getInstance();
         File file = new File(settings.getString(Consts.APP_PATH) + settings.getString(Consts.APP_CLIENT_PUBLIC_PATH)
             + "/res/html/index.htm");
@@ -189,15 +215,14 @@ public final class PublicApplication extends SitoolsApplication {
 
   /**
    * Gets the public base URL (domain name).
-   * 
+   *
    * @return String
    */
   public String getBaseUrl() {
     return getSettings().getPublicHostDomain() + getSettings().getString(Consts.APP_URL);
   }
 
-  @Override
-  public ApplicationInfo getApplicationInfo(Request request, Response response) {
+  @Override public ApplicationInfo getApplicationInfo(Request request, Response response) {
     ApplicationInfo appInfo = super.getApplicationInfo(request, response);
     appInfo.setDocumentation("Web client application for public resources used by other SITools2 client applications.");
     return appInfo;
@@ -205,7 +230,7 @@ public final class PublicApplication extends SitoolsApplication {
 
   /**
    * Gets the challengeToken value
-   * 
+   *
    * @return the challengeToken
    */
   public ChallengeToken getChallengeToken() {
@@ -214,11 +239,20 @@ public final class PublicApplication extends SitoolsApplication {
 
   /**
    * Gets the resetPasswordIndexUrl value
-   * 
+   *
    * @return the resetPasswordIndexUrl
    */
   public String getResetPasswordIndexUrl() {
     return resetPasswordIndexUrl;
+  }
+
+  /**
+   * Gets the loginPageRedirectIndexUrl value
+   *
+   * @return the loginPageRedirectIndexUrl
+   */
+  public String getLoginPageRedirectIndexUrl() {
+    return loginPageRedirectIndexUrl;
   }
 
 }

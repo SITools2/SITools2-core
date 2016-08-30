@@ -49,7 +49,7 @@ import fr.cnes.sitools.util.RIAPUtils;
 
 /**
  * Application for managing directories for data storage in SITools.
- * 
+ *
  * @author jp.boignard (AKKA Technologies)
  */
 public final class StorageApplication extends SitoolsApplication {
@@ -68,7 +68,7 @@ public final class StorageApplication extends SitoolsApplication {
 
   /**
    * Constructor
-   * 
+   *
    * @param context
    *          the RESTlet context must contain a <code>DataStorageStore</code> attribute for APP_STORE key
    */
@@ -120,7 +120,7 @@ public final class StorageApplication extends SitoolsApplication {
 
   /**
    * Attach a directory in the application at start
-   * 
+   *
    * @param storageDirectory
    *          the directory to attach
    */
@@ -216,7 +216,7 @@ public final class StorageApplication extends SitoolsApplication {
 
   /**
    * Detach directory from application
-   * 
+   *
    * @param storageDirectory
    *          the directory to detach
    */
@@ -228,7 +228,7 @@ public final class StorageApplication extends SitoolsApplication {
 
   /**
    * Start a directory by attaching it to the route
-   * 
+   *
    * @param storageDirectory
    *          the initial StorageDirectory
    */
@@ -306,7 +306,7 @@ public final class StorageApplication extends SitoolsApplication {
 
   /**
    * Stop a directory resource
-   * 
+   *
    * @param storageDirectory
    *          the directory to stop
    */
@@ -346,7 +346,7 @@ public final class StorageApplication extends SitoolsApplication {
 
   /**
    * Get the store associated to the application
-   * 
+   *
    * @return the store
    */
   public DataStorageStoreInterface getStore() {

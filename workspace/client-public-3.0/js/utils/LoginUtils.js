@@ -156,7 +156,16 @@ Ext.define('sitools.public.utils.LoginUtils', {
 
     sitoolsLogin : function (config) {
         var loginWindow = Ext.create('sitools.public.userProfile.Login', config);
-        loginWindow.show();
+        loginWindow.show(true, function () {
+            if (!Ext.isEmpty(this.redirect)) {
+                Ext.Msg.show({
+                    title: i18n.get('label.userNotAuthenticated'),
+                    msg: i18n.get('label.logBeforeAccessResource'),
+                    buttons: Ext.Msg.OK,
+                    icon: Ext.Msg.INFO
+                });
+            }
+        });
     },
 
     delegateLoginLogout : function (urlTemplate) {

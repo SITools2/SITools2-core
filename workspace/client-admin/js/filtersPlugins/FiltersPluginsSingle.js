@@ -356,9 +356,9 @@ Ext.define('sitools.admin.filtersPlugins.FiltersPluginsSingle', {
         }
     },
 
-    onClassClick : function (self, rowIndex, e) {
+    onClassClick : function (self, rec, e) {
         if (this.action == "create") {
-            var rec = this.getLastSelectedRecord(this.gridfilterPlugin);
+            //var rec = this.getLastSelectedRecord(this.gridfilterPlugin);
             if (!rec) {
                 return false;
             }
@@ -419,7 +419,9 @@ Ext.define('sitools.admin.filtersPlugins.FiltersPluginsSingle', {
         var parameters = [];
         var filterPlugin;
         if (this.action == "create") {
-            rec = this.getLastSelectedRecord(this.gridfilterPlugin);
+            //rec = this.getLastSelectedRecord(this.gridfilterPlugin);
+            rec = this.gridfilterPlugin.getSelectionModel().getSelection()[0];
+
             if (!rec) {
                 popupMessage(i18n.get('label.information'), i18n.get('warning.noselection'), null, 'x-info');
                 return false;
