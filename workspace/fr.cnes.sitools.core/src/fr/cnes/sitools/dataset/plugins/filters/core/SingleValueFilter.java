@@ -69,11 +69,9 @@ public final class SingleValueFilter extends AbstractFormFilter {
     super();
     this.setName("SingleValueFilter");
     this.setDescription("Required when using Single Value Component");
-
-    this.setClassAuthor("AKKA Technologies");
-    this.setClassAuthor("AKKA Technologies");
+    this.setClassAuthor("AKKA Technologies - CNES");
     this.setClassOwner("CNES");
-    this.setClassVersion("0.1");
+    this.setClassVersion("0.2");
     this.setDefaultFilter(true);
 
     HashMap<String, ParameterInfo> rpd = new HashMap<String, ParameterInfo>();
@@ -157,7 +155,9 @@ public final class SingleValueFilter extends AbstractFormFilter {
                   predicat.setLeftAttribute(col);
                   predicat.setNbOpenedParanthesis(0);
                   predicat.setNbClosedParanthesis(0);
-                  if (parameters[TYPE].equals(TYPE_COMPONENT.TEXTFIELD.name())) {
+                  if (parameters[TYPE].equals(TYPE_COMPONENT.TEXTFIELD.name()) && col.getJavaSqlColumnType() == java.sql.Types.INTEGER) {
+                    predicat.setCompareOperator(Operator.EQ);  
+                  } else if (parameters[TYPE].equals(TYPE_COMPONENT.TEXTFIELD.name())) {    
                     value = value.replace("*", "%");
                     predicat.setCompareOperator(Operator.LIKE);
                   }
