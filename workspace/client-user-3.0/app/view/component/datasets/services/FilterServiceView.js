@@ -41,7 +41,7 @@ Ext.define('sitools.user.view.component.datasets.services.FilterServiceView', {
             columns = this.columnModel;
         }
         Ext.each(columns, function (column) {
-            if (!column.isSelectionModel) {
+            if (!column.isSelectionModel && column.filter) {
                 dataCombo.push({
                     columnAlias : column.columnAlias, 
                     columnHeader : column.text, 
