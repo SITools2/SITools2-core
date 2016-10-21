@@ -222,7 +222,8 @@ Ext.define('sitools.user.view.component.datasets.services.ServiceToolbarView', {
      * Return a array with the column filter button
      */
     addAdditionalButton : function () {
-        var dataview = this.up('component[componentType=datasetView]');
+        //var dataview = this.up('component[componentType=datasetView]');
+        var dataview = this.up('component[sitoolsType=datasetView]');
         return dataview.getCustomToolbarButtons();
     },
     
@@ -235,7 +236,8 @@ Ext.define('sitools.user.view.component.datasets.services.ServiceToolbarView', {
      */
     isSelectionOK : function (selectionString) {
         var selectionOK = false;
-        var dataview = this.up('component[componentType=datasetView]');
+        //var dataview = this.up('component[componentType=datasetView]');
+        var dataview = this.up('component[sitoolsType=datasetView]');
         var nbRowsSelected = dataview.getNbRowsSelected();
         switch (selectionString) {
 
