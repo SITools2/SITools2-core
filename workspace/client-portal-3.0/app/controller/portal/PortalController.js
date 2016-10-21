@@ -46,6 +46,21 @@ Ext.define('sitools.clientportal.controller.portal.PortalController', {
     init : function () {
 
         this.control({
+            'portalView' : {
+                beforeRender : function (portalView) {
+                    Ext.Ajax.request({
+                        method : "GET",
+                        url : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PORTAL_URL') +  "/conf/displayConfig.json",
+                        success : function (ret) {
+                            var displayConfig = Ext.decode(ret.responseText);
+                            if (!Ext.isEmpty(displayConfig)) {
+                                return;
+                            }
+                        }
+                    })
+                }
+
+            },
             'dataview[cls=projectDataView]' : {
                 itemclick : this.openProject
             },
