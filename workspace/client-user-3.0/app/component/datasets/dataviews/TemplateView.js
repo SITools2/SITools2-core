@@ -35,7 +35,6 @@ Ext.define('sitools.user.component.datasets.dataviews.TemplateView', {
         'sitools.user.controller.component.datasets.services.ServicesController'],
 
     requires: ['sitools.user.view.component.datasets.dataviews.TemplateViewView',
-        'sitools.user.store.dataviews.TemplateViewStore',
         'sitools.public.utils.Utils'],
 
     config: {

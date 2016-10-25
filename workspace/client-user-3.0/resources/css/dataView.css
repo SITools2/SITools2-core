@@ -28,6 +28,7 @@
     margin: 4px 0 4px 4px;
     padding: 4px;
     border : 1px outset #3892d3;
+    background-color: #fbfbfb;
     cursor: default;
 }
 .thumb-wrap span {
@@ -37,14 +38,14 @@
 }
 .x-view-over {
 /*    background: url("../images/row-over.gif") repeat-x scroll left top #EFEFEF;*/
-    background: repeat-x scroll left top #EFEFEF;
-    border: 1px outset rgba(56, 146, 211, 0.12) !important;
+    background: no-repeat scroll right bottom rgba(56, 146, 211, 0.12);
+    border : 1px outset #3892d3; !important;
     padding: 4px;
 }
 .x-view-selected {
 /*    background: url("../images/selected.gif") no-repeat scroll right bottom #EFF5FB;*/
     background: no-repeat scroll right bottom rgba(56, 146, 211, 0.30);
-    border: 1px outset #0B208F !important;
+    border : 1px outset #3892d3 !important;
     padding: 4px;
 }
 .x-view-selected .thumb {

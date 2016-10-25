@@ -34,6 +34,7 @@ Ext.namespace('sitools.user.view.component.datasets.recordDetail');
 Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView', {
     extend: 'Ext.panel.Panel',
 
+    alias: 'widget.recordDetailView',
     datasetColumnModel: null,
     layout: 'fit',
     border: false,

@@ -63,7 +63,7 @@ Ext.define('sitools.user.view.component.datasets.services.ServiceToolbarView', {
         this.staticToolbar = Ext.create('Ext.toolbar.Toolbar', {
             itemId : 'staticDsToolbar',
             border : false,
-            width : 150
+            width : 165
         });
 
         this.servicesToolbar = Ext.create('Ext.toolbar.Toolbar', {

@@ -34,15 +34,12 @@
 Ext.define('sitools.user.view.component.datasets.dataviews.TemplateViewView', {
     extend: 'Ext.panel.Panel',
 
-    requires: ['Ext.selection.CheckboxModel'],
-
     mixins: {
         datasetView: 'sitools.user.view.component.datasets.dataviews.AbstractDataview'
     },
 
     alias: 'widget.templateView',
     layout: 'border',
-    autoScroll: true,
     bodyBorder: false,
     border: false,
     componentType: 'datasetView',
@@ -63,17 +60,12 @@ Ext.define('sitools.user.view.component.datasets.dataviews.TemplateViewView', {
 
         this.tbar = Ext.create("sitools.user.view.component.datasets.services.ServiceToolbarView", {
             enableOverflow: true,
+            border: false,
             datasetUrl: this.dataset.sitoolsAttachementForUsers,
             columnModel: this.dataset.columnModel,
             datasetId: this.dataset.id,
             dataview: this,
-            origin: this.origin,
-            listeners: {
-                scope: this,
-                allservicesloaded: function () {
-                    //this.removeLoadMask("allservicesloaded");
-                }
-            }
+            origin: this.origin
         });
 
         if (!Ext.isEmpty(this.storeSort)) {
@@ -118,7 +110,6 @@ Ext.define('sitools.user.view.component.datasets.dataviews.TemplateViewView', {
                 Ext.apply(options.params, params);
             }
 
-            //this.store.storeOptions(options);
             store.appendOperationParam(options, store);
         }, this);
 
@@ -131,7 +122,6 @@ Ext.define('sitools.user.view.component.datasets.dataviews.TemplateViewView', {
             store.isFirstCountDone = true;
             this.down('serviceToolbarView').updateContextToolbar();
             this.processFeatureType();
-            //this.removeLoadMask("load");
         }, this);
 
         var tplString = '<tpl for="."><div class="thumb-wrap">';
@@ -192,15 +182,15 @@ Ext.define('sitools.user.view.component.datasets.dataviews.TemplateViewView', {
         );
 
         this.dataView = Ext.create('Ext.view.View', {
+            itemId: 'dataviewRecords',
             store: this.store,
             tpl: tpl,
-            autoHeight: true,
             multiSelect: true,
-            columnModel: this.columnModel.items,
             overItemCls: 'x-view-over',
             itemSelector: 'div.thumb-wrap',
             selectedItemCls: 'x-view-selected',
             emptyText: '',
+            autoScroll: true,
             simpleSelect: true,
             refresh: function () {
                 this.getSelectionModel().deselectAll(false);
@@ -225,78 +215,23 @@ Ext.define('sitools.user.view.component.datasets.dataviews.TemplateViewView', {
                 }
                 this.hasSkippedEmptyText = true;
             },
-            onDataChanged: function () {
+            onDataRefresh: function () {
                 this.newDataLoaded = true;
-                if (this.blockRefresh !== true) {
-                    this.refresh.apply(this, arguments);
-                }
-            },
-            listeners: {
-                scope: this,
-                selectionchange: function (dataView, recs) {
-                    //var recs = dataView.getRecords(recNodes);
-                    if (Ext.isEmpty(recs)) {
-                        return;
-                    }
-                    //get the first selected record
-                    var rec = recs[0];
-                    var primaryKeyValue = "", primaryKeyName = "";
-                    Ext.each(rec.fields.items, function (field) {
-                        if (field.primaryKey) {
-                            this.primaryKeyName = field.name;
-                        }
-                    }, this);
-                    //this.primaryKeyName = primaryKeyName;
-                    this.primaryKeyValue = rec.get(this.primaryKeyName);
-
-                    this.primaryKeyValue = encodeURIComponent(this.primaryKeyValue);
-
-                    var url = this.urlRecords + "/records/" + this.primaryKeyValue;
-                    Ext.apply(this.panelDetail, {
-                        url: url
-                    });
-                    this.panelDetail.getCmDefAndbuildForm();
-                    this.panelDetail.expand();
-
-                    //destroy all selections if all was selected and another row is selected
-                    if (this.isAllSelected() && recNodes.length === DEFAULT_LIVEGRID_BUFFER_SIZE - 1) {
-                        this.selectAllRows.toggle();
-                        this.deselectAll();
-                        var unselectedRec = this.getUnselectedRow(recs, this.store.data.items);
-                        this.select(unselectedRec);
-                    }
-                },
-                newdataloaded: function () {
-                    if (!Ext.isEmpty(this.ranges)) {
-                        if (!Ext.isEmpty(this.nbRecordsSelection) && (this.nbRecordsSelection == this.store.getTotalCount())) {
-                            this.getCustomToolbarButtons();
-                            this.selectAllRows.toggle(true);
-                            delete this.nbRecordsSelection;
-                        } else {
-                            var ranges = Ext.util.JSON.decode(this.ranges);
-                            this.selectRangeDataview(ranges);
-                            delete this.ranges;
-                        }
-                    }
-                },
-                afterrender: function () {
-                    if (!Ext.isEmpty(this.dataView)) {
-                        //this._loadMaskAnchor = Ext.get(this.el.dom);
-                        //this._loadMaskAnchor.mask(i18n.get('label.waitMessage'), "x-mask-loading");
-                    }
-                }
+                this.refreshView();
             }
         });
         this.dataView.addEvents('newdataloaded');
 
         this.panelDetail = Ext.create('sitools.user.view.component.datasets.recordDetail.RecordDetailView', {
-            title: "detail",
+            title: i18n.get('label.detail'),
+            collapseMode: 'mini',
             collapsible: true,
             collapsed: true,
             region: "east",
             split: true,
             fromWhere: "dataView",
-            primaryKeyName : this.store.primaryKey,
+            border: false,
+            primaryKeyName: this.store.primaryKey,
             grid: this,
             baseUrl: this.dataset.sitoolsAttachementForUsers,
             boxMinWidth: 200,
@@ -305,6 +240,7 @@ Ext.define('sitools.user.view.component.datasets.dataviews.TemplateViewView', {
 
         var panelDataview = Ext.create('Ext.panel.Panel', {
             autoScroll: true,
+            border: false,
             items: [this.dataView],
             region: 'center'
         });
@@ -353,22 +289,22 @@ Ext.define('sitools.user.view.component.datasets.dataviews.TemplateViewView', {
         var iconCls = (this.isAllSelected()) ? "checkbox-icon-on" : "checkbox-icon-off";
         var pressed = this.isAllSelected();
 
-        var array = [{
-            name : "selectAll",
+        this.selectAllRowsBtn = Ext.create('Ext.button.Button', {
+            name: "selectAll",
             iconCls: iconCls,
-            enableToggle : true,
-            scope : this,
-            text : (pressed) ? i18n.get('label.deselectAll') : i18n.get('label.selectAll'),
-            cls : 'services-toolbar-btn',
-            pressed : pressed,
-            handler :  function (button, e) {
+            enableToggle: true,
+            scope: this,
+            text: (pressed) ? i18n.get('label.deselectAll') : i18n.get('label.selectAll'),
+            cls: 'services-toolbar-btn',
+            pressed: pressed,
+            handler: function (button, e) {
                 if (button.pressed) {
                     this.selectAll();
                 } else {
                     this.deselectAll();
                 }
             },
-            toggleHandler : function (button, pressed) {
+            toggleHandler: function (button, pressed) {
                 if (pressed) {
                     button.setIconCls("checkbox-icon-on");
                     button.setText(i18n.get('label.deselectAll'));
@@ -378,7 +314,9 @@ Ext.define('sitools.user.view.component.datasets.dataviews.TemplateViewView', {
                 }
             }
 
-        }, '|'];
+        });
+
+        var array = [this.selectAllRowsBtn];
         return array;
     },
 
@@ -555,17 +493,17 @@ Ext.define('sitools.user.view.component.datasets.dataviews.TemplateViewView', {
 
     getSelectionsRange: function () {
         var ranges = this.getAllSelections(true);
-        return Ext.util.JSON.encode(ranges);
+        return Ext.JSON.encode(ranges);
     },
 
     getSelectedIndexes: function () {
         var indexes = [],
-            selected = this.getSelectionModel().selected.elements,
+            selected = this.getSelectionModel().selected.items,
             i = 0,
             len = selected.length;
 
         for (; i < len; i++) {
-            indexes.push(selected[i].viewIndex);
+            indexes.push(selected[i].index);
         }
         return indexes;
     },
@@ -649,7 +587,7 @@ Ext.define('sitools.user.view.component.datasets.dataviews.TemplateViewView', {
     },
 
     isAllSelected: function () {
-        return (!Ext.isEmpty(this.selectAllRows) && this.selectAllRows.pressed);
+        return (!Ext.isEmpty(this.selectAllRowsBtn) && this.selectAllRowsBtn.pressed);
     },
 
     /**
@@ -719,19 +657,5 @@ Ext.define('sitools.user.view.component.datasets.dataviews.TemplateViewView', {
                 });
             }, this);
         }, this);
-    },
-
-    removeLoadMask: function (eventName) {
-        this.allIsLoadedEvent.add(eventName, true);
-        var removeLoadMask = true;
-        this.allIsLoadedEvent.each(function (value) {
-            removeLoadMask &= value;
-        });
-        if (removeLoadMask) {
-            if (this._loadMaskAnchor && this._loadMaskAnchor.isMasked()) {
-                this._loadMaskAnchor.unmask();
-            }
-        }
     }
-
 });
