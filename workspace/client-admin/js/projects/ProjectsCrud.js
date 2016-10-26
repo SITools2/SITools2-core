@@ -49,7 +49,7 @@ Ext.define('sitools.admin.projects.ProjectsCrud', {
         // PUT /groups/id update
         // DESTROY /groups/id delete
         this.store = Ext.create('Ext.data.JsonStore', {
-            remoteSort : true,
+            //remoteSort : true,
             pageSize : this.pageSize,
             proxy : {
                 type : 'ajax',
@@ -118,6 +118,7 @@ Ext.define('sitools.admin.projects.ProjectsCrud', {
             }, {
                 header : i18n.get('label.status'),
                 dataIndex : 'status',
+                sortable : true,
                 width : 70,
                 renderer : function (value, meta, record, index, colIndex, store) {
                     meta.tdCls += value;

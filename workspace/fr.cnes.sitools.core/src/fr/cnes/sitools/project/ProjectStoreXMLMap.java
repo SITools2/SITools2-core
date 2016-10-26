@@ -90,6 +90,7 @@ public class ProjectStoreXMLMap extends XmlMapStore<Project> implements ProjectS
     current.setMaintenanceText(project.getMaintenanceText());
     current.setMaintenance(project.isMaintenance());
     current.setHtmlHeader(project.getHtmlHeader());
+    current.setFooter(project.getFooter());
     current.setLinks(project.getLinks());
     current.setFtlTemplateFile(project.getFtlTemplateFile());
     current.setNavigationMode(project.getNavigationMode());

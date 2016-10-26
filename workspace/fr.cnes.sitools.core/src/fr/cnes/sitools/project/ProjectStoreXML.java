@@ -89,6 +89,7 @@ public final class ProjectStoreXML extends SitoolsSynchronizedStoreXML<Project> 
           current.setMaintenanceText(project.getMaintenanceText());
           current.setMaintenance(project.isMaintenance());
           current.setHtmlHeader(project.getHtmlHeader());
+          current.setFooter(project.getFooter());
           current.setLinks(project.getLinks());
           current.setFtlTemplateFile(project.getFtlTemplateFile());
           current.setNavigationMode(project.getNavigationMode());

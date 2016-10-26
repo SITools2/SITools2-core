@@ -20,7 +20,7 @@
 Ext.define('sitools.user.model.ProjectModel', {
     extend : 'Ext.data.Model',
 
-    requires : [ 'sitools.user.model.LinkModel', 'sitools.user.model.ModuleModel', 'sitools.user.model.ResourceModel'],
+    requires : [ 'sitools.user.model.LinkModel', 'sitools.user.model.ModuleModel', 'sitools.user.model.ResourceModel', 'sitools.user.model.FooterModel'],
 
     fields : [ {
         name : 'id',
@@ -66,6 +66,8 @@ Ext.define('sitools.user.model.ProjectModel', {
     }, {
         name : 'navigationMode',
         type : 'string'
+    }, {
+        name : 'footer'
     }],
     hasMany : [ {
         model : 'sitools.user.model.ResourceModel',

@@ -143,6 +143,7 @@ public final class ProjectExpositionResource extends AbstractProjectResource {
     current.setVisible(project.isVisible());
     current.setHtmlDescription(project.getHtmlDescription());
     current.setHtmlHeader(project.getHtmlHeader());
+    current.setFooter(project.getFooter());
     current.setMaintenanceText(project.getMaintenanceText());
     current.setMaintenance(project.isMaintenance());
     current.setLinks(project.getLinks());
