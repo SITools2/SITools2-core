@@ -1,0 +1,8 @@
+<datasetView>
+  <id>bfbd5a7c-ea4c-4349-9483-7f9e23fb8226</id>
+  <jsObject>sitools.user.component.datasets.dataviews.TemplateView</jsObject>
+  <imageUrl></imageUrl>
+  <priority>4</priority>
+  <name>Template View</name>
+  <description>Display data as key/value</description>
+</datasetView>
