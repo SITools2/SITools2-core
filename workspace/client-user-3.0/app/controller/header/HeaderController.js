@@ -192,7 +192,9 @@ Ext.define('sitools.user.controller.header.HeaderController', {
 
     fireResize : function () {
         var headerView = Ext.ComponentQuery.query("headerView")[0];
-        headerView.setWidth(Ext.getBody().getWidth());
+        if (headerView) {
+            headerView.setWidth(Ext.getBody().getWidth());
+        }
     },
 
     /** Button Taskbar Events **/
