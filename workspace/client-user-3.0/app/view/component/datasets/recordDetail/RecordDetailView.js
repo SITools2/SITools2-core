@@ -285,6 +285,7 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
             title: i18n.get('label.complementaryInformation'),
             border: false,
             padding: 10,
+            autoScroll : true,
             layout: {
                 type: 'vbox',
                 align: 'stretch',

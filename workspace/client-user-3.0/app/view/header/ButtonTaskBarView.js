@@ -102,36 +102,39 @@ Ext.define('sitools.user.view.header.ButtonTaskBarView', {
             });
             itemsButtons.push(this.saveButton);
         }
-        
-        /** A specialized btn to switch between normal and maximize mode */
-        this.maximizeButton = Ext.create('Ext.button.Button', {
-			name : 'maximizeBtn',
-			cls : 'navBarButtons-icon',
-            iconCls : (Desktop.getDesktopMaximized() != false) ? "mini_button_img" : "maxi_button_img",  
-            scale : 'medium',
-            scope : this, 
-            handler : function (btn) {
-            	this.desktopController.fireEvent('maximizedBtnClicked', btn);
-			},
-			listeners : {
-				afterrender : function (btn) {
-					var label = (Desktop.getDesktopMaximized() == false) ? i18n.get('label.maximize') : i18n.get('label.minimize');
-					var tooltipCfg = {
-                        html : label,
-                        target : btn.getEl(),
-                        anchor : 'bottom',
-                        showDelay : 20,
-                        hideDelay : 50,
-                        dismissDelay : 0,
-                        itemId : 'maximizeButtonTip'
 
-					};
-					Ext.create('Ext.tip.ToolTip', tooltipCfg);
-				}
-			}
-        });
-        itemsButtons.push(this.maximizeButton);
-        
+        if (Desktop.getBottomEl().getHeight() > 0 || Desktop.getEnteteEl().getHeight() > 0) {
+            /** A specialized btn to switch between normal and maximize mode */
+            this.maximizeButton = Ext.create('Ext.button.Button', {
+                name : 'maximizeBtn',
+                cls : 'navBarButtons-icon',
+                iconCls : (Desktop.getDesktopMaximized() != false) ? "mini_button_img" : "maxi_button_img",
+                scale : 'medium',
+                scope : this,
+                handler : function (btn) {
+                    this.desktopController.fireEvent('maximizedBtnClicked', btn);
+                },
+                listeners : {
+                    afterrender : function (btn) {
+                        var label = (Desktop.getDesktopMaximized() == false) ? i18n.get('label.maximize') : i18n.get('label.minimize');
+                        var tooltipCfg = {
+                            html : label,
+                            target : btn.getEl(),
+                            anchor : 'bottom',
+                            showDelay : 20,
+                            hideDelay : 50,
+                            dismissDelay : 0,
+                            itemId : 'maximizeButtonTip'
+
+                        };
+                        Ext.create('Ext.tip.ToolTip', tooltipCfg);
+                    }
+                }
+            });
+            itemsButtons.push(this.maximizeButton);
+        }
+
+
         this.callParent(Ext.apply(this,  {
             id : 'navBarButtonsId',
             cls : 'buttonTaskbar-bg',

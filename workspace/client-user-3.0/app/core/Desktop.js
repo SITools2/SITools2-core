@@ -94,7 +94,8 @@ Ext.define('sitools.user.core.Desktop', {
                         height: 0,
                         width: 0
                     }
-                }
+                },
+                setWidth: Ext.emptyFn
             },
             bottomComp: Ext.getCmp('bottomCompId'),
 

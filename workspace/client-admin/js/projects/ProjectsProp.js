@@ -261,6 +261,84 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
             }
         });
 
+        var combo = Ext.create('sitools.public.widget.item.ComboGrid', {
+            name: 'ftlTemplateFile',
+            store: Ext.create('Ext.data.JsonStore', {
+                storeId: 'comboFtl',
+                //autoLoad: true,
+                proxy: {
+                    type: 'ajax',
+                    url: loadUrl.get('APP_URL') + loadUrl.get('APP_ADMINISTRATOR_URL') + '/ftl',
+                    limitParam: undefined,
+                    startParam: undefined,
+                    reader: {
+                        type: 'json',
+                        root: 'items',
+                        idProperty: 'name'
+                    }
+                },
+                groupField: 'category',
+                fields: ['name', 'url', 'category'],
+                listeners: {
+                    load: function (store, records) {
+                        Ext.each(records, function (record) {
+                            var recordName = record.get("name");
+                            if (!Ext.String.endsWith(recordName, ".ftl")) {
+                                this.remove(record);
+                                return;
+                            }
+                            if (recordName.indexOf("project") != -1) {
+                                record.set('category', 'project');
+                            } else if (recordName.indexOf('mail') != -1) {
+                                record.set('category', 'mail');
+                            } else {
+                                record.set('category', 'other');
+                            }
+                        }, store);
+                        store.commitChanges();
+                    }
+                }
+            }),
+            listConfig: {
+                columns: [{
+                    header: 'Category',
+                    dataIndex: 'category',
+                    width: 150,
+                    renderer: function (value, metadata) {
+                        if (value === "project") {
+                            metadata.style = "font-weight: bold;";
+                        }
+                        return value;
+                    }
+                }, {
+                    header: 'Name',
+                    dataIndex: 'name',
+                    width: 400
+                }]
+            },
+            valueField: 'name',
+            displayField: 'name',
+            groupField: 'category',
+            typeAhead: false,
+            queryMode: 'local',
+            forceSelection: true,
+            editable: false,
+            selectOnFocus: true,
+            fieldLabel: i18n.get('label.ftlTemplateFile'),
+            anchor: '100%',
+            tooltip: i18n.get("label.projectTemplateHelp"),
+            value: this.defaultValueTpl,
+            listeners: {
+                scope: this,
+                boxready: function (combo) {
+                    if (this.action == 'create') {
+                        combo.setValue(this.defaultValueTpl);
+                    }
+                    combo.store.load();
+                }
+            }
+        });
+
         /**
          * {Ext.FormPanel} formProject The main Form
          */
@@ -285,52 +363,7 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
                 anchor: '100%',
                 hidden: true,
                 maxLength: 100
-            }, {
-                xtype: 'combo',
-                name: 'ftlTemplateFile',
-                store: Ext.create('Ext.data.JsonStore', {
-                    autoLoad: true,
-                    proxy: {
-                        type: 'ajax',
-                        url: loadUrl.get('APP_URL') + loadUrl.get('APP_ADMINISTRATOR_URL') + '/ftl',
-                        limitParam: undefined,
-                        startParam: undefined,
-                        reader: {
-                            type: 'json',
-                            root: 'items',
-                            idProperty: 'name'
-                        }
-                    },
-                    fields: ['name', 'url'],
-                    listeners: {
-                        load: function (store, records) {
-                            Ext.each(records, function (record) {
-                                if (!Ext.String.endsWith(record.get("name"), ".ftl")) {
-                                    this.remove(record);
-                                }
-                            }, store);
-                        }
-                    }
-                }),
-                valueField: 'name',
-                displayField: 'name',
-                typeAhead: true,
-                forceSelection: true,
-                editable: false,
-                selectOnFocus: true,
-                fieldLabel: i18n.get('label.ftlTemplateFile'),
-                anchor: '100%',
-                tooltip: i18n.get("label.projectTemplateHelp"),
-                value: this.defaultValueTpl,
-                listeners: {
-                    scope: this,
-                    boxready: function (combo) {
-                        if (this.action == 'create') {
-                            combo.setValue(this.defaultValueTpl);
-                        }
-                    }
-                }
-            }, {
+            }, combo, {
                 xtype: 'fieldset',
                 title: i18n.get('label.header'),
                 name: 'header',
