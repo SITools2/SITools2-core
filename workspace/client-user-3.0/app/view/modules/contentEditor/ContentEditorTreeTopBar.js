@@ -83,7 +83,7 @@ Ext.define('sitools.user.view.modules.contentEditor.ContentEditorTreeTopBar', {
 	        }, {
 	            xtype : 'button',
 	            iconAlign : 'right',
-	            text : i18n.get('label.storageRunCopy'),
+	            text : i18n.get('label.publish'),
 	            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/converter.png',
 	            tooltip : this.textTooltip,
 	            scope : this.cms,
