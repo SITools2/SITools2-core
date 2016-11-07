@@ -45,12 +45,14 @@ Ext.namespace('sitools.admin.datasets');
  * @class sitools.admin.datasets.ColumnsProp
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.datasets.ColumnsProp', { extend : 'Ext.Window',
+Ext.define('sitools.admin.datasets.ColumnsProp', {
+    extend : 'Ext.Window',
+
     width : 600,
-    height : ADMIN_PANEL_HEIGHT,
     modal : true,
     id : 'columnPropId',
     dataSets : "",
+    layout : 'fit',
 
     initComponent : function () {
         this.title = i18n.get('label.details');
@@ -130,7 +132,7 @@ Ext.define('sitools.admin.datasets.ColumnsProp', { extend : 'Ext.Window',
         
         this.items = [ {
             xtype : 'panel',
-            height : 250,
+            layout : 'fit',
             items : [ {
                 xtype : 'form',
                 border : false,

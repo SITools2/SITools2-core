@@ -283,16 +283,12 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
                     load: function (store, records) {
                         Ext.each(records, function (record) {
                             var recordName = record.get("name");
-                            if (!Ext.String.endsWith(recordName, ".ftl")) {
+                            if (!Ext.String.endsWith(recordName, ".ftl") || recordName.indexOf("project") == -1) {
                                 this.remove(record);
                                 return;
                             }
                             if (recordName.indexOf("project") != -1) {
                                 record.set('category', 'project');
-                            } else if (recordName.indexOf('mail') != -1) {
-                                record.set('category', 'mail');
-                            } else {
-                                record.set('category', 'other');
                             }
                         }, store);
                         store.commitChanges();
@@ -385,14 +381,30 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
                     xtype: 'sitoolsSelectImage',
                     name: 'iconFooter',
                     anchor: '100%',
-                    fieldLabel: i18n.get('label.icon'),
-                    value: loadUrl.get("APP_URL") + loadUrl.get("APP_CLIENT_PUBLIC_URL") + "/res/images/logo_01_petiteTaille.png"
+                    fieldLabel: i18n.get('label.icon') + ' <img height=14 widht=14 src="/sitools/common/res/images/icons/information.gif"/>',
+                    value: loadUrl.get("APP_URL") + loadUrl.get("APP_CLIENT_PUBLIC_URL") + "/res/images/logo_01_petiteTaille.png",
+                    listeners: {
+                        render: function(label){
+                            Ext.create('Ext.tip.ToolTip',{
+                                target: label.getEl(),
+                                html: i18n.get('label.tipIconFooter')
+                            });
+                        }
+                    }
                 }, {
                     xtype: 'sitoolsSelectImage',
                     name: 'backgroundFooter',
                     anchor: '100%',
-                    fieldLabel: i18n.get('label.background'),
-                    value: loadUrl.get("APP_URL") + loadUrl.get("APP_CLIENT_PUBLIC_URL") + "/res/images/bottom_cnes2.png"
+                    fieldLabel: i18n.get('label.background') + ' <img height=14 widht=14 src="/sitools/common/res/images/icons/information.gif"/>',
+                    value: loadUrl.get("APP_URL") + loadUrl.get("APP_CLIENT_PUBLIC_URL") + "/res/images/bottom_cnes2.png",
+                    listeners: {
+                        render: function(label){
+                            Ext.create('Ext.tip.ToolTip',{
+                                target: label.getEl(),
+                                html: i18n.get('label.tipBackgroundFooter')
+                            });
+                        }
+                    }
                 }, {
                     xtype: 'textarea',
                     name: 'textFooter',

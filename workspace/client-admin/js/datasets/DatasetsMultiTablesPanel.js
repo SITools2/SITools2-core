@@ -194,7 +194,7 @@ Ext.define('sitools.admin.datasets.DatasetsMultiTablesPanel', {
             items : [ this.formulairePrincipal, this.gridProperties, this.panelSelectTables, this.panelSelectFields, this.gridFields, this.panelWhere, this.viewConfigPanel ],
             buttons : [{
                 xtype : 'checkbox',
-                labelWidth : 165,
+                labelWidth : 230,
                 componentCls : 'advancedModeCls',
                 fieldLabel : i18n.get('label.advancedParameters'),
                 enableToggle : true,

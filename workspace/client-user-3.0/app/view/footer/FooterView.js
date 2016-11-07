@@ -53,7 +53,7 @@ Ext.define('sitools.user.view.footer.FooterView', {
                 "background-size: 100% 100% !important;"+
                 "background-repeat: no-repeat !important;}";
 
-            Ext.util.CSS.createStyleSheet(Ext.String.format(backgroundHtml, this.footer.background));
+            Ext.util.CSS.createStyleSheet(Ext.String.format(backgroundHtml, this.footer.background || ""));
 
             Ext.apply(this, {
                 renderTo: 'x-bottom',
@@ -63,7 +63,7 @@ Ext.define('sitools.user.view.footer.FooterView', {
                     border: false,
                     flex: 0.5,
                     //html: "<img id='footerLogo' src='" + loadUrl.get("APP_URL") + loadUrl.get("APP_CLIENT_PUBLIC_URL") + "/res/images/logo_01_petiteTaille.png' alt='footerLogo'/>",
-                    html: Ext.String.format(iconHtml, this.footer.icon),
+                    html: Ext.String.format(iconHtml, this.footer.icon || ""),
                     bodyCls: 'no-background'
                 }, {
                     xtype: 'panel',

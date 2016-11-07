@@ -81,9 +81,9 @@ Ext.define("sitools.user.controller.footer.FooterController", {
                                     return false;
                                 }
                                 var info = json.info;
-                                var copyright = info.copyright;
+                                var copyright = info.copyright || "";
 
-                                footerView.down('label#credits').setText(Ext.String.format(footerView.footer.text, copyright), false);
+                                footerView.down('label#credits').setText(Ext.String.format(footerView.footer.text || "", copyright), false);
 
                                 var bottomEl = Ext.get(footerView.renderTo);
                                 footerView.setHeight(bottomEl.getHeight());

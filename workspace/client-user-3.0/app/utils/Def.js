@@ -74,7 +74,7 @@ var DEFAULT_LOCALE = "en";
 var SITOOLS_DATE_FORMAT = 'Y-m-d\\TH:i:s.u';
 var SITOOLS_DEFAULT_IHM_DATE_FORMAT = 'Y-m-d H:i:s.u';
 
-var onRequestFeedException = function (proxy, type, action, options, response, args) {
+var onRequestFeedException = function (proxy, response, operation, eOpts) {
     // si on a un cookie de session et une erreur 403
     if ((response.status == 403) && !Ext.isEmpty(Ext.util.Cookies.get('hashCode'))) {
         Ext.MessageBox.minWidth = 360;
