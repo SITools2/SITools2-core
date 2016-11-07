@@ -66,7 +66,7 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
 
                 this.primaryKeyValue = this.recSelected.get(this.primaryKeyName);
                 this.primaryKeyValue = encodeURIComponent(this.primaryKeyValue);
-                this.url = this.baseUrl + "/" + this.primaryKeyValue;
+                this.url = this.baseUrl + 'records/' + this.primaryKeyValue;
 
                 break;
 
@@ -93,7 +93,7 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
 
                 this.primaryKeyValue = this.recSelected.get(this.primaryKeyName);
                 this.primaryKeyValue = encodeURIComponent(this.primaryKeyValue);
-                this.url = this.baseUrl + this.primaryKeyValue;
+                this.url = this.baseUrl + 'records/' + this.primaryKeyValue;
                 break;
         }
 
@@ -785,9 +785,16 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
         var column = record.get('column');
         var serviceToolbarView = Ext.ComponentQuery.query('serviceToolbarView')[0];
 
+        var rec = this.grid.getSelectionModel().getSelection()[0];
+
+        if (Ext.isEmpty(rec)) {
+            var pkDecode = decodeURIComponent(this.grid.primaryKeyValue); // for specials characters
+            rec = this.grid.getStore().getById(pkDecode);
+        }
+        this.recSelected = rec;
+
         if (!Ext.isEmpty(serviceToolbarView)) { // try to execute featureType from service
             var serviceController = Desktop.getApplication().getController('sitools.user.controller.component.datasets.services.ServicesController');
-            this.recSelected = this.grid.getSelectionModel().getSelection()[0];
             sitools.user.utils.DataviewUtils.featureTypeAction(column, this.recSelected, serviceController, serviceToolbarView);
         }
         else {

@@ -19,14 +19,14 @@
 
 Ext.namespace('sitools.user.component.datasets.dataviews');
 
-
 /**
- * Datasets Module : Displays All Datasets depending on datasets attached to the
- * project.
+ * TemplateView component
  *
- * @class sitools.user.modules.datasetsModule
- * @extends Ext.grid.GridPanel
- * @requires sitools.user.component.datasets.mainContainer
+ * @class sitools.user.component.datasets.dataviews.TemplateView
+ * @extends sitools.user.core.Component
+ * @requires sitools.user.view.component.datasets.dataviews.TemplateViewView
+ * @requires sitools.user.store.dataviews.DataviewStore
+ * @requires sitools.public.utils.Utils
  */
 Ext.define('sitools.user.component.datasets.dataviews.TemplateView', {
     extend: 'sitools.user.core.Component',
@@ -35,6 +35,7 @@ Ext.define('sitools.user.component.datasets.dataviews.TemplateView', {
         'sitools.user.controller.component.datasets.services.ServicesController'],
 
     requires: ['sitools.user.view.component.datasets.dataviews.TemplateViewView',
+        'sitools.user.store.dataviews.DataviewStore',
         'sitools.public.utils.Utils'],
 
     config: {
@@ -76,7 +77,7 @@ Ext.define('sitools.user.component.datasets.dataviews.TemplateView', {
         var columns = this.getColumns(colModel, dataset.dictionaryMappings, dataviewConfig);
         this.primaryKey = this.calcPrimaryKey(dataset);
 
-        var templateViewStore = Ext.create("sitools.user.store.dataviews.DataviewStore", {
+        var templateViewStore = Ext.create("sitools.user.store.dataviews.LivegridStore", {
             fields: fields,
             urlAttach: dataset.sitoolsAttachementForUsers,
             primaryKey: this.primaryKey,
@@ -87,7 +88,17 @@ Ext.define('sitools.user.component.datasets.dataviews.TemplateView', {
             formConceptFilters: componentConfig.formConceptFilters,
             remoteSort: true,
             autoLoad: false,
-            datasetName: dataset.name
+            datasetName: dataset.name,
+            buffered : false,
+            proxy: {
+                type: 'ajax',
+                url: dataset.sitoolsAttachementForUsers,
+                reader: {
+                    type: 'json',
+                    root: 'items',
+                    totalProperty: 'total'
+                }
+            }
         });
 
         Ext.apply(windowSettings, windowConfig, {
@@ -235,8 +246,6 @@ Ext.define('sitools.user.component.datasets.dataviews.TemplateView', {
                     } else {
                         columns.push(column);
                     }
-
-
                 }
 
             }, this);
@@ -268,7 +277,6 @@ Ext.define('sitools.user.component.datasets.dataviews.TemplateView', {
                     });
                 }
                 i++;
-
             }, this);
         }
         return fields;

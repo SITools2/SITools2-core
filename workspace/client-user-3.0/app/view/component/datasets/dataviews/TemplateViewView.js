@@ -17,19 +17,12 @@
  * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
  ***************************************/
 /*global Ext, sitools, i18n, document, projectGlobal, SitoolsDesk, userLogin, DEFAULT_PREFERENCES_FOLDER, loadUrl*/
-/*
- * @include "../../sitoolsProject.js"
- * @include "../../desktop/desktop.js"
- * @include "../../components/datasets/datasets.js"
- * @include "../../components/datasets/projectForm.js"
- */
 
 /**
- * Datasets Module :
- * Displays All Datasets depending on datasets attached to the project.
- * @class sitools.user.modules.datasetsModule
- * @extends Ext.grid.GridPanel
- * @requires sitools.user.component.datasets.mainContainer
+ * TemplateView view
+ *
+ * @class sitools.user.view.component.datasets.dataviews.TemplateViewView
+ * @extends Ext.panel.Panel
  */
 Ext.define('sitools.user.view.component.datasets.dataviews.TemplateViewView', {
     extend: 'Ext.panel.Panel',
@@ -42,7 +35,6 @@ Ext.define('sitools.user.view.component.datasets.dataviews.TemplateViewView', {
     layout: 'border',
     bodyBorder: false,
     border: false,
-    componentType: 'datasetView',
 
     config: {
         ranges: null,
@@ -60,12 +52,8 @@ Ext.define('sitools.user.view.component.datasets.dataviews.TemplateViewView', {
 
         this.tbar = Ext.create("sitools.user.view.component.datasets.services.ServiceToolbarView", {
             enableOverflow: true,
-            border: false,
             datasetUrl: this.dataset.sitoolsAttachementForUsers,
-            columnModel: this.dataset.columnModel,
-            datasetId: this.dataset.id,
-            dataview: this,
-            origin: this.origin
+            columnModel: this.dataset.columnModel
         });
 
         if (!Ext.isEmpty(this.storeSort)) {
@@ -122,6 +110,10 @@ Ext.define('sitools.user.view.component.datasets.dataviews.TemplateViewView', {
             store.isFirstCountDone = true;
             this.down('serviceToolbarView').updateContextToolbar();
             this.processFeatureType();
+        }, this);
+
+        this.store.on('datachanged', function (store) {
+
         }, this);
 
         var tplString = '<tpl for="."><div class="thumb-wrap">';
@@ -191,7 +183,7 @@ Ext.define('sitools.user.view.component.datasets.dataviews.TemplateViewView', {
             selectedItemCls: 'x-view-selected',
             emptyText: '',
             autoScroll: true,
-            simpleSelect: true,
+            //simpleSelect: true,
             refresh: function () {
                 this.getSelectionModel().deselectAll(false);
                 var el = this.getTargetEl();
@@ -210,7 +202,7 @@ Ext.define('sitools.user.view.component.datasets.dataviews.TemplateViewView', {
 
                     if (this.newDataLoaded) {
                         this.newDataLoaded = false;
-                        this.fireEvent('newdataloaded');
+                        this.fireEvent('newdataloaded', this);
                     }
                 }
                 this.hasSkippedEmptyText = true;
@@ -218,7 +210,7 @@ Ext.define('sitools.user.view.component.datasets.dataviews.TemplateViewView', {
             onDataRefresh: function () {
                 this.newDataLoaded = true;
                 this.refreshView();
-            }
+            },
         });
         this.dataView.addEvents('newdataloaded');
 
@@ -245,7 +237,6 @@ Ext.define('sitools.user.view.component.datasets.dataviews.TemplateViewView', {
             region: 'center'
         });
 
-
         if (!Ext.isEmpty(this.userPreference) && this.userPreference.datasetView === "sitools.user.view.component.datasets.dataviews.TemplateViewView") {
             this.panelDetail.setWidth(this.userPreference.viewPanelDetailSize.width);
         }
@@ -253,11 +244,10 @@ Ext.define('sitools.user.view.component.datasets.dataviews.TemplateViewView', {
         this.items = [panelDataview, this.panelDetail];
         this.dataviewUtils = sitools.user.utils.DataviewUtils;
 
-        this.bbar = Ext.create('sitools.user.view.component.datasets.dataviews.paging.TemplatePagingToolbar', {
-            store: this.store,       // grid and PagingToolbar using same store
+        this.bbar = Ext.create('Ext.toolbar.Paging', {
+            store: this.store, // grid and PagingToolbar using same store
             displayInfo: true,
             pageSize: DEFAULT_LIVEGRID_BUFFER_SIZE,
-            items: [],
             listeners: {
                 scope: this,
                 change: function () {
@@ -266,14 +256,6 @@ Ext.define('sitools.user.view.component.datasets.dataviews.TemplateViewView', {
                     }
                 }
             }
-        });
-
-        this.store.load({
-            params: {
-                start: (this.startIndex) ? this.startIndex : 0,
-                limit: DEFAULT_LIVEGRID_BUFFER_SIZE
-            },
-            scope: this
         });
 
         this.callParent(arguments);
@@ -341,7 +323,6 @@ Ext.define('sitools.user.view.component.datasets.dataviews.TemplateViewView', {
             preferencesPath: this.preferencesPath,
             preferencesFileName: this.preferencesFileName
         };
-
     },
 
     getColumnModel: function () {
@@ -394,7 +375,8 @@ Ext.define('sitools.user.view.component.datasets.dataviews.TemplateViewView', {
             } else {
                 var recSelected;
                 recSelected = selections;
-                formParams = this.dataviewUtils.getFormParamsFromRecsSelected(recSelected);
+                //formParams = this.dataviewUtils.getFormParamsFromRecsSelected(recSelected);
+                formParams = this.dataviewUtils.getParamsFromRecsSelected(recSelected);
                 // use the form API to request the selected records
                 request += "&" + Ext.urlEncode(formParams);
             }

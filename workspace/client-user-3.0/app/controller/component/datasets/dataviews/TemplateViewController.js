@@ -20,12 +20,8 @@
 Ext.namespace('sitools.user.controller.modules.datasets.dataviews');
 
 /**
- * Datasets Module : Displays All Datasets depending on datasets attached to the
- * project.
- *
- * @class sitools.user.modules.datasetsModule
- * @extends Ext.grid.GridPanel
- * @requires sitools.user.component.datasets.mainContainer
+ * @class sitools.user.controller.component.datasets.dataviews.TemplateViewController
+ * @extends Ext.app.Controller
  */
 Ext.define('sitools.user.controller.component.datasets.dataviews.TemplateViewController', {
     extend: 'Ext.app.Controller',
@@ -41,6 +37,8 @@ Ext.define('sitools.user.controller.component.datasets.dataviews.TemplateViewCon
             '#dataviewRecords': {
                 selectionchange: function (selModel, recs) {
                     var templateView = selModel.views[0].up('templateView');
+                    templateView.down('serviceToolbarView').updateContextToolbar();
+
                     if (Ext.isEmpty(recs)) {
                         return;
                     }
@@ -61,9 +59,10 @@ Ext.define('sitools.user.controller.component.datasets.dataviews.TemplateViewCon
                         url: url
                     });
                     templateView.panelDetail.getCmDefAndbuildForm();
+                    //templateView.panelDetail.setWidth(450);
                     templateView.panelDetail.expand();
 
-                    var pageData = templateView.down('templatePagingToolbar').getPageData();
+                    var pageData = templateView.down('pagingtoolbar').getPageData();
 
                     //destroy all selections if all was selected and another row is selected
                     if ((templateView.isAllSelected() && recs.length === DEFAULT_LIVEGRID_BUFFER_SIZE - 1) ||
@@ -74,27 +73,84 @@ Ext.define('sitools.user.controller.component.datasets.dataviews.TemplateViewCon
                         templateView.select(unselectedRec);
                     }
                 },
-                newdataloaded: function () {
-                    if (!Ext.isEmpty(this.ranges)) {
-                        if (!Ext.isEmpty(this.nbRecordsSelection) && (this.nbRecordsSelection == this.store.getTotalCount())) {
-                            this.getCustomToolbarButtons();
-                            this.selectAllRowsBtn.toggle(true);
-                            delete this.nbRecordsSelection;
+                newdataloaded: function (dataView) {
+                    var templateView = dataView.up('templateView');
+                    templateView.ranges = Ext.decode(templateView.ranges);
+                    if (!Ext.isEmpty(templateView.ranges)) {
+                        if (!Ext.isEmpty(templateView.nbRecordsSelection) && (templateView.nbRecordsSelection == templateView.store.getTotalCount())) {
+                            templateView.getCustomToolbarButtons();
+                            templateView.selectAllRowsBtn.toggle(true);
+                            delete templateView.nbRecordsSelection;
                         } else {
-                            var ranges = Ext.util.JSON.decode(this.ranges);
-                            this.selectRangeDataview(ranges);
-                            delete this.ranges;
+                            var ranges = Ext.decode(templateView.ranges);
+                            templateView.selectRangeDataview(ranges);
+                            delete templateView.ranges;
                         }
                     }
                 },
-                afterrender: function () {
-                    if (!Ext.isEmpty(this.dataView)) {
-                        //this._loadMaskAnchor = Ext.get(this.el.dom);
-                        //this._loadMaskAnchor.mask(i18n.get('label.waitMessage'), "x-mask-loading");
-                    }
+                afterrender: function (dataView) {
+                    dataView.getSelectionModel().getSelectedRanges = this.getSelectedRanges;
+                }
+            },
+            'templateView': {
+                afterrender: function (templateView) {
+                    templateView.store.load({
+                        params: {
+                            start: 0,
+                            limit: DEFAULT_LIVEGRID_BUFFER_SIZE
+                        },
+                        scope: this
+                    });
                 }
             }
         });
     },
+
+    getSelectedRanges: function () {
+
+        var index = 1,
+            ranges = [],
+            currentRange = 0,
+            tmpSelected = this.selected.clone();
+
+        if (Ext.isEmpty(this.selected) && this.store.getTotalCount() == 0) {
+            return [];
+        }
+
+        if (this.markAll) {
+            return [[0, this.store.getTotalCount() - 1]];
+        }
+
+
+        var lastIndex;
+        tmpSelected.sort(function (o1, o2) {
+                if (o1 > o2) {
+                    return 1;
+                } else if (o1 < o2) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            }
+        );
+        tmpSelected.each(function (rec) {
+            if (Ext.isEmpty(lastIndex)) {
+                ranges[currentRange] = [rec.index, rec.index];
+            }
+            else {
+
+                if (rec.index - lastIndex === 1) {
+                    ranges[currentRange][1] = rec.index;
+                } else {
+                    currentRange++;
+                    ranges[currentRange] = [rec.index, rec.index];
+                }
+            }
+
+            lastIndex = rec.index;
+        }, this);
+
+        return ranges;
+    }
 
 });
