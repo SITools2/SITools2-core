@@ -1,20 +1,20 @@
 {
   "toolbar" : { // mandatory
-    "height" : 50, // Default 55
-    "margin" : 5 // Default 10
+    "height" : 55, // Default 55
+    "margin" : 0 // Default 0
   },
   "northPanel" : { // mandatory
-    "flex" : 0.1, // height in pourcent. Default 0.4
-    "margin" : 5 // Default 10
+    "flex" : 0.4, // height in pourcent. Default 0.4
+    "margin" : 0 // Default 0
   },
   "centerPanel" : { // mandatory
-    "margin" : 10, // Default 10
+    "margin" : 0, // Default 0
     "bodyCls": "bg-transparent-2", // Default bg-transparent-2
-    "cls": "", // Default box-shadow
+    "cls": "box-shadow" // Default box-shadow
   },
   "southPanel": { // mandatory
-    "height": 40, // Default 70
-    "margin": 5, // Default 10
-    "cls": "" // Default box-shadow
+    "height": 70, // Default 70
+    "margin": 0, // Default 0
+    "cls": "box-shadow" // Default box-shadow
   }
 }
