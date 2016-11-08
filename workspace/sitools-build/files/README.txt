@@ -2,8 +2,8 @@
 ______________
 
 Identification                       : SITools2
-Date                                 : 2016-08-30
-Version                              : 3.0.3
+Date                                 : 2016-11-08
+Version                              : 3.1
 Owner                                : CNES
 Developer                            : AKKA Technologies
 Type                                 : Complete
@@ -12,9 +12,26 @@ Project page                         : http://sitools2.github.io/
 Classification                       : Not Confidential - Opensource GPL V3
 Characteristics                      : Standalone, Java, ExtJS
 Role/Function                        : Adaptable web interface for scientific data exposition.
-Reference tag                        : (3.0.1)
+Reference tag                        : (3.1)
 
 2/ Changes
+______________
+-3.1 (2016-11-09)
+
+	This version adds some new features and fixes some bugs from the version 3.1
+
+	* New features :
+		- New dataview available for dataset (TemplateView) migrated from version 2.6
+		- Footer is now customizable for each project by specifying an icon, backgroung image and text.
+		- New projects templates are available (with or without header/footer)
+		- Portal elements size customizable from client-portal-3.0/conf/portalDisplayConfig.json file
+
+	* Enhancements :
+		- Only projects templates exposed in project administration (use of new component comboGrid)
+		- Deleting duplicates keys in properties files
+
+	* Bug fixed :
+		- Filter not filterable in dataset but still displayed #74
 ______________
 -3.0.3 (2016-08-30)
 
