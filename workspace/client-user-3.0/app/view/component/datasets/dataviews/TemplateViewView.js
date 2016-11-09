@@ -44,8 +44,6 @@ Ext.define('sitools.user.view.component.datasets.dataviews.TemplateViewView', {
 
     initComponent: function () {
 
-        this.urlRecords = this.dataset.sitoolsAttachementForUsers;
-
         this.columnModel = getColumnModel(this.dataset.columnModel);
 
         this.origin = "sitools.user.view.component.datasets.dataviews.TemplateViewView";
@@ -225,7 +223,7 @@ Ext.define('sitools.user.view.component.datasets.dataviews.TemplateViewView', {
             border: false,
             primaryKeyName: this.store.primaryKey,
             grid: this,
-            baseUrl: this.dataset.sitoolsAttachementForUsers,
+            baseUrl: this.dataset.sitoolsAttachementForUsers + '/records/',
             boxMinWidth: 200,
             width: 500
         });

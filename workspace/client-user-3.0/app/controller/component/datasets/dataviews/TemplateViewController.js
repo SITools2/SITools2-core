@@ -54,7 +54,7 @@ Ext.define('sitools.user.controller.component.datasets.dataviews.TemplateViewCon
 
                     templateView.primaryKeyValue = encodeURIComponent(templateView.primaryKeyValue);
 
-                    var url = templateView.urlRecords + "/records/" + templateView.primaryKeyValue;
+                    var url = templateView.dataset.sitoolsAttachementForUsers + "/records/" + templateView.primaryKeyValue;
                     Ext.apply(templateView.panelDetail, {
                         url: url
                     });
@@ -65,12 +65,10 @@ Ext.define('sitools.user.controller.component.datasets.dataviews.TemplateViewCon
                     var pageData = templateView.down('pagingtoolbar').getPageData();
 
                     //destroy all selections if all was selected and another row is selected
-                    if ((templateView.isAllSelected() && recs.length === DEFAULT_LIVEGRID_BUFFER_SIZE - 1) ||
-                        (templateView.isAllSelected() && pageData.currentPage === pageData.pageCount)) { // if last page and less than DEFAULT_LIVEGRID_BUFFER_SIZE number of records
+                    if (templateView.isAllSelected()) {
                         templateView.selectAllRowsBtn.toggle();
                         templateView.deselectAll();
-                        var unselectedRec = templateView.getUnselectedRow(recs, templateView.store.data.items);
-                        templateView.select(unselectedRec);
+                        templateView.select(rec);
                     }
                 },
                 newdataloaded: function (dataView) {

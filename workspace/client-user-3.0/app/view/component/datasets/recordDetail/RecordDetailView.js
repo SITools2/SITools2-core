@@ -66,7 +66,7 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
 
                 this.primaryKeyValue = this.recSelected.get(this.primaryKeyName);
                 this.primaryKeyValue = encodeURIComponent(this.primaryKeyValue);
-                this.url = this.baseUrl + 'records/' + this.primaryKeyValue;
+                this.url = this.baseUrl + this.primaryKeyValue;
 
                 break;
 
@@ -93,7 +93,7 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
 
                 this.primaryKeyValue = this.recSelected.get(this.primaryKeyName);
                 this.primaryKeyValue = encodeURIComponent(this.primaryKeyValue);
-                this.url = this.baseUrl + 'records/' + this.primaryKeyValue;
+                this.url = this.baseUrl + this.primaryKeyValue;
                 break;
         }
 
@@ -476,7 +476,7 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
                 }
                 this.primaryKeyValue = nextRec.get(this.primaryKeyName);
                 this.primaryKeyValue = encodeURIComponent(this.primaryKeyValue);
-                this.url = this.baseUrl + '/records/' + this.primaryKeyValue;
+                this.url = this.baseUrl + this.primaryKeyValue;
                 this.recSelected = nextRec;
                 this.grid.select(nextRec, false, true);
                 //this.expand();
@@ -528,7 +528,7 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
                 }
                 this.primaryKeyValue = nextRec.get(this.primaryKeyName);
                 this.primaryKeyValue = encodeURIComponent(this.primaryKeyValue);
-                this.url = this.baseUrl + '/records/' + this.primaryKeyValue;
+                this.url = this.baseUrl + this.primaryKeyValue;
                 this.recSelected = nextRec;
                 this.grid.select(nextRec, false, true);
                 this.expand();
