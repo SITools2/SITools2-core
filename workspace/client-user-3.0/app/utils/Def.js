@@ -69,6 +69,9 @@ userLogin = Ext.util.Cookies.get('userLogin');
 Ext.BLANK_IMAGE_URL = '/sitools/client-public/cots/'+EXT_JS_FOLDER+'/resources/themes/images/default/tree/s.gif';
 Ext.USE_NATIVE_JSON  = DEFAULT_NATIVEJSON;
 Ext.Ajax.timeout = DEFAULT_TIMEOUT;
+Ext.override(Ext.data.proxy.Server, {
+    timeout : DEFAULT_TIMEOUT
+});
 
 var DEFAULT_LOCALE = "en";
 var SITOOLS_DATE_FORMAT = 'Y-m-d\\TH:i:s.u';
