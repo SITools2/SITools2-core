@@ -121,6 +121,9 @@ var helpUrl;
 Ext.BLANK_IMAGE_URL = '/sitools/client-public/cots/' + EXT_JS_FOLDER + '/resources/themes/images/default/tree/s.gif';
 Ext.USE_NATIVE_JSON = DEFAULT_NATIVEJSON;
 Ext.Ajax.timeout = DEFAULT_TIMEOUT;
+Ext.override(Ext.data.proxy.Server, {
+    timeout : DEFAULT_TIMEOUT
+});
 // Default headers to pass in every request
 
 // GLOBAL PANELS
