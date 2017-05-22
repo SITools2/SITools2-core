@@ -301,7 +301,7 @@ Ext.define('sitools.user.utils.ServerServiceUtils', {
                                 });
                             }
                             else {
-                                iFrame.setSrc(url); 
+                                iFrame.load(url);
                             }
                         }
                     }, 
