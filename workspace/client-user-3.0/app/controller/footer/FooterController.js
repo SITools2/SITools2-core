@@ -60,9 +60,12 @@ Ext.define("sitools.user.controller.footer.FooterController", {
         this.control({
             'container#leftPanel': {
                 afterrender: function (panel) {
-                    Ext.get("footerLogo").on('load', function () {
-                        Ext.get("footerLogo").alignTo(panel.getEl(), "c-c", [-60, 2]);
-                    }, this);
+                	var footer = Ext.get("footerLogo");
+                	if (footer) {
+                		footer.on('load', function () {
+                			footer.alignTo(panel.getEl(), "c-c", [-60, 2]);
+                		}, this);
+                	}
                 }
             },
             'panel#footer': {
