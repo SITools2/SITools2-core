@@ -24,6 +24,8 @@
 Ext.define('sitools.public.widget.date.DateFieldWithToday', {
     extend: 'Ext.form.field.Date',
 
+    requires : ['sitools.public.utils.Date'],
+    
     regToday: new RegExp("^\{\\$TODAY\}"),
     invalidTextWithToday: "Impossible to make a date with {0}. A valid example is {$TODAY} + 1",
 
@@ -52,7 +54,7 @@ Ext.define('sitools.public.widget.date.DateFieldWithToday', {
         var errors = Ext.form.field.Date.superclass.getErrors.apply(this, arguments);
 
         value = this.formatDate(value || this.processRawValue(this.getRawValue()));
-        value = Ext.util.Format.date(value || this.processRawValue(this.getRawValue()));
+//        value = Ext.util.Format.date(value || this.processRawValue(this.getRawValue()));
 
         if (value.length < 1) { // if it's blank and textfield didn't flag it then it's valid
             return errors;
