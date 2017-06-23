@@ -87,7 +87,7 @@ public class ContactResource extends AbstractContactResource {
     Map<String, Object> root = new HashMap<String, Object>();
     root.put("contact", contact);
     //MailUtils.addDefaultParameters(root, getSettings(), mail);
-    root.put("sitoolsUrl", settings.getPublicHostDomain() + settings.getString(Consts.APP_URL) + settings.getString(Consts.APP_CLIENT_USER_URL) + "/");
+    root.put("sitoolsUrl", settings.getPublicHostDomain() + settings.getString(Consts.APP_URL) + settings.getString(Consts.APP_CLIENT_PORTAL_URL) + "/");
     TemplateUtils.describeObjectClassesForTemplate(templatePath, root);
 
     root.put("context", getContext());
