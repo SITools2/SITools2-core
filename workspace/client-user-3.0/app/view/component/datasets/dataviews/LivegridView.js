@@ -35,6 +35,7 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
     extend: 'Ext.grid.Panel',
 
     requires: ['sitools.user.view.component.datasets.dataviews.selectionModel.CheckboxModel',
+    	'sitools.user.view.component.datasets.services.ServiceToolbarView',
         'sitools.user.view.component.datasets.dataviews.paging.LivegridPagingToolbar'],
 
     mixins: {
@@ -70,7 +71,6 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
     },
 
     initComponent: function () {
-
         //add a custom css class if the lineHeight is configured (will be removed upon component destroy)
         if (!Ext.isEmpty(this.dataviewConfig) && !Ext.isEmpty(this.dataviewConfig.lineHeight)) {
             var css = Ext.String.format(".rowHeight_{0} {height : {1}px;}", this.id, this.dataviewConfig.lineHeight);
