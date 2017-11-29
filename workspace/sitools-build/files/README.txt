@@ -2,8 +2,8 @@
 ______________
 
 Identification                       : SITools2
-Date                                 : 2016-11-08
-Version                              : 3.1
+Date                                 : 2017-11-29
+Version                              : 3.1.1
 Owner                                : CNES
 Developer                            : AKKA Technologies
 Type                                 : Complete
@@ -12,13 +12,26 @@ Project page                         : http://sitools2.github.io/
 Classification                       : Not Confidential - Opensource GPL V3
 Characteristics                      : Standalone, Java, ExtJS
 Role/Function                        : Adaptable web interface for scientific data exposition.
-Reference tag                        : (3.1)
+Reference tag                        : (3.1.1)
 
 2/ Changes
 ______________
+-3.1.1 (2017-11-29)
+
+	This version fixes some bugs from the version 3.1
+
+	* Bug fixed :
+		- Client timeout not taken in account #78
+		- Failure of download from second download #61
+		- Fix query form DATE_BETWEEN component #82
+		- plot function not working with template without footer #83
+		- fix wrong url sent by automatic email #84
+		- replace deprecated library uglifyjs by uglify
+		- fix missing toolbar on query form result view #85
+______________
 -3.1 (2016-11-09)
 
-	This version adds some new features and fixes some bugs from the version 3.1
+	This version adds some new features and fixes some bugs from the version 3.0.3
 
 	* New features :
 		- New dataview available for dataset (TemplateView) migrated from version 2.6
