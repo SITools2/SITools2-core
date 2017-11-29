@@ -25,7 +25,6 @@ Ext.namespace('sitools.user.view.component.datasets.services');
 Ext.define('sitools.user.view.component.datasets.services.ServiceToolbarView', {
     extend : 'Ext.toolbar.Toolbar',
     alias : 'widget.serviceToolbarView',
-    
     config : {
         store : null,
         guiServiceStore : null,
@@ -36,52 +35,86 @@ Ext.define('sitools.user.view.component.datasets.services.ServiceToolbarView', {
         type : 'hbox',
         align : 'stretch'
     },
-
-    initComponent : function () {
-        var store = Ext.create("sitools.user.store.DatasetServicesStore", {
-            datasetUrl : this.datasetUrl  
-        });
-        
-        this.setStore(store);
-        
-        store.load({
-            scope : this,
-            callback : function (records, operation, success) {
-            	var recs = this.sortServices(records);
-            	this.setSortedRecords(recs);
-            	this.onLoadServices(recs)
-            }
-        });
-        
-        var guiServiceStore = Ext.create("sitools.user.store.GuiServicesStore", {
-            datasetUrl : this.datasetUrl,
-            columnModel : this.columnModel
-        });
-        guiServiceStore.load();
-        this.setGuiServiceStore(guiServiceStore);
-
-        this.staticToolbar = Ext.create('Ext.toolbar.Toolbar', {
-            itemId : 'staticDsToolbar',
-            border : false,
-            width : 165
-        });
-
-        this.servicesToolbar = Ext.create('Ext.toolbar.Toolbar', {
-            itemId : 'servicesDsToolbar',
-            enableOverflow : true,
-            border : false,
-            flex : 1
-        });
-
-        this.items = [this.servicesToolbar, this.staticToolbar];
-
-        this.callParent(arguments);
+    listeners: {
+    	afterrender: function (me, eOpts) {
+    		console.error("afterrender main toolbar", me);
+    		me.addServicesToolbar();
+    		me.addStaticToolbar();
+    	}
     },
     
-    afterRenderToolbar : function (grid) {
-        var customToolbarButtons = grid.getCustomToolbarButtons();
-        var serviceToolbarView = grid.down('serviceToolbarView');
-        serviceToolbarView.staticToolbar.add(customToolbarButtons);
+    addServicesToolbar: function () {
+    	console.error("add service toolbar");
+    	var mainToolbar = this;
+    	this.servicesToolbar = Ext.create('Ext.toolbar.Toolbar', {
+    		itemId : 'servicesDsToolbar',
+    		enableOverflow : true,
+    		border : false,
+    		flex : 1,
+    		listeners: {
+    			afterrender: function (servicesToolbar, eOpts) {
+    				mainToolbar.isServiceToolbarRendered = true;
+    				mainToolbar.joinAfterRenderToolbars();
+    			}
+    		}
+    	});
+    	this.add(this.servicesToolbar);
+    },
+
+    addStaticToolbar: function () {
+    	console.error("add static toolbar");
+    	var mainToolbar = this;
+    	this.staticToolbar = Ext.create('Ext.toolbar.Toolbar', {
+    		itemId : 'staticDsToolbar',
+    		enableOverflow : true,
+    		border : false,
+    		flex : 1,
+    		listeners: {
+    			afterrender: function (staticToolbar, eOpts) {
+    				mainToolbar.isStaticToolbarRendered = true;
+    				mainToolbar.joinAfterRenderToolbars();
+    			}
+    		}
+    	});
+    	this.add(this.staticToolbar);
+    },
+    
+    joinAfterRenderToolbars: function () {
+    	if (this.isServiceToolbarRendered && this.isStaticToolbarRendered) {
+    		this.loadStores();
+    	}
+    },
+    
+    loadStores: function () {
+    	
+    	var store = Ext.create("sitools.user.store.DatasetServicesStore", {
+			datasetUrl : this.datasetUrl  
+		});
+		this.setStore(store);
+
+		store.load({
+			scope : this,
+			callback : function (records, operation, success) {
+				var recs = this.sortServices(records);
+				this.setSortedRecords(recs);
+				this.onLoadServices(recs)
+			}
+		});
+		
+		this.setStore(store);
+		
+		var store = Ext.create("sitools.user.store.GuiServicesStore", {
+			datasetUrl : this.datasetUrl,
+			columnModel : this.columnModel
+		});
+		store.load();
+		this.setGuiServiceStore(store);
+    },
+    
+    initComponent : function () {
+    	this.isStaticToolbarRendered = false;
+    	this.isServiceToolbarRendered = false;
+        this.callParent(arguments);
     },
     
     onLoadServices : function (records) {
@@ -201,7 +234,6 @@ Ext.define('sitools.user.view.component.datasets.services.ServiceToolbarView', {
     sortServices : function (records) {
         var tbRight = [], tb = [];
 
-//        tb = tb.concat(this.addAdditionalButton());
         this.staticToolbar.add(this.addAdditionalButton());
 
         Ext.each(records, function (item) {
@@ -222,7 +254,6 @@ Ext.define('sitools.user.view.component.datasets.services.ServiceToolbarView', {
      * Return a array with the column filter button
      */
     addAdditionalButton : function () {
-        //var dataview = this.up('component[componentType=datasetView]');
         var dataview = this.up('component[sitoolsType=datasetView]');
         return dataview.getCustomToolbarButtons();
     },
@@ -236,7 +267,6 @@ Ext.define('sitools.user.view.component.datasets.services.ServiceToolbarView', {
      */
     isSelectionOK : function (selectionString) {
         var selectionOK = false;
-        //var dataview = this.up('component[componentType=datasetView]');
         var dataview = this.up('component[sitoolsType=datasetView]');
         var nbRowsSelected = dataview.getNbRowsSelected();
         switch (selectionString) {
