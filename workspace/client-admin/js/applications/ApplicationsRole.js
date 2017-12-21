@@ -52,11 +52,14 @@ Ext.define('sitools.admin.applications.ApplicationsRole', {
     height : 480,
     modal : true,
     pageSize : ADMIN_PANEL_NB_ELEMENTS,
+    allowDisallowHeadAndGetTogether: false,
     
     requires : ["sitools.admin.applications.Roles",
                 'sitools.admin.authorizations.AuthorizationsModel'],
     
     initComponent : function () {
+        var me = this;
+
         this.title = i18n.get('label.authorizations') + " : " + this.applicationRecord.data.name;
         
         this.storeAuthorizations = Ext.create('Ext.data.JsonStore', {
@@ -111,7 +114,15 @@ Ext.define('sitools.admin.applications.ApplicationsRole', {
                 xtype: 'appCheckColumn',
                 header : i18n.get('headers.get'),
                 dataIndex: 'getMethod',
-                width: 55
+                width: 55,
+                listeners: {
+                    checkchange: function (checkcolumn, rowIndex, checked, eOpts) {
+                        if (me.allowDisallowHeadAndGetTogether == true) {
+                            var record = me.gridAuthorizations.getStore().getAt(rowIndex);
+                            record.set("headMethod", checked);
+                        }
+                    }
+                }
             }, {
                 xtype: 'appCheckColumn',
                 header : i18n.get('headers.put'),
@@ -126,7 +137,15 @@ Ext.define('sitools.admin.applications.ApplicationsRole', {
                 xtype: 'appCheckColumn',
                 header : i18n.get('headers.head'),
                 dataIndex: 'headMethod',
-                width: 55
+                width: 55,
+                listeners: {
+                    checkchange: function (checkcolumn, rowIndex, checked, eOpts) {
+                        if (me.allowDisallowHeadAndGetTogether == true) {
+                            var record = me.gridAuthorizations.getStore().getAt(rowIndex);
+                            record.set("getMethod", checked);
+                        }
+                    }
+                }
             }, {
                 xtype: 'appCheckColumn',
                 header : i18n.get('headers.options'),

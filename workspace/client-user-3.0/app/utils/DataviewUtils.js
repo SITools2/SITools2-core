@@ -444,12 +444,22 @@ Ext.define('sitools.user.utils.DataviewUtils', {
                         buttons: Ext.Msg.OK
                     });
                 } else {
-                    Ext.Msg.show({
-                        title : i18n.get('label.error'),
-                        msg : response.responseText,
-                        icon : Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                    });
+                    if (!Ext.isEmpty(response.responseText)) {
+                        var prefix = i18n.get('label.error.prefix');
+                        Ext.Msg.show({
+                            title : i18n.get('label.error') + " " + response.status + " " + response.statusText,
+                            msg : prefix + '"' + response.responseText + '"',
+                            icon : Ext.Msg.ERROR,
+                            buttons: Ext.Msg.OK
+                        });
+                    } else {
+                        Ext.Msg.show({
+                            title : i18n.get('label.error') + " " + response.status + " " + response.statusText,
+                            msg : i18n.get('label.unknownError'),
+                            icon : Ext.Msg.ERROR,
+                            buttons: Ext.Msg.OK
+                        });
+                    }
                 }
             }
         });

@@ -269,7 +269,8 @@ Ext.define('sitools.admin.storages.StoragesCrud', {
 
         var up = Ext.create("sitools.admin.applications.ApplicationsRole", {
             urlAuthorizations : this.urlAuthorizations + "/" + rec.data.id,
-            applicationRecord : rec
+            applicationRecord : rec,
+            allowDisallowHeadAndGetTogether: true
         });
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
