@@ -42,7 +42,7 @@ Ext.define('sitools.admin.datasource.DataBaseTest', {
         this.title = i18n.get('label.databaseInfo');
         this.bbar = Ext.create("Ext.ux.StatusBar", {
             text: i18n.get('label.ready'),
-            iconCls: 'x-status-valid',
+            //iconCls: 'x-status-valid',
             cls: 'x-toolbar-footer',
             items: [{
                 text: i18n.get('label.close'),
