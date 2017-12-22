@@ -113,5 +113,11 @@ Ext.define('Ext.ux.date.DateTimePicker', {
 			  me.onSelect();
 		  }
 		  return me;
+	  },
+	  
+	  onOkClick: function(picker, value) {
+	      console.log("Oui!");
+	      var me = this;
+	      me.hideMonthPicker();
 	  }
   });
