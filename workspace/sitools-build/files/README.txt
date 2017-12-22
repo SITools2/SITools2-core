@@ -2,8 +2,8 @@
 ______________
 
 Identification                       : SITools2
-Date                                 : 2017-11-29
-Version                              : 3.1.1
+Date                                 : 2017-12-22
+Version                              : 3.1.2
 Owner                                : CNES
 Developer                            : AKKA Technologies
 Type                                 : Complete
@@ -12,9 +12,19 @@ Project page                         : http://sitools2.github.io/
 Classification                       : Not Confidential - Opensource GPL V3
 Characteristics                      : Standalone, Java, ExtJS
 Role/Function                        : Adaptable web interface for scientific data exposition.
-Reference tag                        : (3.1.1)
+Reference tag                        : (3.1.2)
 
 2/ Changes
+______________
+-3.1.2 (2018-12-22)
+
+	This version fixes some bugs from the version 3.1.1
+
+	* Bug fixed :
+		- Fix dataset URL column feature improving error display and linking together data storage HEAD and GET authorizations #90
+		- Fix missing i18n labels for key label.resource.not.found #91
+		- Fix green check shwon when datasource test fails #93
+		- Shrink i18n labels for key label.description.Mini #94
 ______________
 -3.1.1 (2017-11-29)
 
